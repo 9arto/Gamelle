@@ -3468,7 +3468,6 @@ function updateSyncStatusUI() {
   const activeBox = document.getElementById('sync-active-box');
   const codeLabel = document.getElementById('active-household-code-label');
   const headerPill = document.getElementById('header-sync-pill');
-  const headerLabel = document.getElementById('header-sync-label');
 
   if (state.householdCode) {
     if (syncBadge) {
@@ -3482,7 +3481,6 @@ function updateSyncStatusUI() {
       headerPill.classList.remove('hidden');
       headerPill.classList.add('flex');
     }
-    if (headerLabel) headerLabel.textContent = state.householdCode;
   } else {
     if (syncBadge) {
       syncBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 flex items-center gap-1.5 flex-shrink-0';

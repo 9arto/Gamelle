@@ -1,5 +1,5 @@
 // Service worker Gamelle & Panier : fonctionne hors-ligne (magasin, sous-sol…)
-const VERSION = 'v30';
+const VERSION = 'v31';
 const APP_CACHE = `gamelle-app-${VERSION}`;
 const IMG_CACHE = 'gamelle-images-v1';
 const IMG_MAX = 250;
