@@ -1,5 +1,5 @@
 // Service worker Gamelle & Panier : fonctionne hors-ligne (magasin, sous-sol…)
-const VERSION = 'v33';
+const VERSION = 'v34';
 const APP_CACHE = `gamelle-app-${VERSION}`;
 const IMG_CACHE = 'gamelle-images-v1';
 const IMG_MAX = 250;
@@ -14,6 +14,7 @@ self.addEventListener('install', (e) => {
 
 self.addEventListener('message', (e) => {
   if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
+  if (e.data && e.data.type === 'GET_VERSION' && e.ports && e.ports[0]) e.ports[0].postMessage({ version: VERSION });
 });
 
 self.addEventListener('activate', (e) => {

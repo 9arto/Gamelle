@@ -448,6 +448,7 @@ function init() {
   initConnectivityNotices();
   restoreLastTab();
   registerServiceWorker();
+  initUpdateCard();
   updateQRCode();
   initHouseholdSync();
   updateSyncStatusUI();
@@ -3291,11 +3292,84 @@ function setupEventListeners() {
 }
 
 let swRegistration = null;
+let pendingUpdateWorker = null; // nouvelle version téléchargée, en attente d'installation
+
+// Texte et bouton de la carte « Mise à jour » (Réglages)
+function refreshUpdateCard() {
+  const btn = document.getElementById('btn-check-update');
+  const hint = document.getElementById('update-hint');
+  if (!btn || !hint) return;
+  if (pendingUpdateWorker) {
+    hint.textContent = 'Une nouvelle version est prête';
+    btn.textContent = 'Installer la mise à jour';
+  } else {
+    btn.textContent = 'Rechercher une mise à jour';
+  }
+}
+
+function getAppVersion() {
+  return new Promise(resolve => {
+    const ctrl = 'serviceWorker' in navigator && navigator.serviceWorker.controller;
+    if (!ctrl) return resolve(null);
+    const ch = new MessageChannel();
+    ch.port1.onmessage = e => resolve((e.data && e.data.version) || null);
+    ctrl.postMessage({ type: 'GET_VERSION' }, [ch.port2]);
+    setTimeout(() => resolve(null), 1500);
+  });
+}
+
+function waitInstalled(worker) {
+  return new Promise(resolve => {
+    if (worker.state === 'installed') return resolve(worker);
+    worker.addEventListener('statechange', () => {
+      if (worker.state === 'installed') resolve(worker);
+      else if (worker.state === 'redundant') resolve(null);
+    });
+    setTimeout(() => resolve(null), 20000);
+  });
+}
+
+function initUpdateCard() {
+  const btn = document.getElementById('btn-check-update');
+  const hint = document.getElementById('update-hint');
+  if (!btn || !hint) return;
+  getAppVersion().then(v => { if (v && !pendingUpdateWorker) hint.textContent = `Version ${v} · vérifier les mises à jour`; });
+  btn.addEventListener('click', async () => {
+    if (!('serviceWorker' in navigator)) { window.location.reload(); return; }
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = 'Recherche…';
+    try {
+      const reg = swRegistration || await navigator.serviceWorker.getRegistration();
+      if (!reg) { window.location.reload(); return; }
+      let worker = pendingUpdateWorker || reg.waiting;
+      if (!worker) {
+        await reg.update();
+        worker = reg.waiting || (reg.installing ? await waitInstalled(reg.installing) : null);
+      }
+      if (worker && navigator.serviceWorker.controller) {
+        btn.textContent = 'Installation…';
+        worker.postMessage({ type: 'SKIP_WAITING' }); // l'app se recharge toute seule
+        setTimeout(() => { btn.disabled = false; refreshUpdateCard(); }, 6000);
+        return;
+      }
+      showToast('Vous avez déjà la dernière version');
+    } catch (err) {
+      showToast('Vérification impossible (hors connexion ?)');
+    }
+    btn.disabled = false;
+    btn.textContent = pendingUpdateWorker ? 'Installer la mise à jour' : label === 'Recherche…' ? 'Rechercher une mise à jour' : label;
+    refreshUpdateCard();
+  });
+}
+
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
   navigator.serviceWorker.register('./sw.js').then(reg => {
     swRegistration = reg;
     const announce = (worker) => {
+      pendingUpdateWorker = worker;
+      refreshUpdateCard();
       showToast('Nouvelle version disponible', {
         action: 'Mettre à jour',
         duration: 15000,
