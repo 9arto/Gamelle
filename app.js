@@ -1760,17 +1760,27 @@ function renderAll() {
     modalSelectPortions.textContent = `${state.portions} portion${state.portions > 1 ? 's' : ''}`;
   }
 
-  // Si le modal de détail d'une recette est actuellement ouvert, rafraîchir ses quantités immédiatement
+  // Si la fiche d'une recette est ouverte, on ne la reconstruit que si son contenu a réellement changé
+  // (portions, recette modifiée…). Sinon, chaque message de synchro reçu du foyer (ex. un article coché
+  // par l'autre téléphone) la redessinait et rechargeait sa photo : ça faisait scintiller l'écran.
   const detailModal = document.getElementById('recipe-detail-modal');
   if (detailModal && !detailModal.classList.contains('hidden') && state.activeDetailRecipeId) {
-    openRecipeDetail(state.activeDetailRecipeId);
+    if (detailSignature(state.activeDetailRecipeId) !== state._detailSig) {
+      openRecipeDetail(state.activeDetailRecipeId);
+    } else {
+      updateDetailFavIcon();
+    }
   }
 
-  // Si le mode cuisine est ouvert, le rafraîchir
+  // Idem pour le mode cuisine
   const cookingModal = document.getElementById('cooking-modal');
   if (cookingModal && !cookingModal.classList.contains('hidden') && state.cookingRecipe) {
-    document.getElementById('cooking-recipe-portions').textContent = `🥘 ${state.portions} portions`;
-    renderCookingStep();
+    const cookSig = `${state.cookingRecipe.id}|${state.cookingStepIndex}|${state.portions}`;
+    if (cookSig !== state._cookingSig) {
+      state._cookingSig = cookSig;
+      document.getElementById('cooking-recipe-portions').textContent = `🥘 ${state.portions} portions`;
+      renderCookingStep();
+    }
   }
 
   renderPlanning();
@@ -2304,6 +2314,13 @@ function updateDetailFavIcon() {
     if (btn) btn.title = isFav ? 'Retirer des favoris' : 'Mettre en favori';
   }
 }
+// Empreinte de ce qu'affiche la fiche recette : si elle ne change pas, inutile de la redessiner
+function detailSignature(recipeId) {
+  const r = state.recipes.find(x => x.id === recipeId);
+  if (!r) return '';
+  return JSON.stringify([recipeId, state.portions, r.title, r.image, r.tag, r.timeMinutes, r.season, r.isBudget, r.basePortions, r.ingredients, r.steps]);
+}
+
 function openRecipeDetail(recipeId) {
   updateDetailFavIcon();
   const recipe = state.recipes.find(r => r.id === recipeId);
@@ -2315,7 +2332,8 @@ function openRecipeDetail(recipeId) {
 
   const detailImg = document.getElementById('detail-recipe-image');
   detailImg.onerror = () => imgFallback(detailImg);
-  detailImg.src = safeImg(recipe.image);
+  const detailSrc = safeImg(recipe.image);
+  if (detailImg.getAttribute('src') !== detailSrc) detailImg.src = detailSrc;
   document.getElementById('detail-recipe-title').textContent = recipe.title;
   document.getElementById('detail-recipe-tag').textContent = recipe.tag;
   document.getElementById('detail-recipe-time').textContent = `${recipe.timeMinutes} min`;
@@ -2376,6 +2394,8 @@ function openRecipeDetail(recipeId) {
     `;
     stepsList.appendChild(stepRow);
   });
+
+  state._detailSig = detailSignature(recipeId);
 
   // Actions spécifiques aux recettes créées maison (Modifier / Supprimer)
   const customActions = document.getElementById('detail-custom-actions');
