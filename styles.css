@@ -38,18 +38,22 @@ body {
   opacity: 0.85;
 }
 
-/* Scrollbars discrètes */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* Scrollbars discrètes (ordinateur uniquement : sur iPhone, la barre native évite le scintillement) */
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
 }
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
-}
+/* Évite le saut de mise en page quand la barre de défilement apparaît ou disparaît */
+html { scrollbar-gutter: stable; }
 
 /* Cartes avec ombres douces façon iOS */
 .ios-card {
@@ -170,8 +174,10 @@ html:where(.dark) body {
   color: #f2f2f7;
 }
 
-html:where(.dark) ::-webkit-scrollbar-thumb {
-  background: #48484a;
+@media (hover: hover) and (pointer: fine) {
+  html:where(.dark) ::-webkit-scrollbar-thumb {
+    background: #48484a;
+  }
 }
 
 html:where(.dark) .ios-card {
@@ -412,4 +418,21 @@ button:focus-visible, [role="button"]:focus-visible, input:focus-visible, select
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+/* ===== Anti-scintillement =====
+   L'en-tête et la barre du bas utilisaient un flou en temps réel (backdrop-filter) : sous Safari il
+   scintille quand un élément animé (pastille « En direct ») ou une longue liste bouge derrière.
+   Le fond est quasi opaque (95 %) : on le passe à 100 % sans flou, l'aspect reste identique. */
+header.backdrop-blur-md,
+nav.backdrop-blur-md {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background-color: #ffffff;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+html:where(.dark) header.backdrop-blur-md,
+html:where(.dark) nav.backdrop-blur-md {
+  background-color: #161618;
 }
