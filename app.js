@@ -1038,6 +1038,26 @@ function formatQuantityAndUnit(quantity, baseUnit, itemName = '', forShopping = 
   const label = LABELS[unit] ? LABELS[unit][isPlural ? 1 : 0] : unit;
   return `${numStr} ${label}`.trim();
 }
+// [motif sur le nom sans accents, nom affiché dans les courses, unité cible (null = unité d'origine), rayon]
+const SPECIAL_PRODUCTS = [
+  [/\bcamembert\b/, "Camembert", "piece", "cremerie"],
+  [/\braclette\b/, "Fromage à raclette", "g", "cremerie"],
+  [/\bharissa\b/, "Harissa (pâte)", null, "epicerie"],
+  [/\bpate\s+a\s+pizza\b/, "Pâte à pizza", "piece", "cremerie"],
+  [/\bnouilles?\s+instantanees?\b/, "Nouilles instantanées", "piece", "epicerie"],
+  [/\bnouilles?\s+de\s+riz\b/, "Nouilles de riz", "g", "epicerie"],
+  [/\bbagels?\b/, "Pains bagels", "piece", "epicerie"],
+  [/\bcoulis\s+de\s+tomates?\b/, "Tomates concassées / Coulis", "g", "epicerie"],
+  [/\bpoulet\s*\(?\s*entier\b/, "Poulet entier", "piece", "boucherie"],
+  [/\bpoulet\s*\(?\s*pane\b/, "Poulet pané", "piece", "boucherie"],
+  [/\bpoulet\s*\(\s*cuisses?\s*\)/, "Cuisses de poulet fraîches", "piece", "boucherie"],
+  [/\bfond\s+de\s+veau\b/, "Fond de veau", null, "epicerie"],
+  [/\bmagrets?\b/, "Magrets de canard", "g", "boucherie"],
+  [/\bechine\b/, "Échine de porc", "g", "boucherie"],
+  [/\bpois\s+gourmands?\b/, "Pois gourmands", "g", "fruits-legumes"],
+  [/\bgingembre\s*\(?\s*moulu\b/, "Gingembre moulu", null, "epicerie"]
+];
+
 function normalizeIngredient(ing) {
   const raw = (ing.name || '').toLowerCase()
     .replace(/œ/g, 'oe')
@@ -1055,6 +1075,15 @@ function normalizeIngredient(ing) {
   if (unit === 'kg') { quantity *= 1000; unit = 'g'; }
   else if (unit === 'cl') { quantity *= 10; unit = 'ml'; }
   else if (unit === 'l') { quantity *= 1000; unit = 'ml'; }
+
+  // --- 0. PRODUITS PARTICULIERS ---
+  // Ces produits contiennent un mot (lait, pâte, curry, poulet, veau…) qui les faisait absorber par
+  // une règle plus générale : « Camembert au lait cru » devenait du lait et disparaissait de la liste.
+  // Ils sont traités en premier et gardent leur propre ligne de courses (unité d'origine conservée).
+  const special = SPECIAL_PRODUCTS.find(([re]) => re.test(raw));
+  if (special) {
+    return { name: special[1], quantity, unit: special[2] || unit, rayon: special[3] };
+  }
 
   // --- 1. CRÈMERIE & PRODUITS LAITIERS ---
   // Pâtes à tarte AVANT le beurre pour éviter qu'une "pâte feuilletée pur beurre" devienne du beurre
@@ -1099,7 +1128,7 @@ function normalizeIngredient(ing) {
     name = "Crème fraîche (épaisse ou liquide)";
     unit = 'ml';
     rayon = "cremerie";
-  } else if (/\blait\b/.test(raw) && !raw.includes("coco")) {
+  } else if (/\blait\b/.test(raw) && !raw.includes("coco") && !/\bau\s+lait\b|fromage/.test(raw)) {
     name = "Lait (demi-écrémé ou entier)";
     unit = "ml";
     rayon = "cremerie";
