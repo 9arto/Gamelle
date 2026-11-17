@@ -407,7 +407,7 @@ body.scroll-locked { overflow: hidden; }
 
 /* Fenêtres du bas : glissement */
 #recipe-detail-modal > div, #select-meal-modal > div, #saved-menus-modal > div, #custom-recipe-modal > div, #cooking-modal > div {
-  animation: sheet-in .25s ease both;
+  animation: sheet-in .25s ease backwards;
 }
 @keyframes sheet-in { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
 
@@ -436,3 +436,24 @@ html:where(.dark) header.backdrop-blur-md,
 html:where(.dark) nav.backdrop-blur-md {
   background-color: #161618;
 }
+
+/* ===== Fenêtres (fiche recette, mode cuisine, choix de plat…) : anti-scintillement =====
+   - plus de flou en temps réel derrière ni sur la photo (Safari le recalcule à chaque glissement) ;
+   - la barre de défilement de droite est masquée : le défilement au doigt reste identique ;
+   - l'arrière-plan ne bouge plus quand on arrive en bout de liste. */
+#recipe-detail-modal, #cooking-modal, #select-meal-modal, #custom-recipe-modal, #saved-menus-modal,
+#recipe-detail-modal *, #cooking-modal *, #select-meal-modal *, #custom-recipe-modal *, #saved-menus-modal *,
+.dlg-backdrop {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+#recipe-detail-modal .overflow-y-auto, #cooking-modal .overflow-y-auto, #select-meal-modal .overflow-y-auto,
+#custom-recipe-modal .overflow-y-auto, #saved-menus-modal .overflow-y-auto {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+#recipe-detail-modal .overflow-y-auto::-webkit-scrollbar, #cooking-modal .overflow-y-auto::-webkit-scrollbar,
+#select-meal-modal .overflow-y-auto::-webkit-scrollbar, #custom-recipe-modal .overflow-y-auto::-webkit-scrollbar,
+#saved-menus-modal .overflow-y-auto::-webkit-scrollbar { display: none; width: 0; height: 0; }
