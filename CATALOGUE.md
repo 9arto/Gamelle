@@ -31,7 +31,7 @@
 | Frais & bowls | 27 |
 | Tex-Mex | 19 |
 
-- « Pas cher » : 322 · moins de 20 min : 188 · bon en gamelle : 339
+- « Pas cher » : 322 · moins de 20 min : 188
 
 ## Toutes les recettes
 

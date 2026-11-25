@@ -40,8 +40,6 @@ test('classement : exemples de styles et de saisons', () => {
   assert.ok(L.recipeStyles(r('couscous-merguez-pois-chiches')).includes('orient'));
   assert.ok(L.recipeSeasons(r('gratin-poireaux-reblochon')).includes('hiver'));
   assert.ok(L.recipeSeasons(r('salade-pates-grecque-feta-olives')).includes('ete'));
-  assert.equal(L.recipeIsGamelle(r('croque-madame-four-oeuf-coule')), false);
-  assert.equal(L.recipeIsGamelle(r('salade-pates-grecque-feta-olives')), true);
 });
 
 test('régimes : sans porc, sans lactose, 1 poêle', () => {
@@ -86,7 +84,7 @@ test('génération : les filtres sont respectés', () => {
   const f1 = { seasons: ['ete'], styles: ['italien'] };
   run(f1).ids.forEach((id) => { assert.ok(L.recipeSeasons(byId[id]).includes('ete')); assert.ok(L.recipeStyles(byId[id]).includes('italien')); });
   run({ types: ['poisson'], noLactose: true }).ids.forEach((id) => { assert.equal(byId[id].type, 'poisson'); assert.equal(L.containsLactose(byId[id]), false); });
-  run({ budget: true, express: true, gamelle: true }).ids.forEach((id) => { const r = byId[id]; assert.ok(r.isBudget && r.timeMinutes <= 20 && L.recipeIsGamelle(r)); });
+  run({ budget: true, express: true }).ids.forEach((id) => { const r = byId[id]; assert.ok(r.isBudget && r.timeMinutes <= 20); });
   const fav = ['poulet-mafe-riz', 'spaghetti-bolognese-express', 'quiche-chevre-epinards'];
   const res = L.pickMenu({ recipes: RECIPES, count: 7, filters: { favoritesOnly: true }, favorites: fav, rng: seeded(1) });
   assert.deepEqual(plain(res.ids.slice().sort()), fav.slice().sort());

@@ -38,7 +38,6 @@
     terroir: /gratin|blanquette|bourguignon|hachis|parmentier|quiche|tartiflette|croziflette|raclette|reblochon|cassoulet|potee|basquaise|vallee d.auge|confit|canard|veloute|soupe|tradition|terroir|bistrot|dauphinois|saucisse|lentilles|endive|flammekueche|galette complete|brandade|mijot|roti|cuisses|tarte|frittata|tortilla/,
     frais: /salade|poke|bowl|rouleaux|froid|fraicheur|tzatziki|crudites|avocat|concombre|ceviche|tartare|wraps? fraicheur/
   };
-  const NO_GAMELLE = /croque|burger|fondue|raclette|tartiflette|oeuf au plat|coulant|poches|brouille|benedict|cocotte|papillote|tacos|bagel|grilled|tempura|panes?\b|frites|brick|\bnems?\b|samoussa|rosti|crousti|huevos/;
 
   function recipeText(r) {
     return norm([r.title, r.tag, r.description, ...(r.ingredients || []).map((i) => i.name)].join(' '));
@@ -71,8 +70,7 @@
     }
     return found.length ? found.slice(0, 3) : ['quotidien'];
   }
-  function classifyGamelle(r) { return !NO_GAMELLE.test(norm(r.title)); }
-  function classifyRecipe(r) { return { seasons: classifySeasons(r), styles: classifyStyles(r), gamelle: classifyGamelle(r) }; }
+  function classifyRecipe(r) { return { seasons: classifySeasons(r), styles: classifyStyles(r) }; }
 
   function recipeSeasons(r) {
     if (Array.isArray(r.seasons) && r.seasons.length) return r.seasons;
@@ -80,7 +78,6 @@
     return SEASONS.map((s) => s.id); // « toutes saisons » (recettes maison)
   }
   function recipeStyles(r) { return Array.isArray(r.styles) && r.styles.length ? r.styles : classifyStyles(r); }
-  function recipeIsGamelle(r) { return typeof r.gamelle === 'boolean' ? r.gamelle : classifyGamelle(r); }
   function currentSeason(date) {
     const m = (date || new Date()).getMonth() + 1; // 1..12
     if (m >= 3 && m <= 5) return 'printemps';
@@ -116,7 +113,6 @@
     if (f.noPork && containsPork(r)) return false;
     if (f.noLactose && containsLactose(r)) return false;
     if (f.onePan && !isOnePan(r)) return false;
-    if (f.gamelle && !recipeIsGamelle(r)) return false;
     if (f.favoritesOnly && !(favorites || []).includes(r.id)) return false;
     return true;
   }
@@ -359,8 +355,8 @@
   const cryptoAvailable = () => typeof crypto !== 'undefined' && !!crypto.subtle && typeof btoa === 'function';
 
   root.GamelleLogic = {
-    norm, SEASONS, STYLES, classifyRecipe, classifySeasons, classifyStyles, classifyGamelle,
-    recipeSeasons, recipeStyles, recipeIsGamelle, currentSeason,
+    norm, SEASONS, STYLES, classifyRecipe, classifySeasons, classifyStyles,
+    recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
     SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost,

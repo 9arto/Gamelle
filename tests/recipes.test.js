@@ -386,7 +386,6 @@ test('classement : chaque recette a des saisons, des styles et un indicateur gam
   for (const r of RECIPES) {
     assert.ok(Array.isArray(r.seasons) && r.seasons.length >= 1 && r.seasons.every((x) => seasons.includes(x)), `${r.id} : saisons`);
     assert.ok(Array.isArray(r.styles) && r.styles.length >= 1 && r.styles.every((x) => styles.includes(x)), `${r.id} : styles`);
-    assert.equal(typeof r.gamelle, 'boolean', `${r.id} : gamelle`);
     r.seasons.forEach((x) => count[x]++); r.styles.forEach((x) => styleCount[x]++);
   }
   for (const x of seasons) assert.ok(count[x] >= RECIPES.length * 0.25, `saison ${x} sous-représentée : ${count[x]}`);

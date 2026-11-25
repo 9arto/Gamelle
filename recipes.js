@@ -112,8 +112,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saumon-brocolis-teriyaki",
@@ -222,8 +221,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchis-epinards-champignons-ricotta",
@@ -327,8 +325,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-fajitas-bol-quinoa",
@@ -450,8 +447,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "mexicain",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "dhal-lentilles-corail-coco",
@@ -571,8 +567,7 @@ window.DEFAULT_RECIPES = [
       "orient",
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pot-saumon-poireaux",
@@ -683,8 +678,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boeuf-saute-oignons-poivrons",
@@ -804,8 +798,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "shakshuka-poivrons-feta-oeufs",
@@ -929,8 +922,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "patate-douce-poulet-tahini",
@@ -1056,8 +1048,7 @@ window.DEFAULT_RECIPES = [
       "terroir",
       "frais",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "cabillaud-croute-herbes-butternut",
@@ -1172,8 +1163,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "wok-nouilles-poulet-legumes",
@@ -1283,8 +1273,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "chili-sin-carne-patate-douce",
@@ -1404,8 +1393,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "mexicain"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-coquillettes-champignons-jambon",
@@ -1516,8 +1504,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "dinde-moutarde-ecrase-carottes",
@@ -1627,8 +1614,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-vert-poulet-legumes",
@@ -1741,8 +1727,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "soupe-repas-thai-crevettes",
@@ -1871,8 +1856,7 @@ window.DEFAULT_RECIPES = [
       "asiatique",
       "terroir",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tortilla-espagnole-pommes-terre-salade",
@@ -1969,8 +1953,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-thon-tomate-olives",
@@ -2066,8 +2049,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "frittata-poireaux-champignons-chevre",
@@ -2170,8 +2152,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "lieu-noir-poireaux-fondants-citron",
@@ -2258,8 +2239,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "hachis-parmentier-patate-douce",
@@ -2355,8 +2335,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-oeufs-durs-tomates-coco",
@@ -2466,8 +2445,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-poulet-champignons-creme-ail",
@@ -2568,8 +2546,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-dinde-courgettes-parmesan",
@@ -2658,8 +2635,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bowl-falafels-carottes-houmous",
@@ -2763,8 +2739,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saumon-pates-epinards-citron",
@@ -2852,8 +2827,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-lentilles-corail-potimarron",
@@ -2955,8 +2929,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "escalopes-dinde-milanaise-haricots",
@@ -3064,8 +3037,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "wok-crevettes-brocolis-aigre-doux",
@@ -3172,8 +3144,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "papillote-saumon-legumes-croquants",
@@ -3272,8 +3243,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "gratin-chou-fleur-pommes-terre-comte",
@@ -3373,8 +3343,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boulettes-boeuf-sauce-tomate-spaghetti",
@@ -3484,8 +3453,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "wok-dinde-poivrons-cajou",
@@ -3588,8 +3556,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "chakchouka-verte-epinards-courgettes-feta",
@@ -3699,8 +3666,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-colin-coco-petits-pois",
@@ -3801,8 +3767,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "penne-poulet-citron-romarin",
@@ -3898,8 +3863,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saute-porc-caramel-poivrons",
@@ -4000,8 +3964,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-poireaux-chevre-noix",
@@ -4102,8 +4065,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bowl-cajun-poulet-haricots-avocat",
@@ -4207,8 +4169,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "mexicain",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quiche-sans-pate-poireaux-jambon",
@@ -4312,8 +4273,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "soupe-repas-butternut-carottes-croutons",
@@ -4415,8 +4375,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "nouilles-soba-saumon-brocolis-teriyaki",
@@ -4518,8 +4477,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchis-cremeux-lardons-champignons",
@@ -4624,8 +4582,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "pates-poireaux-lardons-creme",
@@ -4729,8 +4686,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-campagnarde-pommes-de-terre-lardons",
@@ -4835,8 +4791,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-cremeux-champignons-moutarde",
@@ -4940,8 +4895,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-curry-coco-poivrons",
@@ -5053,8 +5007,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "emince-porc-caramel-carottes-riz",
@@ -5162,8 +5115,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-cremeux-lardons-petits-pois-parmesan",
@@ -5268,8 +5220,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-roti-express-patates-douces-courgettes",
@@ -5374,8 +5325,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saucisses-toulouse-lentilles-vertes-carottes",
@@ -5476,8 +5426,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-facon-cesar-croustillant",
@@ -5581,8 +5530,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "frais"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "saute-boeuf-oignons-caramelises-puree",
@@ -5691,8 +5639,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "blanquette-veau-traditionnelle-riz-pilaf",
@@ -5819,8 +5766,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boeuf-bourguignon-traditionnel-champignons",
@@ -5946,8 +5892,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "dos-cabillaud-papillote-legumes-hiver",
@@ -6047,8 +5992,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "tajine-poulet-olives-citron-confit",
@@ -6189,8 +6133,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-pates-jambon-bechamel",
@@ -6285,8 +6228,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "hachis-parmentier-boeuf-carottes",
@@ -6406,8 +6348,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-moutarde-four-pommes-de-terre",
@@ -6497,8 +6438,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "veloute-potimarron-lardons-croutes",
@@ -6613,8 +6553,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "lasagnes-bolognaise-maison-bechamel",
@@ -6773,8 +6712,7 @@ window.DEFAULT_RECIPES = [
       "italien",
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-champignons-sauvages-noisettes",
@@ -6905,8 +6843,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saumon-feuillete-croustillant-poireaux-aneth",
@@ -7028,8 +6965,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "poulet-creme-champignons-sauvages-echalotes",
@@ -7158,8 +7094,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tajine-agneau-abricots-amandes-semoule",
@@ -7312,8 +7247,7 @@ window.DEFAULT_RECIPES = [
       "orient",
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "parmentier-confit-canard-puree-mousseline",
@@ -7434,8 +7368,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "rougail-saucisse-reunionnais",
@@ -7555,8 +7488,7 @@ window.DEFAULT_RECIPES = [
       "orient",
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pan-gnocchis-saucisses-butternut",
@@ -7669,8 +7601,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "aubergines-parmigiana-mozzarella",
@@ -7779,8 +7710,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quiche-oignons-chevre-miel",
@@ -7894,8 +7824,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "parmentier-courgettes-boeuf-hache",
@@ -8010,8 +7939,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tex-mex-fajitas-poulet-poivrons",
@@ -8112,8 +8040,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "dahl-lentilles-corail-oeufs-mollets",
@@ -8232,8 +8159,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "nouilles-sautees-legumes-oeufs",
@@ -8339,8 +8265,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "one-pan-cuisses-poulet-legumes-rotis",
@@ -8446,8 +8371,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "cabillaud-beurre-blanc-haricots-pommes-de-terre",
@@ -8541,8 +8465,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "riz-cantonais-poulet-petits-pois",
@@ -8648,8 +8571,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "galette-complete-bretonne",
@@ -8742,8 +8664,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "pates-carbonara-traditionnelles",
@@ -8823,8 +8744,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "spaghetti-ail-persil-crevettes",
@@ -8921,8 +8841,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "wok-boeuf-legumes-croquants",
@@ -9041,8 +8960,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "flammekueche-alsacienne-traditionnelle",
@@ -9148,8 +9066,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-tikka-masala-express-riz",
@@ -9262,8 +9179,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchis-epinards-creme-gorgonzola",
@@ -9349,8 +9265,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tomates-farcies-traditionnelles-riz",
@@ -9482,8 +9397,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "yakitori-boeuf-fromage-riz",
@@ -9579,8 +9493,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "cabillaud-croute-chorizo-pommes-vapeur",
@@ -9678,8 +9591,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "frais"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "gratin-chou-fleur-bechamel-emmental",
@@ -9775,8 +9687,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-lentilles-patates-douces-coco",
@@ -9879,8 +9790,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "burger-parisien-boeuf-comte-frites",
@@ -9978,8 +9888,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "bouillon-ramen-poulet-nouilles-udon",
@@ -10083,8 +9992,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "wraps-saumon-fume-fromage-frais-epinards",
@@ -10179,8 +10087,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "blanquette-poulet-express-champignons-riz",
@@ -10292,8 +10199,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quiche-lorraine-traditionnelle-lardons",
@@ -10388,8 +10294,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pad-thai-poulet-cacahuetes-citron",
@@ -10494,8 +10399,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quesadillas-dorees-boeuf-fromage",
@@ -10594,8 +10498,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "crevettes-miel-sesame-riz-jasmin",
@@ -10706,8 +10609,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poke-bowl-saumon-avocat-sesame",
@@ -10806,8 +10708,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-dauphinois-traditionnel",
@@ -10906,8 +10807,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-alfredo-au-poulet-dore",
@@ -11000,8 +10900,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "lasagnes-saumon-et-epinards",
@@ -11117,8 +11016,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "cordon-bleu-croustillant-puree-maison",
@@ -11236,8 +11134,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "salade-de-chevre-chaud-et-miel",
@@ -11345,8 +11242,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "chili-sin-carne-mexicain",
@@ -11459,8 +11355,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "mexicain"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "soupe-veloutee-butternut-coco",
@@ -11565,8 +11460,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "croque-monsieur-fondant-poireaux",
@@ -11680,8 +11574,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "street"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "curry-de-boeuf-thai-au-coco",
@@ -11807,8 +11700,7 @@ window.DEFAULT_RECIPES = [
       "asiatique",
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-chou-fleur-lentilles-riz",
@@ -11914,8 +11806,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "soupe-a-l-oignon-gratinee",
@@ -12018,8 +11909,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchis-bolognaise-express",
@@ -12115,8 +12005,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "poulet-satay-sauce-cacahuete",
@@ -12230,8 +12119,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "crumble-courgettes-chevre-pesto",
@@ -12330,8 +12218,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "gratin-de-pates-au-thon-coulis",
@@ -12423,8 +12310,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saumon-roti-four-ail-citron",
@@ -12522,8 +12408,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "frittata-champignons-poitrine-fumee",
@@ -12624,8 +12509,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quesadillas-poulet-dore-cheddar",
@@ -12719,8 +12603,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "rouleaux-de-printemps-crevettes-fraiches",
@@ -12828,8 +12711,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pan-tacos-boeuf-poivrons",
@@ -12926,8 +12808,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "burger-avocat-saumon-frais",
@@ -13026,8 +12907,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "frais"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "poulet-sauce-moutarde-a-l-ancienne",
@@ -13131,8 +13011,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pancakes-de-courgettes-au-parmesan",
@@ -13237,8 +13116,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-imperial-poivrons-cajou",
@@ -13349,8 +13227,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-laque-miel-haricots-verts",
@@ -13448,8 +13325,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "spaghetti-cremeuses-poulet-citron",
@@ -13545,8 +13421,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tacos-verde-au-poulet",
@@ -13665,8 +13540,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "poulet-a-la-toscane-ail-epinards",
@@ -13769,8 +13643,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-poelee-legumes-curry",
@@ -13869,8 +13742,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "puree-maison-poulet-a-la-creme",
@@ -13969,8 +13841,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saute-dinde-libanaise-yaourt",
@@ -14067,8 +13938,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-tandoori-riz-parfume",
@@ -14166,8 +14036,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-saute-gingembre-noix-cajou",
@@ -14272,8 +14141,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bouillon-pappardelle-poulet-fondant",
@@ -14372,8 +14240,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saute-poulet-sauce-yaourt-grec",
@@ -14472,8 +14339,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "wok-poulet-cacahuete-legumes-croquants",
@@ -14573,8 +14439,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tarte-spirale-legumes-chevre",
@@ -14680,8 +14545,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "brochettes-poulet-tsukune-soja",
@@ -14778,8 +14642,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-dore-semoule-persillee",
@@ -14880,8 +14743,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-pane-a-la-milanaise",
@@ -15042,8 +14904,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "nouilles-sautees-poulet-brocoli",
@@ -15185,8 +15046,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-pommes-de-terre-poulet-chorizo",
@@ -15306,8 +15166,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-cremeuses-poulet-olives",
@@ -15416,8 +15275,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bowl-poulet-sauce-cacahuete-riz",
@@ -15531,8 +15389,7 @@ window.DEFAULT_RECIPES = [
       "asiatique",
       "frais",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bowl-poulet-teriyaki-sesame-riz",
@@ -15675,8 +15532,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-coco-curry-tomates-cerises",
@@ -15800,8 +15656,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-epinards-creme-riz",
@@ -15884,8 +15739,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-croustillant-parmesan-brocoli",
@@ -16037,8 +15891,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "tagliatelle-poulet-champignons-creme",
@@ -16149,8 +16002,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-poulet-brocolis-champignons",
@@ -16255,8 +16107,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "canard-orange-ecrase-patate-douce",
@@ -16377,8 +16228,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "salade-poulet-avocat-lard-dore",
@@ -16505,8 +16355,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tacos-champignons-poulet-comte",
@@ -16646,8 +16495,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "cuisse-poulet-legumes-rotis-herbes",
@@ -16750,8 +16598,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "dinde-aux-marrons-puree-maison",
@@ -16852,8 +16699,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-au-sesame-dore-riz",
@@ -16952,8 +16798,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "asiatique"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "croustiwrap-poulet-croustillant-bacon",
@@ -17059,8 +16904,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "street"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "cheese-naan-express-poulet-curry",
@@ -17195,8 +17039,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "orient",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "canard-dore-ravioles-forestieres",
@@ -17295,8 +17138,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-basquaise-poivrons-riz",
@@ -17423,8 +17265,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "cordon-bleu-spaghetti-tomates-cerises",
@@ -17542,8 +17383,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "italien",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "parmentier-canard-patates-douces",
@@ -17638,8 +17478,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "magret-canard-orange-glace",
@@ -17744,8 +17583,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "magret-canard-puree-maison",
@@ -17863,8 +17701,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-roti-harissa-epices",
@@ -17946,8 +17783,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-bang-bang-asiatique",
@@ -18075,8 +17911,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "asiatique",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "brochette-poulet-poivrons-semoule",
@@ -18180,8 +18015,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "brochettes-poulet-coco-coriandre",
@@ -18290,8 +18124,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bouchees-dinde-carottes-roties-yaourt",
@@ -18438,8 +18271,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "terroir",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "soupe-poulet-pimentee-nouilles",
@@ -18566,8 +18398,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pot-poulet-pommes-de-terre-citron",
@@ -18684,8 +18515,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "ramen-poulet-cacahuetes-bouillon",
@@ -18810,8 +18640,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "soupe-lentilles-poulet-legumes",
@@ -18958,8 +18787,7 @@ window.DEFAULT_RECIPES = [
       "terroir",
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-roti-duo-patates-four",
@@ -19064,8 +18892,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "grilled-cheese-dinde-comte",
@@ -19190,8 +19017,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "frais",
       "orient"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "boeuf-haricots-verts-puree-beurre",
@@ -19297,8 +19123,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boeuf-sauce-roquefort-frites-four",
@@ -19368,8 +19193,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "ramen-boeuf-nouilles-bouillon",
@@ -19452,8 +19276,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "enchiladas-boeuf-cheddar-gratine",
@@ -19562,8 +19385,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "mexicain",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "burrito-boeuf-cheddar-fondant",
@@ -19670,8 +19492,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "escalope-veau-lasagnes-petits-pois",
@@ -19767,8 +19588,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "croziflette-camembert-jambon-champignons",
@@ -19881,8 +19701,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "frittata-courgette-jambon-mozza",
@@ -19982,8 +19801,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tajine-vege-legumes-semoule",
@@ -20087,8 +19905,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-crevettes-lait-coco-riz",
@@ -20209,8 +20026,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "nouilles-udon-crevettes-soja",
@@ -20320,8 +20136,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-saint-jacques-poireaux-parmesan",
@@ -20461,8 +20276,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "quiche-poireaux-feta-doree",
@@ -20578,8 +20392,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "cheeseburger-bleu-frites-patates-douces",
@@ -20709,8 +20522,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "gnocchi-poeles-tomates-cerises-basilic",
@@ -20800,8 +20612,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "gnocchi-parisienne-bechamel-gratine",
@@ -20906,8 +20717,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "aubergines-gratinees-tomate-mozzarella",
@@ -21052,8 +20862,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-aubergines-lait-coco-pois-chiches",
@@ -21185,8 +20994,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-lentilles-poivrons-riz",
@@ -21270,8 +21078,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "veloute-champignons-parmesan-croutons",
@@ -21368,8 +21175,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "croque-monsieur-four-bechamel",
@@ -21488,8 +21294,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "boulettes-poulet-thai-coco",
@@ -21622,8 +21427,7 @@ window.DEFAULT_RECIPES = [
       "asiatique",
       "orient",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-piccata-citron-capres",
@@ -21743,8 +21547,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-clementine-moutarde-miel",
@@ -21854,8 +21657,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-pane-mayo-wasabi-riz",
@@ -21982,8 +21784,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "asiatique"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "risotto-comte-saucisse-ancienne",
@@ -22114,8 +21915,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poireaux-gratines-jambon-bechamel",
@@ -22202,8 +22002,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "croque-madame-four-oeuf-coule",
@@ -22345,8 +22144,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "pates-saucisses-fenouil-parmesan",
@@ -22450,8 +22248,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-a-la-sicilienne-aubergines",
@@ -22569,8 +22366,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-cremeuses-avocat-citron",
@@ -22677,8 +22473,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tarte-rustique-oignons-raclette",
@@ -22811,8 +22606,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "wraps-courgettes-chevre-noisettes",
@@ -22919,8 +22713,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "street"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tarte-petits-pois-feta-menthe",
@@ -23029,8 +22822,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tarte-rustique-courgettes-ricotta",
@@ -23194,8 +22986,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tarte-aubergines-ricotta-noix",
@@ -23301,8 +23092,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tarte-fine-tomates-moutarde-herbes",
@@ -23390,8 +23180,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "gratin-patates-douces-chataignes",
@@ -23480,8 +23269,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quenelles-gratinees-salade-verte",
@@ -23580,8 +23368,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchi-piquants-all-arrabbiata",
@@ -23665,8 +23452,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchi-champignons-feta-poeles",
@@ -23770,8 +23556,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tagliata-boeuf-courgettes-poelees",
@@ -23866,8 +23651,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boeuf-mijjote-mexicaine-riz",
@@ -23978,8 +23762,7 @@ window.DEFAULT_RECIPES = [
       "mexicain",
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "salade-pates-jambon-cru-petits-pois",
@@ -24065,8 +23848,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "salade-courgettes-poelees-jambon-cru",
@@ -24147,8 +23929,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "frais",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-crevettes-chorizo-parmesan",
@@ -24267,8 +24048,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-coquillettes-jambon-comte",
@@ -24400,8 +24180,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-cremeux-courgettes-parmesan",
@@ -24547,8 +24326,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-express-pesto-burrata",
@@ -24655,8 +24433,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "blanquette-express-crevettes-riz",
@@ -24772,8 +24549,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "terroir",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "ramen-crevettes-bouillon-legumes",
@@ -24859,8 +24635,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pad-thai-crevettes-cacahuetes",
@@ -24997,8 +24772,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "asiatique",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "salade-riz-crevettes-avocat-citron",
@@ -25093,8 +24867,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "frais",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bouillon-coco-crevettes-gingembre",
@@ -25222,8 +24995,7 @@ window.DEFAULT_RECIPES = [
       "asiatique",
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-doux-saint-jacques-riz",
@@ -25322,8 +25094,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-poisson-blanc-legumes-riz",
@@ -25421,8 +25192,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "soupe-nouilles-curry-legumes",
@@ -25553,8 +25323,7 @@ window.DEFAULT_RECIPES = [
       "asiatique",
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "green-curry-ramen-legumes",
@@ -25639,8 +25408,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "dahl-lentilles-gingembre-coco",
@@ -25736,8 +25504,7 @@ window.DEFAULT_RECIPES = [
       "asiatique",
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "legumes-fondants-coco-curry-riz",
@@ -25875,8 +25642,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-poulet-chorizo-creme-paprika",
@@ -26013,8 +25779,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-gnocchi-poulet-pesto-rosso-mozza",
@@ -26145,8 +25910,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "salade-pates-boursin-avocat-poulet",
@@ -26241,8 +26005,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-gnocchi-poulet-champignons-cabecou",
@@ -26343,8 +26106,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-miel-moutarde-brocolis-pates",
@@ -26457,8 +26219,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-pates-poulet-emmental-bechamel",
@@ -26542,8 +26303,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "burger-poulet-croustillant-deluxe-potatoes",
@@ -26715,8 +26475,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "street"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "cheeseburger-poulet-cheddar-miel-moutarde",
@@ -26805,8 +26564,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "street"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "brochettes-poulet-teriyaki-riz-saute",
@@ -26950,8 +26708,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-citron-confit-olives-couscous",
@@ -27075,8 +26832,7 @@ window.DEFAULT_RECIPES = [
       "orient",
       "terroir",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-doux-poulet-ananas-coco-riz",
@@ -27210,8 +26966,7 @@ window.DEFAULT_RECIPES = [
       "asiatique",
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "lasagnes-poulet-courgettes-reblochon-dore",
@@ -27325,8 +27080,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "enchiladas-gratinees-poulet-champignons-cheddar",
@@ -27459,8 +27213,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "mexicain",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pennes-poulet-poireaux-pesto-verde",
@@ -27583,8 +27336,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "gnocchis-poulet-epinards-creme-parmesan",
@@ -27699,8 +27451,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "chili-con-carne-traditionnel-haricots-rouges",
@@ -27833,8 +27584,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "mexicain",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "fajitas-tex-mex-boeuf-poivrons-guacamole",
@@ -27935,8 +27685,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "fajitas-express-boeuf-hache-cheddar",
@@ -28025,8 +27774,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boeuf-bourguignon-mijjote-carottes-champignons",
@@ -28145,8 +27893,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "porc-au-caramel-ambre-gingembre-riz",
@@ -28236,8 +27983,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-porc-hache-courgettes-soja",
@@ -28334,8 +28080,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "rigatoni-ragout-canard-confit-tomate",
@@ -28446,8 +28191,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "hachis-parmentier-canard-confit-puree-maison",
@@ -28597,8 +28341,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "cordon-bleu-dore-maison-riz-saute",
@@ -28726,8 +28469,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "coquillettes-beaufort-fondu-jambon-blanc",
@@ -28816,8 +28558,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "penne-petits-pois-lardons-fumes-creme",
@@ -28909,8 +28650,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tartiflette-savoyarde-express-lardons-reblochon",
@@ -29023,8 +28763,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "bagel-oeufs-brouilles-bacon-grille-cheddar",
@@ -29108,8 +28847,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "asiatique"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "lasagnes-vegetariennes-courgettes-champignons-ricotta",
@@ -29223,8 +28961,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quesadillas-avocat-cheddar-fondu-coriandre",
@@ -29345,8 +29082,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "mexicain",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-mafe-riz",
@@ -29456,8 +29192,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tagliatelles-crevettes-chorizo-petits-pois",
@@ -29549,8 +29284,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "riz-facon-grand-mere-poulet-champignons",
@@ -29670,8 +29404,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quiche-chevre-epinards",
@@ -29772,8 +29505,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-ail-fines-herbes-lard-pommes-de-terre",
@@ -29870,8 +29602,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "paella-express-chorizo-petits-pois",
@@ -29962,8 +29693,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-patates-douces-feta-oeuf-au-plat",
@@ -30067,8 +29797,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "lasagnes-express-ratatouille-mozzarella",
@@ -30155,8 +29884,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "ravioli-toscane-tomates-sechees-epinards",
@@ -30261,8 +29989,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-chorizo-ricotta-sauce-tomate",
@@ -30372,8 +30099,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "huevos-rotos-pommes-de-terre-chorizo",
@@ -30487,8 +30213,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "gratin-gnocchi-brocolis-ricotta",
@@ -30607,8 +30332,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "lasagnes-boscaiola-lardons-champignons",
@@ -30712,8 +30436,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "ravioli-creme-champignons",
@@ -30820,8 +30543,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "rosti-pommes-de-terre-salade",
@@ -30937,8 +30659,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "salade-pates-grecque-feta-olives",
@@ -31051,8 +30772,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "filet-mignon-moutarde-miel-pommes-de-terre",
@@ -31149,8 +30869,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "riz-saute-tomate-curcuma-yaourt",
@@ -31272,8 +30991,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "patates-douces-chevre-rotis-thym-miel",
@@ -31366,8 +31084,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-ravioles-courgettes-comte",
@@ -31481,8 +31198,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quiche-thon-tomate-moutarde",
@@ -31582,8 +31298,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "salade-pommes-de-terre-saumon-fume-creme-herbes",
@@ -31678,8 +31393,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bricks-courgette-curry-feta-yaourt-ail",
@@ -31823,8 +31537,7 @@ window.DEFAULT_RECIPES = [
       "street",
       "orient",
       "frais"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "brochettes-dinde-paprika-haricots-semoule",
@@ -31955,8 +31668,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-brocoli-anchois-parmesan",
@@ -32069,8 +31781,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-brie-courgette-creme",
@@ -32178,8 +31889,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-poireaux-reblochon",
@@ -32269,8 +31979,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "spaghetti-bolognese-express",
@@ -32400,8 +32109,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-haricots-rouges-coco-riz",
@@ -32520,8 +32228,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "endives-au-jambon-bechamel",
@@ -32620,8 +32327,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "cabillaud-puree-carottes-tomates-cerises",
@@ -32706,8 +32412,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-thon-citron-ricotta",
@@ -32800,8 +32505,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "nouilles-riz-champignons-sesame",
@@ -32894,8 +32598,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tarte-fine-pommes-de-terre-morbier",
@@ -33005,8 +32708,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "couscous-merguez-pois-chiches",
@@ -33122,8 +32824,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "cote-porc-miel-curry-puree-patate-douce",
@@ -33237,8 +32938,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-pommes-de-terre-saucisse-fumee",
@@ -33350,8 +33050,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "rigatoni-tomates-cerises-prosciutto-burrata",
@@ -33443,8 +33142,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quiche-ratatouille-mozzarella",
@@ -33559,8 +33257,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "feuilletes-epinards-feta-salade",
@@ -33659,8 +33356,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "frais"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quiche-brocoli-fromage-frais-lardons",
@@ -33782,8 +33478,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "quiche-chorizo-courgette",
@@ -33891,8 +33586,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boeuf-thai-riz-soja-gingembre",
@@ -33999,8 +33693,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-gnocchi-petits-pois-chevre-citron",
@@ -34101,8 +33794,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "fusillotti-roquefort-noix",
@@ -34175,8 +33867,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bo-bun-nems-vermicelles",
@@ -34298,8 +33989,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "asiatique"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "bricks-poireaux-champignons-feta",
@@ -34412,8 +34102,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "street"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "bavette-echalotes-puree-maison",
@@ -34537,8 +34226,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tian-legumes-mozzarella",
@@ -34661,8 +34349,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pot-ble-patates-douces-epinards-chevre",
@@ -34768,8 +34455,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "butternut-roti-chevre-creme-thym",
@@ -34868,8 +34554,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-dinde-coco-riz-brocoli",
@@ -34979,8 +34664,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-courgettes-feta-jambon",
@@ -35064,8 +34748,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-cremeuses-courge-parmesan",
@@ -35183,8 +34866,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "spaghetti-bolognaise-vege-lentilles",
@@ -35295,8 +34977,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-quinoa-carottes-parmesan",
@@ -35411,8 +35092,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pot-riz-legumes-poulet",
@@ -35526,8 +35206,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pan-poulet-riz-tomate",
@@ -35621,8 +35300,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "faux-filet-sauce-echalote-legumes-rotis",
@@ -35731,8 +35409,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "legumes-soleil-feta-rotis",
@@ -35832,8 +35509,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tagliatelles-jambon-champignons-creme",
@@ -35942,8 +35618,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pan-saucisses-riz-tomate",
@@ -36046,8 +35721,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "souffle-au-fromage",
@@ -36154,8 +35828,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "croquettes-brocolis-feta-salade",
@@ -36254,8 +35927,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "street"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "pates-chevre-champignons-epinards",
@@ -36368,8 +36040,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tarte-potimarron-chevre",
@@ -36506,8 +36177,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pot-curry-pommes-de-terre-pois-chiches",
@@ -36640,8 +36310,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "legumes-sautes-gingembre-cajou",
@@ -36739,8 +36408,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "patates-douces-rotis-roquefort-noix",
@@ -36839,8 +36507,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-potimarron",
@@ -36973,8 +36640,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "enchiladas-poulet-courgettes-mozzarella",
@@ -37097,8 +36763,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "mexicain"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "risotto-tomate-parmesan",
@@ -37208,8 +36873,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "carottes-rotis-miel-cereales-feta",
@@ -37303,8 +36967,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-cidre-puree-potimarron",
@@ -37416,8 +37079,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-croustillant-parmesan-legumes-rotis",
@@ -37516,8 +37178,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "feta-rotie-gnocchi-tomates-cerises",
@@ -37603,8 +37264,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pappardelle-cremeuses-prosciutto-ricotta",
@@ -37697,8 +37357,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "nouilles-sautees-courgettes-tomates-oeufs",
@@ -37798,8 +37457,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-orange-soja-riz",
@@ -37894,8 +37552,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-grec-cereales-yaourt",
@@ -38018,8 +37675,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-poireaux-carottes-thym",
@@ -38119,8 +37775,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poulet-italienne-tomates-sechees-olives",
@@ -38226,8 +37881,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tagliatelles-dinde-tomates-cerises-fromage-ail",
@@ -38337,8 +37991,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "dinde-creme-champignons-puree",
@@ -38448,8 +38101,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "dinde-courgettes-curry-coco-riz",
@@ -38565,8 +38217,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boulettes-poulet-creme-coquillettes",
@@ -38676,8 +38327,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchi-alfredo-poulet",
@@ -38790,8 +38440,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "nouilles-sautees-boeuf-brocolis",
@@ -38907,8 +38556,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "boeuf-creme-persillee-pommes-de-terre",
@@ -39052,8 +38700,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saute-boeuf-olives-pommes-de-terre",
@@ -39166,8 +38813,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "aiguillettes-boeuf-legumes-poeles-riz",
@@ -39293,8 +38939,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "moussaka-aubergines-boeuf",
@@ -39459,8 +39104,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "classic-cheeseburger",
@@ -39614,8 +39258,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "street"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "haricots-verts-sauce-tomate-viande-hachee",
@@ -39689,8 +39332,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "steak-beurre-ail-pommes-de-terre-courgettes",
@@ -39806,8 +39448,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "polpette-italienne-polenta",
@@ -39950,8 +39591,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "chou-braise-saucisse-lardons",
@@ -40074,8 +39714,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-choux-bruxelles-lardons",
@@ -40166,8 +39805,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "quotidien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pappardelle-ragout-chair-saucisse",
@@ -40268,8 +39906,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pan-filet-mignon-balsamique-legumes",
@@ -40378,8 +40015,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saute-porc-ananas-curry-riz",
@@ -40520,8 +40156,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "aubergines-braisees-porc-gingembre-riz",
@@ -40676,8 +40311,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-pates-lard-cabecou",
@@ -40769,8 +40403,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "saucisses-oignons-puree-moutarde",
@@ -40903,8 +40536,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-brocolis-facon-carbonara",
@@ -40999,8 +40631,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchiflette-lardons-reblochon",
@@ -41103,8 +40734,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-vodka-tomate-creme",
@@ -41209,8 +40839,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "tikka-masala-chou-fleur-riz",
@@ -41282,8 +40911,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "bourguignon-vege-champignons-polenta",
@@ -41407,8 +41035,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-norma-aubergines-ricotta",
@@ -41518,8 +41145,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "lasagnes-poireaux-ricotta",
@@ -41612,8 +41238,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-courgettes-petits-pois-nouilles-riz",
@@ -41709,8 +41334,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "orient",
       "asiatique"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "golden-pot-chou-fleur-pois-chiches",
@@ -41844,8 +41468,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "asiatique",
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gratin-butternut-bleu-noisettes",
@@ -41933,8 +41556,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "potimarron-roti-fourme-ambert",
@@ -42006,8 +41628,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "one-pan-gnocchi-poivrons-tomate",
@@ -42093,8 +41714,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "conchiglioni-farcis-ricotta-epinards",
@@ -42205,8 +41825,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "aubergines-roties-burrata-pignons",
@@ -42304,8 +41923,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "italien",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "polenta-legumes-grilles-tomates-cerises",
@@ -42413,8 +42031,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "curry-boulettes-vege-epinards-riz",
@@ -42507,8 +42124,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "poelee-pois-chiches-epinards-oeuf-feta",
@@ -42597,8 +42213,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "orient"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "haricots-verts-gratines-comte",
@@ -42676,8 +42291,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "riz-saute-pimente-oeuf-au-plat",
@@ -42788,8 +42402,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "asiatique"
-    ],
-    "gamelle": false
+    ]
   },
   {
     "id": "orecchiette-ricotta-courgettes-pignons",
@@ -42899,8 +42512,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "camembert-roti-potatoes",
@@ -42991,8 +42603,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "gnocchi-poeles-choux-bruxelles-parmesan",
@@ -43085,8 +42696,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "feuilletes-saucisse-moutarde",
@@ -43170,8 +42780,7 @@ window.DEFAULT_RECIPES = [
     "styles": [
       "street",
       "terroir"
-    ],
-    "gamelle": true
+    ]
   },
   {
     "id": "pates-pesto-petits-pois-burrata",
@@ -43258,8 +42867,7 @@ window.DEFAULT_RECIPES = [
     ],
     "styles": [
       "italien"
-    ],
-    "gamelle": true
+    ]
   }
 ];
 

@@ -198,7 +198,7 @@ function sanitizeGenFilters(f) {
   const out = {};
   if (!f || typeof f !== 'object') return out;
   ['seasons', 'types', 'styles'].forEach(k => { if (Array.isArray(f[k])) out[k] = sanitizeStringList(f[k], 12, 30); });
-  ['budget', 'express', 'gamelle', 'onePan', 'favoritesOnly', 'noPork', 'noLactose'].forEach(k => { if (f[k] === true) out[k] = true; });
+  ['budget', 'express', 'onePan', 'favoritesOnly', 'noPork', 'noLactose'].forEach(k => { if (f[k] === true) out[k] = true; });
   if (typeof f.fridge === 'string') out.fridge = cleanStr(f.fridge, 120);
   return out;
 }
@@ -2096,7 +2096,7 @@ function renderGenerateModal() {
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Style de cuisine</p>
       <div class="flex gap-1.5 flex-wrap">${genChipsHTML('styles', GL.STYLES, d.styles || [])}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Pratique</p>
-      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', 'Pas cher')}${genFlagHTML('express', 'Moins de 20 min')}${genFlagHTML('gamelle', 'Bon en gamelle')}${genFlagHTML('onePan', '1 seule poêle')}${genFlagHTML('favoritesOnly', 'Mes favoris')}</div></div>
+      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', 'Pas cher')}${genFlagHTML('express', 'Moins de 20 min')}${genFlagHTML('onePan', '1 seule poêle')}${genFlagHTML('favoritesOnly', 'Mes favoris')}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Régime</p>
       <div class="flex gap-1.5 flex-wrap">${genFlagHTML('noPork', 'Sans porc')}${genFlagHTML('noLactose', 'Sans lactose')}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">J'ai dans le frigo <span class="font-normal text-slate-400">(à utiliser en priorité)</span></p>
@@ -3033,8 +3033,6 @@ function renderCatalog(resetLimit = false) {
     filtered = filtered.filter(r => GL.recipeSeasons(r).includes(f));
   } else if (f.startsWith('style:')) {
     filtered = filtered.filter(r => GL.recipeStyles(r).includes(f.slice(6)));
-  } else if (f === 'gamelle') {
-    filtered = filtered.filter(r => GL.recipeIsGamelle(r));
   } else if (f === 'unepoele') {
     filtered = filtered.filter(r => GL.isOnePan(r));
   } else if (f === 'sanspork') {
