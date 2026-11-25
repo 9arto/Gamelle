@@ -31191,6 +31191,3812 @@ window.DEFAULT_RECIPES = [
         "timerMinutes": null
       }
     ]
+  },
+  {
+    "id": "poulet-mafe-riz",
+    "title": "Poulet façon mafé & riz",
+    "description": "Le fameux mafé : des morceaux de poulet tendres mijotés dans une sauce tomate-cacahuète onctueuse, servis sur du riz. Ultra-réconfortant et prêt en 20 minutes.",
+    "season": "toute_saison",
+    "timeMinutes": 21,
+    "tag": "Hit Jow & Express",
+    "type": "volaille",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/UUaisOVEiuy06g.png",
+    "ingredients": [
+      {
+        "name": "Escalopes de poulet",
+        "quantity": 4,
+        "unit": "pièce",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Tomates concassées",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Beurre de cacahuète",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Oignons jaunes",
+        "quantity": 2,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Riz basmati",
+        "quantity": 280,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Bouillon de légumes (cube)",
+        "quantity": 1,
+        "unit": "cube",
+        "rayon": "epicerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire le riz selon les instructions du paquet. En fin de cuisson, égouttez-le et réservez au chaud.",
+        "ingredients": [
+          "280 g de riz basmati"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps, épluchez puis émincez finement les oignons.",
+        "ingredients": [
+          "2 Oignons jaunes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Coupez le poulet en petits morceaux. Réservez.",
+        "ingredients": [
+          "4 Escalopes de poulet"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un petit filet d'huile d'olive dans une casserole, sur feu moyen. Ajoutez les oignons et faites-les revenir 3 minutes.",
+        "ingredients": [],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Ajoutez ensuite la chair de tomates. Mélangez et laissez mijoter 5 minutes.",
+        "ingredients": [
+          "400 g de tomates concassées"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Ajoutez ensuite 60 ml d'eau chaude par personne, le cube de bouillon et le beurre de cacahuètes. Mélangez bien.",
+        "ingredients": [
+          "1 cube de bouillon de légumes",
+          "4 c. à soupe de beurre de cacahuète"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez le poulet. Salez et poivrez. Mélangez puis laissez mijoter 8 à 10 minutes, jusqu'à ce qu'il soit tendre.",
+        "ingredients": [],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Servez le riz dans une assiette avec le poulet façon mafé. Ajoutez quelques feuilles de persil, si vous en avez, et re-assaisonnez selon vos goûts. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "tagliatelles-crevettes-chorizo-petits-pois",
+    "title": "Tagliatelle aux crevettes & chorizo",
+    "description": "Terre et mer en 10 minutes : crevettes, chorizo doré et petits pois dans une crème fraîche légère, sur des tagliatelles.",
+    "season": "toute_saison",
+    "timeMinutes": 11,
+    "tag": "Hit Jow & Express",
+    "type": "poisson",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/MqgJoX1tbxyB3A.png",
+    "ingredients": [
+      {
+        "name": "Pâtes (tagliatelles)",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Crevettes cuites décortiquées",
+        "quantity": 320,
+        "unit": "g",
+        "rayon": "poissonnerie"
+      },
+      {
+        "name": "Crème fraîche épaisse",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Chorizo",
+        "quantity": 100,
+        "unit": "g",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Petits pois surgelés",
+        "quantity": 240,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pâtes selon les instructions du paquet. En fin de cuisson, réservez une petite louche d'eau de cuisson puis égouttez-les.",
+        "ingredients": [
+          "400 g de pâtes (tagliatelles)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps, enlevez la peau du chorizo, si vous le souhaitez. Coupez-le en fines rondelles.",
+        "ingredients": [
+          "100 g de chorizo"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un petit filet d'huile d'olive dans une poêle, sur feu vif. Ajoutez le chorizo et les crevettes. Faites-les cuire 2 minutes, en mélangeant.",
+        "ingredients": [
+          "320 g de crevettes cuites décortiquées"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Ajoutez les petits pois et la crème fraîche. Salez légèrement, poivrez et poursuivez la cuisson 3 à 4 minutes, sur feu moyen, en mélangeant.",
+        "ingredients": [
+          "240 g de petits pois surgelés",
+          "4 c. à soupe de crème fraîche épaisse"
+        ],
+        "timerMinutes": 4
+      },
+      {
+        "instruction": "Ajoutez les pâtes égouttées avec l'eau de cuisson réservée, si besoin, et mélangez à nouveau.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez les pâtes aux crevettes & chorizo dans une assiette creuse. Re-assaisonnez selon vos goûts, c'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "riz-facon-grand-mere-poulet-champignons",
+    "title": "Riz façon grand-mère",
+    "description": "Un plat de cuisine de famille : poulet, lardons et champignons nappés de crème, mélangés au riz. Parfait réchauffé en gamelle.",
+    "season": "toute_saison",
+    "timeMinutes": 17,
+    "tag": "Hit Jow & Réconfort",
+    "type": "volaille",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/YtSBA2C7kF.png",
+    "ingredients": [
+      {
+        "name": "Escalopes de poulet",
+        "quantity": 4,
+        "unit": "pièce",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Crème liquide",
+        "quantity": 200,
+        "unit": "ml",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Riz basmati",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Lardons fumés",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Champignons de Paris",
+        "quantity": 320,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Cuire le riz selon les instructions du paquet.",
+        "ingredients": [
+          "200 g de riz basmati"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Une fois cuit, égouttez-le.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps. Lavez puis émincez les champignons en fines lamelles.",
+        "ingredients": [
+          "320 g de champignons de Paris"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Coupez le poulet en cubes.",
+        "ingredients": [
+          "4 Escalopes de poulet"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une poêle, faire revenir les lardons et le poulet à feu vif pendant 2 minutes en remuant jusqu'à ce qu'ils dorent légèrement.",
+        "ingredients": [
+          "4 Escalopes de poulet",
+          "200 g de lardons fumés"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Ajoutez les champignons et prolongez la cuisson de 2 minutes.",
+        "ingredients": [
+          "320 g de champignons de Paris"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Une fois les champignons légèrement dorés, ajoutez la crème.",
+        "ingredients": [
+          "200 ml de crème liquide"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Salez, poivrez. Faire mijoter à feu doux pendant 3 minutes.",
+        "ingredients": [],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Ajoutez ensuite le riz égoutté dans la poêle et mélangez.",
+        "ingredients": [
+          "200 g de riz basmati"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez, c'est prêt !",
+        "ingredients": [
+          "200 g de riz basmati"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "quiche-chevre-epinards",
+    "title": "Quiche chèvre épinards",
+    "description": "Une quiche généreuse : épinards fondants, chèvre en rondelles et appareil crémeux sur pâte dorée. Délicieuse chaude ou froide.",
+    "season": "toute_saison",
+    "timeMinutes": 54,
+    "tag": "Hit Jow & Four",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/As2Vh2tVbqfOUQ.png",
+    "ingredients": [
+      {
+        "name": "Pâte brisée",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Œufs",
+        "quantity": 3,
+        "unit": "œuf",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Crème fraîche épaisse",
+        "quantity": 3,
+        "unit": "c. à soupe",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Bûche de chèvre",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Épinards surgelés",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 180°C. Décongelez les épinards selon les instructions du paquet et égouttez-les bien.",
+        "ingredients": [
+          "400 g d'épinards surgelés"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Placez la pâte brisée dans un moule à tarte. Piquez-la et faites-la précuire 5 minutes à 180°C.",
+        "ingredients": [
+          "1 Pâte brisée"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Pendant ce temps, coupez la moitié du chèvre en rondelles.",
+        "ingredients": [
+          "200 g de bûche de chèvre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Préparez l'appareil à quiche. Dans un saladier, ajoutez : les œufs et la crème fraîche. Salez, poivrez puis fouettez le tout énergiquement.",
+        "ingredients": [
+          "3 œufs",
+          "3 c. à soupe de crème fraîche épaisse"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les épinards et le reste du chèvre préalablement émietté. Mélangez le tout délicatement.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Une fois la pâte précuite, sortez-la du four.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Versez l'appareil à quiche dans le fond de tarte et ajoutez les rondelles de chèvre par-dessus. Enfournez 40 à 45 minutes à 180°C.",
+        "ingredients": [],
+        "timerMinutes": 45
+      },
+      {
+        "instruction": "Une fois cuite et bien dorée, sortez la quiche chèvre épinards du four. Servez-la chaude ou froide avec une salade verte assaisonnée selon vos goûts. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "poulet-ail-fines-herbes-lard-pommes-de-terre",
+    "title": "Poulet ail et fines herbes, lard & pommes de terre",
+    "description": "Des escalopes de poulet farcies au fromage ail et fines herbes, enroulées de lard croustillant et rôties sur un lit de pommes de terre.",
+    "season": "toute_saison",
+    "timeMinutes": 60,
+    "tag": "Hit Jow & Four",
+    "type": "volaille",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/2E4WjN0BYr5uqA.png",
+    "ingredients": [
+      {
+        "name": "Escalopes de poulet",
+        "quantity": 4,
+        "unit": "pièce",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Fromage frais ail & fines herbes",
+        "quantity": 160,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Lard (tranches)",
+        "quantity": 8,
+        "unit": "tranche",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Pommes de terre",
+        "quantity": 1000,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Ciboulette",
+        "quantity": 0.5,
+        "unit": "botte",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 200°C. Lavez les pommes de terre puis découpez-les en morceaux. Réservez.",
+        "ingredients": [
+          "1000 g de pommes de terre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans un plat allant au four, ajoutez les pommes de terre et un bon filet d'huile d'olive. Salez, poivrez et mélangez bien. Enfournez à 200°C pour 35 minutes de cuisson.",
+        "ingredients": [],
+        "timerMinutes": 35
+      },
+      {
+        "instruction": "Pendant ce temps, ouvrez le filet de poulet en deux de façon à obtenir une épaisseur plus fine.",
+        "ingredients": [
+          "4 Escalopes de poulet"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Étalez le fromage sur un côté de l'escalope puis refermez le poulet en deux.",
+        "ingredients": [
+          "160 g de fromage frais ail & fines herbes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Prenez une tranche de lard et enroulez-la autour de votre poulet de façon à bien le fermer. Répétez l'opération avec une deuxième tranche de lard.",
+        "ingredients": [
+          "8 tranches de lard (tranches)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Au bout de 35 minutes, sortez votre plat du four puis ajoutez le poulet farci sur les pommes de terre. Salez, poivrez et ajoutez un filet d'huile d'olive sur le poulet si vous le souhaitez. Enfournez à nouveau à 200°C pour 20 minutes.",
+        "ingredients": [],
+        "timerMinutes": 35
+      },
+      {
+        "instruction": "Sortez votre plat du four et ciselez un peu de ciboulette sur le plat si vous en avez. C'est prêt !",
+        "ingredients": [
+          "0,5 botte de ciboulette"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "paella-express-chorizo-petits-pois",
+    "title": "Paëlla express",
+    "description": "Une paëlla de semaine en 15 minutes : riz doré au chorizo, oignons et petits pois, avec une pointe de paprika.",
+    "season": "toute_saison",
+    "timeMinutes": 17,
+    "tag": "Hit Jow & Express",
+    "type": "viande",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/eet9Hh6duFazUQ.png",
+    "ingredients": [
+      {
+        "name": "Riz basmati",
+        "quantity": 280,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Chorizo",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Oignons jaunes",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Petits pois frais",
+        "quantity": 320,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Paprika",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d’eau bouillante salée, faites cuire le riz selon les instructions du paquet. Égouttez-le en fin de cuisson.",
+        "ingredients": [
+          "280 g de riz basmati"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Coupez le chorizo en fines rondelles.",
+        "ingredients": [
+          "200 g de chorizo"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez, puis émincez finement l'oignon.",
+        "ingredients": [
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle. Ajoutez les oignons émincés et le chorizo. Faites-les revenir 5 minutes, sur feu vif.",
+        "ingredients": [],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Ajoutez les petits pois, le riz égoutté et le paprika, si vous en avez, dans la poêle. Poivrez et mélangez. Laissez cuire 4 à 5 minutes, en remuant régulièrement, jusqu'à ce que le riz soit légèrement croustillant.",
+        "ingredients": [
+          "320 g de petits pois frais",
+          "4 pincées de paprika"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Servez la paëlla express dans une assiette, c'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "poelee-patates-douces-feta-oeuf-au-plat",
+    "title": "Poêlée de patates douces, feta & œuf au plat",
+    "description": "Patates douces fondantes relevées de piment d'Espelette, feta émiettée et œuf au plat coulant. Simple, sain et très rassasiant.",
+    "season": "toute_saison",
+    "timeMinutes": 26,
+    "tag": "Hit Jow & Végétarien",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/hvsCX6b6cHUE0A.png",
+    "ingredients": [
+      {
+        "name": "Patates douces",
+        "quantity": 800,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Œufs",
+        "quantity": 4,
+        "unit": "œuf",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Feta",
+        "quantity": 160,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Piment d'Espelette",
+        "quantity": 2,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Persil frais",
+        "quantity": 0.5,
+        "unit": "botte",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Épluchez puis coupez les patates douces en petits dés.",
+        "ingredients": [
+          "800 g de patates douces"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez les patates douces et faites-les revenir 10 à 12 minutes.",
+        "ingredients": [],
+        "timerMinutes": 12
+      },
+      {
+        "instruction": "Pendant ce temps, épluchez puis émincez finement l'ail.",
+        "ingredients": [
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans la poêle, ajoutez : l'ail, le piment d'Espelette et un petit fond d'eau, Couvrez et poursuivez la cuisson 10 minutes.",
+        "ingredients": [
+          "2 pincées de piment d'Espelette"
+        ],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Pendant ce temps, préparez les œufs au plat. Faites fondre une noisette de beurre dans une second poêle. Cassez-y délicatement les œufs et faites-les cuire 4 minutes.",
+        "ingredients": [
+          "4 œufs"
+        ],
+        "timerMinutes": 4
+      },
+      {
+        "instruction": "Vérifiez la cuisson des patates douces.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez la poêlée de patates douces dans une assiette. Ajoutez la feta émiettée sur le dessus suivi du persil ciselé et de l'œuf au plat. Re-assaisonnez selon vos goûts et servez avec une salade verte. C'est prêt !",
+        "ingredients": [
+          "160 g de feta",
+          "0,5 botte de persil frais"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "lasagnes-express-ratatouille-mozzarella",
+    "title": "Lasagnes express à la ratatouille",
+    "description": "Des lasagnes sans effort : ratatouille, béchamel et mozzarella en couches, gratinées au parmesan. Zéro épluchage.",
+    "season": "toute_saison",
+    "timeMinutes": 42,
+    "tag": "Hit Jow & Four",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/IRqcP1bAAHlHdQ.png",
+    "ingredients": [
+      {
+        "name": "Plaques de lasagne",
+        "quantity": 180,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Ratatouille cuisinée",
+        "quantity": 800,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Béchamel (brique)",
+        "quantity": 320,
+        "unit": "ml",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Mozzarella",
+        "quantity": 300,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Parmesan râpé",
+        "quantity": 30,
+        "unit": "g",
+        "rayon": "cremerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 200°C. Découpez la mozzarella en fines tranches.",
+        "ingredients": [
+          "300 g de mozzarella"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans un plat à gratin, faites 3 couches de : ratatouille, feuilles de lasagnes, béchamel et mozzarella.",
+        "ingredients": [
+          "800 g de ratatouille cuisinée",
+          "180 g de plaques de lasagne",
+          "320 ml de béchamel (brique)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Une fois les 3 couches réalisées saupoudrez le tout de parmesan.",
+        "ingredients": [
+          "30 g de parmesan râpé"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Enfournez à 200°C pendant 40 minutes.",
+        "ingredients": [],
+        "timerMinutes": 40
+      },
+      {
+        "instruction": "Sortez le plat du four et décorez-le avec quelques feuilles de basilic si vous en avez. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "ravioli-toscane-tomates-sechees-epinards",
+    "title": "Ravioles à la toscane",
+    "description": "Des ravioli ricotta-épinards dans une sauce crémeuse à l'ail, aux tomates séchées et aux jeunes pousses d'épinards.",
+    "season": "toute_saison",
+    "timeMinutes": 14,
+    "tag": "Hit Jow & Italien",
+    "type": "vege",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/Tqt5ucmpP0VDew.png",
+    "ingredients": [
+      {
+        "name": "Ravioli frais ricotta-épinards",
+        "quantity": 600,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Tomates séchées",
+        "quantity": 80,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Crème fraîche épaisse",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Pousses d'épinards frais",
+        "quantity": 8,
+        "unit": "poignée",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Parmesan râpé",
+        "quantity": 30,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Égouttez puis émincez les tomates séchées.",
+        "ingredients": [
+          "80 g de tomates séchées"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les ravioli selon les instructions du paquet. En fin de cuisson, égouttez-les.",
+        "ingredients": [
+          "600 g de ravioli frais ricotta-épinards"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps, faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez l'ail râpé et faites-le revenir 30 secondes, en mélangeant.",
+        "ingredients": [
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les tomates séchées et la crème fraîche, puis mélangez bien.",
+        "ingredients": [
+          "4 c. à soupe de crème fraîche épaisse"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les épinards et un filet d'eau. Poursuivez la cuisson 2 minutes, en remuant.",
+        "ingredients": [
+          "8 poignées de pousses d'épinards frais"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Ajoutez les ravioli et le parmesan râpé. Poivrez, puis mélangez le tout délicatement pendant 1 à 2 minutes supplémentaires.",
+        "ingredients": [
+          "30 g de parmesan râpé"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Servez les ravioles à la toscane dans une assiette. Ajoutez un peu de parmesan râpé, s'il vous en reste. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "pates-chorizo-ricotta-sauce-tomate",
+    "title": "Pâtes chorizo & ricotta",
+    "description": "Des rigatoni dans une sauce tomate au chorizo, posés sur une crème de ricotta douce et parsemés de parmesan.",
+    "season": "toute_saison",
+    "timeMinutes": 20,
+    "tag": "Hit Jow & Italien",
+    "type": "viande",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/hAw94YPOF4SoTw.png",
+    "ingredients": [
+      {
+        "name": "Pâtes (rigatoni)",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Chorizo",
+        "quantity": 120,
+        "unit": "g",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Crème fraîche épaisse",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Ricotta",
+        "quantity": 80,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Sauce tomate au basilic",
+        "quantity": 320,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Parmesan râpé",
+        "quantity": 80,
+        "unit": "g",
+        "rayon": "cremerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pâtes selon les instructions du paquet.",
+        "ingredients": [
+          "400 g de pâtes (rigatoni)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps, préparez la crème de ricotta. Dans un bol, mélangez : la crème fraiche et la ricotta. Poivrez.",
+        "ingredients": [
+          "4 c. à soupe de crème fraîche épaisse",
+          "80 g de ricotta"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Enlevez la peau du chorizo puis coupez-le en petits morceaux.",
+        "ingredients": [
+          "120 g de chorizo"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "En fin de cuisson, prélevez une petite louche d'eau de cuisson des pâtes, puis égouttez-les.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez le chorizo et faites-le revenir 3 minutes.",
+        "ingredients": [],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Ajoutez la sauce tomate. Mélangez et laissez cuire 2 minutes.",
+        "ingredients": [
+          "320 g de sauce tomate au basilic"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Ajoutez l'eau de cuisson réservée et les pâtes. Mélangez à nouveau jusqu'à ce qu'elles soient recouvertes de sauce.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Étalez la crème de ricotta dans une assiette, puis ajoutez les pâtes au chorizo par-dessus. Parsemez de parmesan râpé puis re-assaisonnez selon vos goûts. C'est prêt !",
+        "ingredients": [
+          "80 g de parmesan râpé"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "huevos-rotos-pommes-de-terre-chorizo",
+    "title": "Huevos rotos",
+    "description": "La spécialité espagnole : pommes de terre fondantes au paprika fumé, chorizo, oignons et œufs que l'on « casse » dans l'assiette.",
+    "season": "toute_saison",
+    "timeMinutes": 30,
+    "tag": "Hit Jow & Espagnol",
+    "type": "viande",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/n9u8tOQKvz1YNw.png",
+    "ingredients": [
+      {
+        "name": "Pommes de terre primeur",
+        "quantity": 800,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Œufs",
+        "quantity": 4,
+        "unit": "œuf",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Oignons jaunes",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Chorizo",
+        "quantity": 80,
+        "unit": "g",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Paprika fumé",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Lavez puis coupez les pommes de terre en rondelles épaisses.",
+        "ingredients": [
+          "800 g de pommes de terre primeur"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une poêle chaude, ajoutez 50ml d'eau par personne, une demie cuillère à soupe d'huile d'olive par personne, le paprika fumé et une pincée de sel. Mélangez.",
+        "ingredients": [
+          "2 c. à café de paprika fumé"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les pommes de terre et mélangez. Portez à ébullition, puis couvrez et laisser mijoter 15 minutes.",
+        "ingredients": [
+          "800 g de pommes de terre primeur"
+        ],
+        "timerMinutes": 15
+      },
+      {
+        "instruction": "Pendant ce temps, coupez le chorizo en rondelles.",
+        "ingredients": [
+          "80 g de chorizo"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez puis émincez finement les oignons.",
+        "ingredients": [
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Au bout de 15 minutes, ajoutez les oignons, le chorizo et l'ail râpé dans la poêle. Si les pommes de terre accrochent, ajoutez un filet d'huile d'olive. Poursuivez la cuisson 5 à 6 minutes, en mélangeant.",
+        "ingredients": [
+          "80 g de chorizo",
+          "1 gousse d'ail",
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": 15
+      },
+      {
+        "instruction": "Formez des petit puits (1 par personne) et cassez-y les œufs délicatement. Salez et poivrez. Couvrez puis laissez cuire 5 minutes, sur feu doux.",
+        "ingredients": [
+          "4 œufs"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Servez les huevos rotos avec des herbes fraîche & une salade verte. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "gratin-gnocchi-brocolis-ricotta",
+    "title": "Gratin de gnocchi aux brocolis",
+    "description": "Gnocchi, brocolis et épinards liés à la ricotta, gratinés au parmesan. Un plat unique, doré et fondant.",
+    "season": "toute_saison",
+    "timeMinutes": 23,
+    "tag": "Hit Jow & Végétarien",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/euxIV0fwR0dGHA.png",
+    "ingredients": [
+      {
+        "name": "Brocoli",
+        "quantity": 600,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Gnocchis à poêler",
+        "quantity": 500,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Ricotta",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Parmesan râpé",
+        "quantity": 30,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Pousses d'épinards frais",
+        "quantity": 4,
+        "unit": "poignée",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Citron jaune",
+        "quantity": 4,
+        "unit": "quartier",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 200°C. Lavez puis coupez les brocolis en sommités. Coupez le tronc en petits cubes.",
+        "ingredients": [
+          "600 g de brocoli"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez puis émincez finement l'ail.",
+        "ingredients": [
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez l'ail et faites-le revenir 30 secondes, en remuant.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pour des brocolis plus tendres, faites-les pré-cuire à la vapeur 5 minutes. Ajoutez-les dans la poêle avec les gnocchi et un filet d'eau. Faites revenir le tout 2 minutes, puis couvrez et poursuivez la cuisson 5 à 6 minutes.",
+        "ingredients": [
+          "500 g de gnocchis à poêler"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Vérifiez la cuisson des brocolis et gnocchi. Salez, poivrez puis ajoutez les épinards. Poursuivez la cuisson 2 minutes, en mélangeant.",
+        "ingredients": [
+          "4 poignées de pousses d'épinards frais"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "En fin de cuisson, ajoutez la ricotta et mélangez bien.",
+        "ingredients": [
+          "200 g de ricotta"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans un plat allant au four, ajoutez le mélange de gnocchi / brocolis. Saupoudrez de parmesan râpé, puis enfournez 10 à 15 minutes à 200°C.",
+        "ingredients": [
+          "30 g de parmesan râpé"
+        ],
+        "timerMinutes": 15
+      },
+      {
+        "instruction": "Une fois le gratin bien doré sur le dessus, sortez le plat du four et râpez-y le zeste de citron (optionnel). Servez le gratin de gnocchi au brocoli avec une salade verte assaisonnée selon vos goûts. C'est prêt !",
+        "ingredients": [
+          "4 quartiers de citron jaune"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "lasagnes-boscaiola-lardons-champignons",
+    "title": "Lasagna alla Boscaiola",
+    "description": "Des feuilles de lasagne façon pâtes, nappées d'une sauce « boscaiola » : lardons grillés, champignons, ail et crème.",
+    "season": "toute_saison",
+    "timeMinutes": 13,
+    "tag": "Hit Jow & Italien",
+    "type": "viande",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/c8kKhoyPn2.png",
+    "ingredients": [
+      {
+        "name": "Lardons fumés",
+        "quantity": 360,
+        "unit": "g",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Champignons de Paris",
+        "quantity": 320,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Plaques de lasagne",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Crème liquide",
+        "quantity": 400,
+        "unit": "ml",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 2,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, ajoutez les lasagnes une à une et faites cuire 10 minutes. Mélangez de temps en temps pour éviter qu'elles ne se collent les unes aux autres ou ajoutez un filet d'huile d'olive. En fin de cuisson, égouttez-les.",
+        "ingredients": [
+          "400 g de plaques de lasagne"
+        ],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Pendant ce temps, lavez puis émincez finement les champignons.",
+        "ingredients": [
+          "320 g de champignons de Paris"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez puis émincez l'ail.",
+        "ingredients": [
+          "2 gousses d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une poêle chaude, ajoutez les lardons. Faites-les griller une 8 à 10 minutes, sur feu vif.",
+        "ingredients": [
+          "360 g de lardons fumés"
+        ],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Ajoutez l'ail et les champignons. Poursuivez la cuisson 5 minutes.",
+        "ingredients": [],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Déglacez au vin blanc puis ajoutez la crème. Poivrez et poursuivez la cuisson 1 à 2 minutes, sur feu moyen.",
+        "ingredients": [
+          "400 ml de crème liquide"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Ajoutez les lasagnes dans la sauce et mélangez.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez les lasagnes avec la sauce dans une assiette. Parsemez de ciboulette ciselée, si vous en avez et re-assaisonnez selon vos goûts. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "ravioli-creme-champignons",
+    "title": "Ravioli à la crème de champignons",
+    "description": "Des ravioli aux champignons enrobés de champignons de Paris poêlés, d'ail et de crème fraîche. Prêt en 15 minutes.",
+    "season": "toute_saison",
+    "timeMinutes": 19,
+    "tag": "Hit Jow & Express",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/94Q0Gac02UDlEQ.png",
+    "ingredients": [
+      {
+        "name": "Ravioli frais aux champignons",
+        "quantity": 500,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Crème fraîche épaisse",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Champignons de Paris",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Parmesan râpé",
+        "quantity": 15,
+        "unit": "g",
+        "rayon": "cremerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Lavez et coupez les champignons en tranches.",
+        "ingredients": [
+          "400 g de champignons de Paris"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez et émincez l'ail.",
+        "ingredients": [
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une poêle, ajoutez une noisette de beurre et faites revenir l'ail et les champignons 10 minutes à feu moyen.",
+        "ingredients": [
+          "400 g de champignons de Paris",
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Pendant ce temps, dans une grande casserole d'eau chaude, faites cuire les ravioli, selon les instructions du paquet.",
+        "ingredients": [
+          "500 g de ravioli frais aux champignons"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "(Optionnel : ajoutez le cognac dans la poêlé hors du feu et faites bien attention au possible retour de flamme. Laissez fondre 2 minutes).",
+        "ingredients": [],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Ajoutez la crème et mélangez.",
+        "ingredients": [
+          "4 c. à soupe de crème fraîche épaisse"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les ravioli. Mélangez et laissez cuire 2 minutes. Salez, poivrez.",
+        "ingredients": [
+          "500 g de ravioli frais aux champignons"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Servez, ajoutez du parmesan. C'est prêt !",
+        "ingredients": [
+          "15 g de parmesan râpé"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "rosti-pommes-de-terre-salade",
+    "title": "Rösti de pommes de terre",
+    "description": "De grosses galettes de pommes de terre et d'oignon râpés, dorées et croustillantes, servies avec une salade fraîche.",
+    "season": "toute_saison",
+    "timeMinutes": 26,
+    "tag": "Hit Jow & Végétarien",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/W3XGc0FzO4TdtA.png",
+    "ingredients": [
+      {
+        "name": "Pommes de terre",
+        "quantity": 1000,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Œufs",
+        "quantity": 2,
+        "unit": "œuf",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Farine de blé",
+        "quantity": 4,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Oignons jaunes",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Salade verte (mélange)",
+        "quantity": 8,
+        "unit": "poignée",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Lavez les pommes de terre et épluchez-les.",
+        "ingredients": [
+          "1000 g de pommes de terre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez l'oignon.",
+        "ingredients": [
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Râpez les pommes de terre et l'oignon.",
+        "ingredients": [
+          "1000 g de pommes de terre",
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pressez les légumes râpés dans un torchon pour retirer l'eau.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les légumes râpés, la farine et les œufs dans un bol. Salez, poivrez et mélangez.",
+        "ingredients": [
+          "4 c. à café de farine de blé",
+          "2 œufs",
+          "1000 g de pommes de terre",
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Versez un filet d'huile d'olive dans une poêle à feu vif et ajoutez 2 cuillères à soupe de la préparation. (Vous pouvez faire plusieurs galettes en même temps dans une grande poêle).",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Aplatissez les galettes et laissez cuire 7 à 8 minutes à feu vif avant de les retourner.",
+        "ingredients": [],
+        "timerMinutes": 8
+      },
+      {
+        "instruction": "Retournez les galettes et faites-les cuire 7 à 8 minutes de l'autre côté.",
+        "ingredients": [],
+        "timerMinutes": 8
+      },
+      {
+        "instruction": "Les galettes doivent être bien dorées.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez avec une salade fraîche. C'est prêt !",
+        "ingredients": [
+          "8 poignées de salade verte (mélange)"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "salade-pates-grecque-feta-olives",
+    "title": "Salade de pâtes à la grecque",
+    "description": "Fusilli, tomates cerises, concombre, feta, olives et oignon rouge : la salade complète qui voyage très bien en gamelle froide.",
+    "season": "toute_saison",
+    "timeMinutes": 18,
+    "tag": "Hit Jow & Fraîcheur",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/xWD6sotDlR90Pg.png",
+    "ingredients": [
+      {
+        "name": "Pâtes (fusilli)",
+        "quantity": 320,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Tomates cerises",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Concombre",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Feta",
+        "quantity": 80,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Olives noires dénoyautées",
+        "quantity": 60,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Oignons rouges",
+        "quantity": 80,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Herbes de Provence",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pâtes selon les instructions du paquet. En fin de cuisson, égouttez puis rincez-les à l'eau froide pour stopper la cuisson.",
+        "ingredients": [
+          "320 g de pâtes (fusilli)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps, lavez puis coupez les tomates cerises en deux.",
+        "ingredients": [
+          "400 g de tomates cerises"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Lavez puis coupez le concombre en dés.",
+        "ingredients": [
+          "400 g de concombre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez puis émincez finement les oignons.",
+        "ingredients": [
+          "80 g d'oignons rouges"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Égouttez puis émincez finement les olives.",
+        "ingredients": [
+          "60 g d'olives noires dénoyautées"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans un saladier, ajoutez : les pâtes refroidies, les tomates cerises, le concombre, les olives, les oignons et la feta émiettée. Ajoutez un filet d'huile d'olive et l'assaisonnement en poudre. Mélangez bien.",
+        "ingredients": [
+          "80 g de feta",
+          "4 pincées d'herbes de Provence"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez la salade de pâtes à la grecque dans une assiette. Re-assaisonnez selon vos goûts, c'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "filet-mignon-moutarde-miel-pommes-de-terre",
+    "title": "Filet mignon moutarde & miel",
+    "description": "Un filet mignon laqué à la moutarde, au miel et au soja, rôti au four avec ses pommes de terre dorées.",
+    "season": "toute_saison",
+    "timeMinutes": 59,
+    "tag": "Hit Jow & Four",
+    "type": "viande",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/eoHnid9u7vJ58Q.png",
+    "ingredients": [
+      {
+        "name": "Filet mignon de porc",
+        "quantity": 500,
+        "unit": "g",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Pommes de terre",
+        "quantity": 1000,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Miel",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Moutarde",
+        "quantity": 4,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Sauce soja salée",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 200°C. Préparez la marinade. Dans un bol, mélangez : la moutarde, le miel, la sauce soja, l'ail râpé, du poivre et 1 cuillère à café d'huile d'olive par personne.",
+        "ingredients": [
+          "4 c. à café de moutarde",
+          "2 c. à café de miel",
+          "4 c. à soupe de sauce soja salée",
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Badigeonnez le filet mignon de la marinade. Réservez au frais au moins 30 minutes.",
+        "ingredients": [
+          "500 g de filet mignon de porc"
+        ],
+        "timerMinutes": 30
+      },
+      {
+        "instruction": "Pendant ce temps, lavez puis coupez les pommes de terre en petits cubes.",
+        "ingredients": [
+          "1000 g de pommes de terre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans un plat allant au four, ajoutez les pommes de terre. Versez un filet d'huile d'olive, salez et poivrez. Mélangez, puis enfournez 20 à 25 minutes à 200°C.",
+        "ingredients": [],
+        "timerMinutes": 25
+      },
+      {
+        "instruction": "Sortez le plat du four. Versez un petit fond d'eau dans le plat puis ajoutez le filet mignon. Badigeonnez-le du reste de la marinade, puis re-enfournez 35 minutes à 200°C (en fonction de la taille du filet mignon, comptez environ une demi-heure par 500g).",
+        "ingredients": [],
+        "timerMinutes": 35
+      },
+      {
+        "instruction": "Une fois le tout bien doré & cuit, sortez le plat du four. Coupez le filet mignon en tranches et servez-le avec les pommes de terre et une salade verte assaisonnée selon vos goûts. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "riz-saute-tomate-curcuma-yaourt",
+    "title": "Riz sauté à la tomate",
+    "description": "Un riz doré à la poêle, parfumé au concentré de tomate et au curcuma, relevé de menthe fraîche et d'un filet de yaourt.",
+    "season": "toute_saison",
+    "timeMinutes": 17,
+    "tag": "Hit Jow & Végétarien",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/8Xpz3mUDBln9Vg.png",
+    "ingredients": [
+      {
+        "name": "Riz basmati",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Concentré de tomate",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Oignons jaunes",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Curcuma en poudre",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Yaourt nature",
+        "quantity": 1,
+        "unit": "pot",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Menthe fraîche",
+        "quantity": 0.5,
+        "unit": "botte",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Cuire le riz selon les instructions de préparation du paquet. Une fois cuit, égouttez-le et réservez.",
+        "ingredients": [
+          "200 g de riz basmati"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Émincez finement les oignons.",
+        "ingredients": [
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une grande poêle, ajoutez un filet d'huile et les oignons. Faites les revenir 5 minutes",
+        "ingredients": [
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Dans la poêle, ajoutez le curcuma et le concentré de tomate.",
+        "ingredients": [
+          "2 c. à café de concentré de tomate",
+          "4 pincées de curcuma en poudre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez ensuite le riz, salez, poivrez et mélangez.",
+        "ingredients": [
+          "200 g de riz basmati"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pressez-le à l'aide d'une spatule pour qu'il soit bien en contact avec le fond de la poêle et qu'il puisse dorer convenablement.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites dorer le riz pendant 2 minutes environ à feu moyen.",
+        "ingredients": [
+          "200 g de riz basmati"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Remuez, pressez à nouveau, puis cuire 3 minutes de plus jusqu'à ce qu'il soit légèrement doré et croustillant. Salez, poivrez.",
+        "ingredients": [
+          "200 g de riz basmati"
+        ],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Servez le riz avec quelques feuilles de menthe et un filet de yaourt. C'est prêt !",
+        "ingredients": [
+          "0,5 botte de menthe fraîche",
+          "1 yaourt nature"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "patates-douces-chevre-rotis-thym-miel",
+    "title": "Patates douces & chèvre rôtis au thym",
+    "description": "Patates douces et oignons rouges rôtis au four, couronnés de crottins de chèvre fondants au miel et au thym.",
+    "season": "toute_saison",
+    "timeMinutes": 49,
+    "tag": "Hit Jow & Four",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/7a5UKfndSKeGhQ.png",
+    "ingredients": [
+      {
+        "name": "Patates douces",
+        "quantity": 800,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Oignons rouges",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Crottins de chèvre",
+        "quantity": 120,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Thym frais",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Miel",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 200°C. Épluchez les patates douces à l'aide d'un économe. Coupez-les en morceaux.",
+        "ingredients": [
+          "800 g de patates douces"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez puis coupez les oignons rouges en quartiers fins.",
+        "ingredients": [
+          "1 Oignon rouge"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les patates douces et les oignons dans un plat allant au four. Assaisonnez d'un filet d'huile d'olive, de sel, poivre et de thym. Mélangez le tout, puis enfournez pendant 20 à 25 minutes à 200°C.",
+        "ingredients": [
+          "4 pincées de thym frais"
+        ],
+        "timerMinutes": 25
+      },
+      {
+        "instruction": "Sortez le plat du four. Mélangez les légumes, puis créez un peu d'espace pour ajouter les crottins de chèvre.",
+        "ingredients": [
+          "120 g de crottins de chèvre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Badigeonnez d'un filet d'huile d'olive et du miel. Parsemez les crottins de chèvre de thym, puis re-assaisonnez selon vos goûts. Enfournez à nouveau 20 minutes à 200°C, jusqu'à ce que le chèvre soit coulant et légèrement doré.",
+        "ingredients": [
+          "2 c. à café de miel"
+        ],
+        "timerMinutes": 20
+      },
+      {
+        "instruction": "Sortez le plat du four et dégustez. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "gratin-ravioles-courgettes-comte",
+    "title": "Gratin de ravioles aux courgettes",
+    "description": "Courgettes crémeuses à la moutarde à l'ancienne, ravioles du Dauphiné et comté gratiné : un gratin ultra-fondant.",
+    "season": "toute_saison",
+    "timeMinutes": 27,
+    "tag": "Hit Jow & Four",
+    "type": "vege",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/3qfJCI0wjf1X4w.png",
+    "ingredients": [
+      {
+        "name": "Courgettes",
+        "quantity": 600,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Ravioles du Dauphiné",
+        "quantity": 600,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Crème fraîche épaisse",
+        "quantity": 240,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Moutarde à l'ancienne",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Comté râpé",
+        "quantity": 120,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Herbes de Provence",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 220°C. Lavez puis coupez les courgettes en demi-lunes.",
+        "ingredients": [
+          "600 g de courgettes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez l'ail râpé et faites-le revenir 30 secondes, en mélangeant.",
+        "ingredients": [
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les courgettes. Salez, poivrez et parsemez d'herbes de Provence. Mélangez puis laissez cuire 4 à 5 minutes.",
+        "ingredients": [
+          "4 pincées d'herbes de Provence"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Pendant ce temps, dans une bol, mélangez : un tiers de la crème fraîche avec le comté râpé. Salez et poivrez.",
+        "ingredients": [
+          "240 g de crème fraîche épaisse",
+          "120 g de comté râpé"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez la moutarde et le reste de la crème fraîche dans la poêle avec les courgettes. Mélangez et poursuivez la cuisson 1 à 2 minutes.",
+        "ingredients": [
+          "2 c. à café de moutarde à l'ancienne"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Huilez un plat allant au four, puis disposez-y une première couche de courgettes crémeuses. Ajoutez la moitié des ravioles crues par-dessus, puis répétez l'opération une seconde fois. Terminez par une couche du mélange crème fraîche / comté râpé. Poivrez, puis enfournez 15 à 20 minutes à 220°C.",
+        "ingredients": [
+          "600 g de ravioles du Dauphiné"
+        ],
+        "timerMinutes": 20
+      },
+      {
+        "instruction": "Une fois le gratin bien doré sur le dessus, sortez-le du four et servez avec une salade verte. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "quiche-thon-tomate-moutarde",
+    "title": "Quiche thon, tomate & moutarde",
+    "description": "La quiche du placard : thon, tomates et fond de moutarde sur pâte brisée. Parfaite froide au déjeuner.",
+    "season": "toute_saison",
+    "timeMinutes": 60,
+    "tag": "Hit Jow & Four",
+    "type": "poisson",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/USGKMX2Vwb7Yug.png",
+    "ingredients": [
+      {
+        "name": "Moutarde",
+        "quantity": 2,
+        "unit": "c. à soupe",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Thon au naturel (boîte)",
+        "quantity": 150,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Œufs",
+        "quantity": 3,
+        "unit": "œuf",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Lait demi-écrémé",
+        "quantity": 100,
+        "unit": "ml",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Crème liquide",
+        "quantity": 100,
+        "unit": "ml",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Tomates",
+        "quantity": 300,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Pâte brisée",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "cremerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 180°C. Placez la pâte dans votre moule à tarte et piquez-la à l'aide d'une fourchette. Une fois le four chaud, faites pré-cuire votre pâte pendant 5 minutes.",
+        "ingredients": [
+          "1 Pâte brisée"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Dans un récipient, ajoutez : les oeufs, le lait, la crème, sel, poivre et fouettez le tout énergiquement.",
+        "ingredients": [
+          "3 œufs",
+          "100 ml de lait demi-écrémé",
+          "100 ml de crème liquide"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Coupez les tomates en tranches.",
+        "ingredients": [
+          "300 g de tomates"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Une fois la pâte pré-cuite, sortez-la du four. Étalez la moutarde sur le fond de pâte. Ajoutez les tomates et le thon dans le fond, puis versez l'appareil à quiche par dessus.",
+        "ingredients": [
+          "2 c. à soupe de moutarde",
+          "150 g de thon au naturel (boîte)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Enfournez votre quiche pendant 45 minutes à 180°C. Laissez reposer 10 minutes avant de déguster, c'est prêt ! À accompagner d'une salade verte.",
+        "ingredients": [],
+        "timerMinutes": 45
+      }
+    ]
+  },
+  {
+    "id": "salade-pommes-de-terre-saumon-fume-creme-herbes",
+    "title": "Salade de pommes de terre au saumon",
+    "description": "Pommes de terre tièdes, saumon fumé, mâche et crème fraîche aux échalotes et à la ciboulette.",
+    "season": "toute_saison",
+    "timeMinutes": 25,
+    "tag": "Hit Jow & Fraîcheur",
+    "type": "poisson",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/e2lzsszkN5nLZw.png",
+    "ingredients": [
+      {
+        "name": "Pommes de terre",
+        "quantity": 600,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Saumon fumé",
+        "quantity": 6,
+        "unit": "tranche",
+        "rayon": "poissonnerie"
+      },
+      {
+        "name": "Salade verte (mâche)",
+        "quantity": 8,
+        "unit": "poignée",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Crème fraîche épaisse",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Échalotes",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Ciboulette",
+        "quantity": 8,
+        "unit": "brin",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Lavez puis coupez les pommes de terre en morceaux.",
+        "ingredients": [
+          "600 g de pommes de terre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pommes de terre 20 minutes, sur feu moyen. En fin de cuisson, égouttez-les et plongez-les dans l'eau froide pour stopper la cuisson.",
+        "ingredients": [],
+        "timerMinutes": 20
+      },
+      {
+        "instruction": "Pendant ce temps, préparez la crème aux herbes. Épluchez puis ciselez finement les échalotes.",
+        "ingredients": [
+          "1 Échalote"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans un bol, mélangez : la crème fraîche, les échalotes et la moitié de la ciboulette ciselée. Salez et poivrez.",
+        "ingredients": [
+          "4 c. à soupe de crème fraîche épaisse",
+          "8 brins de ciboulette"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez la mâche dans une assiette avec les pommes de terre et le saumon fumé en morceaux. Ajoutez la crème aux herbes puis parsemez d'échalotes émincées et du reste de ciboulette ciselée. Re-assaisonnez selon vos goûts, c'est prêt !",
+        "ingredients": [
+          "8 poignées de salade verte (mâche)",
+          "6 tranches de saumon fumé"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "bricks-courgette-curry-feta-yaourt-ail",
+    "title": "Bricks courgette, curry, feta & salade",
+    "description": "Des bricks croustillants farcis de courgette au curry et de feta, servis avec une sauce yaourt à l'ail et de la salade.",
+    "season": "toute_saison",
+    "timeMinutes": 14,
+    "tag": "Hit Jow & Végétarien",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/dPTldvQ0g4B0jA.png",
+    "ingredients": [
+      {
+        "name": "Feuilles de brick",
+        "quantity": 12,
+        "unit": "pièce",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Courgettes",
+        "quantity": 2,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Feta",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Yaourt grec",
+        "quantity": 1,
+        "unit": "pot",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 2,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Curry en poudre",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Salade verte (mélange)",
+        "quantity": 8,
+        "unit": "poignée",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Coupez les extrémités des courgettes, puis coupez-les en petits dés.",
+        "ingredients": [
+          "2 Courgettes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une poêle à feu moyen, ajoutez un filet d'huile d'olive et ajoutez les courgettes. Salez, poivrez et ajoutez le curry. Mélangez.",
+        "ingredients": [
+          "4 pincées de curry en poudre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites-les revenir à feu vif pendant 5 minutes en remuant régulièrement.",
+        "ingredients": [],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Pendant ce temps, dans un bol ajoutez le yaourt grec avec un filet d'huile d'olive. Ajoutez la gousse d'ail râpée ou hachée, salez et poivrez. Mélangez et réservez.",
+        "ingredients": [
+          "1 yaourt grec",
+          "2 gousses d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Une fois les courgettes revenues, coupez le feu, ajoutez la feta émiettée, puis mélangez.",
+        "ingredients": [
+          "200 g de feta"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Détachez délicatement les feuilles de brick de leur papier.",
+        "ingredients": [
+          "12 Feuilles de brick"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Prenez une feuille de brick et huilez-la légèrement.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Divisez la farce pour que vous en ayez suffisamment pour faire vos bricks : 3 par personne. Ajoutez un peu de farce dans la brick.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Roulez la feuille de brick sur 1/3 de la surface, repliez les bords vers l'intérieur, puis continuez de rouler en serrant légèrement.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Recommencez autant de fois que de bricks nécessaires.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez un filet d'huile d'olive dans une poêle à feu moyen et ajoutez les bricks.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites-les revenir à feu moyen 2 minutes sur chaque face.",
+        "ingredients": [],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Une fois bien dorées, servez-les accompagnées de la sauce au yaourt et de la salade. C'est prêt !",
+        "ingredients": [
+          "8 poignées de salade verte (mélange)"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "brochettes-dinde-paprika-haricots-semoule",
+    "title": "Brochettes dinde, haricots & semoule",
+    "description": "Des brochettes de dinde au paprika, haricots verts croquants, semoule moelleuse et sauce yaourt.",
+    "season": "toute_saison",
+    "timeMinutes": 25,
+    "tag": "Hit Jow & Léger",
+    "type": "volaille",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/0V8f0HHXw8mY4w.png",
+    "ingredients": [
+      {
+        "name": "Escalopes de dinde",
+        "quantity": 4,
+        "unit": "pièce",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Haricots verts frais",
+        "quantity": 600,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Semoule",
+        "quantity": 240,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Yaourt grec",
+        "quantity": 1,
+        "unit": "pot",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Paprika",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Pics à brochette",
+        "quantity": 8,
+        "unit": "pièce",
+        "rayon": "epicerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Faites chauffer une casserole d'eau bouillante salée. Équeutez les haricots verts si besoin, et plongez-les dans la casserole d'eau bouillante pendant 10 minutes.",
+        "ingredients": [
+          "600 g d'haricots verts frais"
+        ],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Pendant ce temps, coupez la dinde en lamelles de 2 à 3 cm.",
+        "ingredients": [
+          "4 Escalopes de dinde"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les morceaux de dinde dans un récipient. Salez, poivrez, parsemez de paprika et versez un filet d'huile d'olive. Mélangez.",
+        "ingredients": [
+          "2 c. à café de paprika"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Enfilez les lamelles de dinde sur des pics à brochettes.",
+        "ingredients": [
+          "8 Pics à brochette"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Une fois les haricots verts cuits, égouttez-les et réservez.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites revenir les brochettes à feu doux dans une poêle avec un filet d'huile d'olive pendant 10 à 12 minutes en les retournant régulièrement.",
+        "ingredients": [],
+        "timerMinutes": 12
+      },
+      {
+        "instruction": "Pendant ce temps, faites bouillir de l'eau chaude. Versez la semoule dans un récipient et versez par-dessus le même volume de semoule en eau. Couvrez et laissez gonfler.",
+        "ingredients": [
+          "240 g de semoule"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Retournez les brochettes pour les faire cuire de l'autre coté.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Égrainez la semoule.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans un petit récipient, mélangez le yaourt grec avec du sel, du poivre et un filet d'huile d'olive.",
+        "ingredients": [
+          "1 yaourt grec"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Retirez les brochettes du feu.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une assiette, servez la semoule, les haricots verts et les brochettes de dinde. Ajoutez une cuillère à soupe de sauce, et parsemez de paprika. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "pates-brocoli-anchois-parmesan",
+    "title": "Pâtes au brocoli",
+    "description": "Orecchiette et brocolis fondants poêlés avec de l'ail et des anchois, parmesan à volonté. Un classique du sud de l'Italie.",
+    "season": "toute_saison",
+    "timeMinutes": 23,
+    "tag": "Hit Jow & Italien",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/3TmxlOmjfKzYNA.png",
+    "ingredients": [
+      {
+        "name": "Brocoli",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Pâtes (orecchiette)",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Filets d'anchois à l'huile",
+        "quantity": 8,
+        "unit": "pièce",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Parmesan",
+        "quantity": 40,
+        "unit": "g",
+        "rayon": "cremerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Lavez puis coupez le brocoli en sommités. Coupez les sommités en 2 ou en 4 selon leur taille.",
+        "ingredients": [
+          "400 g de brocoli"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Placez-le dans une casserole d'eau chaude et laissez cuire 6 minutes.",
+        "ingredients": [
+          "400 g de brocoli"
+        ],
+        "timerMinutes": 6
+      },
+      {
+        "instruction": "Après 6 minutes de cuisson, ajoutez les pâtes et laissez cuire selon les instructions du paquet. Égouttez en fin de cuisson.",
+        "ingredients": [
+          "400 g de pâtes (orecchiette)"
+        ],
+        "timerMinutes": 6
+      },
+      {
+        "instruction": "Pendant ce temps, émincez l'ail.",
+        "ingredients": [
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites revenir l'ail avec les anchois dans une poêle avec un filet d'huile d'olive pendant 2 minutes à feu vif.",
+        "ingredients": [
+          "1 gousse d'ail",
+          "8 Filets d'anchois à l'huile"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Écrasez les anchois à l'aide d'une fourchette.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Une fois les pâtes et le brocoli cuits et égouttés, ajoutez-les dans la poêle avec le mélange anchois-ail.",
+        "ingredients": [
+          "400 g de pâtes (orecchiette)",
+          "400 g de brocoli"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Salez, poivrez et faites sauter 2 minutes à feu vif.",
+        "ingredients": [],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Servez les pâtes, assaisonnez et saupoudrez de parmesan. C'est prêt !",
+        "ingredients": [
+          "40 g de parmesan"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "pates-brie-courgette-creme",
+    "title": "Pâtes brie & courgette",
+    "description": "Des pâtes nappées d'une sauce crémeuse au brie fondant, aux courgettes poêlées et au basilic.",
+    "season": "toute_saison",
+    "timeMinutes": 15,
+    "tag": "Hit Jow & Express",
+    "type": "vege",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/msUQwBmyKo0xYA.png",
+    "ingredients": [
+      {
+        "name": "Pâtes (pipe rigate)",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Brie fondant",
+        "quantity": 160,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Courgettes",
+        "quantity": 2,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 2,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Crème liquide",
+        "quantity": 280,
+        "unit": "ml",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Basilic frais",
+        "quantity": 0.5,
+        "unit": "botte",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pâtes selon les instructions du paquet. En fin de cuisson, égouttez-les.",
+        "ingredients": [
+          "400 g de pâtes (pipe rigate)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps, lavez puis coupez les courgettes en petits dés.",
+        "ingredients": [
+          "2 Courgettes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Coupez le brie en tranches ou en morceaux.",
+        "ingredients": [
+          "160 g de brie fondant"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez l'ail râpé et faites-le revenir 30 secondes, en mélangeant. Ajoutez les courgettes et faites-les revenir 6 à 7 minutes, en remuant. Salez, poivrez et réservez hors du feu.",
+        "ingredients": [
+          "2 gousses d'ail"
+        ],
+        "timerMinutes": 7
+      },
+      {
+        "instruction": "Dans la même poêle, sur feu moyen, ajoutez la crème liquide et le brie. Salez, poivrez et mélangez, puis laissez réduire 3 minutes, pour que le fromage fonde et que vous obteniez une sauce crémeuse.",
+        "ingredients": [
+          "280 ml de crème liquide",
+          "160 g de brie fondant"
+        ],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Ajoutez les pâtes et les courgettes poêlées dans la poêle. Mélangez bien le tout.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez les pâtes crémeuses dans une assiette. Ajoutez quelques feuilles de basilic, si vous en avez et re-assaisonnez selon vos goûts. C'est prêt !",
+        "ingredients": [
+          "0,5 botte de basilic frais"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "gratin-poireaux-reblochon",
+    "title": "Poireaux Reblochon",
+    "description": "Une fondue de poireaux à la crème gratinée sous des tranches de reblochon fondantes. Savoyard et réconfortant.",
+    "season": "toute_saison",
+    "timeMinutes": 39,
+    "tag": "Hit Jow & Four",
+    "type": "vege",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/YcFlQtcudhkJtg.png",
+    "ingredients": [
+      {
+        "name": "Reblochon",
+        "quantity": 240,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Poireaux",
+        "quantity": 1000,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Crème liquide",
+        "quantity": 60,
+        "unit": "ml",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 200°C. Coupez les extrémités des poireaux pour ne garder que le blanc, puis émincez-les finement. Placez-les dans une passoire et rincez abondamment pour retirer les impuretés.",
+        "ingredients": [
+          "1000 g de poireaux"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites fondre une noisette de beurre dans une poêle, sur feu moyen. Ajoutez les poireaux. Salez, poivrez, puis faites-les revenir 2 à 3 minutes, en mélangeant. Couvrez et laissez cuire 7 à 8 minutes, sur feu doux.",
+        "ingredients": [],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Une fois les poireaux tendres, ajoutez la crème liquide. Mélangez 1 à 2 minutes, puis réservez hors du feu.",
+        "ingredients": [
+          "60 ml de crème liquide"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Coupez le reblochon en tranches.",
+        "ingredients": [
+          "240 g de reblochon"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Répartissez la fondue de poireaux dans un plat allant au four. Ajoutez l'ail râpé et mélangez bien.",
+        "ingredients": [
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Disposez les tranches de reblochon par-dessus la fondue, puis enfournez 20 minutes à 200°C.",
+        "ingredients": [],
+        "timerMinutes": 20
+      },
+      {
+        "instruction": "Une fois le gratin de poireaux et reblochon bien doré et gratiné sur le dessus, sortez-le du four. Servez-le dans une assiette avec une salade verte assaisonnée selon vos goûts. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "spaghetti-bolognese-express",
+    "title": "Spaghetti alla bolognese express",
+    "description": "Une bolognaise rapide aux carottes râpées, à l'oignon et au bœuf haché, mijotée 10 minutes et mélangée aux spaghetti.",
+    "season": "toute_saison",
+    "timeMinutes": 25,
+    "tag": "Hit Jow & Italien",
+    "type": "viande",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/wDtLu899cJiwYw.png",
+    "ingredients": [
+      {
+        "name": "Oignons jaunes",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Carottes",
+        "quantity": 2,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Purée de tomates",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Bœuf haché",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Origan séché",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Pâtes (spaghetti)",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Parmesan râpé",
+        "quantity": 15,
+        "unit": "g",
+        "rayon": "cremerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Émincez les oignons et l'ail.",
+        "ingredients": [
+          "1 gousse d'ail",
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez les carottes et râpez-les.",
+        "ingredients": [
+          "2 Carottes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez un filet d'huile d'olive dans une poêle et ajoutez y les carottes, les oignons et l'ail. Faites revenir à feu moyen 5 minutes.",
+        "ingredients": [
+          "2 Carottes",
+          "1 gousse d'ail",
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Ajoutez la viande. Faites la brunir pendant 5 minutes à feu vif.",
+        "ingredients": [
+          "400 g de bœuf haché"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Ajoutez la purée de tomate et l'origan, salez, poivrez. Laissez cuire 10 minutes à feu doux en remuant de temps en temps.",
+        "ingredients": [
+          "400 g de purée de tomates",
+          "4 pincées d'origan séché"
+        ],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Dans une casserole d'eau chaude, faites cuire les spaghetti selon les instructions du paquet. Égouttez-les en fin de cuisson.",
+        "ingredients": [
+          "400 g de pâtes (spaghetti)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Après 10 minutes de cuisson, ajoutez les spaghetti égouttées dans la sauce bolognese.",
+        "ingredients": [],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Servez, ajoutez de l'origan et du parmesan. C'est prêt !",
+        "ingredients": [
+          "15 g de parmesan râpé",
+          "4 pincées d'origan séché"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "curry-haricots-rouges-coco-riz",
+    "title": "Curry de haricots rouges",
+    "description": "Haricots rouges, tomate et lait de coco parfumés au cumin et au curry, servis sur du riz. Économique et très rassasiant.",
+    "season": "toute_saison",
+    "timeMinutes": 12,
+    "tag": "Hit Jow & Végétarien",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/In89rwWbLVDvwg.png",
+    "ingredients": [
+      {
+        "name": "Haricots rouges (bocal)",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Riz basmati",
+        "quantity": 280,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Oignons rouges",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Lait de coco",
+        "quantity": 240,
+        "unit": "ml",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Tomates concassées",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Cumin en poudre",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Curry en poudre",
+        "quantity": 1,
+        "unit": "pincée",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Coriandre fraîche",
+        "quantity": 0.5,
+        "unit": "botte",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire le riz selon les instructions du paquet. En fin de cuisson, égouttez-le.",
+        "ingredients": [
+          "280 g de riz basmati"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps, épluchez puis coupez les oignons en fines lamelles.",
+        "ingredients": [
+          "1 Oignon rouge"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un filet d'huile d'olive dans une casserole, sur feu moyen. Ajoutez les oignons et faites-les revenir 2 minutes, en mélangeant.",
+        "ingredients": [],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Ajoutez le cumin, le curry et du piment selon vos goûts (optionnel). Mélangez bien et poursuivez la cuisson 1 minute.",
+        "ingredients": [
+          "4 pincées de cumin en poudre",
+          "1 pincée de curry en poudre"
+        ],
+        "timerMinutes": 1
+      },
+      {
+        "instruction": "Ajoutez le lait de coco, le concassé de tomates et 30 ml d'eau par personne. Salez, poivrez et mélangez bien. Couvrez et laissez mijoter 5 minutes, sur feu doux.",
+        "ingredients": [
+          "240 ml de lait de coco",
+          "200 g de tomates concassées"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Au bout de 5 minutes, ajoutez les haricots rouges égouttés. Mélangez bien, puis couvrez et poursuivez la cuisson 5 minutes supplémentaires.",
+        "ingredients": [
+          "400 g d'haricots rouges (bocal)"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Servez le riz dans une assiette avec le curry de haricots rouges. Ajoutez quelques feuilles de coriandre, si vous en avez et re-assaisonnez selon vos goûts. C'est prêt !",
+        "ingredients": [
+          "0,5 botte de coriandre fraîche"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "endives-au-jambon-bechamel",
+    "title": "Endives au jambon",
+    "description": "Le grand classique : endives roulées dans du jambon, nappées de béchamel et gratinées au four.",
+    "season": "toute_saison",
+    "timeMinutes": 38,
+    "tag": "Hit Jow & Tradition",
+    "type": "viande",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/Eou88KCuY9DK5A.png",
+    "ingredients": [
+      {
+        "name": "Endives",
+        "quantity": 1200,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Beurre doux",
+        "quantity": 50,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Farine de blé",
+        "quantity": 50,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Lait demi-écrémé",
+        "quantity": 500,
+        "unit": "ml",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Fromage râpé",
+        "quantity": 120,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Jambon blanc",
+        "quantity": 8,
+        "unit": "tranche",
+        "rayon": "boucherie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 200°C. Dans une casserole d'eau bouillante salée, ajoutez les endives. Faites-les pré-cuire 20 minutes, puis égouttez-les.",
+        "ingredients": [
+          "1200 g d'endives"
+        ],
+        "timerMinutes": 20
+      },
+      {
+        "instruction": "En parallèle, préparez la béchamel. Dans une casserole, ajoutez le beurre et faites-le fondre, sur feu doux. Ajoutez la farine et mélangez rapidement à l'aide d'un fouet.",
+        "ingredients": [
+          "50 g de beurre doux",
+          "50 g de farine de blé"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez le lait, en mélangeant continuellement, jusqu'à obtenir une texture de pâte à crêpes un peu épaisse. Salez, poivrez et ajoutez un peu de muscade, si vous en avez. Mélangez.",
+        "ingredients": [
+          "500 ml de lait demi-écrémé"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Déposez les endives cuites sur les tranches de jambon puis roulez le tout. Répétez l'opération jusqu'à épuisement des ingrédients.",
+        "ingredients": [
+          "8 tranches de jambon blanc"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans un plat allant au four, disposez les endives au jambon. Nappez de béchamel et parsemez de fromage râpé. Poivrez puis enfournez 15 minutes à 210°C.",
+        "ingredients": [
+          "120 g de fromage râpé"
+        ],
+        "timerMinutes": 15
+      },
+      {
+        "instruction": "Une fois le gratin d'endives au jambon bien doré et gratiné sur le dessus, sortez-le du four. Servez les endives au jambon dans une assiette avec une salade verte assaisonnée selon vos goûts. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "cabillaud-puree-carottes-tomates-cerises",
+    "title": "Cabillaud & purée de carotte",
+    "description": "Dos de cabillaud poêlé, tomates cerises rôties et purée de carottes rustique à l'huile d'olive. Léger et rapide.",
+    "season": "toute_saison",
+    "timeMinutes": 19,
+    "tag": "Hit Jow & Léger",
+    "type": "poisson",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/utjs32az2C2eFg.png",
+    "ingredients": [
+      {
+        "name": "Dos de cabillaud",
+        "quantity": 4,
+        "unit": "pièce",
+        "rayon": "poissonnerie"
+      },
+      {
+        "name": "Tomates cerises",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Carottes",
+        "quantity": 1000,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Si besoin, faites décongeler le cabillaud. Lavez, épluchez et coupez les carottes en rondelles.",
+        "ingredients": [
+          "1000 g de carottes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites cuire vos carottes 15 minutes dans une casserole d'eau bouillante.",
+        "ingredients": [],
+        "timerMinutes": 15
+      },
+      {
+        "instruction": "Pendant ce temps, coupez les tomates cerises en deux.",
+        "ingredients": [
+          "400 g de tomates cerises"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez un filet d'huile d'olive dans une poêle et ajoutez les tomates cerises. Faites revenir 2 minutes à feu vif.",
+        "ingredients": [
+          "400 g de tomates cerises"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Ajoutez le cabillaud dans la poêle et faites cuire 4 minutes de chaque côté. Salez et poivrez en fin de cuisson.",
+        "ingredients": [
+          "4 Dos de cabillaud"
+        ],
+        "timerMinutes": 4
+      },
+      {
+        "instruction": "Une fois les carottes cuites, égouttez-les. Salez, poivrez, ajoutez un filet d'huile d'olive et écrasez-les avec une fourchette.",
+        "ingredients": [
+          "1000 g de carottes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez avec le cabillaud, les tomates, un filet d'huile d'olive, c'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "pates-thon-citron-ricotta",
+    "title": "Pâtes thon, citron & ricotta",
+    "description": "Linguine dans une sauce crémeuse à la ricotta, thon au citron et zestes de citron jaune. Prêt en 12 minutes.",
+    "season": "toute_saison",
+    "timeMinutes": 14,
+    "tag": "Hit Jow & Express",
+    "type": "poisson",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/us0GiFWHJOLlHg.png",
+    "ingredients": [
+      {
+        "name": "Pâtes (linguine)",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Ricotta",
+        "quantity": 160,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Thon au citron (boîte)",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Citron jaune",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Crème liquide",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "cremerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pâtes selon les instructions du paquet.",
+        "ingredients": [
+          "400 g de pâtes (linguine)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "En fin de cuisson, mettez de côté l'équivalent d'une louche d'eau de cuisson par personne, puis égouttez les pâtes.",
+        "ingredients": [
+          "400 g de pâtes (linguine)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Replacez les pâtes dans la casserole sur feu moyen. Ajoutez la crème, la ricotta et l'eau de cuisson mise de côté puis mélangez bien. Salez et poivrez.",
+        "ingredients": [
+          "4 c. à soupe de crème liquide",
+          "160 g de ricotta"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez le thon au citron puis mélangez.",
+        "ingredients": [
+          "200 g de thon au citron (boîte)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les zestes de citron et son jus, puis mélangez.",
+        "ingredients": [
+          "1 Citron jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Servez et ajoutez un peu de thon au citron, s'il vous en reste. Ré-assaisonnez selon vos goûts & ajoutez quelques feuilles de basilic si vous en avez. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "nouilles-riz-champignons-sesame",
+    "title": "Nouilles champignons & sésame",
+    "description": "Nouilles de riz sautées avec des champignons dorés, du gingembre, de la sauce soja et de l'huile de sésame.",
+    "season": "toute_saison",
+    "timeMinutes": 12,
+    "tag": "Hit Jow & Végétarien",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/QTzN0XpO8vH7tA.png",
+    "ingredients": [
+      {
+        "name": "Nouilles de riz",
+        "quantity": 320,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Champignons de Paris",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Huile de sésame",
+        "quantity": 4,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Sauce soja salée",
+        "quantity": 4,
+        "unit": "c. à soupe",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Graines de sésame",
+        "quantity": 1,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Gingembre frais",
+        "quantity": 2,
+        "unit": "cm",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Lavez, puis coupes les champignons en rondelles.",
+        "ingredients": [
+          "400 g de champignons de Paris"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu vif. Ajoutez-y les champignons et le gingembre râpé. Faites revenir le tout, jusqu’à ce que les champignons soient bien dorés.",
+        "ingredients": [
+          "2 cm de gingembre frais"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Pendant ce temps, faites cuire les nouilles selon les indications du paquet. Égouttez-les en fin de cuisson.",
+        "ingredients": [
+          "320 g de nouilles de riz"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les nouilles avec la sauce soja, l'huile de sésame et les graines de sésame dans la poêle. Laissez cuire 1 à 2 minutes supplémentaires, à feu doux, en mélangeant.",
+        "ingredients": [
+          "4 c. à soupe de sauce soja salée",
+          "4 c. à café d'huile de sésame",
+          "1 c. à café de graines de sésame"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Servez le tout dans une assiette. Parsemez de graines de sésame, s'il vous en reste. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "tarte-fine-pommes-de-terre-morbier",
+    "title": "Tarte fine pommes de terre & morbier",
+    "description": "Une tarte fine sur pâte feuilletée : rosace de pommes de terre, oignons, crème fraîche et morbier fondu.",
+    "season": "toute_saison",
+    "timeMinutes": 44,
+    "tag": "Hit Jow & Four",
+    "type": "vege",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/2KMpStdIzqYu3A.png",
+    "ingredients": [
+      {
+        "name": "Pâte feuilletée",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Pommes de terre",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Oignons jaunes",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Crème fraîche épaisse",
+        "quantity": 3,
+        "unit": "c. à soupe",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Thym frais",
+        "quantity": 1,
+        "unit": "pincée",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Morbier",
+        "quantity": 100,
+        "unit": "g",
+        "rayon": "cremerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Préchauffez le four à 200°C. Épluchez puis coupez les pommes de terre en très fines rondelles.",
+        "ingredients": [
+          "400 g de pommes de terre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez puis coupez les oignons en fines lamelles.",
+        "ingredients": [
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Coupez le morbier en tranches.",
+        "ingredients": [
+          "100 g de morbier"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Sur une plaque de cuisson, déroulez la pâte feuilletée, puis piquez-la à l'aide d'une fourchette.",
+        "ingredients": [
+          "1 Pâte feuilletée"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Étalez la crème fraîche sur la pâte, puis salez et poivrez.",
+        "ingredients": [
+          "3 c. à soupe de crème fraîche épaisse"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Disposez les rondelles de pommes de terre en rosace sur le dessus",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez ensuite les oignons et les tranches de morbier par-dessus. Salez, poivrez et parsemez de thym. Enfournez 40 minutes à 200°C.",
+        "ingredients": [
+          "1 pincée de thym frais"
+        ],
+        "timerMinutes": 40
+      },
+      {
+        "instruction": "Une fois bien dorée, sortez la tarte du four et servez-la avec une salade verte assaisonnée selon vos goûts. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "couscous-merguez-pois-chiches",
+    "title": "Couscous merguez",
+    "description": "Carottes mijotées aux épices, pois chiches, semoule gonflée au bouillon et merguez grillées : un couscous maison simplifié.",
+    "season": "toute_saison",
+    "timeMinutes": 40,
+    "tag": "Hit Jow & Tradition",
+    "type": "viande",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/9k973J9nABCVjg.png",
+    "ingredients": [
+      {
+        "name": "Carottes",
+        "quantity": 600,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Semoule",
+        "quantity": 160,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Pois chiches (bocal)",
+        "quantity": 200,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Merguez",
+        "quantity": 8,
+        "unit": "pièce",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Tomates concassées",
+        "quantity": 160,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Épices à couscous (ras el hanout)",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Épluchez et coupez les carottes en biseaux.",
+        "ingredients": [
+          "600 g de carottes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une casserole, ajoutez un filet d'huile d'olive, les carottes, les épices, salez et poivrez.",
+        "ingredients": [
+          "600 g de carottes",
+          "2 c. à café d'épices à couscous (ras el hanout)"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites revenir 3 minutes à feu vif.",
+        "ingredients": [],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Ajoutez 250 ml d'eau/personne, salez, poivrez, couvrez et laissez cuire 30 minutes.",
+        "ingredients": [],
+        "timerMinutes": 30
+      },
+      {
+        "instruction": "Une fois les 30 minutes de cuisson écoulées, couvrez la semoule avec le bouillon du couscous.",
+        "ingredients": [
+          "160 g de semoule"
+        ],
+        "timerMinutes": 30
+      },
+      {
+        "instruction": "Salez, poivrez la semoule et mélangez. Couvrez le plat de semoule et laissez gonfler 3 minutes.",
+        "ingredients": [],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Ajoutez la chair de tomate et les pois chiches avec les légumes. Mélangez et laissez cuire 5 minutes.",
+        "ingredients": [
+          "160 g de tomates concassées",
+          "200 g de pois chiches (bocal)"
+        ],
+        "timerMinutes": 5
+      },
+      {
+        "instruction": "Pendant ce temps, piquez les merguez et faites les cuire à feu vif 4 minutes en les retournant à mi-cuisson.",
+        "ingredients": [
+          "8 Merguez"
+        ],
+        "timerMinutes": 4
+      },
+      {
+        "instruction": "Servez la semoule avec le couscous et les merguez. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "cote-porc-miel-curry-puree-patate-douce",
+    "title": "Côte de porc miel curry & patate douce",
+    "description": "Des côtes de porc laquées à la sauce miel-curry-citron, avec une purée de patate douce onctueuse.",
+    "season": "toute_saison",
+    "timeMinutes": 30,
+    "tag": "Hit Jow & Sucré-Salé",
+    "type": "viande",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/13LltiMay8XMxw.png",
+    "ingredients": [
+      {
+        "name": "Côtes de porc",
+        "quantity": 4,
+        "unit": "pièce",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Patates douces",
+        "quantity": 1000,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Miel",
+        "quantity": 4,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Curry en poudre",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Citron jaune",
+        "quantity": 4,
+        "unit": "quartier",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Graines de sésame",
+        "quantity": 2,
+        "unit": "c. à café",
+        "rayon": "epicerie"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Lavez puis épluchez les patates douces. Coupez-les en cubes grossiers.",
+        "ingredients": [
+          "1000 g de patates douces"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites cuire les cubes de patate douce pendant 25 minutes dans une casserole d'eau bouillante salée.",
+        "ingredients": [
+          "1000 g de patates douces"
+        ],
+        "timerMinutes": 25
+      },
+      {
+        "instruction": "Pendant ce temps préparez la sauce. Dans un bol, ajoutez : le miel, le curry, les zestes de citron, le jus de citron et 1 cuillère à café d'huile d'olive par personne. Salez, poivrez et mélangez.",
+        "ingredients": [
+          "4 c. à café de miel",
+          "2 c. à café de curry en poudre",
+          "4 quartiers de citron jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Faites chauffer une poêle avec un filet d'huile d'olive puis faites griller les côtes de porc à feu vif 4 minutes de chaque côté. Salez et poivrez.",
+        "ingredients": [
+          "4 Côtes de porc"
+        ],
+        "timerMinutes": 4
+      },
+      {
+        "instruction": "En parallèle, vérifiez la cuisson des patates douces et égouttez-les lorsqu'elles sont cuites.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Salez, poivrez et ajoutez un filet d'huile d'olive sur les patates douces égouttées. À l'aide d'un presse purée ou d'une fourchette, écrasez le tout en ajoutant un peu d'eau si besoin. Réservez au chaud.",
+        "ingredients": [
+          "1000 g de patates douces"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Une fois les côtes de porc cuites, baissez le feu et ajoutez la sauce. Laissez cuire 2 minutes tout en arrosant.",
+        "ingredients": [],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Dressez ensuite votre assiette : ajoutez la purée de patate douce, les côtes de porc et la sauce. Parsemez le tout de quelques graines de sésame si vous en avez, c'est prêt !",
+        "ingredients": [
+          "2 c. à café de graines de sésame"
+        ],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "poelee-pommes-de-terre-saucisse-fumee",
+    "title": "Poêlée de pommes de terre & saucisse fumée",
+    "description": "Pommes de terre dorées, saucisse fumée, oignons, échalotes et thym : la poêlée du soir qui réchauffe.",
+    "season": "toute_saison",
+    "timeMinutes": 28,
+    "tag": "Hit Jow & Rustique",
+    "type": "viande",
+    "isBudget": true,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/00k5hkPMHoNHaA.png",
+    "ingredients": [
+      {
+        "name": "Pommes de terre",
+        "quantity": 8,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Saucisses fumées",
+        "quantity": 4,
+        "unit": "pièce",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Échalotes",
+        "quantity": 2,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Oignons jaunes",
+        "quantity": 1,
+        "unit": "pièce",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 2,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Thym frais",
+        "quantity": 4,
+        "unit": "pincée",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Épluchez puis coupez les pommes de terre en dés.",
+        "ingredients": [
+          "8 Pommes de terre"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Déposez les pommes de terre dans une poêle avec un bon filet d'huile puis faites-les revenir au moins 10 minutes à couvert sur feu moyen en remuant de temps en temps. Salez et poivrez.",
+        "ingredients": [],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "En parallèle, coupez les saucisses en rondelles.",
+        "ingredients": [
+          "4 Saucisses fumées"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez puis coupez l'oignon en fines lamelles.",
+        "ingredients": [
+          "1 Oignon jaune"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Épluchez puis coupez l'échalote en fines lamelles.",
+        "ingredients": [
+          "2 Échalotes"
+        ],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Dans une seconde poêle, faites revenir les oignons, les échalotes, les saucisses et l'ail râpé dans un filet d'huile. Faites cuire 3 minutes sur feu moyen en remuant.",
+        "ingredients": [
+          "2 gousses d'ail",
+          "1 Oignon jaune",
+          "2 Échalotes"
+        ],
+        "timerMinutes": 3
+      },
+      {
+        "instruction": "Ajoutez les pommes de terre et le thym dans la poêlée oignon/saucisse, couvrez puis faites cuire le tout ensemble pendant encore 10 minutes sur feu moyen.",
+        "ingredients": [
+          "4 pincées de thym frais"
+        ],
+        "timerMinutes": 10
+      },
+      {
+        "instruction": "Servez bien chaud, avec une salade verte assaisonnée selon vos goûts. C'est prêt !",
+        "ingredients": [],
+        "timerMinutes": null
+      }
+    ]
+  },
+  {
+    "id": "rigatoni-tomates-cerises-prosciutto-burrata",
+    "title": "Rigatoni aux tomates, prosciutto & burrata",
+    "description": "Rigatoni, tomates cerises fondantes à l'ail, jambon cru et burrata crémeuse. Une assiette de trattoria en 10 minutes.",
+    "season": "toute_saison",
+    "timeMinutes": 11,
+    "tag": "Hit Jow & Italien",
+    "type": "viande",
+    "isBudget": false,
+    "basePortions": 4,
+    "image": "https://static.jow.fr/550x550/recipes/liPrvs8Gwqhe0w.png",
+    "ingredients": [
+      {
+        "name": "Pâtes (rigatoni)",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "epicerie"
+      },
+      {
+        "name": "Tomates cerises",
+        "quantity": 400,
+        "unit": "g",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Burrata",
+        "quantity": 280,
+        "unit": "g",
+        "rayon": "cremerie"
+      },
+      {
+        "name": "Jambon cru (prosciutto)",
+        "quantity": 8,
+        "unit": "tranche",
+        "rayon": "boucherie"
+      },
+      {
+        "name": "Gousses d'ail",
+        "quantity": 1,
+        "unit": "gousse",
+        "rayon": "fruits-legumes"
+      },
+      {
+        "name": "Basilic frais",
+        "quantity": 0.5,
+        "unit": "botte",
+        "rayon": "fruits-legumes"
+      }
+    ],
+    "steps": [
+      {
+        "instruction": "Faites cuire les pâtes dans une casserole d'eau bouillante selon les instructions du paquet soit environ 8 minutes.",
+        "ingredients": [
+          "400 g de pâtes (rigatoni)"
+        ],
+        "timerMinutes": 8
+      },
+      {
+        "instruction": "Pendant ce temps, dans une poêle à feu vif, faites cuire les tomates cerises. Après 2 minutes, ajoutez l'ail râpé et couvrez-les pour 2 minutes de cuisson supplémentaires.",
+        "ingredients": [
+          "400 g de tomates cerises",
+          "1 gousse d'ail"
+        ],
+        "timerMinutes": 2
+      },
+      {
+        "instruction": "Avant la fin de cuisson des pâtes, réservez une tasse d'eau de cuisson. Égouttez les pâtes.",
+        "ingredients": [],
+        "timerMinutes": null
+      },
+      {
+        "instruction": "Ajoutez les pâtes dans la poêle et versez quelques cuillères d'eau de cuisson. Salez, poivrez et mélangez. Faites cuire 1 minute de plus.",
+        "ingredients": [],
+        "timerMinutes": 1
+      },
+      {
+        "instruction": "Servez les pâtes dans une assiette, ajoutez le prosciutto, la burrata et quelques feuilles de basilic si vous en avez. Salez, poivrez, c'est prêt !",
+        "ingredients": [
+          "8 tranches de jambon cru (prosciutto)",
+          "280 g de burrata",
+          "0,5 botte de basilic frais"
+        ],
+        "timerMinutes": null
+      }
+    ]
   }
 ];
 

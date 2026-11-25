@@ -907,7 +907,8 @@ const UNIT_WEIGHTS = {
   "Courge Butternut": { piece: 1000 },
   "Potimarron frais": { piece: 1000 },
   "Citrons verts": { piece: 60 },
-  "Citrons jaunes": { piece: 110 },
+  "Citrons jaunes": { piece: 110, quartier: 14 },
+  "Laitue iceberg": { poignee: 30, piece: 500 },
   "Citrons confits": { piece: 60 },
   "Bananes fraîches": { piece: 120 },
   "Avocats mûrs": { piece: 200 },
@@ -950,6 +951,7 @@ const UNIT_WEIGHTS = {
   "Fromage blanc (ou ricotta)": { pot: 500 },
   "Pâte à tarte (feuilletée ou brisée)": { piece: 230 },
   "Pain de campagne (ou pain de mie)": { tranche: 35, piece: 250 },
+  "Yaourts (nature ou aux fruits)": { pot: 125 },
   "Pois chiches (bocal)": { boite: 400, pot: 400 },
   "Haricots rouges (bocal)": { boite: 400, pot: 400 },
   "Haricots noirs (bocal)": { boite: 400, pot: 400 },
@@ -1056,7 +1058,17 @@ const SPECIAL_PRODUCTS = [
   [/\bmagrets?\b/, "Magrets de canard", "g", "boucherie"],
   [/\bechine\b/, "Échine de porc", "g", "boucherie"],
   [/\bpois\s+gourmands?\b/, "Pois gourmands", "g", "fruits-legumes"],
-  [/\bgingembre\s*\(?\s*moulu\b/, "Gingembre moulu", null, "epicerie"]
+  [/\bgingembre\s*\(?\s*moulu\b/, "Gingembre moulu", null, "epicerie"],
+  [/\bcotes?\s+de\s+porc\b/, "Côtes de porc", "piece", "boucherie"],
+  [/\b(jambon\s+(cru|sec|de\s+parme)|prosciutto)\b/, "Jambon cru (prosciutto)", "tranche", "boucherie"],
+  [/\bepinards?\s+surgeles?\b/, "Épinards surgelés", "g", "epicerie"],
+  // Produits dont le nom contient un autre produit (ail, ricotta, champignons, couscous, citron, tomates…)
+  [/\bfromage\b.*\bail\b/, "Fromage frais ail & fines herbes", "g", "cremerie"],
+  [/\bkit\b.*\bfajitas?\b/, "Kit pour fajitas (galettes & épices)", "piece", "epicerie"],
+  [/\b(ravioli|ravioles?|tortellini)\b/, null, "g", "cremerie"],
+  [/\b(puree\s+de\s+tomates?|sauce\s+tomate|passata)\b/, "Tomates concassées / Coulis", "g", "epicerie"],
+  [/\bthon\b/, "Thon au naturel (boîte)", "g", "epicerie"],
+  [/\bepices?\b.*\bcouscous\b|\bras\s+el\s+hanout\b/, "Épices à couscous (ras el hanout)", "c. à café", "epicerie"]
 ];
 
 function normalizeIngredient(ing) {
@@ -1083,7 +1095,7 @@ function normalizeIngredient(ing) {
   // Ils sont traités en premier et gardent leur propre ligne de courses (unité d'origine conservée).
   const special = SPECIAL_PRODUCTS.find(([re]) => re.test(raw));
   if (special) {
-    return { name: special[1], quantity, unit: special[2] || unit, rayon: special[3] };
+    return { name: special[1] || name, quantity, unit: special[2] || unit, rayon: special[3] };
   }
 
   // --- 1. CRÈMERIE & PRODUITS LAITIERS ---
@@ -1105,7 +1117,7 @@ function normalizeIngredient(ing) {
     name = "Tortillas de blé"; unit = "piece"; rayon = "epicerie";
   } else if (/\bmarrons?\b/.test(raw)) {
     name = "Marrons cuits"; unit = "g"; rayon = "epicerie";
-  } else if (/\boranges?\b/.test(raw) && !/\bjus\b/.test(raw)) {
+  } else if (/\boranges?\b/.test(raw) && !/\bjus\s+d/.test(raw)) {
     name = "Oranges"; unit = "piece"; rayon = "fruits-legumes";
   } else if (/\bpousses?\s+de\s+(soja|haricots?\s+mungo)\b/.test(raw)) {
     name = "Pousses de soja"; unit = "g"; rayon = "fruits-legumes";
@@ -1416,7 +1428,7 @@ function normalizeIngredient(ing) {
     rayon = "fruits-legumes";
   } else if (/\bgingembre\b/.test(raw)) {
     name = "Gingembre frais";
-    unit = "c. à café";
+    unit = "cm";
     rayon = "fruits-legumes";
   } else if (/\bpetits?\s+pois\b/.test(raw)) {
     name = "Petits pois frais (ou surgelés)";
@@ -1438,7 +1450,7 @@ function normalizeIngredient(ing) {
     name = "Bœuf haché frais (pur bœuf)";
     unit = "g";
     rayon = "boucherie";
-  } else if (/\b(bavette|rumsteck|hampe|onglet|faux-filet)\b/.test(raw) || (/\bboeuf\b/.test(raw) && /\b(saute|piece|lamelles?|poeler)\b/.test(raw))) {
+  } else if (/\b(bavette|rumsteck|hampe|onglet|faux-filet)\b/.test(raw) || (/\bboeuf\b/.test(raw) && /\b(saute|piece|lamelles?|poeler|emince)\b/.test(raw))) {
     name = "Bavette ou rumsteck de bœuf";
     unit = "g";
     rayon = "boucherie";
@@ -1522,7 +1534,7 @@ function normalizeIngredient(ing) {
   }
 
   // --- 7. ÉPICERIE SALÉE & FÉCULENTS ---
-  else if (/\bkit.*fajita\b/.test(raw)) {
+  else if (/\bkit.*fajitas?\b/.test(raw)) {
     name = "Kit pour fajitas (galettes & épices)";
     unit = "piece";
     rayon = "epicerie";
@@ -1574,7 +1586,7 @@ function normalizeIngredient(ing) {
     name = "Haricots rouges (bocal)";
     unit = "g";
     rayon = "epicerie";
-  } else if (/\blentilles?\s+corail\b/.test(raw)) {
+  } else if (/\blentilles?\b.*\bcorail\b/.test(raw)) {
     name = "Lentilles corail";
     unit = "g";
     rayon = "epicerie";
@@ -1586,7 +1598,7 @@ function normalizeIngredient(ing) {
     name = "Lait de coco";
     unit = "ml";
     rayon = "epicerie";
-  } else if (/\b(coulis|pulpe|tomates?\s+concassees?|puree.*tomates?|tomates?\s+pelees?)\b/.test(raw)) {
+  } else if (/\b(coulis|pulpe|tomates?\s+concassees?|tomates?\s+fraiches?\s+ou\s+concassees?|puree.*tomates?|tomates?\s+pelees?)\b/.test(raw)) {
     name = "Tomates concassées / Coulis";
     unit = "g";
     rayon = "epicerie";
@@ -1647,16 +1659,29 @@ function normalizeIngredient(ing) {
   return { name, quantity, unit, rayon };
 }
 
+// Choix déterministe de l'unité d'affichage d'un article : le résultat ne dépend plus de l'ordre
+// des repas dans le planning (avant : « 280 g » ou « 3 sachets » selon le repas lu en premier).
+// Priorité : grammes / ml (toujours convertibles), puis cuillères, pincée, puis unités comptables.
+const TARGET_UNIT_PRIORITY = ['g', 'ml', 'c. à café', 'c. à soupe', 'pincee'];
+function pickTargetUnit(candidates) {
+  const list = [...candidates];
+  for (const u of TARGET_UNIT_PRIORITY) if (list.includes(u)) return u;
+  for (const u of COUNT_UNITS) if (list.includes(u)) return u;
+  return list.sort()[0];
+}
+
 function computeGroceries() {
   // Regroupement par ingrédient harmonisé (rayon + nom), indépendamment de l'unité d'origine :
   // « 2 grosses pièces de patate douce » + « 600 g de patate douce » → « 4 pièces (≈ 1,2 kg) »
   const aggregated = {};
+  const contributions = [];
 
   // Supporte plan en tableau ([id1,id2,...]) ou objet legacy ({Lundi: id,...})
   const planEntries = Array.isArray(state.plan)
     ? state.plan.map((id, idx) => ({ id, slotIndex: idx }))
     : Object.entries(state.plan).map(([key, id], idx) => ({ id, slotIndex: idx, dayKey: key }));
 
+  // Passe 1 : normaliser chaque ingrédient et repérer les unités cibles possibles de chaque article
   planEntries.forEach(({ id: recipeId, slotIndex }) => {
     if (!recipeId) return;
 
@@ -1672,9 +1697,8 @@ function computeGroceries() {
 
     (recipe.ingredients || []).forEach(rawIng => {
       const norm = normalizeIngredient(rawIng);
-      const targetUnit = canonicalUnit(norm.unit);
       let sourceUnit = canonicalUnit(rawIng.unit);
-      let qty = (Number(rawIng.quantity) || 1) * ratio;
+      const qty = (Number(rawIng.quantity) || 1) * ratio;
 
       // Réparation des anciennes recettes maison enregistrées avec « 600 pièces » au lieu de « 600 g »
       if (recipe.id && recipe.id.startsWith('custom-') && COUNT_UNITS.includes(sourceUnit)
@@ -1688,35 +1712,43 @@ function computeGroceries() {
           id: key,
           name: norm.name,
           rayon: norm.rayon,
-          targetUnit,
+          candidates: new Set(),
           amounts: {},          // { unité: quantité } (unité cible + unités non convertibles)
-          massFromConversion: 0,
           convertedFromMass: false,
           legacyIds: new Set(),
           recipes: []
         };
       }
       const item = aggregated[key];
+      item.candidates.add(canonicalUnit(norm.unit));
+      // Anciennes clés de cases cochées : (rayon, nom, unité) et nom d'origine de la recette
       item.legacyIds.add(`${norm.rayon}__${norm.name.toLowerCase().trim()}__${norm.unit}`);
-
-      const converted = convertQuantity(qty, sourceUnit, item.targetUnit, norm.name);
-      if (converted !== null) {
-        item.amounts[item.targetUnit] = (item.amounts[item.targetUnit] || 0) + converted;
-        if (sourceUnit !== item.targetUnit && unitToGrams(sourceUnit) && COUNT_UNITS.includes(item.targetUnit)) {
-          item.convertedFromMass = true;
-        }
-      } else {
-        item.amounts[sourceUnit] = (item.amounts[sourceUnit] || 0) + qty;
-      }
-
+      item.legacyIds.add((rawIng.name || '').toLowerCase().replace(/\s+/g, ' ').trim());
       if (!item.recipes.includes(recipe.title)) item.recipes.push(recipe.title);
+
+      contributions.push({ item, sourceUnit, qty });
     });
+  });
+
+  Object.values(aggregated).forEach(item => { item.targetUnit = pickTargetUnit(item.candidates); });
+
+  // Passe 2 : convertir dans l'unité cible et additionner
+  contributions.forEach(({ item, sourceUnit, qty }) => {
+    const converted = convertQuantity(qty, sourceUnit, item.targetUnit, item.name);
+    if (converted !== null) {
+      item.amounts[item.targetUnit] = (item.amounts[item.targetUnit] || 0) + converted;
+      if (sourceUnit !== item.targetUnit && unitToGrams(sourceUnit) && COUNT_UNITS.includes(item.targetUnit)) {
+        item.convertedFromMass = true;
+      }
+    } else {
+      item.amounts[sourceUnit] = (item.amounts[sourceUnit] || 0) + qty;
+    }
   });
 
   return Object.values(aggregated).map(item => {
     const units = Object.keys(item.amounts);
-    // Unité cible en premier, puis les éventuelles unités non convertibles
-    units.sort((a, b) => (a === item.targetUnit ? -1 : b === item.targetUnit ? 1 : 0));
+    // Unité cible en premier, puis les éventuelles unités non convertibles (ordre alphabétique : stable)
+    units.sort((a, b) => (a === item.targetUnit ? -1 : b === item.targetUnit ? 1 : a.localeCompare(b)));
     const parts = units.map(u => formatQuantityAndUnit(item.amounts[u], u, item.name, true));
     let formatted = parts.join(' + ');
 
@@ -1740,6 +1772,7 @@ function computeGroceries() {
     item.formattedQty = formatted;
     item.formattedQtyText = formatted.replace(/<[^>]+>/g, '');
     delete item.legacyIds;
+    delete item.candidates;
     return item;
   });
 }

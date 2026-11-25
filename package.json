@@ -1,0 +1,8 @@
+{
+  "name": "gamelle-et-panier",
+  "private": true,
+  "description": "Gamelle & Panier — PWA statique (aucune dépendance). Tests : npm test",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
