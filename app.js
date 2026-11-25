@@ -2009,7 +2009,7 @@ function renderPantryCard() {
     <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-stock-basics" class="w-4 h-4 rounded" ${state.stockBasics ? 'checked' : ''}>
       <span class="text-slate-700 font-semibold">Huile, farine, sucre, vinaigres, moutarde à la maison</span></label>
     ${state.pantry.length ? `<div class="space-y-1.5"><p class="${h}">Mon placard</p>
-      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => `<button type="button" class="pantry-remove px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200" data-id="${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))} ✕</button>`).join('')}</div></div>` : ''}
+      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => { const st = state.pantryStock[id]; const q = st ? ' · ' + formatQuantityAndUnit(st.qty, st.unit) : ''; return `<span class="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800"><button type="button" class="pantry-qty pl-2.5 pr-1 py-1" data-id="${esc(id)}" aria-label="Quantité en stock : ${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))}${esc(q)} ✎</button><button type="button" class="pantry-remove pr-2.5 pl-1 py-1" data-id="${esc(id)}" aria-label="Retirer ${esc(id)} du placard">✕</button></span>`; }).join('')}</div></div>` : ''}
     <div class="flex gap-1.5 flex-wrap pt-1">
       <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Nutri-Score de ma liste</button>
       <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Scanner un produit</button>
@@ -2027,6 +2027,18 @@ function setupPantryCard() {
   body.addEventListener('click', (e) => {
     const t = e.target.closest('button');
     if (!t) return;
+    if (t.classList.contains('pantry-qty')) {
+      const id = t.dataset.id;
+      promptDialog({ title: 'Quantité en stock', message: `Combien de « ${id} » avez-vous ? (ex. 800 g, 1,5 L, 6). Elle diminue quand vous cuisinez une recette. Vide = ne pas suivre.`, value: state.pantryStock[id] ? formatQuantityAndUnit(state.pantryStock[id].qty, state.pantryStock[id].unit) : '' }).then(v => {
+        if (v === null || v === false) return;
+        const parsed = GL.parseStockInput(String(v).replace(/\s*(pièces?|pcs)$/i, ''));
+        if (String(v).trim() === '') delete state.pantryStock[id];
+        else if (parsed) state.pantryStock[id] = parsed;
+        else { showToast('Quantité non reconnue'); return; }
+        saveToLocalStorage(); renderGroceries();
+      });
+      return;
+    }
     if (t.classList.contains('off-load')) { loadOffInfoForList(); return; }
     if (t.classList.contains('off-scan')) { openScanModal(); return; }
     if (t.classList.contains('spice-chip')) {
@@ -2081,6 +2093,30 @@ function renderNotesRow() {
     info.textContent = days <= 0 ? 'Cuisiné aujourd\'hui' : `Cuisiné il y a ${days} j`;
   } else info.textContent = '';
 }
+// Stock dégressif : ce que la recette consomme est retiré des quantités du placard ; un article épuisé repasse dans les courses
+function consumeStockForRecipe(recipe) {
+  if (!recipe || !Object.keys(state.pantryStock || {}).length) return [];
+  const ratio = state.portions / (recipe.basePortions || 4);
+  const used = (recipe.ingredients || []).map(ing => {
+    const n = normalizeIngredient(ing);
+    const u = canonicalUnit(ing.unit), q = (Number(ing.quantity) || 0) * ratio;
+    const id = n.name.toLowerCase().replace(/\s+/g, ' ').trim();
+    if (u === 'g') return { id, qty: q, unit: 'g' };
+    if (u === 'kg') return { id, qty: q * 1000, unit: 'g' };
+    if (u === 'ml') return { id, qty: q, unit: 'ml' };
+    if (u === 'cl') return { id, qty: q * 10, unit: 'ml' };
+    if (u === 'l') return { id, qty: q * 1000, unit: 'ml' };
+    return { id, qty: q, unit: 'piece' };
+  });
+  const r = GL.consumeStock(state.pantryStock, used);
+  state.pantryStock = r.stock;
+  r.depleted.forEach(id => {
+    state.pantry = state.pantry.filter(x => x !== id);
+    if (!state.pantryNeeded.includes(id)) state.pantryNeeded.push(id);
+  });
+  saveToLocalStorage(); renderGroceries();
+  return r.depleted.map(id => id.charAt(0).toUpperCase() + id.slice(1));
+}
 function setupNotesRow() {
   const like = document.getElementById('btn-note-like');
   const dis = document.getElementById('btn-note-dislike');
@@ -2088,7 +2124,11 @@ function setupNotesRow() {
   if (!like) return;
   like.addEventListener('click', () => { const id = state.activeDetailRecipeId; setNote(id, { r: (state.notes[id] && state.notes[id].r === 1) ? 0 : 1 }); });
   dis.addEventListener('click', () => { const id = state.activeDetailRecipeId; setNote(id, { r: (state.notes[id] && state.notes[id].r === -1) ? 0 : -1 }); });
-  cooked.addEventListener('click', () => { setNote(state.activeDetailRecipeId, { cooked: Date.now() }); showToast('Noté : cuisiné aujourd\'hui'); });
+  cooked.addEventListener('click', () => {
+    setNote(state.activeDetailRecipeId, { cooked: Date.now() });
+    const out = consumeStockForRecipe(state.recipes.find(r => r.id === state.activeDetailRecipeId));
+    showToast(out.length ? `Cuisiné. Il n'y a plus : ${out.join(', ')} (ajouté aux courses)` : 'Noté : cuisiné aujourd\'hui', { duration: out.length ? 6000 : undefined });
+  });
 }
 
 // --- Fenêtre « Composer mes 7 repas » ---

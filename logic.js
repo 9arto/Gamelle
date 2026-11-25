@@ -320,6 +320,31 @@
     return Math.max(0.3, q * (PRICE_PIECE[item.rayon] || 1));
   }
   function estimateCost(items) { return Math.round(items.reduce((s, i) => s + estimateItemPrice(i), 0)); }
+  // Stock dégressif : retire ce qu'une recette consomme ; renvoie les articles épuisés (à racheter)
+  function consumeStock(stock, used) {
+    const out = {}; Object.keys(stock || {}).forEach((k) => { out[k] = { ...stock[k] }; });
+    const depleted = [];
+    (used || []).forEach((u) => {
+      const e = out[u.id];
+      if (!e || e.unit !== u.unit || !(u.qty > 0)) return;
+      e.qty = Math.round((e.qty - u.qty) * 10) / 10;
+      if (e.qty <= 0) { delete out[u.id]; depleted.push(u.id); }
+    });
+    return { stock: out, depleted };
+  }
+  // « 800 g », « 1,5 kg », « 2 L », « 6 » → { qty, unit } (g, ml ou piece)
+  function parseStockInput(text) {
+    const m = String(text || '').trim().toLowerCase().replace(',', '.').match(/^(\d+(?:\.\d+)?)\s*(kg|g|l|cl|ml)?$/);
+    if (!m) return null;
+    let q = parseFloat(m[1]); const u = m[2] || '';
+    if (!(q > 0)) return null;
+    if (u === 'kg') return { qty: q * 1000, unit: 'g' };
+    if (u === 'g') return { qty: q, unit: 'g' };
+    if (u === 'l') return { qty: q * 1000, unit: 'ml' };
+    if (u === 'cl') return { qty: q * 10, unit: 'ml' };
+    if (u === 'ml') return { qty: q, unit: 'ml' };
+    return { qty: q, unit: 'piece' };
+  }
   // Coefficient « vos vrais prix » : médiane (ticket réel / estimation) des derniers tickets, borné pour rester prudent
   function priceFactor(trips) {
     const r = (trips || []).filter((t) => t && t.est > 0 && t.total > 0).slice(-5).map((t) => t.total / t.est).sort((a, b) => a - b);
@@ -366,7 +391,7 @@
     recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, priceFactor,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, priceFactor, consumeStock, parseStockInput,
     encryptPayload, decryptPayload, cryptoAvailable,
     weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
   };

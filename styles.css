@@ -522,3 +522,6 @@ body.shop-mode .btn-staple-plus, body.shop-mode .btn-delete-staple, body.shop-mo
 .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
 .shadow-xs, .shadow-2xs { box-shadow: 0 1px 2px 0 rgba(0,0,0,.05); }
 .active\:bg-slate-100:active { background-color: #f1f5f9; }
+.pl-1 { padding-left: .25rem; }
+.pl-2\.5 { padding-left: .625rem; }
+.pr-2\.5 { padding-right: .625rem; }

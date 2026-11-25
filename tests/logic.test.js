@@ -282,3 +282,14 @@ test('prix réels : le coefficient suit les tickets (médiane, borné, neutre sa
   assert.equal(L.priceFactor([{ total: 60, est: 40 }, { total: 66, est: 44 }, { total: 150, est: 50 }]), 1.5);
   assert.equal(L.priceFactor([{ total: 1, est: 100 }, { total: 1, est: 100 }]), 0.5, 'borné');
 });
+
+test('stock dégressif : la recette consomme le stock, l\'article épuisé est signalé', () => {
+  const r = L.consumeStock({ farine: { qty: 500, unit: 'g' }, lait: { qty: 1000, unit: 'ml' }, oeufs: { qty: 6, unit: 'piece' } },
+    [{ id: 'farine', qty: 600, unit: 'g' }, { id: 'lait', qty: 250, unit: 'ml' }, { id: 'oeufs', qty: 2, unit: 'ml' }, { id: 'sel', qty: 5, unit: 'g' }]);
+  assert.deepEqual(r.depleted, ['farine']);
+  assert.deepEqual(plain(r.stock), { lait: { qty: 750, unit: 'ml' }, oeufs: { qty: 6, unit: 'piece' } }, 'unités différentes ignorées');
+  assert.deepEqual(plain(L.parseStockInput('1,5 kg')), { qty: 1500, unit: 'g' });
+  assert.deepEqual(plain(L.parseStockInput('2 L')), { qty: 2000, unit: 'ml' });
+  assert.deepEqual(plain(L.parseStockInput('6')), { qty: 6, unit: 'piece' });
+  assert.equal(L.parseStockInput('beaucoup'), null);
+});
