@@ -292,7 +292,8 @@ test('catalogue : aucune quantité n\'est perdue (grammes et ml conservés, arro
     }
     for (const it of listFor([r.id])) {
       if (!pure[it.id] || !expected[it.id]) continue;
-      const m = it.formattedQtyText.match(/^([\d,]+) (kg|g)$/);
+      // format d'achat (« 1 plaquette (250 g) (≈ 20 g) ») : on contrôle la quantité réelle entre parenthèses
+      const m = it.formattedQtyText.match(/^([\d,]+) (kg|g)$/) || it.formattedQtyText.match(/\(≈ ([\d,]+) (kg|g)\)$/);
       if (!m) { problems.push(`${r.id}/${it.name} : format inattendu « ${it.formattedQtyText} »`); continue; }
       const got = parseFloat(m[1].replace(',', '.')) * (m[2] === 'kg' ? 1000 : 1);
       if (got < expected[it.id] - 1 || got > expected[it.id] + 60) problems.push(`${r.id}/${it.name} : attendu ≈ ${expected[it.id]} g, obtenu ${it.formattedQtyText}`);
@@ -349,4 +350,14 @@ test('catalogue : les références vers les poids unitaires pointent vers de vra
   const orphans = Object.keys(UNIT_WEIGHTS).filter((n) => !produced.has(n));
   // Les poids de quelques articles pas (encore) au catalogue sont tolérés, mais pas plus de quelques-uns.
   assert.ok(orphans.length <= 12, `Poids orphelins : ${orphans.join(' | ')}`);
+});
+
+test('formats d\'achat : crème, lait, lait de coco en contenants', () => {
+  const find = (ids, name) => listFor(ids).find((i) => i.name.startsWith(name));
+  const all = listFor(RECIPES.map((r) => r.id));
+  const creme = all.find((i) => i.name.startsWith('Crème fraîche'));
+  assert.match(creme.formattedQtyText, /^\d+ pots? \(20 cl\)/);
+  const coco = all.find((i) => i.name === 'Lait de coco');
+  assert.match(coco.formattedQtyText, /^\d+ boîtes? \(400 ml\)|^\d+ boîtes?/);
+  assert.ok(find);
 });

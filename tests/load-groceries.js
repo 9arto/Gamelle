@@ -1,16 +1,12 @@
 // Charge la logique « liste de courses » de app.js dans Node, sans toucher au fichier.
-// On extrait le bloc situé entre les marqueurs HARMONISATION… et renderAll().
+// On charge groceries.js (moteur de la liste de courses).
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
 const root = path.join(__dirname, '..');
-const appSrc = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 
-const start = appSrc.indexOf('// HARMONISATION & AGRÉGATION DE LA LISTE DE COURSES');
-const end = appSrc.indexOf('function renderAll()');
-if (start < 0 || end < 0) throw new Error('Marqueurs introuvables dans app.js');
-const block = appSrc.slice(start, end);
+const block = fs.readFileSync(path.join(root, 'groceries.js'), 'utf8');
 
 function load(recipes) {
   const ctx = { console, window: {}, state: { plan: [], lockedSlots: [], portions: 4, recipes: recipes || [], checkedGroceries: {}, staples: [] } };

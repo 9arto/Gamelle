@@ -38,7 +38,6 @@
     terroir: /gratin|blanquette|bourguignon|hachis|parmentier|quiche|tartiflette|croziflette|raclette|reblochon|cassoulet|potee|basquaise|vallee d.auge|confit|canard|veloute|soupe|tradition|terroir|bistrot|dauphinois|saucisse|lentilles|endive|flammekueche|galette complete|brandade|mijot|roti|cuisses|tarte|frittata|tortilla/,
     frais: /salade|poke|bowl|rouleaux|froid|fraicheur|tzatziki|crudites|avocat|concombre|ceviche|tartare|wraps? fraicheur/
   };
-  const NO_GAMELLE = /croque|burger|fondue|raclette|tartiflette|oeuf au plat|coulant|poches|brouille|benedict|cocotte|papillote|tacos|bagel|grilled|tempura|panes?\b|frites|brick|\bnems?\b|samoussa|rosti|crousti|huevos/;
 
   function recipeText(r) {
     return norm([r.title, r.tag, r.description, ...(r.ingredients || []).map((i) => i.name)].join(' '));
@@ -71,8 +70,7 @@
     }
     return found.length ? found.slice(0, 3) : ['quotidien'];
   }
-  function classifyGamelle(r) { return !NO_GAMELLE.test(norm(r.title)); }
-  function classifyRecipe(r) { return { seasons: classifySeasons(r), styles: classifyStyles(r), gamelle: classifyGamelle(r) }; }
+  function classifyRecipe(r) { return { seasons: classifySeasons(r), styles: classifyStyles(r) }; }
 
   function recipeSeasons(r) {
     if (Array.isArray(r.seasons) && r.seasons.length) return r.seasons;
@@ -80,7 +78,6 @@
     return SEASONS.map((s) => s.id); // « toutes saisons » (recettes maison)
   }
   function recipeStyles(r) { return Array.isArray(r.styles) && r.styles.length ? r.styles : classifyStyles(r); }
-  function recipeIsGamelle(r) { return typeof r.gamelle === 'boolean' ? r.gamelle : classifyGamelle(r); }
   function currentSeason(date) {
     const m = (date || new Date()).getMonth() + 1; // 1..12
     if (m >= 3 && m <= 5) return 'printemps';
@@ -116,7 +113,6 @@
     if (f.noPork && containsPork(r)) return false;
     if (f.noLactose && containsLactose(r)) return false;
     if (f.onePan && !isOnePan(r)) return false;
-    if (f.gamelle && !recipeIsGamelle(r)) return false;
     if (f.favoritesOnly && !(favorites || []).includes(r.id)) return false;
     return true;
   }
@@ -127,7 +123,7 @@
   // sans doublon, jamais plus de 40 % du même type tant qu'il reste du choix.
   function pickMenu(opts) {
     const {
-      recipes, count = 7, filters = {}, excludeIds = [], favorites = [], notes = {}, now = Date.now(), rng = Math.random
+      recipes, count = 7, filters = {}, excludeIds = [], favorites = [], notes = {}, now = Date.now(), rng = Math.random, mood = null
     } = opts;
     const excluded = new Set(excludeIds);
     let pool = recipes.filter((r) => !excluded.has(r.id) && recipeMatchesFilters(r, filters, favorites));
@@ -142,6 +138,7 @@
       let w = 1;
       if (notes[r.id] && notes[r.id].r === 1) w *= 2;
       if (fridge.length && matchesFridge(r, fridge)) w *= 25;
+      w *= weatherFit(r, mood);
       return w;
     };
     const cap = Math.max(1, Math.ceil(count * 0.4));
@@ -245,6 +242,71 @@
     return out.slice(0, limit);
   }
 
+
+  // ---------------------------------------------------------------- Météo (Open-Meteo : gratuit, sans clé) → plats adaptés
+  const WET_CODES = new Set([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77, 80, 81, 82, 85, 86, 95, 96, 99]);
+  const OPEN_METEO = 'https://api.open-meteo.com/v1/forecast';
+  // Température retenue : moyenne des maximales des 3 prochains jours (le menu couvre la semaine à venir)
+  function weatherMood(w) {
+    if (!w || !Number.isFinite(w.tempMax)) return null;
+    const t = w.tempMax;
+    return { temp: t <= 9 ? 'froid' : t <= 16 ? 'frais' : t <= 23 ? 'doux' : 'chaud', wet: !!w.wet, tempMax: Math.round(t) };
+  }
+  const COMFORT = /gratin|mijot|soupe|veloute|curry|lasagne|raclette|fondue|hachis|parmentier|blanquette|bourguignon|tartiflette|cassoulet|couscous|tajine|four\b|quiche|risotto|moussaka|pot au feu|potee|chou braise|reblochon/;
+  const FRESH = /salade|poke|wrap|bowl|froid|grill|brochette|tzatziki|concombre|fraicheur|ete\b|tomates? cerises|burrata|caprese/;
+  function weatherFit(r, mood) {
+    if (!mood) return 1;
+    const t = norm(r.title + ' ' + (r.tag || ''));
+    const seasons = recipeSeasons(r);
+    const styles = recipeStyles(r);
+    const comfort = styles.includes('terroir') || (seasons.includes('hiver') && !seasons.includes('ete')) || COMFORT.test(t);
+    const fresh = styles.includes('frais') || (seasons.includes('ete') && !seasons.includes('hiver')) || FRESH.test(t);
+    let m = 1;
+    if (mood.temp === 'froid') m = comfort ? 2.5 : fresh ? 0.4 : 1;
+    else if (mood.temp === 'frais') m = comfort ? 1.6 : fresh ? 0.7 : 1;
+    else if (mood.temp === 'chaud') m = fresh ? 2.5 : comfort ? 0.35 : 1;
+    if (mood.wet && mood.temp !== 'chaud' && comfort) m *= 1.3;
+    return m;
+  }
+  async function fetchWeather(lat, lon, fetchFn) {
+    const url = `${OPEN_METEO}?latitude=${Number(lat).toFixed(2)}&longitude=${Number(lon).toFixed(2)}&current=temperature_2m,precipitation,weather_code&daily=temperature_2m_max,precipitation_sum&forecast_days=3&timezone=auto`;
+    const res = await fetchFn(url);
+    if (!res.ok) return null;
+    const j = await res.json();
+    const maxes = ((j.daily || {}).temperature_2m_max || []).filter(Number.isFinite);
+    if (!maxes.length) return null;
+    const rain = ((j.daily || {}).precipitation_sum || []).filter(Number.isFinite);
+    const wetNow = WET_CODES.has(Number((j.current || {}).weather_code));
+    return { tempMax: maxes.reduce((a, b) => a + b, 0) / maxes.length, wet: wetNow || (rain.length > 0 && rain.reduce((a, b) => a + b, 0) / rain.length >= 3) };
+  }
+
+  // ---------------------------------------------------------------- Notifications du foyer (ntfy.sh : sujet secret dérivé du code, aucune clé)
+  async function notifTopic(code) {
+    const bytes = new TextEncoder().encode('gamelle-alerte:' + String(code || '').trim().toUpperCase());
+    const hash = await crypto.subtle.digest('SHA-256', bytes);
+    return 'gamelle-alerte-' + Array.from(new Uint8Array(hash)).slice(0, 10).map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  const listText = (arr, max) => arr.length > max ? `${arr.slice(0, max).join(', ')} +${arr.length - max}` : arr.join(', ');
+  // « Julie a ajouté Lait, Avoine dans la liste de courses »
+  function buildNotification({ name, staples = [], meals = [] }) {
+    const who = (name || '').trim();
+    const verb = who ? `${who} a ajouté` : 'A ajouté';
+    const parts = [];
+    if (staples.length) parts.push(`${verb} ${listText(staples, 5)} dans la liste de courses`);
+    if (meals.length) parts.push(`${parts.length ? 'et' : verb} ${meals.length === 1 ? `« ${meals[0]} »` : `${meals.length} repas (${listText(meals, 3)})`} au menu`);
+    return parts.length ? parts.join(' ') : null;
+  }
+
+  // « il y a 2 h » (état de la synchro)
+  function syncAgeText(ts, now) {
+    if (!ts) return 'jamais';
+    const s = Math.max(0, Math.round(((now || Date.now()) - ts) / 1000));
+    if (s < 45) return "à l'instant";
+    if (s < 3600) return `il y a ${Math.max(1, Math.round(s / 60))} min`;
+    if (s < 86400) return `il y a ${Math.round(s / 3600)} h`;
+    return `il y a ${Math.round(s / 86400)} j`;
+  }
+
   // ---------------------------------------------------------------- Budget estimé (ordre de grandeur)
   const PRICE_KG = { 'fruits-legumes': 3.2, boucherie: 12, poissonnerie: 20, cremerie: 9, epicerie: 4 };
   const PRICE_PIECE = { 'fruits-legumes': 0.7, boucherie: 2.2, poissonnerie: 3.5, cremerie: 1.2, epicerie: 1.2 };
@@ -258,6 +320,38 @@
     return Math.max(0.3, q * (PRICE_PIECE[item.rayon] || 1));
   }
   function estimateCost(items) { return Math.round(items.reduce((s, i) => s + estimateItemPrice(i), 0)); }
+  // Stock dégressif : retire ce qu'une recette consomme ; renvoie les articles épuisés (à racheter)
+  function consumeStock(stock, used) {
+    const out = {}; Object.keys(stock || {}).forEach((k) => { out[k] = { ...stock[k] }; });
+    const depleted = [];
+    (used || []).forEach((u) => {
+      const e = out[u.id];
+      if (!e || e.unit !== u.unit || !(u.qty > 0)) return;
+      e.qty = Math.round((e.qty - u.qty) * 10) / 10;
+      if (e.qty <= 0) { delete out[u.id]; depleted.push(u.id); }
+    });
+    return { stock: out, depleted };
+  }
+  // « 800 g », « 1,5 kg », « 2 L », « 6 » → { qty, unit } (g, ml ou piece)
+  function parseStockInput(text) {
+    const m = String(text || '').trim().toLowerCase().replace(',', '.').match(/^(\d+(?:\.\d+)?)\s*(kg|g|l|cl|ml)?$/);
+    if (!m) return null;
+    let q = parseFloat(m[1]); const u = m[2] || '';
+    if (!(q > 0)) return null;
+    if (u === 'kg') return { qty: q * 1000, unit: 'g' };
+    if (u === 'g') return { qty: q, unit: 'g' };
+    if (u === 'l') return { qty: q * 1000, unit: 'ml' };
+    if (u === 'cl') return { qty: q * 10, unit: 'ml' };
+    if (u === 'ml') return { qty: q, unit: 'ml' };
+    return { qty: q, unit: 'piece' };
+  }
+  // Coefficient « vos vrais prix » : médiane (ticket réel / estimation) des derniers tickets, borné pour rester prudent
+  function priceFactor(trips) {
+    const r = (trips || []).filter((t) => t && t.est > 0 && t.total > 0).slice(-5).map((t) => t.total / t.est).sort((a, b) => a - b);
+    if (r.length < 2) return 1; // pas assez d'historique : estimation brute
+    const mid = r.length % 2 ? r[(r.length - 1) / 2] : (r[r.length / 2 - 1] + r[r.length / 2]) / 2;
+    return Math.max(0.5, Math.min(2, mid));
+  }
 
 
   // ---------------------------------------------------------------- Chiffrement de la synchro foyer (AES-GCM, clé dérivée du code foyer)
@@ -293,11 +387,12 @@
   const cryptoAvailable = () => typeof crypto !== 'undefined' && !!crypto.subtle && typeof btoa === 'function';
 
   root.GamelleLogic = {
-    norm, SEASONS, STYLES, classifyRecipe, classifySeasons, classifyStyles, classifyGamelle,
-    recipeSeasons, recipeStyles, recipeIsGamelle, currentSeason,
+    norm, SEASONS, STYLES, classifyRecipe, classifySeasons, classifyStyles,
+    recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost,
-    encryptPayload, decryptPayload, cryptoAvailable
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, priceFactor, consumeStock, parseStockInput,
+    encryptPayload, decryptPayload, cryptoAvailable,
+    weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
   };
 })(typeof window !== 'undefined' ? window : globalThis);

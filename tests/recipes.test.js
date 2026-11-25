@@ -130,7 +130,7 @@ const imageId = (r) => (String(r.image).split('/').pop() || '').replace(/\.[a-z]
 
 // ---------------------------------------------------------------------------
 test('fichiers : app.js, recipes.js et sw.js se chargent sans erreur de syntaxe', () => {
-  for (const f of ['app.js', 'recipes.js', 'sw.js']) {
+  for (const f of ['app.js', 'groceries.js', 'sync.js', 'theme.js', 'recipes.js', 'sw.js']) {
     assert.doesNotThrow(() => new vm.Script(fs.readFileSync(path.join(ROOT, f), 'utf8'), { filename: f }), f);
   }
 });
@@ -386,7 +386,6 @@ test('classement : chaque recette a des saisons, des styles et un indicateur gam
   for (const r of RECIPES) {
     assert.ok(Array.isArray(r.seasons) && r.seasons.length >= 1 && r.seasons.every((x) => seasons.includes(x)), `${r.id} : saisons`);
     assert.ok(Array.isArray(r.styles) && r.styles.length >= 1 && r.styles.every((x) => styles.includes(x)), `${r.id} : styles`);
-    assert.equal(typeof r.gamelle, 'boolean', `${r.id} : gamelle`);
     r.seasons.forEach((x) => count[x]++); r.styles.forEach((x) => styleCount[x]++);
   }
   for (const x of seasons) assert.ok(count[x] >= RECIPES.length * 0.25, `saison ${x} sous-représentée : ${count[x]}`);

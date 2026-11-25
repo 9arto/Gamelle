@@ -57,6 +57,7 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     await page.click('.gen-chip[data-group="seasons"][data-value="hiver"]');
     await page.click('.gen-flag[data-flag="noPork"]');
     await page.click('#btn-gen-go');
+    await page.waitForFunction(() => state.plan.length === 7);
     const plan = await page.evaluate(() => state.plan.map((id) => state.recipes.find((r) => r.id === id)).map((r) => ({ s: GL.recipeSeasons(r), pork: GL.containsPork(r) })));
     assert.equal(plan.length, 7);
     assert.ok(plan.every((p) => p.s.includes('hiver') && !p.pork));
@@ -95,6 +96,7 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     // Finir mes restes
     await page.evaluate(() => switchTab('tab-planning'));
     const planBefore = await page.evaluate(() => state.plan.length);
+    await page.click('[data-menu="planning-more-menu"]');
     await page.click('#btn-open-leftovers');
     await page.fill('#leftovers-input', 'pou');
     await page.waitForSelector('#leftovers-suggest li');
@@ -166,6 +168,84 @@ test('navigateur : nutrition sur la fiche recette, infos Open Food Facts et scan
     assert.match(await page.textContent('#scan-result'), /gluten/);
     await page.click('#btn-scan-staple');
     assert.ok(await page.evaluate(() => state.staples.some((s) => s.name === 'Pâtes penne')));
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});
+
+test('navigateur : météo invisible (localisation simulée) et notification du foyer', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block', geolocation: { latitude: 48.85, longitude: 2.35 }, permissions: ['geolocation'] });
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    const posts = [];
+    await page.route('**/api.open-meteo.com/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ current: { weather_code: 3 }, daily: { temperature_2m_max: [4, 5, 3], precipitation_sum: [0, 0, 0] } }) }));
+    await page.route('**/ntfy.sh/**', (r) => { if (r.request().method() === 'POST' && /gamelle-alerte-/.test(r.request().url())) posts.push({ url: r.request().url(), body: r.request().postData(), title: r.request().headers().title }); r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{}' }); });
+    await page.addInitScript(() => { if (!localStorage.getItem('s')) { localStorage.setItem('s', '1'); localStorage.setItem('gamelle_household_code', 'FOYER-TEST-AAAA-BBBB'); localStorage.setItem('gamelle_member_name', 'Julie'); } });
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+
+    // Météo : aucune trace dans l'interface, mais le tirage en tient compte
+    await page.click('#btn-generate-menu');
+    await page.click('#btn-gen-go');
+    await page.waitForFunction(() => state.weatherMood && state.weatherMood.temp === 'froid');
+    assert.ok(!/météo|meteo|°C|température/i.test(await page.evaluate(() => document.body.innerText)), 'rien de météo à l\'écran');
+    assert.ok(await page.evaluate(() => JSON.parse(localStorage.getItem('gamelle_geo')).lat === 48.9), 'position arrondie');
+
+    // Notification : « Julie a ajouté Lait, Avoine dans la liste de courses »
+    await page.evaluate(() => switchTab('tab-courses'));
+    for (const v of ['Lait', 'Avoine']) { await page.fill('#staple-input', v); await page.press('#staple-input', 'Escape'); await page.click('#form-add-staple button[type="submit"]'); }
+    assert.equal(posts.length, 0, 'regroupé : rien n\'est envoyé tout de suite');
+    await page.evaluate(() => flushNotifications());
+    await page.waitForFunction(() => true);
+    await new Promise((r) => setTimeout(r, 300));
+    assert.equal(posts.length, 1);
+    assert.equal(posts[0].body, 'Julie a ajouté Lait, Avoine dans la liste de courses');
+    assert.match(posts[0].url, /ntfy\.sh\/gamelle-alerte-[0-9a-f]{20}$/);
+    // désactivable
+    await page.evaluate(() => { state.notify = false; queueNotification({ staple: 'Beurre' }); return flushNotifications(); });
+    assert.equal(posts.length, 1);
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});
+
+test('navigateur : quantité sur produit courant, menu « … », bandeau d\'état, aucune erreur CSP', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::/.test(m.text())) errors.push(m.text()); });
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+
+    // Planning : un seul bouton principal visible, le reste dans « … »
+    assert.ok(await page.isVisible('#btn-generate-menu'));
+    assert.ok(!(await page.isVisible('#btn-open-leftovers')), 'actions secondaires rangées');
+    await page.click('[data-menu="planning-more-menu"]');
+    assert.ok(await page.isVisible('#btn-open-leftovers'));
+    await page.click('body', { position: { x: 5, y: 400 } });
+    assert.ok(!(await page.isVisible('#btn-open-leftovers')), 'le menu se ferme');
+
+    // Produits courants : même nom = quantité
+    await page.evaluate(() => switchTab('tab-courses'));
+    for (let i = 0; i < 3; i++) { await page.fill('#staple-input', 'Lait'); await page.press('#staple-input', 'Escape'); await page.click('#form-add-staple button[type="submit"]'); }
+    assert.deepEqual(await page.evaluate(() => state.staples.map((s) => [s.name, s.qty])), [['Lait', 3]]);
+    assert.ok((await page.innerText('#grand-frais-aisles-container')).includes('×3'));
+    assert.equal(await page.evaluate(() => state.stapleHistory.Lait.n), 3, 'habituels mémorisés');
+    assert.ok(!(await page.innerText('#staple-habituals')).includes('Lait'), 'déjà dans la liste : pas proposé');
+
+    // Hors ligne : bandeau explicite
+    await ctx.setOffline(true);
+    await page.evaluate(() => window.dispatchEvent(new Event('offline')));
+    await page.waitForFunction(() => !document.getElementById('banner-status').classList.contains('hidden'));
+    await ctx.setOffline(false);
     assert.deepEqual(errors, []);
   } finally { await browser.close(); srv.close(); }
 });

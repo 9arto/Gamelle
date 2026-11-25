@@ -470,3 +470,48 @@ html:where(.dark) nav.backdrop-blur-md {
 .font-normal { font-weight: 400; }
 .text-rose-600 { color: #e11d48; }
 .hover\:text-emerald-600:hover { color: #059669; }
+
+/* ---- Accessibilité : texte lisible (12 px minimum) et contrastes ---- */
+body .text-\[10px\], body .text-\[11px\] { font-size: 12px; line-height: 1.35; }
+body .text-slate-400 { color: #64748b; }
+html:where(.dark) body .text-slate-400 { color: #a1a1a6; }
+html:where(.dark) body .text-slate-500 { color: #a1a1a6; }
+:focus-visible { outline: 2px solid #059669; outline-offset: 2px; }
+button, [role="button"], summary { touch-action: manipulation; }
+
+/* ---- Photos : fond de chargement discret ---- */
+@keyframes skeleton { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+img[loading="lazy"]:not(.img-loaded), #detail-recipe-image:not(.img-loaded) {
+  background: linear-gradient(100deg, #e2e8f0 30%, #f1f5f9 50%, #e2e8f0 70%) 0 0 / 200% 100%;
+  animation: skeleton 1.4s linear infinite;
+}
+html:where(.dark) img[loading="lazy"]:not(.img-loaded) { background: linear-gradient(100deg, #2c2c2e 30%, #3a3a3c 50%, #2c2c2e 70%) 0 0 / 200% 100%; }
+@media (prefers-reduced-motion: reduce) { img[loading="lazy"]:not(.img-loaded) { animation: none; } }
+
+/* ---- Bandeaux d'état (mise à jour, hors connexion, synchro) ---- */
+.app-banner { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .55rem 1rem; font-size: 13px; font-weight: 600; }
+.app-banner button { font-weight: 700; padding: .3rem .7rem; border-radius: .6rem; background: rgba(255,255,255,.22); color: inherit; }
+.app-banner.update { background: #059669; color: #fff; }
+.app-banner.offline { background: #fef3c7; color: #78350f; }
+html:where(.dark) .app-banner.offline { background: #3a2f12; color: #fcd34d; }
+
+/* Menu « … » */
+.more-menu .more-item { display:block; min-height:44px; }
+.more-menu .more-item:hover { background:#f1f5f9; }
+
+.grocery-row { transition: transform .12s ease; touch-action: pan-y; }
+.rayon-head { min-height:44px; }
+
+/* Utilitaires absents du tailwind.css pré-compilé (contrôlés par tests/css-classes.test.js) */
+.pt-0 { padding-top: 0; }
+.space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: .25rem; }
+.text-left { text-align: left; }
+.text-\[12px\] { font-size: 12px; line-height: 1.35; }
+.w-56 { width: 14rem; }
+.w-60 { width: 15rem; }
+.shadow-xl { box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
+.shadow-xs, .shadow-2xs { box-shadow: 0 1px 2px 0 rgba(0,0,0,.05); }
+.active\:bg-slate-100:active { background-color: #f1f5f9; }
+.pl-1 { padding-left: .25rem; }
+.pl-2\.5 { padding-left: .625rem; }
+.pr-2\.5 { padding-right: .625rem; }

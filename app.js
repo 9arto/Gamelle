@@ -11,6 +11,15 @@ function cleanSearchText(str) {
 // Logique de l'application Gamelle & Panier
 
 // Icônes vectorielles (nettes sur iPhone, suivent la couleur du texte en mode clair comme sombre)
+const RAYON_ICONS = {
+  'fruits-legumes': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-4 0-7-3-7-7 0-3 2-6 7-6s7 3 7 6c0 4-3 7-7 7z"/><path d="M12 8c0-2 1-4 3-5"/></svg>',
+  'boucherie': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14c0-4 3-8 9-8 4 0 7 2 7 5 0 4-4 7-9 7-4 0-7-1-7-4z"/><circle cx="14" cy="11.5" r="1.6"/></svg>',
+  'poissonnerie': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12c3-5 9-6 14-3l4-2v10l-4-2c-5 3-11 2-14-3z"/><circle cx="8.5" cy="11" r=".8"/></svg>',
+  'cremerie': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-6 9 6v8H3z"/><circle cx="9" cy="15" r="1"/><circle cx="15" cy="14" r="1"/></svg>',
+  'epicerie': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v3H7z"/><path d="M6 7h12v13H6z"/><path d="M9 11h6"/></svg>',
+  'courants': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/><path d="M3 4h2.5l2.2 11h10l2-8H7"/></svg>'
+};
+const rayonIcon = (r) => RAYON_ICONS[r.id] || r.icon;
 const ICONS = {
   box: '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.3 7.5L12 12.5l8.7-5"/><path d="M12 12.5V22"/></svg>',
   lock: '<svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>',
@@ -48,11 +57,15 @@ function safeImg(url) {
   return /^https?:\/\//i.test(u) ? u : IMG_PLACEHOLDER;
 }
 
+// Photo introuvable : secours (data-fallback) puis visuel du logo. Écouteurs globaux : pas de code dans le HTML (compatible CSP).
 function imgFallback(img) {
-  img.onerror = null;
+  if (img.dataset.fallback && !img.dataset.triedFallback) { img.dataset.triedFallback = '1'; img.src = img.dataset.fallback; return; }
+  if (img.src === IMG_PLACEHOLDER) return;
   img.src = IMG_PLACEHOLDER;
 }
-window.imgFallback = imgFallback;
+document.addEventListener('error', (e) => { if (e.target && e.target.tagName === 'IMG') imgFallback(e.target); }, true);
+// Fond « en chargement » discret retiré dès que la photo est affichée
+document.addEventListener('load', (e) => { if (e.target && e.target.tagName === 'IMG') e.target.classList.add('img-loaded'); }, true);
 
 // Accès au stockage local sans jamais planter (mode privé, quota plein, données corrompues)
 function safeGetItem(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
@@ -99,7 +112,7 @@ function sanitizeStaples(list) {
     if (!s || typeof s !== 'object') return null;
     const name = cleanStr(s.name, 80);
     if (!name) return null;
-    return { id: cleanStr(s.id, 60) || ('staple_' + Date.now() + '_' + i), name, checked: s.checked === true };
+    return { id: cleanStr(s.id, 60) || ('staple_' + Date.now() + '_' + i), name, checked: s.checked === true, qty: Math.round(cleanNum(s.qty, 1, 99, 1)) };
   }).filter(Boolean);
 }
 function sanitizeChecked(map) {
@@ -159,11 +172,42 @@ function sanitizeSpices(list) {
   const known = new Set(GL.SPICES_FULL);
   return sanitizeStringList(list, 40, 80).filter(n => known.has(n));
 }
+function sanitizeStock(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 300).forEach(k => {
+      const v = map[k];
+      if (!v || typeof v !== 'object') return;
+      const qty = cleanNum(v.qty, 0, 100000, NaN);
+      const unit = cleanStr(v.unit, 12);
+      if (Number.isFinite(qty) && ['g', 'ml', 'piece'].includes(unit)) out[cleanStr(k, 120)] = { qty, unit };
+    });
+  }
+  return out;
+}
+function sanitizeStapleHistory(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 300).forEach(k => {
+      const v = map[k];
+      if (v && typeof v === 'object' && Number.isFinite(v.n) && v.n > 0) out[cleanStr(k, 80)] = { n: Math.min(999, Math.round(v.n)), last: Number.isFinite(v.last) ? v.last : 0 };
+    });
+  }
+  return out;
+}
+function sanitizeTrips(list) {
+  if (!Array.isArray(list)) return [];
+  return list.slice(-30).map(t => {
+    if (!t || typeof t !== 'object') return null;
+    const total = cleanNum(t.total, 0, 5000, NaN), est = cleanNum(t.est, 0, 5000, 0);
+    return Number.isFinite(total) && Number.isFinite(t.t) ? { t: t.t, total, est, items: Math.round(cleanNum(t.items, 0, 500, 0)) } : null;
+  }).filter(Boolean);
+}
 function sanitizeGenFilters(f) {
   const out = {};
   if (!f || typeof f !== 'object') return out;
   ['seasons', 'types', 'styles'].forEach(k => { if (Array.isArray(f[k])) out[k] = sanitizeStringList(f[k], 12, 30); });
-  ['budget', 'express', 'gamelle', 'onePan', 'favoritesOnly', 'noPork', 'noLactose'].forEach(k => { if (f[k] === true) out[k] = true; });
+  ['budget', 'express', 'onePan', 'favoritesOnly', 'noPork', 'noLactose'].forEach(k => { if (f[k] === true) out[k] = true; });
   if (typeof f.fridge === 'string') out.fridge = cleanStr(f.fridge, 120);
   return out;
 }
@@ -478,7 +522,14 @@ let state = {
   notes: {},           // { idRecette: { r: 1|-1|0, cooked: horodatage, t: horodatage } }
   genFilters: {},      // derniers filtres de « Composer mes 7 repas »
   off: {},             // cache Open Food Facts { article: { t, d } }
-  leftovers: []        // produits qu'on a à la maison (« Finir mes restes »)
+  leftovers: [],       // produits qu'on a à la maison (« Finir mes restes »)
+  notify: true,        // prévenir le foyer quand on ajoute un produit / un repas
+  memberName: '',      // prénom (facultatif) affiché dans les notifications
+  weatherMood: null,   // météo de la semaine (jamais affichée : elle oriente seulement le tirage des repas)
+  pantryStock: {},     // quantités en stock au placard { articleId: { qty, unit } } (facultatif)
+  stapleHistory: {},   // produits courants ajoutés { nom: { n, last } } → « vos habituels »
+  trips: [],           // dernières courses { t, total, est, items } → budget réaliste
+  sync: { lastOk: 0, pending: false, fail: false }
 };
 
 // Catalogue : affichage progressif (24 plats à la fois)
@@ -580,6 +631,13 @@ function loadFromLocalStorage() {
   state.aisleOrder = sanitizeStringList(readJSON('gamelle_aisle_order', []), 10, 30);
   state.off = sanitizeOffCache(readJSON('gamelle_off_cache', {}));
   state.leftovers = sanitizeStringList(readJSON('gamelle_leftovers', []), 30, 60);
+  state.pantryStock = sanitizeStock(readJSON('gamelle_pantry_stock', {}));
+  state.stapleHistory = sanitizeStapleHistory(readJSON('gamelle_staple_history', {}));
+  state.trips = sanitizeTrips(readJSON('gamelle_trips', []));
+  state.sync.lastOk = parseInt(safeGetItem('gamelle_sync_ok') || '0', 10) || 0;
+  state.notify = safeGetItem('gamelle_notify') !== '0';
+  state.memberName = cleanStr(safeGetItem('gamelle_member_name') || '', 30);
+  { const w = readJSON('gamelle_weather', null); if (w && Number.isFinite(w.t) && w.w) state.weatherMood = GL.weatherMood(w.w); }
 
   // Planning (support migration objet {Lundi: ...} -> tableau [])
   let plan = readJSON('gamelle_plan', null);
@@ -592,7 +650,8 @@ function loadFromLocalStorage() {
   state.checkedGroceries = sanitizeChecked(readJSON('gamelle_checked', {}));
 }
 
-function saveToLocalStorage() {
+// Écrit tout l'état local (sans diffuser) — utilisé aussi quand on applique une synchro reçue ou une restauration
+function persistLocal() {
   safeSetItem('gamelle_portions', state.portions);
   safeSetItem('gamelle_plan', JSON.stringify(state.plan));
   safeSetItem('gamelle_saved_menus', JSON.stringify(state.savedMenus));
@@ -604,12 +663,18 @@ function saveToLocalStorage() {
   safeSetItem('gamelle_gen_filters', JSON.stringify(state.genFilters || {}));
   safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
   safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
+  safeSetItem('gamelle_pantry_stock', JSON.stringify(state.pantryStock || {}));
+  safeSetItem('gamelle_staple_history', JSON.stringify(state.stapleHistory || {}));
+  safeSetItem('gamelle_trips', JSON.stringify(state.trips || []));
   safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
   safeSetItem('gamelle_leftovers', JSON.stringify(state.leftovers || []));
   safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
   safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
   const customList = (state.recipes || []).filter(r => r.id.startsWith('custom-'));
   safeSetItem('gamelle_custom_recipes', JSON.stringify(customList));
+}
+function saveToLocalStorage() {
+  persistLocal();
   updateQRCode();
   broadcastSync();
 }
@@ -679,7 +744,10 @@ async function applyPendingShare() {
       message: `Code « ${share.household} ». Votre menu, vos recettes et vos courses seront synchronisés avec ce foyer.`,
       confirmLabel: 'Rejoindre'
     });
-    if (ok) setHouseholdCode(share.household);
+    if (ok) {
+      if (isWeakHouseholdCode(share.household)) showToast('Code trop faible : demandez à l\'autre téléphone de changer de code', { duration: 6000 });
+      else setHouseholdCode(share.household);
+    }
   }
 }
 
@@ -713,7 +781,7 @@ function generateBalancedWeek(forceAll = false, filtersArg) {
   const need = newPlan.filter(x => x === null).length;
   const res = GL.pickMenu({
     recipes: state.recipes, count: need, filters, excludeIds: [...lockedRecipeIds],
-    favorites: state.favorites, notes: state.notes
+    favorites: state.favorites, notes: state.notes, mood: state.weatherMood
   });
   if (res.ids.length === 0 && need > 0) {
     showToast('Aucun plat ne correspond à ces filtres');
@@ -902,969 +970,8 @@ function renderSavedMenusList() {
   });
 }
 
-// ==========================================
-// HARMONISATION & AGRÉGATION DE LA LISTE DE COURSES
-// ==========================================
+// (moteur de la liste de courses : voir groceries.js)
 
-// --- Unités canoniques -------------------------------------------------------
-// Toutes les unités écrites dans les recettes (« pièces », « cuillère à soupe »,
-// « litre », « grosses pièces »…) sont ramenées à une forme unique.
-function canonicalUnit(rawUnit) {
-  const s = (rawUnit || '').toString().toLowerCase()
-    .replace(/œ/g, 'oe')
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[’']/g, "'")
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/\.$/, '');
-
-  if (!s) return 'piece';
-  if (['g', 'gr', 'gramme', 'grammes'].includes(s)) return 'g';
-  if (['kg', 'kilo', 'kilos', 'kilogramme', 'kilogrammes'].includes(s)) return 'kg';
-  if (['ml', 'millilitre', 'millilitres'].includes(s)) return 'ml';
-  if (['cl', 'centilitre', 'centilitres'].includes(s)) return 'cl';
-  if (['l', 'litre', 'litres'].includes(s)) return 'l';
-  if (/^(c\.?\s*a\.?\s*s|cas|cs|c\.?\s*s|cuil+eres?\s+a\s+soupe|c\.?\s*a\s+soupe|c\s+a\s+soupe)$/.test(s)) return 'c. à soupe';
-  if (/^(c\.?\s*a\.?\s*c|cac|cc|c\.?\s*c|cuil+eres?\s+a\s+cafe|c\.?\s*a\s+cafe|c\s+a\s+cafe)$/.test(s)) return 'c. à café';
-  if (/^((grosses?|petites?|moyennes?)\s+)?(pieces?|unites?|escalopes?)$/.test(s)) return 'piece';
-  if (/^gousses?$/.test(s)) return 'gousse';
-  if (/^bottes?$/.test(s)) return 'botte';
-  if (/^bouquets?$/.test(s)) return 'bouquet';
-  if (/^tiges?$/.test(s)) return 'tige';
-  if (/^branches?$/.test(s)) return 'branche';
-  if (/^brins?$/.test(s)) return 'brin';
-  if (/^tetes?$/.test(s)) return 'tete';
-  if (/^tranches?$/.test(s)) return 'tranche';
-  if (/^(paves?|dos)$/.test(s)) return 'pave';
-  if (/^oeufs?$/.test(s)) return 'oeuf';
-  if (/^(sachets?|salades?)$/.test(s)) return 'sachet';
-  if (/^pincees?$/.test(s)) return 'pincee';
-  if (/^portions?$/.test(s)) return 'portion';
-  if (/^poignees?$/.test(s)) return 'poignee';
-  if (/^quartiers?$/.test(s)) return 'quartier';
-  if (/^pots?$/.test(s)) return 'pot';
-  if (/^cubes?$/.test(s)) return 'cube';
-  if (/^(boites?|conserves?)$/.test(s)) return 'boite';
-  if (/^paquets?$/.test(s)) return 'paquet';
-  if (/^(cm|centimetres?)$/.test(s)) return 'cm';
-  if (/^morceaux?$/.test(s)) return 'morceau';
-  if (/^bouteilles?$/.test(s)) return 'bouteille';
-  return s;
-}
-
-// Poids (g) et volumes (ml) : convertibles entre eux (densité ≈ 1 pour la cuisine)
-const MASS_FACTORS = { g: 1, kg: 1000 };
-const VOLUME_FACTORS = { ml: 1, cl: 10, l: 1000, 'c. à soupe': 15, 'c. à café': 5, pincee: 0.5 };
-
-function unitToGrams(unit) {
-  if (MASS_FACTORS[unit]) return MASS_FACTORS[unit];
-  if (VOLUME_FACTORS[unit]) return VOLUME_FACTORS[unit];
-  return null;
-}
-
-// Poids moyen d'une unité « comptable » pour chaque ingrédient harmonisé (en g, ou ml pour les liquides)
-// → permet d'additionner « 2 pièces de patate douce » et « 600 g de patate douce ».
-const UNIT_WEIGHTS = {
-  "Patates douces": { piece: 300 },
-  "Pommes de terre fraîches": { piece: 150 },
-  "Oignons jaunes": { piece: 120 },
-  "Oignons rouges": { piece: 120 },
-  "Échalotes": { piece: 30 },
-  "Oignons nouveaux (cébettes)": { botte: 150, piece: 30, tige: 30 },
-  "Blancs de poireaux": { piece: 150 },
-  "Carottes fraîches": { piece: 100 },
-  "Courgettes fraîches": { piece: 250 },
-  "Aubergines fraîches": { piece: 300 },
-  "Tomates fraîches": { piece: 120 },
-  "Champignons de Paris frais": { piece: 20, barquette: 250 },
-  "Chou-fleur frais": { piece: 800, tete: 800 },
-  "Brocoli frais": { tete: 400, piece: 400 },
-  "Pousses d'épinards frais": { sachet: 120, poignee: 30 },
-  "Poivrons (rouges ou tricolores)": { piece: 150 },
-  "Courge Butternut": { piece: 1000 },
-  "Potimarron frais": { piece: 1000 },
-  "Citrons verts": { piece: 60 },
-  "Citrons jaunes": { piece: 110, quartier: 14 },
-  "Laitue iceberg": { poignee: 30, piece: 500 },
-  "Citrons confits": { piece: 60 },
-  "Bananes fraîches": { piece: 120 },
-  "Avocats mûrs": { piece: 200 },
-  "Concombre frais": { piece: 300 },
-  "Salade verte (mâche ou roquette)": { sachet: 125, poignee: 30, piece: 300 },
-  "Gousses d'ail": { gousse: 5, piece: 5, tete: 50 },
-  "Gingembre frais": { cm: 5, morceau: 15 },
-  "Basilic frais": { botte: 30, bouquet: 30, brin: 1, tige: 1, poignee: 10, pincee: 0.3, 'c. à café': 1 },
-  "Thym frais": { botte: 20, bouquet: 20, branche: 1, brin: 1, tige: 1, pincee: 0.3, 'c. à café': 1 },
-  "Romarin frais": { botte: 20, bouquet: 20, branche: 2, brin: 2, tige: 2, pincee: 0.3, 'c. à café': 1 },
-  "Menthe fraîche": { botte: 30, bouquet: 30, brin: 1, tige: 1, poignee: 10, pincee: 0.3 },
-  "Persil plat frais": { botte: 50, bouquet: 50, brin: 3, tige: 3, poignee: 10 },
-  "Coriandre fraîche": { botte: 50, bouquet: 50, brin: 3, tige: 3, poignee: 10 },
-  "Ciboulette fraîche": { botte: 30, bouquet: 30, brin: 2, tige: 2, poignee: 10 },
-  "Aneth frais": { botte: 30, bouquet: 30, brin: 3, tige: 3, poignee: 10 },
-  "Petits pois frais (ou surgelés)": { poignee: 40 },
-  "Haricots verts fins frais": { poignee: 50 },
-  "Bœuf haché frais (pur bœuf)": { piece: 125 },
-  "Bavette ou rumsteck de bœuf": { piece: 150 },
-  "Chorizo en tranches": { tranche: 5, piece: 200 },
-  "Lardons fumés pur porc": { sachet: 200, paquet: 200, barquette: 200 },
-  "Saucisses de volaille": { piece: 80 },
-  "Saucisses de Toulouse ou fumées": { piece: 100 },
-  "Cuisses de poulet fraîches": { piece: 250 },
-  "Filets de poulet frais": { piece: 150, morceau: 150 },
-  "Escalopes de dinde fraîches": { piece: 130 },
-  "Cuisses de canard confites": { piece: 250 },
-  "Filet de porc français": { piece: 150 },
-  "Veau français (sauté ou blanquette)": { piece: 150 },
-  "Jambon blanc supérieur": { tranche: 40 },
-  "Pavés de saumon frais": { pave: 130, piece: 130 },
-  "Dos de cabillaud / Poisson blanc frais": { pave: 140, piece: 140 },
-  "Saumon fumé de qualité": { tranche: 25 },
-  "Œufs frais": { oeuf: 55, piece: 55 },
-  "Mozzarella (boule ou râpée)": { piece: 125 },
-  "Feta AOP": { piece: 200 },
-  "Bûche de chèvre frais": { piece: 180 },
-  "Reblochon de Savoie AOP": { piece: 450 },
-  "Crème fraîche (épaisse ou liquide)": { pot: 200 },
-  "Fromage blanc (ou ricotta)": { pot: 500 },
-  "Pâte à tarte (feuilletée ou brisée)": { piece: 230 },
-  "Pain de campagne (ou pain de mie)": { tranche: 35, piece: 250 },
-  "Yaourts (nature ou aux fruits)": { pot: 125 },
-  "Pois chiches (bocal)": { boite: 400, pot: 400 },
-  "Haricots rouges (bocal)": { boite: 400, pot: 400 },
-  "Haricots noirs (bocal)": { boite: 400, pot: 400 },
-  "Lait de coco": { boite: 400, piece: 400 },
-  "Tomates concassées / Coulis": { boite: 400, piece: 400 },
-  "Thon au naturel (boîte)": { boite: 140, piece: 140 },
-  "Maïs doux en boîte": { boite: 285, piece: 285 },
-  "Bouillon (volaille ou légumes)": { cube: 500 },
-  "Gnocchis à poêler": { sachet: 500, paquet: 500 },
-  "Falafels prêts à dorer": { piece: 25 },
-  "Galettes de sarrasin (blé noir)": { piece: 50 }
-};
-
-// Unités qui s'achètent à l'unité (on arrondit à l'unité supérieure dans la liste de courses)
-const COUNT_UNITS = ['piece', 'gousse', 'botte', 'bouquet', 'tige', 'branche', 'brin', 'tete', 'tranche', 'pave', 'oeuf', 'sachet', 'portion', 'poignee', 'quartier', 'pot', 'cube', 'boite', 'paquet', 'morceau', 'bouteille'];
-
-// Convertit une quantité d'une unité vers une autre pour un ingrédient donné.
-// Renvoie null si la conversion n'a pas de sens (on garde alors une ligne séparée).
-function convertQuantity(qty, fromUnit, toUnit, ingredientName) {
-  if (fromUnit === toUnit) return qty;
-  const weights = UNIT_WEIGHTS[ingredientName] || {};
-
-  const fromG = unitToGrams(fromUnit) ?? weights[fromUnit] ?? null;
-  const toG = unitToGrams(toUnit) ?? weights[toUnit] ?? null;
-  if (fromG == null || toG == null) return null;
-  return (qty * fromG) / toG;
-}
-
-// Fonction de formatage d'unité et quantité respectant la grammaire française
-// forShopping = true : arrondi pratique pour acheter (2,3 oignons → 3 pièces)
-function formatQuantityAndUnit(quantity, baseUnit, itemName = '', forShopping = false) {
-  let q = Number(quantity) || 0;
-  let unit = canonicalUnit(baseUnit);
-
-  // Poids : tout en grammes, puis kg au-delà de 1000 g
-  if (unit === 'kg') { q *= 1000; unit = 'g'; }
-  if (unit === 'g') {
-    if (q >= 1000) {
-      const kg = Math.round((q / 1000) * 10) / 10;
-      return `${kg.toString().replace('.', ',')} kg`;
-    }
-    if (forShopping && q > 50) q = Math.ceil(q / 10) * 10;
-    return `${Math.max(1, Math.round(q))} g`;
-  }
-
-  // Volumes : tout en ml, puis L au-delà de 1000 ml
-  if (unit === 'cl') { q *= 10; unit = 'ml'; }
-  if (unit === 'l') { q *= 1000; unit = 'ml'; }
-  if (unit === 'ml') {
-    if (q >= 1000) {
-      const l = Math.round((q / 1000) * 10) / 10;
-      return `${l.toString().replace('.', ',')} L`;
-    }
-    if (forShopping && q > 50) q = Math.ceil(q / 10) * 10;
-    return `${Math.max(1, Math.round(q))} ml`;
-  }
-
-  if (forShopping && (COUNT_UNITS.includes(unit) || unit === 'c. à soupe' || unit === 'c. à café')) {
-    q = Math.max(1, Math.ceil(q - 0.15));
-  } else {
-    q = Math.round(q * 10) / 10;
-  }
-
-  const numStr = Number.isInteger(q) ? q.toString() : q.toString().replace('.', ',');
-  const isPlural = q >= 2;
-  const lowerName = (itemName || '').toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/œ/g, 'oe');
-
-  // Évite les doublons d'unité si le libellé de l'ingrédient l'exprime déjà
-  if (unit === 'oeuf' && lowerName.includes('oeuf')) return numStr;
-  if (unit === 'gousse' && lowerName.includes('gousse')) return numStr;
-  if (unit === 'pave' && lowerName.includes('pave')) return numStr;
-  if (unit === 'tranche' && lowerName.includes('tranche')) return numStr;
-  if (unit === 'botte' && lowerName.includes('botte')) return numStr;
-
-  const LABELS = {
-    piece: ['pièce', 'pièces'], gousse: ['gousse', 'gousses'], botte: ['botte', 'bottes'],
-    bouquet: ['bouquet', 'bouquets'], tige: ['tige', 'tiges'], branche: ['branche', 'branches'],
-    brin: ['brin', 'brins'], tete: ['tête', 'têtes'], tranche: ['tranche', 'tranches'],
-    pave: ['pavé', 'pavés'], oeuf: ['œuf', 'œufs'], sachet: ['sachet', 'sachets'],
-    pincee: ['pincée', 'pincées'], portion: ['portion', 'portions'], poignee: ['poignée', 'poignées'],
-    quartier: ['quartier', 'quartiers'], pot: ['pot', 'pots'], cube: ['cube', 'cubes'],
-    boite: ['boîte', 'boîtes'], paquet: ['paquet', 'paquets'], morceau: ['morceau', 'morceaux'],
-    bouteille: ['bouteille', 'bouteilles'], cm: ['cm', 'cm'],
-    'c. à soupe': ['c. à soupe', 'c. à soupe'], 'c. à café': ['c. à café', 'c. à café']
-  };
-  const label = LABELS[unit] ? LABELS[unit][isPlural ? 1 : 0] : unit;
-  return `${numStr} ${label}`.trim();
-}
-// [motif sur le nom sans accents, nom affiché dans les courses, unité cible (null = unité d'origine), rayon]
-const SPECIAL_PRODUCTS = [
-  [/\bcamembert\b/, "Camembert", "piece", "cremerie"],
-  [/\braclette\b/, "Fromage à raclette", "g", "cremerie"],
-  [/\bharissa\b/, "Harissa (pâte)", null, "epicerie"],
-  [/\bpate\s+a\s+pizza\b/, "Pâte à pizza", "piece", "cremerie"],
-  [/\bnouilles?\s+instantanees?\b/, "Nouilles instantanées", "piece", "epicerie"],
-  [/\bnouilles?\s+de\s+riz\b/, "Nouilles de riz", "g", "epicerie"],
-  [/\bbagels?\b/, "Pains bagels", "piece", "epicerie"],
-  [/\bcoulis\s+de\s+tomates?\b/, "Tomates concassées / Coulis", "g", "epicerie"],
-  [/\bpoulet\s*\(?\s*entier\b/, "Poulet entier", "piece", "boucherie"],
-  [/\bpoulet\s*\(?\s*pane\b/, "Poulet pané", "piece", "boucherie"],
-  [/\bpoulet\s*\(\s*cuisses?\s*\)/, "Cuisses de poulet fraîches", "piece", "boucherie"],
-  [/\bfond\s+de\s+veau\b/, "Fond de veau", null, "epicerie"],
-  [/\bmagrets?\b/, "Magrets de canard", "g", "boucherie"],
-  [/\bechine\b/, "Échine de porc", "g", "boucherie"],
-  [/\bpois\s+gourmands?\b/, "Pois gourmands", "g", "fruits-legumes"],
-  [/\bgingembre\s*\(?\s*moulu\b/, "Gingembre moulu", null, "epicerie"],
-  [/\bcotes?\s+de\s+porc\b/, "Côtes de porc", "piece", "boucherie"],
-  [/\b(jambon\s+(cru|sec|de\s+parme)|prosciutto)\b/, "Jambon cru (prosciutto)", "tranche", "boucherie"],
-  [/\bepinards?\s+surgeles?\b/, "Épinards surgelés", "g", "epicerie"],
-  [/\bharicots?\s+verts?\s+surgeles?\b/, "Haricots verts surgelés", "g", "epicerie"],
-  // Produits dont le nom contient un autre produit (ail, ricotta, champignons, couscous, citron, tomates…)
-  [/\bfromage\b.*\bail\b/, "Fromage frais ail & fines herbes", "g", "cremerie"],
-  [/\bpilons?\b/, "Pilons de poulet", "g", "boucherie"],
-  [/\bboisson\s+(amande|avoine|soja|coco)\b/, null, "ml", "epicerie"],
-  [/\bchair\s+a\s+saucisse\b/, "Chair à saucisse", "g", "boucherie"],
-  [/\bharicots?\s+verts?\b.*\b(conserve|bocal|boite)\b/, "Haricots verts en conserve", "g", "epicerie"],
-  [/\bnems?\b/, "Nems (surgelés)", "piece", "epicerie"],
-  [/\bkit\b.*\bfajitas?\b/, "Kit pour fajitas (galettes & épices)", "piece", "epicerie"],
-  [/\b(ravioli|ravioles?|tortellini)\b/, null, "g", "cremerie"],
-  [/\b(puree\s+de\s+tomates?|sauce\s+tomate|passata)\b/, "Tomates concassées / Coulis", "g", "epicerie"],
-  [/\bthon\b/, "Thon au naturel (boîte)", "g", "epicerie"],
-  [/\bepices?\b.*\bcouscous\b|\bras\s+el\s+hanout\b/, "Épices à couscous (ras el hanout)", "c. à café", "epicerie"]
-];
-
-function normalizeIngredient(ing) {
-  const raw = (ing.name || '').toLowerCase()
-    .replace(/œ/g, 'oe')
-    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[’']/g, "'")
-    .trim();
-
-  let name = (ing.name || '').trim();
-  // Unité d'origine harmonisée (« pièces », « cuillère à soupe », « litre »… → forme unique).
-  // Les règles ci-dessous fixent l'unité CIBLE de la liste de courses ; la quantité est
-  // convertie ensuite dans computeGroceries() grâce à convertQuantity().
-  let unit = canonicalUnit(ing.unit);
-  let quantity = ing.quantity || 1;
-  let rayon = ing.rayon || 'epicerie';
-  if (unit === 'kg') { quantity *= 1000; unit = 'g'; }
-  else if (unit === 'cl') { quantity *= 10; unit = 'ml'; }
-  else if (unit === 'l') { quantity *= 1000; unit = 'ml'; }
-
-  // --- 0. PRODUITS PARTICULIERS ---
-  // Ces produits contiennent un mot (lait, pâte, curry, poulet, veau…) qui les faisait absorber par
-  // une règle plus générale : « Camembert au lait cru » devenait du lait et disparaissait de la liste.
-  // Ils sont traités en premier et gardent leur propre ligne de courses (unité d'origine conservée).
-  const special = SPECIAL_PRODUCTS.find(([re]) => re.test(raw));
-  if (special) {
-    return { name: special[1] || name, quantity, unit: special[2] || unit, rayon: special[3] };
-  }
-
-  // --- 1. CRÈMERIE & PRODUITS LAITIERS ---
-  // Pâtes à tarte AVANT le beurre pour éviter qu'une "pâte feuilletée pur beurre" devienne du beurre
-  // Regroupements : un même produit écrit de plusieurs façons = une seule ligne de courses
-  if (/\bbouquet\s+garni\b/.test(raw)) {
-    name = "Bouquet garni"; unit = "piece"; rayon = "fruits-legumes";
-  } else if (/\bbasilic\b/.test(raw)) {
-    name = "Basilic frais"; unit = "botte"; rayon = "fruits-legumes";
-  } else if (/\bthym\b/.test(raw)) {
-    name = "Thym frais"; unit = "botte"; rayon = "fruits-legumes";
-  } else if (/\bromarin\b/.test(raw)) {
-    name = "Romarin frais"; unit = "botte"; rayon = "fruits-legumes";
-  } else if (/\bmenthe\b/.test(raw)) {
-    name = "Menthe fraîche"; unit = "botte"; rayon = "fruits-legumes";
-  } else if (/\bcacahuetes?\b/.test(raw) && !/beurre/.test(raw)) {
-    name = "Cacahuètes grillées"; unit = "g"; rayon = "epicerie";
-  } else if (/\btortillas?\b/.test(raw)) {
-    name = "Tortillas de blé"; unit = "piece"; rayon = "epicerie";
-  } else if (/\bmarrons?\b/.test(raw)) {
-    name = "Marrons cuits"; unit = "g"; rayon = "epicerie";
-  } else if (/\boranges?\b/.test(raw) && !/\bjus\s+d/.test(raw)) {
-    name = "Oranges"; unit = "piece"; rayon = "fruits-legumes";
-  } else if (/\bpousses?\s+de\s+(soja|haricots?\s+mungo)\b/.test(raw)) {
-    name = "Pousses de soja"; unit = "g"; rayon = "fruits-legumes";
-  } else if (/\bfromage\s+frais\s+a\s+tartiner\b/.test(raw)) {
-    name = "Fromage frais à tartiner"; unit = "g"; rayon = "cremerie";
-  } else if (/\bepices?\s+mexicaines?\b/.test(raw)) {
-    name = "Épices mexicaines"; rayon = "epicerie";
-  } else if (/\b(pate\s+feuilletee|feuilletage|pate\s+brisee|pate\s+a\s+tarte)\b/.test(raw)) {
-    name = "Pâte à tarte (feuilletée ou brisée)";
-    unit = "piece";
-    rayon = "cremerie";
-  } else if (/\bbeurre\b/.test(raw) && !raw.includes("cacahu")) {
-    name = "Beurre (doux ou demi-sel)";
-    unit = "g";
-    rayon = "cremerie";
-  } else if ((/\b(oeufs?|oeufs?)\b/.test(raw) && !raw.includes('lasagne') && !raw.includes('pate')) || unit === 'oeuf') {
-    name = "Œufs frais";
-    unit = "oeuf";
-    rayon = "cremerie";
-  } else if (/\bcreme\b/.test(raw) && !raw.includes("ail") && !raw.includes("avocat")) {
-    name = "Crème fraîche (épaisse ou liquide)";
-    unit = 'ml';
-    rayon = "cremerie";
-  } else if (/\blait\b/.test(raw) && !raw.includes("coco") && !/\bau\s+lait\b|fromage/.test(raw)) {
-    name = "Lait (demi-écrémé ou entier)";
-    unit = "ml";
-    rayon = "cremerie";
-  } else if (/\b(mozzarella|mozza)\b/.test(raw)) {
-    name = "Mozzarella (boule ou râpée)";
-    unit = (unit === 'g' ? 'g' : 'piece');
-    rayon = "cremerie";
-  } else if (/\bparmesan\b/.test(raw)) {
-    name = "Parmesan AOP râpé";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\bemmental\b/.test(raw)) {
-    name = "Emmental râpé";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\bcomte\b/.test(raw)) {
-    name = "Comté AOP râpé";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\bchevre\b/.test(raw)) {
-    name = "Bûche de chèvre frais";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\bfeta\b/.test(raw)) {
-    name = "Feta AOP";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\bricotta\b/.test(raw)) {
-    name = "Ricotta fraîche";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\breblochon\b/.test(raw)) {
-    name = "Reblochon de Savoie AOP";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\bgorgonzola\b/.test(raw)) {
-    name = "Gorgonzola AOP";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\bfromage\s+blanc\b/.test(raw)) {
-    name = "Fromage blanc (ou ricotta)";
-    unit = "g";
-    rayon = "cremerie";
-  } else if (/\bkefir\b/.test(raw)) {
-    name = "Kéfir (bouteille)";
-    unit = "bouteille";
-    rayon = "cremerie";
-  } else if (/\byaourts?\b/.test(raw)) {
-    name = "Yaourts (nature ou aux fruits)";
-    unit = "pot";
-    rayon = "cremerie";
-  } else if (/\b(galettes?.*(sarrasin|ble\s+noir|bretonne)|crepes?.*sarrasin)\b/.test(raw)) {
-    name = "Galettes de sarrasin (blé noir)";
-    unit = "piece";
-    rayon = "cremerie";
-  }
-
-  // --- 2. HUILES, VINAIGRES & CONDIMENTS (Épicerie - AVANT olives & pâtes) ---
-  else if (/\bhuile.*olive\b/.test(raw) || (raw.includes("huile") && raw.includes("olive"))) {
-    name = "Huile d'olive vierge extra";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\bhuile.*sesame\b/.test(raw)) {
-    name = "Huile de sésame";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\b(beurre\s+de\s+cacahuete|beurre\s+d'arachide)\b/.test(raw)) {
-    name = "Beurre de cacahuète (pot)";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\b(sauce\s+soja\s+sucree|soja\s+sucree)\b/.test(raw)) {
-    name = "Sauce soja sucrée";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\b(sauce\s+soja|soja\s+salee)\b/.test(raw)) {
-    name = "Sauce soja salée";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\b(sauce\s+teriyaki|teriyaki)\b/.test(raw)) {
-    name = "Sauce teriyaki";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\b(vinaigre.*balsamique|balsamique)\b/.test(raw)) {
-    name = "Vinaigre balsamique";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\b(vinaigre.*cidre|vinaigre.*vin|vinaigre)\b/.test(raw)) {
-    name = "Vinaigre de cidre (ou vin)";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\b(moutarde.*ancienne|moutarde.*dijon|moutarde)\b/.test(raw)) {
-    name = "Moutarde à l'ancienne ou Dijon";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\bmiel\b/.test(raw)) {
-    name = "Miel toutes fleurs";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  }
-
-  // --- 3. ÉPICES, CURRY & CONDIMENTS SECS (AVANT PÂTES DE BLÉ) ---
-  else if (/\b(curry|pate\s+de\s+curry)\b/.test(raw)) {
-    name = "Pâte ou poudre de curry doux";
-    unit = (unit === 'c. à soupe' ? 'c. à soupe' : 'c. à café');
-    rayon = "epicerie";
-  } else if (/\bcurcuma\b/.test(raw)) {
-    name = "Curcuma en poudre";
-    unit = "c. à café";
-    rayon = "epicerie";
-  } else if (/\b(cumin|cumin\s+en\s+poudre)\b/.test(raw)) {
-    name = "Cumin en poudre";
-    unit = "c. à café";
-    rayon = "epicerie";
-  } else if (/\b(paprika|paprika\s+fume)\b/.test(raw)) {
-    name = "Paprika doux (ou fumé)";
-    unit = "c. à café";
-    rayon = "epicerie";
-  } else if (/\b(epices?\s+cajun|cajun|epices?\s+fajitas?|epices?\s+chili)\b/.test(raw) || (raw.includes("epices") && (raw.includes("fajita") || raw.includes("chili")))) {
-    name = "Mélange d'épices (Fajitas / Chili)";
-    unit = "c. à café";
-    rayon = "epicerie";
-  } else if (/\bherbes?\s+de\s+provence\b/.test(raw) || /\borigan\b/.test(raw)) {
-    name = "Herbes de Provence sèches";
-    unit = "c. à café";
-    rayon = "epicerie";
-  } else if (/\bnoix\s+de\s+muscade\b/.test(raw) || /\bmuscade\b/.test(raw)) {
-    name = "Noix de muscade râpée";
-    unit = "pincee";
-    rayon = "epicerie";
-  } else if (/\bcannelle\b/.test(raw)) {
-    name = "Cannelle en poudre";
-    unit = "c. à café";
-    rayon = "epicerie";
-  } else if (/\bgraines?\s+de\s+sesame\b/.test(raw)) {
-    name = "Graines de sésame";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\bgraines?\s+de\s+courge\b/.test(raw)) {
-    name = "Graines de courge";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\bnoix\s+de\s+cajou\b/.test(raw)) {
-    name = "Noix de cajou non salées";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\b(noix|cerneaux\s+de\s+noix)\b/.test(raw) && !raw.includes("saint-jacques") && !raw.includes("st-jacques")) {
-    name = "Cerneaux de noix";
-    unit = "g";
-    rayon = "fruits-legumes";
-  } else if (/\b(noisettes?|amandes?)\b/.test(raw)) {
-    name = "Noisettes ou amandes décortiquées";
-    unit = "g";
-    rayon = "fruits-legumes";
-  }
-
-  // --- 4. FRUITS & LÉGUMES FRAIS ---
-  else if (/\b(ail|gousses?\s+d'ail)\b/.test(raw) && !raw.includes("creme d'ail")) {
-    name = "Gousses d'ail";
-    unit = "gousse";
-    rayon = "fruits-legumes";
-  } else if (/\boignons?\s+rouges?\b/.test(raw)) {
-    name = "Oignons rouges";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\b(cebettes?|oignons?\s+nouveaux?)\b/.test(raw)) {
-    name = "Oignons nouveaux (cébettes)";
-    unit = "botte";
-    rayon = "fruits-legumes";
-  } else if (/\bechalotes?\b/.test(raw)) {
-    name = "Échalotes";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bconfit.*oignons?\b/.test(raw)) {
-    name = "Confit d'oignons";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\b(oignons?|ognons?)\b/.test(raw)) {
-    name = "Oignons jaunes";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bpoireaux?\b/.test(raw)) {
-    name = "Blancs de poireaux";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bcarottes?\b/.test(raw)) {
-    name = "Carottes fraîches";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bcourgettes?\b/.test(raw)) {
-    name = "Courgettes fraîches";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\baubergines?\b/.test(raw)) {
-    name = "Aubergines fraîches";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\btomates?\b/.test(raw) && !raw.includes("concasse") && !raw.includes("coulis") && !raw.includes("concentre") && !raw.includes("seche") && !raw.includes("pelee") && !raw.includes("pulpe")) {
-    name = "Tomates fraîches";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bchampignons?\b/.test(raw)) {
-    name = "Champignons de Paris frais";
-    unit = "g";
-    rayon = "fruits-legumes";
-  } else if (/\bchou.*fleur\b/.test(raw)) {
-    name = "Chou-fleur frais";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bbrocolis?\b/.test(raw)) {
-    name = "Brocoli frais";
-    unit = "tete";
-    rayon = "fruits-legumes";
-  } else if (/\bepinards?\b/.test(raw)) {
-    name = "Pousses d'épinards frais";
-    unit = "g";
-    rayon = "fruits-legumes";
-  } else if (/\bpoivrons?\b/.test(raw)) {
-    name = "Poivrons (rouges ou tricolores)";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bpatates?\s+douces?\b/.test(raw)) {
-    name = "Patates douces";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bpommes?\s+de\s+terre\b/.test(raw)) {
-    name = "Pommes de terre fraîches";
-    unit = "g";
-    rayon = "fruits-legumes";
-  } else if (/\bbutternut\b/.test(raw)) {
-    name = "Courge Butternut";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bpotimarron\b/.test(raw)) {
-    name = "Potimarron frais";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bcitrons?\s+verts?\b/.test(raw)) {
-    name = "Citrons verts";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bcitrons?\s+confits?\b/.test(raw)) {
-    name = "Citrons confits";
-    unit = "piece";
-    rayon = "epicerie";
-  } else if (/\bcitrons?\b/.test(raw) && !raw.startsWith("jus de citron")) {
-    name = "Citrons jaunes";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bbananes?\b/.test(raw)) {
-    name = "Bananes fraîches";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bfruits?\b/.test(raw) && !raw.includes("mer") && !raw.includes("sec") && !raw.includes("passion")) {
-    name = "Fruits frais de saison";
-    unit = "portion";
-    rayon = "fruits-legumes";
-  } else if (/\bavocats?\b/.test(raw)) {
-    name = "Avocats mûrs";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\bconcombres?\b/.test(raw)) {
-    name = "Concombre frais";
-    unit = "piece";
-    rayon = "fruits-legumes";
-  } else if (/\b(salades?|maches?|roquettes?|jeunes pousses)\b/.test(raw)) {
-    name = "Salade verte (mâche ou roquette)";
-    unit = (unit === "g" ? "g" : "sachet");
-    rayon = "fruits-legumes";
-  } else if (/\bpersil\b/.test(raw)) {
-    name = "Persil plat frais";
-    unit = "botte";
-    rayon = "fruits-legumes";
-  } else if (/\bcoriandre\b/.test(raw)) {
-    name = "Coriandre fraîche";
-    unit = "botte";
-    rayon = "fruits-legumes";
-  } else if (/\bciboulette\b/.test(raw)) {
-    name = "Ciboulette fraîche";
-    unit = "botte";
-    rayon = "fruits-legumes";
-  } else if (/\baneth\b/.test(raw)) {
-    name = "Aneth frais";
-    unit = "botte";
-    rayon = "fruits-legumes";
-  } else if (/\bgingembre\b/.test(raw)) {
-    name = "Gingembre frais";
-    unit = "cm";
-    rayon = "fruits-legumes";
-  } else if (/\bpetits?\s+pois\b/.test(raw)) {
-    name = "Petits pois frais (ou surgelés)";
-    unit = "g";
-    rayon = "fruits-legumes";
-  } else if (/\babricots?\s+secs?\b/.test(raw)) {
-    name = "Abricots secs moelleux";
-    unit = "g";
-    rayon = "fruits-legumes";
-  } else if (/\bharicots?\s+verts?\b/.test(raw) || /\bpois gourmands?\b/.test(raw)) {
-    name = "Haricots verts fins frais";
-    unit = "g";
-    rayon = "fruits-legumes";
-  }
-
-  // --- 5. BOUCHERIE & VOLAILLES ---
-  // GLOBALISATION BŒUF (haché, à sauter, à mijoter) : regroupe pur bœuf, bœuf cuit, steak haché, etc.
-  else if ((/\bhach(e|ee|es|ees)?\b/.test(raw) && /\bboeuf\b/.test(raw)) || /\bpur\s+boeuf\b/.test(raw) || /\bboeuf\s+cuit\b/.test(raw) || /\bsteak\s+hache\b/.test(raw) || /\bviande\s+hachee\b/.test(raw)) {
-    name = "Bœuf haché frais (pur bœuf)";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\b(bavette|rumsteck|hampe|onglet|faux-filet|entrecote)\b/.test(raw) || /\b(aiguillettes?|steaks?|pieces?)\s+(de\s+)?boeuf\b|\bboeuf\s+a\s+(sauter|fondue)\b/.test(raw) || (/\bboeuf\b/.test(raw) && /\b(saute|piece|lamelles?|poeler|emince)\b/.test(raw))) {
-    name = "Bavette ou rumsteck de bœuf";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\b(paleron|gite|macreuse|bourguignon|ragout)\b/.test(raw) || (/\bboeuf\b/.test(raw) && !raw.includes("bouillon") && !raw.includes("sauce"))) {
-    name = "Bœuf à mijoter (paleron ou gîte)";
-    unit = "g";
-    rayon = "boucherie";
-  }
-  // CHARCUTERIE & VOLAILLE
-  else if (/\b(chorizo|saucisse.*seche)\b/.test(raw)) {
-    name = "Chorizo en tranches";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\b(lardons?|pancetta|poitrine\s+fumee)\b/.test(raw)) {
-    name = "Lardons fumés pur porc";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\bsaucisses?\s+de\s+volaille\b/.test(raw)) {
-    name = "Saucisses de volaille";
-    unit = "piece";
-    rayon = "boucherie";
-  } else if (/\bsaucisses?\b/.test(raw)) {
-    name = "Saucisses de Toulouse ou fumées";
-    unit = "piece";
-    rayon = "boucherie";
-  } else if (/\bcuisses?\s+de\s+poulet\b/.test(raw)) {
-    name = "Cuisses de poulet fraîches";
-    unit = "piece";
-    rayon = "boucherie";
-  } else if (/\b(poulet|blancs?\s+de\s+poulet|filets?\s+de\s+poulet|aiguillettes?\s+de\s+poulet|escalope.*poulet)\b/.test(raw) && !raw.includes("bouillon")) {
-    name = "Filets de poulet frais";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\bdinde\b/.test(raw)) {
-    name = "Escalopes de dinde fraîches";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\bcanard\b/.test(raw)) {
-    name = "Cuisses de canard confites";
-    unit = "piece";
-    rayon = "boucherie";
-  } else if (/\bveau\b/.test(raw) && !raw.includes("bouillon")) {
-    name = "Veau français (sauté ou blanquette)";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\bagneau\b/.test(raw)) {
-    name = "Sauté d'agneau en morceaux";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\b(porc|filet mignon)\b/.test(raw)) {
-    name = "Filet de porc français";
-    unit = "g";
-    rayon = "boucherie";
-  } else if (/\bjambon\b/.test(raw)) {
-    name = "Jambon blanc supérieur";
-    unit = "tranche";
-    rayon = "boucherie";
-  }
-
-  // --- 6. POISSONNERIE & MARÉE ---
-  else if (/\b(saint-jacques|st-jacques|coquilles?\s+saint-jacques)\b/.test(raw)) {
-    name = "Noix de Saint-Jacques fraîches";
-    unit = "g";
-    rayon = "poissonnerie";
-  } else if (/\bsaumon\b/.test(raw) && (raw.includes("fume") || raw.includes("truite"))) {
-    name = "Saumon fumé de qualité";
-    unit = "g";
-    rayon = "poissonnerie";
-  } else if (/\bsaumon\b/.test(raw)) {
-    name = "Pavés de saumon frais";
-    unit = "pave";
-    rayon = "poissonnerie";
-  } else if (/\bcrevettes?\b/.test(raw)) {
-    name = "Crevettes cuites décortiquées";
-    unit = "g";
-    rayon = "poissonnerie";
-  } else if (/\b(cabillaud|lieu noir|colin|merlu)\b/.test(raw)) {
-    name = "Dos de cabillaud / Poisson blanc frais";
-    unit = (unit === 'pave' ? 'pave' : 'g');
-    rayon = "poissonnerie";
-  }
-
-  // --- 7. ÉPICERIE SALÉE & FÉCULENTS ---
-  else if (/\bkit.*fajitas?\b/.test(raw)) {
-    name = "Kit pour fajitas (galettes & épices)";
-    unit = "piece";
-    rayon = "epicerie";
-  } else if (/\bpommes?\s+noisettes?\b/.test(raw)) {
-    name = "Pommes noisettes (surgelées ou fraîches)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\b(riz.*risotto|arborio|carnaroli)\b/.test(raw)) {
-    name = "Riz à risotto (Arborio ou Carnaroli)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\briz\b/.test(raw) && !raw.includes("vermicelle") && !raw.includes("nouille")) {
-    name = "Riz blanc (basmati ou jasmin)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\blasagnes?\b/.test(raw)) {
-    name = "Plaques de lasagne aux œufs";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\b(pates?|penne|tagliatelles?|spaghettis?|coquillettes?|fusilli|linguine)\b/.test(raw)) {
-    name = "Pâtes de blé (penne, fusilli ou coquillettes)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bgnocchis?\b/.test(raw)) {
-    name = "Gnocchis à poêler";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bnouilles?\b/.test(raw)) {
-    name = "Nouilles asiatiques (blé ou soba)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\b(quinoa|semoule|boulghour|couscous)\b/.test(raw)) {
-    name = "Quinoa ou semoule complète";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bpesto\b/.test(raw)) {
-    name = "Pesto alla genovese (pot)";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\bpois\s+chiches?\b/.test(raw)) {
-    name = "Pois chiches (bocal)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bharicots?\s+noirs?\b/.test(raw)) {
-    name = "Haricots noirs (bocal)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bharicots?\s+rouges?\b/.test(raw)) {
-    name = "Haricots rouges (bocal)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\blentilles?\b.*\bcorail\b/.test(raw)) {
-    name = "Lentilles corail";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\blentilles?\s+vertes?\b/.test(raw)) {
-    name = "Lentilles vertes françaises";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\blait\s+de\s+coco\b/.test(raw)) {
-    name = "Lait de coco";
-    unit = "ml";
-    rayon = "epicerie";
-  } else if (/\b(coulis|pulpe|tomates?\s+concassees?|tomates?\s+fraiches?\s+ou\s+concassees?|puree.*tomates?|tomates?\s+pelees?)\b/.test(raw)) {
-    name = "Tomates concassées / Coulis";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bconcentre.*tomates?\b/.test(raw)) {
-    name = "Concentré de tomate";
-    unit = "c. à soupe";
-    rayon = "epicerie";
-  } else if (/\bthon\b/.test(raw)) {
-    name = "Thon au naturel (boîte)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bbouillon\b/.test(raw)) {
-    name = "Bouillon (volaille ou légumes)";
-    unit = "ml";
-    rayon = "epicerie";
-  } else if (/\b(pain\s+de\s+mie|pain)\b/.test(raw)) {
-    name = "Pain de campagne (ou pain de mie)";
-    unit = "tranche";
-    rayon = "epicerie";
-  } else if (/\bchapelure\b/.test(raw) || /\bpanko\b/.test(raw)) {
-    name = "Chapelure fine (ou panko)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bolives?\b/.test(raw)) {
-    name = "Olives (noires ou vertes)";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bfalafels?\b/.test(raw)) {
-    name = "Falafels prêts à dorer";
-    unit = "piece";
-    rayon = "epicerie";
-  } else if (/\bhoumous\b/.test(raw)) {
-    name = "Houmous classique";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bflocons?\s+d'avoine\b/.test(raw)) {
-    name = "Flocons d'avoine";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bfarine\b/.test(raw) || /\bmaizena\b/.test(raw) || /\bfecule\b/.test(raw)) {
-    name = "Farine de blé ou fécule";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\bmais\b/.test(raw)) {
-    name = "Maïs doux en boîte";
-    unit = "g";
-    rayon = "epicerie";
-  } else if (/\b(vin\s+blanc|vin\s+blanc\s+sec)\b/.test(raw)) {
-    name = "Vin blanc sec de cuisine";
-    unit = "ml";
-    rayon = "epicerie";
-  } else if (/\bvin\s+rouge\b/.test(raw)) {
-    name = "Vin rouge de cuisine";
-    unit = "ml";
-    rayon = "epicerie";
-  }
-
-  return { name, quantity, unit, rayon };
-}
-
-// Poids (g) d'un ingrédient de recette, pour le calcul nutritionnel (null si impossible à convertir)
-function ingredientGrams(ing) {
-  const norm = normalizeIngredient(ing);
-  return convertQuantity(Number(ing.quantity) || 0, canonicalUnit(ing.unit), 'g', norm.name);
-}
-
-// Choix déterministe de l'unité d'affichage d'un article : le résultat ne dépend plus de l'ordre
-// des repas dans le planning (avant : « 280 g » ou « 3 sachets » selon le repas lu en premier).
-// Priorité : grammes / ml (toujours convertibles), puis cuillères, pincée, puis unités comptables.
-const TARGET_UNIT_PRIORITY = ['g', 'ml', 'c. à café', 'c. à soupe', 'pincee'];
-function pickTargetUnit(candidates) {
-  const list = [...candidates];
-  for (const u of TARGET_UNIT_PRIORITY) if (list.includes(u)) return u;
-  for (const u of COUNT_UNITS) if (list.includes(u)) return u;
-  return list.sort()[0];
-}
-
-function computeGroceries() {
-  // Regroupement par ingrédient harmonisé (rayon + nom), indépendamment de l'unité d'origine :
-  // « 2 grosses pièces de patate douce » + « 600 g de patate douce » → « 4 pièces (≈ 1,2 kg) »
-  const aggregated = {};
-  const contributions = [];
-
-  // Supporte plan en tableau ([id1,id2,...]) ou objet legacy ({Lundi: id,...})
-  const planEntries = Array.isArray(state.plan)
-    ? state.plan.map((id, idx) => ({ id, slotIndex: idx }))
-    : Object.entries(state.plan).map(([key, id], idx) => ({ id, slotIndex: idx, dayKey: key }));
-
-  // Passe 1 : normaliser chaque ingrédient et repérer les unités cibles possibles de chaque article
-  planEntries.forEach(({ id: recipeId, slotIndex }) => {
-    if (!recipeId) return;
-
-    // Repas dont les ingrédients sont déjà à la maison (verrouillé / gardé au menu)
-    if (Array.isArray(state.lockedSlots) && state.lockedSlots.includes(slotIndex)) {
-      return;
-    }
-
-    const recipe = state.recipes.find(r => r.id === recipeId);
-    if (!recipe) return;
-
-    const ratio = state.portions / (recipe.basePortions || 4);
-
-    (recipe.ingredients || []).forEach(rawIng => {
-      const norm = normalizeIngredient(rawIng);
-      let sourceUnit = canonicalUnit(rawIng.unit);
-      const qty = (Number(rawIng.quantity) || 1) * ratio;
-
-      // Réparation des anciennes recettes maison enregistrées avec « 600 pièces » au lieu de « 600 g »
-      if (recipe.id && recipe.id.startsWith('custom-') && COUNT_UNITS.includes(sourceUnit)
-          && (Number(rawIng.quantity) || 0) >= 40 && (UNIT_WEIGHTS[norm.name] || {})[sourceUnit]) {
-        sourceUnit = 'g';
-      }
-
-      const key = norm.name.toLowerCase().replace(/\s+/g, ' ').trim();
-      if (!aggregated[key]) {
-        aggregated[key] = {
-          id: key,
-          name: norm.name,
-          rayon: norm.rayon,
-          candidates: new Set(),
-          amounts: {},          // { unité: quantité } (unité cible + unités non convertibles)
-          convertedFromMass: false,
-          legacyIds: new Set(),
-          recipes: []
-        };
-      }
-      const item = aggregated[key];
-      item.candidates.add(canonicalUnit(norm.unit));
-      // Anciennes clés de cases cochées : (rayon, nom, unité) et nom d'origine de la recette
-      item.legacyIds.add(`${norm.rayon}__${norm.name.toLowerCase().trim()}__${norm.unit}`);
-      item.legacyIds.add((rawIng.name || '').toLowerCase().replace(/\s+/g, ' ').trim());
-      if (!item.recipes.includes(recipe.title)) item.recipes.push(recipe.title);
-
-      contributions.push({ item, sourceUnit, qty });
-    });
-  });
-
-  Object.values(aggregated).forEach(item => { item.targetUnit = pickTargetUnit(item.candidates); });
-
-  // Passe 2 : convertir dans l'unité cible et additionner
-  contributions.forEach(({ item, sourceUnit, qty }) => {
-    const converted = convertQuantity(qty, sourceUnit, item.targetUnit, item.name);
-    if (converted !== null) {
-      item.amounts[item.targetUnit] = (item.amounts[item.targetUnit] || 0) + converted;
-      if (sourceUnit !== item.targetUnit && unitToGrams(sourceUnit) && COUNT_UNITS.includes(item.targetUnit)) {
-        item.convertedFromMass = true;
-      }
-    } else {
-      item.amounts[sourceUnit] = (item.amounts[sourceUnit] || 0) + qty;
-    }
-  });
-
-  return Object.values(aggregated).map(item => {
-    const units = Object.keys(item.amounts);
-    // Unité cible en premier, puis les éventuelles unités non convertibles (ordre alphabétique : stable)
-    units.sort((a, b) => (a === item.targetUnit ? -1 : b === item.targetUnit ? 1 : a.localeCompare(b)));
-    const parts = units.map(u => formatQuantityAndUnit(item.amounts[u], u, item.name, true));
-    let formatted = parts.join(' + ');
-
-    // Indication du poids total quand on a additionné des grammes à des pièces
-    const w = (UNIT_WEIGHTS[item.name] || {})[item.targetUnit];
-    if (item.convertedFromMass && w && units.length === 1) {
-      const count = Math.max(1, Math.ceil(item.amounts[item.targetUnit] - 0.15));
-      formatted += ` <span class="font-medium text-slate-400">(≈ ${formatQuantityAndUnit(count * w, 'g')})</span>`;
-    }
-
-    // Conserver les articles déjà cochés avec l'ancienne clé (unité incluse)
-    if (state.checkedGroceries[item.id] === undefined) {
-      for (const legacy of item.legacyIds) {
-        if (state.checkedGroceries[legacy]) { state.checkedGroceries[item.id] = true; break; }
-      }
-    }
-
-    item.quantity = item.amounts[item.targetUnit] || 0;
-    item.baseUnit = item.targetUnit;
-    item.unit = item.targetUnit;
-    item.formattedQty = formatted;
-    item.formattedQtyText = formatted.replace(/<[^>]+>/g, '');
-    delete item.legacyIds;
-    delete item.candidates;
-    return item;
-  });
-}
 
 // ==========================================
 // PLACARD, ÉPICES, ORDRE DES RAYONS, AVIS
@@ -1933,13 +1040,13 @@ function renderPantryCard() {
     <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-stock-basics" class="w-4 h-4 rounded" ${state.stockBasics ? 'checked' : ''}>
       <span class="text-slate-700 font-semibold">Huile, farine, sucre, vinaigres, moutarde à la maison</span></label>
     ${state.pantry.length ? `<div class="space-y-1.5"><p class="${h}">Mon placard</p>
-      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => `<button type="button" class="pantry-remove px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200" data-id="${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))} ✕</button>`).join('')}</div></div>` : ''}
+      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => { const st = state.pantryStock[id]; const q = st ? ' · ' + formatQuantityAndUnit(st.qty, st.unit) : ''; return `<span class="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800"><button type="button" class="pantry-qty pl-2.5 pr-1 py-1" data-id="${esc(id)}" aria-label="Quantité en stock : ${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))}${esc(q)} ✎</button><button type="button" class="pantry-remove pr-2.5 pl-1 py-1" data-id="${esc(id)}" aria-label="Retirer ${esc(id)} du placard">✕</button></span>`; }).join('')}</div></div>` : ''}
     <div class="flex gap-1.5 flex-wrap pt-1">
       <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Nutri-Score de ma liste</button>
       <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Scanner un produit</button>
     </div>
     <details class="pt-1"><summary class="${h} cursor-pointer">Ordre des rayons dans mon magasin</summary>
-      <div class="space-y-1 mt-1.5">${rayons.map((r, i) => `<div class="flex items-center gap-2 bg-slate-50 rounded-lg px-2 py-1"><span>${r.icon}</span><span class="flex-1 text-slate-700">${esc(r.name)}</span>
+      <div class="space-y-1 mt-1.5">${rayons.map((r, i) => `<div class="flex items-center gap-2 bg-slate-50 rounded-lg px-2 py-1"><span class="text-slate-500">${rayonIcon(r)}</span><span class="flex-1 text-slate-700">${esc(r.name)}</span>
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Monter">▲</button>
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="1" ${i === rayons.length - 1 ? 'disabled' : ''} aria-label="Descendre">▼</button></div>`).join('')}</div>
     </details>`;
@@ -1951,6 +1058,18 @@ function setupPantryCard() {
   body.addEventListener('click', (e) => {
     const t = e.target.closest('button');
     if (!t) return;
+    if (t.classList.contains('pantry-qty')) {
+      const id = t.dataset.id;
+      promptDialog({ title: 'Quantité en stock', message: `Combien de « ${id} » avez-vous ? (ex. 800 g, 1,5 L, 6). Elle diminue quand vous cuisinez une recette. Vide = ne pas suivre.`, value: state.pantryStock[id] ? formatQuantityAndUnit(state.pantryStock[id].qty, state.pantryStock[id].unit) : '' }).then(v => {
+        if (v === null || v === false) return;
+        const parsed = GL.parseStockInput(String(v).replace(/\s*(pièces?|pcs)$/i, ''));
+        if (String(v).trim() === '') delete state.pantryStock[id];
+        else if (parsed) state.pantryStock[id] = parsed;
+        else { showToast('Quantité non reconnue'); return; }
+        saveToLocalStorage(); renderGroceries();
+      });
+      return;
+    }
     if (t.classList.contains('off-load')) { loadOffInfoForList(); return; }
     if (t.classList.contains('off-scan')) { openScanModal(); return; }
     if (t.classList.contains('spice-chip')) {
@@ -2005,6 +1124,30 @@ function renderNotesRow() {
     info.textContent = days <= 0 ? 'Cuisiné aujourd\'hui' : `Cuisiné il y a ${days} j`;
   } else info.textContent = '';
 }
+// Stock dégressif : ce que la recette consomme est retiré des quantités du placard ; un article épuisé repasse dans les courses
+function consumeStockForRecipe(recipe) {
+  if (!recipe || !Object.keys(state.pantryStock || {}).length) return [];
+  const ratio = state.portions / (recipe.basePortions || 4);
+  const used = (recipe.ingredients || []).map(ing => {
+    const n = normalizeIngredient(ing);
+    const u = canonicalUnit(ing.unit), q = (Number(ing.quantity) || 0) * ratio;
+    const id = n.name.toLowerCase().replace(/\s+/g, ' ').trim();
+    if (u === 'g') return { id, qty: q, unit: 'g' };
+    if (u === 'kg') return { id, qty: q * 1000, unit: 'g' };
+    if (u === 'ml') return { id, qty: q, unit: 'ml' };
+    if (u === 'cl') return { id, qty: q * 10, unit: 'ml' };
+    if (u === 'l') return { id, qty: q * 1000, unit: 'ml' };
+    return { id, qty: q, unit: 'piece' };
+  });
+  const r = GL.consumeStock(state.pantryStock, used);
+  state.pantryStock = r.stock;
+  r.depleted.forEach(id => {
+    state.pantry = state.pantry.filter(x => x !== id);
+    if (!state.pantryNeeded.includes(id)) state.pantryNeeded.push(id);
+  });
+  saveToLocalStorage(); renderGroceries();
+  return r.depleted.map(id => id.charAt(0).toUpperCase() + id.slice(1));
+}
 function setupNotesRow() {
   const like = document.getElementById('btn-note-like');
   const dis = document.getElementById('btn-note-dislike');
@@ -2012,7 +1155,11 @@ function setupNotesRow() {
   if (!like) return;
   like.addEventListener('click', () => { const id = state.activeDetailRecipeId; setNote(id, { r: (state.notes[id] && state.notes[id].r === 1) ? 0 : 1 }); });
   dis.addEventListener('click', () => { const id = state.activeDetailRecipeId; setNote(id, { r: (state.notes[id] && state.notes[id].r === -1) ? 0 : -1 }); });
-  cooked.addEventListener('click', () => { setNote(state.activeDetailRecipeId, { cooked: Date.now() }); showToast('Noté : cuisiné aujourd\'hui'); });
+  cooked.addEventListener('click', () => {
+    setNote(state.activeDetailRecipeId, { cooked: Date.now() });
+    const out = consumeStockForRecipe(state.recipes.find(r => r.id === state.activeDetailRecipeId));
+    showToast(out.length ? `Cuisiné. Il n'y a plus : ${out.join(', ')} (ajouté aux courses)` : 'Noté : cuisiné aujourd\'hui', { duration: out.length ? 6000 : undefined });
+  });
 }
 
 // --- Fenêtre « Composer mes 7 repas » ---
@@ -2037,7 +1184,7 @@ function renderGenerateModal() {
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Style de cuisine</p>
       <div class="flex gap-1.5 flex-wrap">${genChipsHTML('styles', GL.STYLES, d.styles || [])}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Pratique</p>
-      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', 'Pas cher')}${genFlagHTML('express', 'Moins de 20 min')}${genFlagHTML('gamelle', 'Bon en gamelle')}${genFlagHTML('onePan', '1 seule poêle')}${genFlagHTML('favoritesOnly', 'Mes favoris')}</div></div>
+      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', 'Pas cher')}${genFlagHTML('express', 'Moins de 20 min')}${genFlagHTML('onePan', '1 seule poêle')}${genFlagHTML('favoritesOnly', 'Mes favoris')}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Régime</p>
       <div class="flex gap-1.5 flex-wrap">${genFlagHTML('noPork', 'Sans porc')}${genFlagHTML('noLactose', 'Sans lactose')}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">J'ai dans le frigo <span class="font-normal text-slate-400">(à utiliser en priorité)</span></p>
@@ -2080,9 +1227,10 @@ function setupGenerateModal() {
     if (e.target.id === 'gen-fridge') genDraft.fridge = e.target.value;
   });
   document.getElementById('btn-gen-reset').addEventListener('click', () => { genDraft = {}; renderGenerateModal(); });
-  document.getElementById('btn-gen-go').addEventListener('click', () => {
+  document.getElementById('btn-gen-go').addEventListener('click', async () => {
     state.genFilters = sanitizeGenFilters(genDraft);
     closeGenerateModal();
+    await Promise.race([ensureWeather(), new Promise(r => setTimeout(r, 4500))]);
     const snapshot = takeSnapshot();
     const hadMeals = state.plan.some(Boolean);
     generateBalancedWeek(false, state.genFilters);
@@ -2234,7 +1382,7 @@ async function lookupScannedProduct(code) {
   });
   document.getElementById('btn-scan-staple').addEventListener('click', (e) => {
     state.staples.push({ id: 'staple_' + Date.now(), name: cleanStr(e.currentTarget.dataset.name, 80), checked: false });
-    saveToLocalStorage(); renderGroceries(); showToast('Ajouté aux articles courants');
+    saveToLocalStorage(); renderGroceries(); showToast('Ajouté aux articles courants'); queueNotification({ staple: state.staples[state.staples.length - 1].name });
   });
 }
 function setupScanModal() {
@@ -2353,7 +1501,7 @@ function renderLeftovers() {
       ? '<span class="text-emerald-700 font-bold">Rien à acheter</span>'
       : `<span class="text-slate-500">Il manque : ${esc(missing.slice(0, 3).map(m => m.replace(/\s*\(.*?\)/g, '')).join(', '))}${missing.length > 3 ? ` +${missing.length - 3}` : ''}</span>`;
     return `<div class="ios-card p-2.5 flex gap-3 items-center" data-id="${esc(r.id)}">
-      <img src="${esc(thumbImg(r.image))}" alt="" loading="lazy" onerror="imgFallback(this)" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100">
+      <img src="${esc(thumbImg(r.image))}" alt="" loading="lazy" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100">
       <div class="flex-1 min-w-0 space-y-0.5">
         <p class="font-bold text-xs text-slate-800 leading-snug">${esc(r.title)}</p>
         <p class="text-[11px] text-slate-600">Utilise : ${esc(used.join(', '))}</p>
@@ -2419,6 +1567,67 @@ function setupLeftoversModal() {
       addRecipeToPlan(add.dataset.id);
     }
   });
+}
+
+// ==========================================
+// MÉTÉO (Open-Meteo, sans clé) — invisible : elle oriente seulement le tirage des repas
+// ==========================================
+async function ensureWeather() {
+  try {
+    const cached = readJSON('gamelle_weather', null);
+    if (cached && Number.isFinite(cached.t) && Date.now() - cached.t < 3 * 3600000 && cached.w) { state.weatherMood = GL.weatherMood(cached.w); return; }
+    if (safeGetItem('gamelle_weather_off') === '1') return;
+    let geo = readJSON('gamelle_geo', null);
+    if (!geo) {
+      if (!navigator.geolocation) return;
+      const pos = await new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, { timeout: 4000, maximumAge: 86400000 }));
+      // position arrondie (≈ 10 km) : suffisante pour la météo, gardée uniquement sur ce téléphone
+      geo = { lat: Math.round(pos.coords.latitude * 10) / 10, lon: Math.round(pos.coords.longitude * 10) / 10 };
+      safeSetItem('gamelle_geo', JSON.stringify(geo));
+    }
+    const w = await GL.fetchWeather(geo.lat, geo.lon, (u) => fetch(u));
+    if (w) { safeSetItem('gamelle_weather', JSON.stringify({ t: Date.now(), w })); state.weatherMood = GL.weatherMood(w); }
+  } catch (e) {
+    if (e && e.code === 1) safeSetItem('gamelle_weather_off', '1'); // localisation refusée : on ne redemande jamais
+  }
+}
+
+// ==========================================
+// NOTIFICATIONS DU FOYER (ntfy.sh, sujet secret dérivé du code foyer, aucune clé)
+// ==========================================
+let notifQueue = { staples: [], meals: [] }, notifTimer = null;
+function queueNotification({ staple, meal }) {
+  if (!state.notify || !state.householdCode) return;
+  if (staple && !notifQueue.staples.includes(staple)) notifQueue.staples.push(staple);
+  if (meal) notifQueue.meals.push(meal);
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(flushNotifications, 12000); // regroupe les ajouts rapprochés en un seul message
+}
+async function flushNotifications() {
+  const q = notifQueue;
+  notifQueue = { staples: [], meals: [] };
+  const text = GL.buildNotification({ name: state.memberName, staples: q.staples, meals: q.meals });
+  if (!text || !state.notify || !state.householdCode || !GL.cryptoAvailable()) return;
+  try {
+    const topic = await GL.notifTopic(state.householdCode);
+    await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers: { Title: 'Gamelle & Panier', Tags: 'shopping_cart' }, body: text });
+  } catch (e) { /* hors ligne : tant pis, la synchro reste la référence */ }
+}
+function setupNotifySettings() {
+  const chk = document.getElementById('chk-notify');
+  const name = document.getElementById('member-name');
+  const copy = document.getElementById('btn-copy-notif-topic');
+  if (!chk) return;
+  chk.checked = state.notify;
+  name.value = state.memberName;
+  chk.addEventListener('change', () => { state.notify = chk.checked; safeSetItem('gamelle_notify', state.notify ? '1' : '0'); });
+  name.addEventListener('change', () => { state.memberName = cleanStr(name.value, 30); safeSetItem('gamelle_member_name', state.memberName); });
+  if (copy) copy.addEventListener('click', () => copyToClipboard(document.getElementById('notif-topic').textContent, 'Sujet copié'));
+}
+async function refreshNotifTopic() {
+  const el = document.getElementById('notif-topic');
+  if (!el) return;
+  el.textContent = state.householdCode && GL.cryptoAvailable() ? await GL.notifTopic(state.householdCode) : '';
 }
 
 // ==========================================
@@ -2535,14 +1744,14 @@ function renderPlanning() {
             <button class="btn-change-meal text-xs text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-lg font-medium transition-colors" data-slot="${slotIndex}">
               Changer
             </button>
-            <button class="btn-remove-meal text-xs text-slate-400 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-colors" data-slot="${slotIndex}" title="Retirer ce plat">
+            <button aria-label="Retirer ce repas" class="btn-remove-meal text-xs text-slate-400 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-colors" data-slot="${slotIndex}" title="Retirer ce plat">
               ✕
             </button>
           </div>
         </div>
         
         <div class="flex items-center gap-3.5 cursor-pointer btn-open-detail py-0.5" data-id="${esc(recipe.id)}">
-          <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-16 h-16 rounded-2xl object-cover shadow-sm flex-shrink-0">
+          <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" class="img-soft w-16 h-16 rounded-2xl object-cover shadow-sm flex-shrink-0">
           <div class="flex-1 min-w-0">
             <h3 class="font-bold text-sm text-slate-900 leading-snug">${esc(recipe.title)}</h3>
             <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">${esc(recipe.description)}</p>
@@ -2560,7 +1769,7 @@ function renderPlanning() {
       card.innerHTML = `
         <div class="flex items-center justify-between">
           <span class="font-bold text-xs text-slate-800 bg-slate-100 px-2.5 py-1 rounded-lg">Repas ${slotIndex + 1}</span>
-          <button class="btn-remove-meal text-xs text-slate-400 hover:text-red-500 px-2 py-1" data-slot="${slotIndex}">✕</button>
+          <button aria-label="Retirer ce repas" class="btn-remove-meal text-xs text-slate-400 hover:text-red-500 px-2 py-1" data-slot="${slotIndex}">✕</button>
         </div>
         <button class="btn-choose-meal w-full py-3 border-2 border-dashed border-slate-200 hover:border-brand-500 rounded-xl text-slate-500 hover:text-brand-600 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all" data-slot="${slotIndex}">
           <span>+</span> Choisir une recette
@@ -2616,6 +1825,7 @@ function renderPlanning() {
 
 function addRecipeToPlan(recipeId) {
   state.plan.push(recipeId);
+  { const r = state.recipes.find(x => x.id === recipeId); if (r) queueNotification({ meal: r.title }); }
   saveToLocalStorage();
   renderPlanning();
   renderGroceries();
@@ -2637,6 +1847,65 @@ function addMealSlot(recipeId = null) {
   }
 }
 // 2. Rendu de la Liste de Courses Grand Frais
+const collapsedRayons = new Set();
+// Gestes sur la liste : glisser à droite = coché, à gauche = « j'ai déjà » (ou retirer un produit courant)
+function setupGrocerySwipe() {
+  const c = document.getElementById('grand-frais-aisles-container');
+  let sx = 0, sy = 0, row = null, dx = 0;
+  c.addEventListener('touchstart', (e) => {
+    row = e.target.closest('.grocery-row'); if (!row || e.touches.length !== 1) { row = null; return; }
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; dx = 0;
+  }, { passive: true });
+  c.addEventListener('touchmove', (e) => {
+    if (!row) return;
+    const mx = e.touches[0].clientX - sx, my = e.touches[0].clientY - sy;
+    if (Math.abs(my) > Math.abs(mx)) { row.style.transform = ''; row = null; return; }
+    dx = mx; row.style.transform = `translateX(${Math.max(-90, Math.min(90, dx))}px)`;
+  }, { passive: true });
+  c.addEventListener('touchend', () => {
+    if (!row) return;
+    const r = row, d = dx; row = null; r.style.transform = '';
+    if (Math.abs(d) < 70) return;
+    const id = r.dataset.id, type = r.dataset.type;
+    if (d > 0) {
+      if (type === 'staple') { const it = state.staples.find(x => x.id === id); if (it) it.checked = !it.checked; }
+      else state.checkedGroceries[id] = !state.checkedGroceries[id];
+      saveToLocalStorage(); renderGroceries();
+    } else {
+      const snapshot = takeSnapshot();
+      if (type === 'staple') state.staples = state.staples.filter(x => x.id !== id);
+      else { if (!state.pantry.includes(id)) state.pantry.push(id); state.pantryNeeded = state.pantryNeeded.filter(x => x !== id); }
+      saveToLocalStorage(); renderGroceries();
+      showToast(type === 'staple' ? 'Produit retiré' : 'Ajouté au placard', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
+    }
+  });
+}
+
+// Ajout d'un produit courant : s'il existe déjà, la quantité augmente (« Lait ×3 »)
+function addStaple(name) {
+  const val = cleanStr(name, 80);
+  if (!val) return;
+  const same = state.staples.find(x => x.name.toLowerCase() === val.toLowerCase());
+  if (same) { same.qty = Math.min(99, (same.qty || 1) + 1); same.checked = false; }
+  else state.staples.push({ id: 'staple_' + Date.now() + '_' + Math.floor(Math.random() * 1000), name: val, checked: false, qty: 1 });
+  const h = state.stapleHistory[val] || { n: 0, last: 0 };
+  state.stapleHistory[val] = { n: h.n + 1, last: Date.now() };
+  saveToLocalStorage();
+  renderGroceries();
+  renderHabituals();
+  queueNotification({ staple: val });
+}
+// « Vos habituels » : les produits les plus ajoutés (sinon une base), sans ceux déjà dans la liste
+function renderHabituals() {
+  const box = document.getElementById('staple-habituals');
+  if (!box) return;
+  const inList = new Set(state.staples.map(x => x.name.toLowerCase()));
+  const fav = Object.entries(state.stapleHistory || {}).sort((a, b) => b[1].n - a[1].n || b[1].last - a[1].last).map(e => e[0]);
+  const base = ['Bananes', 'Lait', 'Fruits de saison', 'Kéfir', 'Yaourts', 'Pain de mie', "Flocons d'avoine"];
+  const names = [...new Set([...fav, ...base])].filter(n => !inList.has(n.toLowerCase())).slice(0, 8);
+  box.innerHTML = names.map(n => `<button type="button" class="staple-quick-btn whitespace-nowrap text-[12px] bg-slate-100 text-slate-700 px-3 py-1.5 rounded-full font-medium" data-name="${esc(n)}">${esc(n)}</button>`).join('');
+}
+
 function renderGroceries() {
   const container = document.getElementById('grand-frais-aisles-container');
   container.innerHTML = '';
@@ -2658,9 +1927,11 @@ function renderGroceries() {
   // Mise à jour de la barre de progression
   const percentage = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
   document.getElementById('courses-progress-bar').style.width = `${percentage}%`;
-  const cost = GL.estimateCost(groceries);
+  const factor = GL.priceFactor(state.trips);
+  const cost = Math.round(GL.estimateCost(groceries) * factor);
+  const lastTrip = (state.trips || [])[state.trips.length - 1];
   document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''}`;
-  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €` : '';
+  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €${factor !== 1 ? ' (selon vos tickets)' : ''}${lastTrip ? ` · dernier ticket ${Math.round(lastTrip.total)} €` : ''}` : (lastTrip ? `Dernier ticket ${Math.round(lastTrip.total)} €` : '');
   
   // Badge sur l'onglet inférieur
   const navBadge = document.getElementById('nav-badge-groceries');
@@ -2715,21 +1986,21 @@ function renderGroceries() {
 
     const section = document.createElement('div');
     section.className = 'ios-card overflow-hidden';
+    const collapsed = collapsedRayons.has(rayon.id);
+    const leftInRayon = itemsInRayon.filter(i => isStapleRayon ? !i.checked : !state.checkedGroceries[i.id]).length;
 
-    // En-tête du rayon
+    // En-tête du rayon (toucher pour replier / déplier)
     section.innerHTML = `
-      <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+      <button type="button" class="rayon-head w-full text-left p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between" data-rayon="${esc(rayon.id)}" aria-expanded="${!collapsed}">
         <div class="flex items-center gap-2">
-          <span class="text-base">${rayon.icon}</span>
-          <div>
-            <h3 class="font-bold text-xs text-slate-800">${rayon.name}</h3>
-          </div>
+          <span class="text-slate-500">${rayonIcon(rayon)}</span>
+          <h3 class="font-bold text-xs text-slate-800">${rayon.name}</h3>
         </div>
-        <span class="text-[11px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
-          ${itemsInRayon.length}
+        <span class="text-[12px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
+          ${leftInRayon}${leftInRayon !== itemsInRayon.length ? ' / ' + itemsInRayon.length : ''}
         </span>
-      </div>
-      <div class="divide-y divide-slate-100 items-list-container">
+      </button>
+      <div class="divide-y divide-slate-100 items-list-container ${collapsed ? 'hidden' : ''}">
       </div>
     `;
 
@@ -2737,7 +2008,9 @@ function renderGroceries() {
 
     itemsInRayon.forEach(item => {
       const itemRow = document.createElement('div');
-      itemRow.className = 'p-3 flex items-center justify-between gap-3 hover:bg-slate-50/50 transition-colors';
+      itemRow.className = 'grocery-row p-3 flex items-center justify-between gap-3 hover:bg-slate-50/50 transition-colors';
+      itemRow.dataset.id = item.id;
+      itemRow.dataset.type = isStapleRayon ? 'staple' : 'recipe';
 
       const isChecked = isStapleRayon 
         ? item.checked 
@@ -2756,6 +2029,7 @@ function renderGroceries() {
             <div class="flex items-baseline gap-1.5 flex-wrap">
               ${qtyStr ? `<span class="font-bold text-xs text-brand-700">${qtyStr}</span>` : ''}
               <span class="text-xs text-slate-800 font-medium">${esc(item.name)}</span>
+              ${isStapleRayon && (item.qty || 1) > 1 ? `<span class="font-bold text-xs text-brand-700">×${item.qty}</span>` : ''}
               ${isStapleRayon ? '' : offBadgeHTML(item.name)}
             </div>
             ${item.recipes && item.recipes.length > 0 ? `
@@ -2764,7 +2038,10 @@ function renderGroceries() {
           </div>
         </label>
         ${isStapleRayon ? `
-          <button class="btn-delete-staple text-slate-300 hover:text-red-500 text-xs px-1" data-id="${esc(item.id)}" aria-label="Retirer ${esc(item.name)}">✕</button>
+          <span class="flex items-center gap-1 flex-shrink-0">
+            <button class="btn-staple-plus text-slate-500 text-sm font-bold w-7 h-7 rounded-lg bg-slate-100" data-id="${esc(item.id)}" aria-label="Une unité de plus : ${esc(item.name)}">+</button>
+            <button class="btn-delete-staple text-slate-400 hover:text-red-500 text-xs w-7 h-7" data-id="${esc(item.id)}" aria-label="Retirer ${esc(item.name)}">✕</button>
+          </span>
         ` : `
           <button class="btn-pantry text-slate-300 hover:text-emerald-600 text-xs px-1" data-id="${esc(item.id)}" title="J'en ai déjà (placard)" aria-label="J'ai déjà ${esc(item.name)}">${ICONS.box}</button>
         `}
@@ -2821,6 +2098,20 @@ function renderGroceries() {
     });
   });
 
+  container.querySelectorAll('.btn-staple-plus').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const st = state.staples.find(x => x.id === e.currentTarget.dataset.id);
+      if (st) { st.qty = Math.min(99, (st.qty || 1) + 1); saveToLocalStorage(); renderGroceries(); }
+    });
+  });
+  container.querySelectorAll('.rayon-head').forEach(h => {
+    h.addEventListener('click', () => {
+      const id = h.dataset.rayon;
+      if (collapsedRayons.has(id)) collapsedRayons.delete(id); else collapsedRayons.add(id);
+      renderGroceries();
+    });
+  });
+
   // Suppression des produits courants individuels
   container.querySelectorAll('.btn-delete-staple').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -2835,18 +2126,18 @@ function renderGroceries() {
 }
 
 // 3. Rendu du Catalogue de Recettes (affichage progressif, photos différées)
-function recipeCardHTML(recipe) {
+function recipeCardHTML(recipe, idx = 99) {
   const isFav = state.favorites.includes(recipe.id);
   const isCustom = recipe.id.startsWith('custom-');
   return `
     <div class="ios-card p-3.5 flex gap-3 hover:border-brand-300 transition-all cursor-pointer btn-open-detail" data-id="${esc(recipe.id)}" role="button" tabindex="0">
-      <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
+      <img src="${esc(thumbImg(recipe.image))}" alt="" ${idx < 3 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
       <div class="flex-1 min-w-0 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between gap-1 flex-wrap mb-0.5">
             <div class="flex items-center gap-1.5 flex-wrap">
               <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600">${esc(recipe.tag)}</span>
-              ${isCustom ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded-md">Maison</span>` : ''}
+              ${isCustom ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md">Maison</span>` : ''}
             </div>
             <div class="flex items-center gap-1.5">
               ${recipe.isBudget ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
@@ -2893,7 +2184,7 @@ function showMoreRecipes() {
   catalogLimit = Math.min(catalogFiltered.length, catalogLimit + CATALOG_PAGE);
   const more = document.getElementById('catalog-more');
   if (more) more.remove();
-  container.insertAdjacentHTML('beforeend', catalogFiltered.slice(from, catalogLimit).map(recipeCardHTML).join(''));
+  container.insertAdjacentHTML('beforeend', catalogFiltered.slice(from, catalogLimit).map((r) => recipeCardHTML(r)).join(''));
   appendCatalogFooter(container);
 }
 
@@ -2911,8 +2202,6 @@ function renderCatalog(resetLimit = false) {
     filtered = filtered.filter(r => GL.recipeSeasons(r).includes(f));
   } else if (f.startsWith('style:')) {
     filtered = filtered.filter(r => GL.recipeStyles(r).includes(f.slice(6)));
-  } else if (f === 'gamelle') {
-    filtered = filtered.filter(r => GL.recipeIsGamelle(r));
   } else if (f === 'unepoele') {
     filtered = filtered.filter(r => GL.isOnePan(r));
   } else if (f === 'sanspork') {
@@ -3092,7 +2381,7 @@ function openRecipeDetail(recipeId) {
 
     groupDiv.innerHTML = `
       <div class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-        <span>${rayon.icon}</span> <span>${rayon.name}</span>
+        <span class="text-slate-500">${rayonIcon(rayon)}</span> <span>${rayon.name}</span>
       </div>
       <div class="space-y-1.5 divide-y divide-slate-100">
         ${itemsInRayon.map(ing => {
@@ -3167,7 +2456,7 @@ function openSelectMealModal(day) {
     item.className = 'ios-card p-2.5 flex items-center justify-between gap-3 cursor-pointer hover:border-brand-500 transition-all';
     item.innerHTML = `
       <div class="flex items-center gap-2.5 min-w-0">
-        <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-12 h-12 rounded-xl object-cover flex-shrink-0">
+        <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" class="img-soft w-12 h-12 rounded-xl object-cover flex-shrink-0">
         <div class="min-w-0">
           <h4 class="font-bold text-xs text-slate-800 truncate">${esc(recipe.title)}</h4>
           <span class="text-[11px] text-slate-400">⏱️ ${esc(recipe.timeMinutes)} min • ${esc(recipe.tag)}</span>
@@ -3278,10 +2567,10 @@ function renderCookingStep() {
 
   if (stepIndex === totalSteps - 1) {
     nextBtn.innerHTML = `<span>Bon appétit</span>`;
-    nextBtn.className = "flex-2 w-2/3 bg-emerald-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
+    nextBtn.className = " w-2/3 bg-emerald-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
   } else {
     nextBtn.innerHTML = `<span>Étape suivante</span> →`;
-    nextBtn.className = "flex-2 w-2/3 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
+    nextBtn.className = " w-2/3 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
   }
 }
 
@@ -3676,6 +2965,9 @@ function setupEventListeners() {
   setupStapleAutocomplete();
   setupMoreFilters();
   setupLeftoversModal();
+  setupNotifySettings();
+  setupBackupUI();
+  initSyncMonitoring();
   document.getElementById('btn-clear-menu').addEventListener('click', clearMenu);
 
   const saveMenuBtn = document.getElementById('btn-save-current-menu');
@@ -3686,6 +2978,36 @@ function setupEventListeners() {
 
   const closeSavedBtn = document.getElementById('btn-close-saved-menus');
   if (closeSavedBtn) closeSavedBtn.addEventListener('click', closeSavedMenusModal);
+
+  // Menus « … » : un seul bouton principal par écran, le reste est rangé dedans
+  document.querySelectorAll('.more-menu-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const menu = document.getElementById(btn.dataset.menu);
+      const open = menu.classList.contains('hidden');
+      document.querySelectorAll('.more-menu').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.more-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      if (open) { menu.classList.remove('hidden'); btn.setAttribute('aria-expanded', 'true'); }
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.more-menu').forEach(m => m.classList.add('hidden'));
+    document.querySelectorAll('.more-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+  });
+  document.getElementById('btn-record-ticket').addEventListener('click', async () => {
+    const v = await promptDialog({ title: 'Ticket de caisse', message: 'Total payé (en €) : il sert à ajuster le budget estimé à vos vrais prix.', placeholder: 'ex. 63,40', confirmLabel: 'Enregistrer' });
+    if (v === null || v === false) return;
+    const total = parseFloat(String(v).replace(',', '.').replace(/[^\d.]/g, ''));
+    if (!Number.isFinite(total) || total <= 0 || total > 5000) { showToast('Montant non reconnu'); return; }
+    const split = currentSplit();
+    state.trips.push({ t: Date.now(), total: Math.round(total * 100) / 100, est: GL.estimateCost(split.toBuy), items: split.toBuy.length });
+    state.trips = state.trips.slice(-30);
+    saveToLocalStorage(); renderGroceries();
+    showToast(`Ticket de ${total.toFixed(2).replace('.', ',')} € enregistré`);
+  });
+  document.getElementById('btn-open-pantry').addEventListener('click', () => {
+    const d = document.getElementById('pantry-card'); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   // Copier & Vider les courses
   document.getElementById('btn-copy-groceries').addEventListener('click', copyFormattedText);
@@ -3704,33 +3026,14 @@ function setupEventListeners() {
   document.getElementById('form-add-staple').addEventListener('submit', (e) => {
     e.preventDefault();
     const input = document.getElementById('staple-input');
-    const val = input.value.trim();
-    if (val) {
-      state.staples.push({
-        id: 'staple_' + Date.now(),
-        name: val,
-        checked: false
-      });
-      input.value = '';
-      saveToLocalStorage();
-      renderGroceries();
-    }
+    if (input.value.trim()) { addStaple(input.value); input.value = ''; }
   });
-
-  document.querySelectorAll('.staple-quick-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const name = e.currentTarget.dataset.name;
-      if (!state.staples.some(s => s.name.toLowerCase() === name.toLowerCase())) {
-        state.staples.push({
-          id: 'staple_' + Date.now(),
-          name: name,
-          checked: false
-        });
-        saveToLocalStorage();
-        renderGroceries();
-      }
-    });
+  document.getElementById('staple-habituals').addEventListener('click', (e) => {
+    const b = e.target.closest('.staple-quick-btn');
+    if (b) addStaple(b.dataset.name);
   });
+  renderHabituals();
+  setupGrocerySwipe();
 
   // Recherche & Filtres dans le catalogue
   let searchTimer = null;
@@ -3847,15 +3150,6 @@ function setupEventListeners() {
   // Partage
   document.getElementById('btn-share-magic-link').addEventListener('click', shareMagicLink);
   document.getElementById('btn-share-whatsapp-text').addEventListener('click', copyFormattedText);
-
-  // Exporter JSON
-  document.getElementById('btn-export-json').addEventListener('click', () => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
-    const dlAnchorElem = document.createElement('a');
-    dlAnchorElem.setAttribute("href", dataStr);
-    dlAnchorElem.setAttribute("download", "gamelle_panier_sauvegarde.json");
-    dlAnchorElem.click();
-  });
 
   // Gestion du Studio de Recette Maison
   const btnOpenAddRecipe = document.getElementById('btn-open-add-recipe');
@@ -4124,11 +3418,12 @@ function registerServiceWorker() {
     const announce = (worker) => {
       pendingUpdateWorker = worker;
       refreshUpdateCard();
-      showToast('Nouvelle version disponible', {
-        action: 'Mettre à jour',
-        duration: 15000,
-        onAction: () => { worker.postMessage({ type: 'SKIP_WAITING' }); }
-      });
+      const banner = document.getElementById('banner-update');
+      if (banner) {
+        banner.classList.remove('hidden');
+        document.getElementById('btn-banner-update').onclick = () => { document.getElementById('btn-banner-update').textContent = 'Installation…'; worker.postMessage({ type: 'SKIP_WAITING' }); };
+        document.getElementById('btn-banner-later').onclick = () => banner.classList.add('hidden');
+      }
     };
     if (reg.waiting && navigator.serviceWorker.controller) announce(reg.waiting);
     reg.addEventListener('updatefound', () => {
@@ -4274,262 +3569,129 @@ function deleteCustomRecipe(recipeId) {
   showSyncToast('🗑️ Recette supprimée de votre catalogue');
 }
 
+// (moteur de synchro foyer : voir sync.js)
+
+
 // ==========================================
-// MOTEUR DE SYNCHRONISATION FOYER EN DIRECT
+// ÉTAT DE LA SYNCHRO, HORS CONNEXION, MISE À JOUR
 // ==========================================
-
-function getHouseholdTopic() {
-  if (!state.householdCode) return null;
-  return `gamelle_foyer_${state.householdCode.trim().toUpperCase()}`;
+function updateStatusBanner() {
+  const box = document.getElementById('banner-status');
+  const text = document.getElementById('banner-status-text');
+  if (!box || !text) return;
+  let msg = '';
+  if (!navigator.onLine) msg = state.householdCode ? 'Hors connexion · vos modifications seront synchronisées dès le retour du réseau' : 'Hors connexion · vos données restent enregistrées sur ce téléphone';
+  else if (state.householdCode && state.sync.fail) msg = 'Synchronisation impossible pour le moment · nouvel essai automatique';
+  text.textContent = msg;
+  box.classList.toggle('hidden', !msg);
+}
+function updateSyncStatusLine() {
+  const el = document.getElementById('sync-status-line');
+  if (!el) return;
+  const age = GL.syncAgeText(state.sync.lastOk, Date.now());
+  const late = state.sync.lastOk && Date.now() - state.sync.lastOk > 3600000;
+  el.textContent = `Dernière synchro : ${age}` + (state.sync.fail ? ' · en attente de réseau' : '');
+  el.classList.toggle('text-amber-700', !!(state.sync.fail || late));
+  el.classList.toggle('text-emerald-800', !(state.sync.fail || late));
+}
+function initSyncMonitoring() {
+  updateStatusBanner();
+  updateSyncStatusLine();
+  window.addEventListener('offline', updateStatusBanner);
+  window.addEventListener('online', () => {
+    updateStatusBanner();
+    if (state.householdCode) { broadcastSync(true); pollLatestSync(); }
+  });
+  setInterval(() => {
+    updateSyncStatusLine();
+    if (state.householdCode && state.sync.fail && navigator.onLine) broadcastSync(true);
+  }, 60000);
 }
 
-async function attemptJoinHousehold(raw) {
-  const code = cleanStr(raw, 60).toUpperCase();
-  if (isWeakHouseholdCode(code)) {
-    const ok = await confirmDialog({
-      title: 'Code facile à deviner',
-      message: 'Ce code est court : quelqu\'un pourrait le deviner et voir votre menu. Utilisez « Générer un code sécurisé » pour un code unique.',
-      confirmLabel: 'Utiliser quand même'
-    });
-    if (!ok) return;
-  }
-  setHouseholdCode(code);
+// ==========================================
+// SAUVEGARDE, RESTAURATION, CODE DU FOYER
+// ==========================================
+function exportBackup() {
+  const file = { app: 'gamelle-panier', format: 1, exportedAt: new Date().toISOString(), data: buildSyncPayload() };
+  const blob = new Blob([JSON.stringify(file)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `gamelle-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  safeSetItem('gamelle_backup_at', Date.now());
+  updateBackupInfo();
+  showToast('Sauvegarde exportée');
 }
-
-function setHouseholdCode(code) {
-  const clean = cleanStr(code || '', 60).toUpperCase();
-  if (!clean) return;
-
-  state.householdCode = clean;
-  safeSetItem('gamelle_household_code', clean);
-  updateSyncStatusUI();
-  initHouseholdSync();
-  broadcastSync();
-  showToast('Foyer connecté : synchronisation en direct');
+function updateBackupInfo() {
+  const el = document.getElementById('backup-info');
+  if (!el) return;
+  const t = parseInt(safeGetItem('gamelle_backup_at') || '0', 10);
+  el.textContent = t ? `Dernière sauvegarde en fichier : ${new Date(t).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}` : 'Aucune sauvegarde en fichier pour le moment';
 }
-
-function disconnectHousehold() {
-  if (state.syncEventSource) {
-    try { state.syncEventSource.close(); } catch(e) {}
-    state.syncEventSource = null;
-  }
-  state.householdCode = '';
-  safeRemoveItem('gamelle_household_code');
-  updateSyncStatusUI();
-  showSyncToast('Déconnecté du foyer');
+// Lit et valide un fichier de sauvegarde ; renvoie les données ou lève une erreur lisible
+function parseBackup(text) {
+  let file;
+  try { file = JSON.parse(text); } catch (e) { throw new Error('Ce fichier n\'est pas une sauvegarde Gamelle (format illisible)'); }
+  if (!file || file.app !== 'gamelle-panier' || !file.data || typeof file.data !== 'object') throw new Error('Ce fichier n\'est pas une sauvegarde Gamelle');
+  return file.data;
 }
-
-function updateSyncStatusUI() {
-  const syncBadge = document.getElementById('sync-status-badge');
-  const setupBox = document.getElementById('sync-setup-box');
-  const activeBox = document.getElementById('sync-active-box');
-  const codeLabel = document.getElementById('active-household-code-label');
-  const headerPill = document.getElementById('header-sync-pill');
-
-  if (state.householdCode) {
-    if (syncBadge) {
-      syncBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1.5 flex-shrink-0';
-      syncBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> En direct';
-    }
-    if (setupBox) setupBox.classList.add('hidden');
-    if (activeBox) activeBox.classList.remove('hidden');
-    if (codeLabel) codeLabel.textContent = state.householdCode;
-    if (headerPill) {
-      headerPill.classList.remove('hidden');
-      headerPill.classList.add('flex');
-    }
-  } else {
-    if (syncBadge) {
-      syncBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 text-slate-600 flex items-center gap-1.5 flex-shrink-0';
-      syncBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-400"></span> Inactif';
-    }
-    if (setupBox) setupBox.classList.remove('hidden');
-    if (activeBox) activeBox.classList.add('hidden');
-    if (headerPill) {
-      headerPill.classList.add('hidden');
-      headerPill.classList.remove('flex');
-    }
-  }
+async function importBackupFile(file) {
+  if (!file) return;
+  let data;
+  try { data = parseBackup(await file.text()); } catch (e) { showToast(e.message); return; }
+  const ok = await confirmDialog({
+    title: 'Restaurer cette sauvegarde ?',
+    message: `Les données de ce téléphone (menu, favoris, courses, placard, recettes maison) seront remplacées par celles du fichier${file.name ? ' « ' + file.name + ' »' : ''}.`,
+    confirmLabel: 'Restaurer', danger: true
+  });
+  if (!ok) return;
+  const snapshot = takeSnapshot();
+  applyPayload(data);
+  saveToLocalStorage();
+  showToast('Sauvegarde restaurée', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
 }
-
-function initHouseholdSync() {
-  const topic = getHouseholdTopic();
-  if (!topic) return;
-
-  if (state.syncEventSource) {
-    try { state.syncEventSource.close(); } catch(e) {}
-    state.syncEventSource = null;
-  }
-
-  // 1. Écouteur temps réel via Server-Sent Events (SSE)
-  if (typeof EventSource !== 'undefined') {
-    try {
-      const sseUrl = `https://ntfy.sh/${topic}/sse`;
-      state.syncEventSource = new EventSource(sseUrl);
-
-      state.syncEventSource.onmessage = (event) => {
-        try {
-          const raw = JSON.parse(event.data);
-          if (raw.event === 'message') {
-            readNtfyPayload(raw).then(payload => { if (payload) handleIncomingSync(payload); });
-          }
-        } catch (err) {
-          console.warn('Sync parse error:', err);
-        }
-      };
-    } catch(e) {
-      console.warn('EventSource error:', e);
-    }
-  }
-
-  // 2. Récupérer l'état actuel
+async function restoreFromHousehold() {
+  if (!state.householdCode) { showToast('Connectez d\'abord un foyer'); return; }
+  const ok = await confirmDialog({
+    title: 'Récupérer depuis l\'autre téléphone ?',
+    message: 'Les données de ce téléphone seront remplacées par celles de l\'autre téléphone du foyer (il doit être connecté).',
+    confirmLabel: 'Récupérer', danger: true
+  });
+  if (!ok) return;
+  state.lastSyncTimestamp = 0;
+  safeSetItem('gamelle_last_sync', 0);
+  const sent = await sendControl('request-state');
   pollLatestSync();
+  showToast(sent ? 'Demande envoyée : les données arrivent dans quelques secondes' : 'Impossible de joindre le foyer (réseau ?)');
 }
-
-function pollLatestSync() {
-  const topic = getHouseholdTopic();
-  if (!topic || typeof fetch === 'undefined') return;
-
-  fetch(`https://ntfy.sh/${topic}/json?poll=1`)
-    .then(res => res.text())
-    .then(async text => {
-      const lines = text.trim().split('\n').filter(Boolean);
-      for (let i = lines.length - 1; i >= 0; i--) {
-        try {
-          const entry = JSON.parse(lines[i]);
-          if (entry.event && entry.event !== 'message') continue;
-          const payload = await readNtfyPayload(entry);
-          if (!payload) continue;
-          // Seul le message le plus récent compte : on s'arrête dès qu'on l'a examiné
-          handleIncomingSync(payload);
-          break;
-        } catch(e) {}
-      }
-    })
-    .catch(err => console.warn('Erreur poll synchro:', err));
+async function changeHouseholdCode() {
+  if (!state.householdCode) return;
+  const ok = await confirmDialog({
+    title: 'Changer le code du foyer ?',
+    message: 'Un nouveau code secret est créé. L\'autre téléphone passe automatiquement dessus (il doit être ouvert ou le rouvrir dans les 6 heures). Vos données sont conservées.',
+    confirmLabel: 'Changer le code'
+  });
+  if (!ok) return;
+  const newCode = generateHouseholdCode();
+  const sent = await sendControl('rekey', { newCode });
+  if (!sent) { showToast('Impossible de prévenir l\'autre téléphone (réseau ?) : réessayez'); return; }
+  setHouseholdCode(newCode, { keepState: true });
+  showToast('Nouveau code actif');
 }
-
-// ntfy.sh transforme automatiquement les messages de plus de 4 Ko en pièce jointe :
-// on lit alors le JSON depuis l'URL de la pièce jointe.
-function readNtfyPayload(entry) {
-  const decode = (raw) => GL.decryptPayload(state.householdCode, raw);
-  try {
-    if (entry.attachment && entry.attachment.url) {
-      return fetch(entry.attachment.url).then(r => r.text()).then(decode).catch(() => null);
-    }
-    if (entry.message) return decode(entry.message);
-  } catch (e) {}
-  return Promise.resolve(null);
-}
-
-function handleIncomingSync(payload) {
-  if (!payload || typeof payload !== 'object' || typeof payload.timestamp !== 'number' || !isFinite(payload.timestamp)) return false;
-
-  // Ignorer nos propres messages
-  if (payload.senderId && payload.senderId === state.deviceId) return false;
-
-  // Ignorer si ce message est plus ancien que notre dernière synchro
-  if (payload.timestamp <= (state.lastSyncTimestamp || 0)) return false;
-
-  state.lastSyncTimestamp = payload.timestamp;
-  safeSetItem('gamelle_last_sync', payload.timestamp);
-
-  // Appliquer les données reçues (toutes validées : un message ne peut pas injecter de code)
-  if (Array.isArray(payload.plan)) state.plan = sanitizePlan(payload.plan).map(resolveAlias);
-  if (payload.portions) state.portions = Math.round(cleanNum(payload.portions, 1, 12, state.portions));
-  if (Array.isArray(payload.lockedSlots)) state.lockedSlots = sanitizeSlots(payload.lockedSlots);
-  if (Array.isArray(payload.staples)) state.staples = sanitizeStaples(payload.staples);
-  if (payload.checkedGroceries && typeof payload.checkedGroceries === 'object') state.checkedGroceries = sanitizeChecked(payload.checkedGroceries);
-  if (Array.isArray(payload.savedMenus)) state.savedMenus = sanitizeSavedMenus(payload.savedMenus);
-  if (Array.isArray(payload.favorites)) state.favorites = resolveAliasList(sanitizeStringList(payload.favorites));
-  if (Array.isArray(payload.pantry)) state.pantry = sanitizeStringList(payload.pantry, 400, 120);
-  if (Array.isArray(payload.pantryNeeded)) state.pantryNeeded = sanitizeStringList(payload.pantryNeeded, 400, 120);
-  if (Array.isArray(payload.leftovers)) state.leftovers = sanitizeStringList(payload.leftovers, 30, 60);
-  if (Array.isArray(payload.spices)) state.spices = sanitizeSpices(payload.spices);
-  else if (payload.spiceLevel !== undefined) { const l = Math.round(cleanNum(payload.spiceLevel, 0, 2, 0)); state.spices = l >= 2 ? [...GL.SPICES_FULL] : l === 1 ? [...GL.SPICES_BASIC] : []; }
-  if (typeof payload.stockBasics === 'boolean') state.stockBasics = payload.stockBasics;
-  if (Array.isArray(payload.aisleOrder)) state.aisleOrder = sanitizeStringList(payload.aisleOrder, 10, 30);
-  // Avis / historique : fusion recette par recette (le plus récent gagne), rien n'est écrasé en bloc
-  if (payload.notes && typeof payload.notes === 'object') {
-    const incoming = sanitizeNotes(payload.notes);
-    Object.keys(incoming).forEach(id => {
-      const mine = state.notes[id];
-      if (!mine || (incoming[id].t || 0) > (mine.t || 0)) state.notes[id] = { ...incoming[id], cooked: Math.max(incoming[id].cooked || 0, mine ? mine.cooked || 0 : 0) };
-      else if (mine && (incoming[id].cooked || 0) > (mine.cooked || 0)) mine.cooked = incoming[id].cooked;
-    });
+function setupBackupUI() {
+  const exp = document.getElementById('btn-export-json');
+  const file = document.getElementById('input-import-backup');
+  const imp = document.getElementById('btn-import-backup');
+  if (exp) exp.addEventListener('click', exportBackup);
+  if (imp && file) {
+    imp.addEventListener('click', () => file.click());
+    file.addEventListener('change', () => { importBackupFile(file.files[0]); file.value = ''; });
   }
-
-  // Synchronisation des recettes personnalisées
-  if (Array.isArray(payload.customRecipes)) {
-    const custom = sanitizeRecipeList(payload.customRecipes);
-    safeSetItem('gamelle_custom_recipes', JSON.stringify(custom));
-    state.recipes = [...DEFAULT_RECIPES, ...custom];
-  }
-
-  // Sauvegarder localement sans re-diffuser
-  safeSetItem('gamelle_portions', state.portions);
-  safeSetItem('gamelle_plan', JSON.stringify(state.plan));
-  safeSetItem('gamelle_saved_menus', JSON.stringify(state.savedMenus));
-  safeSetItem('gamelle_staples', JSON.stringify(state.staples));
-  safeSetItem('gamelle_checked', JSON.stringify(state.checkedGroceries));
-  safeSetItem('gamelle_locked_slots', JSON.stringify(state.lockedSlots || []));
-  safeSetItem('gamelle_favorites', JSON.stringify(state.favorites || []));
-  safeSetItem('gamelle_notes', JSON.stringify(state.notes || {}));
-  safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
-  safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
-  safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
-  safeSetItem('gamelle_leftovers', JSON.stringify(state.leftovers || []));
-  safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
-  safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
-
-  renderAll();
-  showToast('Synchronisé avec votre foyer');
-  return true;
-}
-
-function broadcastSync() {
-  const topic = getHouseholdTopic();
-  if (!topic || typeof fetch === 'undefined') return;
-
-  clearTimeout(state.syncDebounceTimer);
-  state.syncDebounceTimer = setTimeout(() => {
-    const customList = (state.recipes || []).filter(r => r.id.startsWith('custom-'));
-    const payload = {
-      version: 2,
-      timestamp: Date.now(),
-      senderId: state.deviceId,
-      portions: state.portions,
-      plan: state.plan,
-      lockedSlots: state.lockedSlots || [],
-      staples: state.staples || [],
-      checkedGroceries: state.checkedGroceries || {},
-      customRecipes: customList,
-      savedMenus: state.savedMenus || [],
-      favorites: state.favorites || [],
-      pantry: state.pantry || [],
-      pantryNeeded: state.pantryNeeded || [],
-      spices: state.spices || [],
-      leftovers: state.leftovers || [],
-      stockBasics: !!state.stockBasics,
-      aisleOrder: state.aisleOrder || [],
-      notes: state.notes || {}
-    };
-
-    // Le contenu est chiffré (AES-GCM, clé dérivée du code foyer) quand le navigateur le permet
-    const bodyPromise = GL.cryptoAvailable() ? GL.encryptPayload(state.householdCode, payload).catch(() => JSON.stringify(payload)) : Promise.resolve(JSON.stringify(payload));
-    bodyPromise.then(body => fetch(`https://ntfy.sh/${topic}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Title': 'Gamelle Sync',
-        'Tags': 'arrows_counterclockwise'
-      },
-      body
-    })).then(res => {
-      if (res.ok) {
-        state.lastSyncTimestamp = payload.timestamp;
-        safeSetItem('gamelle_last_sync', payload.timestamp);
-      }
-    }).catch(err => console.warn('Broadcast error:', err));
-  }, 400);
+  const restore = document.getElementById('btn-restore-household');
+  if (restore) restore.addEventListener('click', restoreFromHousehold);
+  const change = document.getElementById('btn-change-code');
+  if (change) change.addEventListener('click', changeHouseholdCode);
+  updateBackupInfo();
 }

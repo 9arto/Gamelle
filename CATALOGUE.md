@@ -15,10 +15,10 @@
 
 | Saison (une recette peut compter dans plusieurs) | Recettes |
 |---|---|
-| ☀️ Été | 191 |
-| ❄️ Hiver | 156 |
-| 🍁 Automne | 155 |
-| 🌸 Printemps | 144 |
+| ☀️ Été | 192 |
+| 🍁 Automne | 179 |
+| ❄️ Hiver | 172 |
+| 🌸 Printemps | 145 |
 
 | Style | Recettes |
 |---|---|
@@ -31,7 +31,7 @@
 | Frais & bowls | 27 |
 | Tex-Mex | 19 |
 
-- « Pas cher » : 322 · moins de 20 min : 188 · bon en gamelle : 339
+- « Pas cher » : 322 · moins de 20 min : 188
 
 ## Toutes les recettes
 
@@ -40,15 +40,15 @@
 | Aiguillettes de bœuf & légumes poêlés | Viande | 13 | Été | Asiatique | 557 | `aiguillettes-boeuf-legumes-poeles-riz` |
 | Aiguillettes de Canard Saisies & Ravioles du Dauphiné Forestières | Volaille | 15 | Automne, Hiver | Italien, Terroir & tradition | 367 | `canard-dore-ravioles-forestieres` |
 | Aubergines braisées au porc & riz | Viande | 30 | Printemps, Été | Asiatique | 540 | `aubergines-braisees-porc-gingembre-riz` |
-| Aubergines Fondantes à la Parmigiana & Mozzarella Gratinée | Végétarien | 40 | Été | Italien, Terroir & tradition | 434 | `aubergines-parmigiana-mozzarella` |
-| Aubergines gratinées, feta & grenade | Végétarien | 30 | Printemps, Été | Italien, Terroir & tradition | 374 | `aubergines-gratinees-tomate-mozzarella` |
+| Aubergines Fondantes à la Parmigiana & Mozzarella Gratinée | Végétarien | 40 | Été, Automne, Hiver | Italien, Terroir & tradition | 434 | `aubergines-parmigiana-mozzarella` |
+| Aubergines gratinées, feta & grenade | Végétarien | 30 | toutes | Italien, Terroir & tradition | 374 | `aubergines-gratinees-tomate-mozzarella` |
 | Aubergines rôties & burrata | Végétarien | 34 | Été | Italien, Terroir & tradition | 341 | `aubergines-roties-burrata-pignons` |
 | Bagel New-Yorkais aux Œufs Brouillés Moelleux, Bacon Grillé & Cheddar | Viande | 15 | Hiver | Street food, Asiatique | 490 | `bagel-oeufs-brouilles-bacon-grille-cheddar` |
 | Bavette aux échalotes & purée maison | Viande | 24 | Printemps, Été | Terroir & tradition | 690 | `bavette-echalotes-puree-maison` |
 | Bavette de Bœuf Poêlée, Sauce Crémée au Roquefort & Pommes de Terre | Viande | 20 | Automne, Hiver | Terroir & tradition, Asiatique | 616 | `boeuf-sauce-roquefort-frites-four` |
-| Blanquette de Poulet Express aux Champignons & Riz Blanc | Volaille | 25 | Automne | Terroir & tradition | 621 | `blanquette-poulet-express-champignons-riz` |
+| Blanquette de Poulet Express aux Champignons & Riz Blanc | Volaille | 25 | Automne, Hiver | Terroir & tradition | 621 | `blanquette-poulet-express-champignons-riz` |
 | Blanquette de Veau à l'Ancienne, Sauce Veloutée Crémée & Riz Pilaf | Viande | 45 | Automne, Hiver | Terroir & tradition | 715 | `blanquette-veau-traditionnelle-riz-pilaf` |
-| Blanquette Express de Crevettes Roses aux Champignons & Riz Blanc | Poisson | 20 | Printemps, Été, Automne | Terroir & tradition, Italien | 607 | `blanquette-express-crevettes-riz` |
+| Blanquette Express de Crevettes Roses aux Champignons & Riz Blanc | Poisson | 20 | toutes | Terroir & tradition, Italien | 607 | `blanquette-express-crevettes-riz` |
 | Bo bun aux nems | Viande | 14 | Printemps, Été | Street food, Asiatique | 505 | `bo-bun-nems-vermicelles` |
 | Bœuf & crème persillée | Viande | 35 | Printemps, Hiver | Terroir & tradition | 468 | `boeuf-creme-persillee-pommes-de-terre` |
 | Bœuf à la mexicaine, haricots rouges & tomates | Viande | 25 | Été | Tex-Mex, Terroir & tradition, Asiatique | 594 | `boeuf-mijjote-mexicaine-riz` |
@@ -94,8 +94,8 @@
 | Cheese Naans Fondants à la Poêle & Émincé de Poulet au Curry | Volaille | 20 | toutes | Street food, Orient & Indien, Italien | 962 | `cheese-naan-express-poulet-curry` |
 | Cheeseburger Gourmand au Bœuf, Bleu Fondu & Frites de Patates Douces | Viande | 25 | Été, Hiver | Street food, Terroir & tradition | 665 | `cheeseburger-bleu-frites-patates-douces` |
 | Cheeseburger Moelleux au Poulet, Cheddar & Sauce Miel-Moutarde | Volaille | 20 | Été | Street food | 506 | `cheeseburger-poulet-cheddar-miel-moutarde` |
-| Chili réconfortant à la Patate douce & Haricots noirs | Végétarien | 25 | Été, Automne | Tex-Mex | 481 | `chili-sin-carne-patate-douce` |
-| Chili Sin Carne Réconfortant aux Haricots Rouges, Maïs & Riz Blanc | Végétarien | 25 | Été | Tex-Mex | 487 | `chili-sin-carne-mexicain` |
+| Chili réconfortant à la Patate douce & Haricots noirs | Végétarien | 25 | Été, Automne, Hiver | Tex-Mex | 481 | `chili-sin-carne-patate-douce` |
+| Chili Sin Carne Réconfortant aux Haricots Rouges, Maïs & Riz Blanc | Végétarien | 25 | Été, Automne, Hiver | Tex-Mex | 487 | `chili-sin-carne-mexicain` |
 | Chou braisé à la saucisse | Viande | 39 | Hiver | Terroir & tradition | 729 | `chou-braise-saucisse-lardons` |
 | Classic Cheeseburger | Viande | 48 | Été, Hiver | Street food | 629 | `classic-cheeseburger` |
 | Conchiglioni farcis à la ricotta & aux épinards | Végétarien | 25 | Printemps | Italien | 500 | `conchiglioni-farcis-ricotta-epinards` |
@@ -107,7 +107,7 @@
 | Côte de porc miel curry & patate douce | Viande | 30 | Printemps, Automne | Orient & Indien, Asiatique | 467 | `cote-porc-miel-curry-puree-patate-douce` |
 | Couscous merguez | Viande | 40 | Hiver | Orient & Indien, Terroir & tradition | 828 | `couscous-merguez-pois-chiches` |
 | Crevettes Laquées au Miel & Sésame Doré, Riz Jasmin | Poisson | 15 | Printemps, Été | Asiatique | 434 | `crevettes-miel-sesame-riz-jasmin` |
-| Croque-Madame Gratiné au Four, Béchamel & Œuf au Plat Coulant | Viande | 20 | Hiver | Street food, Terroir & tradition | 837 | `croque-madame-four-oeuf-coule` |
+| Croque-Madame Gratiné au Four, Béchamel & Œuf au Plat Coulant | Viande | 20 | Automne, Hiver | Street food, Terroir & tradition | 837 | `croque-madame-four-oeuf-coule` |
 | Croque-monsieur au four, béchamel maison | Viande | 20 | Hiver | Street food, Terroir & tradition | 760 | `croque-monsieur-four-bechamel` |
 | Croque-Monsieur Gourmand aux Poireaux Fondants & Fromage Doré au Four | Végétarien | 25 | Automne, Hiver | Street food | 549 | `croque-monsieur-fondant-poireaux` |
 | Croquettes brocolis & feta | Végétarien | 34 | Printemps, Été | Street food | 348 | `croquettes-brocolis-feta-salade` |
@@ -147,8 +147,8 @@
 | Émincé de Poulet Laqué au Miel Doré, Haricots Verts & Ail Rôti | Volaille | 20 | Printemps | Asiatique, Terroir & tradition | 295 | `poulet-laque-miel-haricots-verts` |
 | Émincé de Poulet Satay Doré, Sauce Cacahuète Onctueuse & Riz Jasmin | Volaille | 20 | Printemps, Été | Asiatique, Orient & Indien | 588 | `poulet-satay-sauce-cacahuete` |
 | Enchiladas Gratinées au Poulet Effiloché, Champignons & Cheddar | Volaille | 30 | Été, Automne, Hiver | Street food, Tex-Mex, Terroir & tradition | 848 | `enchiladas-gratinees-poulet-champignons-cheddar` |
-| Enchiladas Mexicaines au Bœuf Haché Épicé & Cheddar Gratiné | Viande | 25 | Hiver | Street food, Tex-Mex, Terroir & tradition | 896 | `enchiladas-boeuf-cheddar-gratine` |
-| Enchiladas poulet & courgettes | Volaille | 34 | Été, Automne | Street food, Tex-Mex | 928 | `enchiladas-poulet-courgettes-mozzarella` |
+| Enchiladas Mexicaines au Bœuf Haché Épicé & Cheddar Gratiné | Viande | 25 | Automne, Hiver | Street food, Tex-Mex, Terroir & tradition | 896 | `enchiladas-boeuf-cheddar-gratine` |
+| Enchiladas poulet & courgettes | Volaille | 34 | Été, Automne, Hiver | Street food, Tex-Mex | 928 | `enchiladas-poulet-courgettes-mozzarella` |
 | Endives au jambon | Viande | 38 | Hiver | Terroir & tradition | 483 | `endives-au-jambon-bechamel` |
 | Escalope de dinde & courgettes au curry | Volaille | 23 | Été, Automne | Orient & Indien | 564 | `dinde-courgettes-curry-coco-riz` |
 | Escalope de dinde à la crème de champignons & purée maison | Volaille | 22 | Été, Automne | Du quotidien | 459 | `dinde-creme-champignons-puree` |
@@ -164,7 +164,7 @@
 | Feuilletés épinard, feta & salade | Végétarien | 23 | Printemps, Été | Frais & bowls | 405 | `feuilletes-epinards-feta-salade` |
 | Filet mignon moutarde & miel | Viande | 59 | Hiver | Asiatique | 403 | `filet-mignon-moutarde-miel-pommes-de-terre` |
 | Filets de Canard Glacés à l'Orange & Écrasé de Patate Douce | Volaille | 25 | Automne, Hiver | Terroir & tradition | 461 | `canard-orange-ecrase-patate-douce` |
-| Filets de Lieu Noir poêlés sur Fondue de Poireaux au Citron | Poisson | 20 | Automne | Du quotidien | 588 | `lieu-noir-poireaux-fondants-citron` |
+| Filets de Lieu Noir poêlés sur Fondue de Poireaux au Citron | Poisson | 20 | Automne, Hiver | Du quotidien | 588 | `lieu-noir-poireaux-fondants-citron` |
 | Filets de Poulet Sautés à la Crème & Purée Mousseline Maison au Beurre | Volaille | 25 | Été, Automne, Hiver | Terroir & tradition | 527 | `puree-maison-poulet-a-la-creme` |
 | Filets de Poulet Sautés aux Pousses d'Épinards à la Crème & Riz | Volaille | 20 | Printemps | Du quotidien | 478 | `poulet-epinards-creme-riz` |
 | Flammeküeche Traditionnelle aux Lardons Fumés & Oignons Fondants | Viande | 15 | Automne, Hiver | Terroir & tradition | 843 | `flammekueche-alsacienne-traditionnelle` |
@@ -173,7 +173,7 @@
 | Frittata moelleuse aux Poireaux, Champignons & Chèvre | Végétarien | 24 | Printemps, Automne | Terroir & tradition | 395 | `frittata-poireaux-champignons-chevre` |
 | Fusillotti au roquefort & noix | Végétarien | 12 | Automne | Italien | 699 | `fusillotti-roquefort-noix` |
 | Galette Complète Bretonne au Sarrasin, Jambon & Œuf Coulant | Viande | 10 | Été | Street food, Terroir & tradition | 436 | `galette-complete-bretonne` |
-| Gnocchi à la Parisienne Maison Nappés de Béchamel & Gratins Dorés | Végétarien | 25 | Hiver | Italien, Terroir & tradition | 553 | `gnocchi-parisienne-bechamel-gratine` |
+| Gnocchi à la Parisienne Maison Nappés de Béchamel & Gratins Dorés | Végétarien | 25 | Automne, Hiver | Italien, Terroir & tradition | 553 | `gnocchi-parisienne-bechamel-gratine` |
 | Gnocchi Alfredo | Volaille | 24 | toutes | Italien | 687 | `gnocchi-alfredo-poulet` |
 | Gnocchi Poêlés à la Sauce Tomate Épicée All'Arrabbiata & Basilic | Végétarien | 15 | Été | Italien | 560 | `gnocchi-piquants-all-arrabbiata` |
 | Gnocchi poêlés aux choux de Bruxelles | Végétarien | 18 | Hiver | Italien | 408 | `gnocchi-poeles-choux-bruxelles-parmesan` |
@@ -183,25 +183,25 @@
 | Gnocchis Moelleux au Poulet Doré, Pousses d'Épinards & Crème Parmesan | Volaille | 20 | Printemps | Italien | 699 | `gnocchis-poulet-epinards-creme-parmesan` |
 | Golden pot | Végétarien | 21 | Automne, Hiver | Asiatique, Orient & Indien | 239 | `golden-pot-chou-fleur-pois-chiches` |
 | Grande Salade Tiède de Poulet Doré, Avocat & Lardons Fumés | Volaille | 15 | Été | Frais & bowls | 508 | `salade-poulet-avocat-lard-dore` |
-| Gratin butternut, bleu & thym | Végétarien | 48 | Automne | Terroir & tradition | 340 | `gratin-butternut-bleu-noisettes` |
+| Gratin butternut, bleu & thym | Végétarien | 48 | Automne, Hiver | Terroir & tradition | 340 | `gratin-butternut-bleu-noisettes` |
 | Gratin Crémeux de Chou-Fleur à la Béchamel & Emmental Doré | Végétarien | 35 | Automne, Hiver | Terroir & tradition | 397 | `gratin-chou-fleur-bechamel-emmental` |
 | Gratin d'Automne de Chou-fleur & Pommes de Terre au Comté | Végétarien | 28 | Automne, Hiver | Terroir & tradition | 417 | `gratin-chou-fleur-pommes-terre-comte` |
 | Gratin Dauphinois Traditionnel au Four, Crème Entière & Muscade | Végétarien | 55 | Automne, Hiver | Terroir & tradition | 402 | `gratin-dauphinois-traditionnel` |
 | Gratin de courgette, feta & jambon | Viande | 40 | Été, Automne, Hiver | Terroir & tradition | 331 | `gratin-courgettes-feta-jambon` |
-| Gratin de gnocchi au poulet & pesto rosso | Volaille | 25 | Été | Italien, Terroir & tradition | 910 | `gratin-gnocchi-poulet-pesto-rosso-mozza` |
-| Gratin de gnocchi aux brocolis | Végétarien | 23 | Printemps | Italien, Terroir & tradition | 361 | `gratin-gnocchi-brocolis-ricotta` |
+| Gratin de gnocchi au poulet & pesto rosso | Volaille | 25 | Été, Automne, Hiver | Italien, Terroir & tradition | 910 | `gratin-gnocchi-poulet-pesto-rosso-mozza` |
+| Gratin de gnocchi aux brocolis | Végétarien | 23 | Printemps, Automne, Hiver | Italien, Terroir & tradition | 361 | `gratin-gnocchi-brocolis-ricotta` |
 | Gratin de Pâtes au Jambon, Béchamel & Emmental Gratiné | Viande | 30 | Automne, Hiver | Italien, Terroir & tradition | 713 | `gratin-pates-jambon-bechamel` |
-| Gratin de pâtes au lard & cabécou | Viande | 37 | Hiver | Italien, Terroir & tradition | 873 | `gratin-pates-lard-cabecou` |
+| Gratin de pâtes au lard & cabécou | Viande | 37 | Automne, Hiver | Italien, Terroir & tradition | 873 | `gratin-pates-lard-cabecou` |
 | Gratin de ravioles aux courgettes | Végétarien | 27 | Automne, Hiver | Italien, Terroir & tradition | 704 | `gratin-ravioles-courgettes-comte` |
-| Gratin Doré de Pâtes au Blanc de Poulet, Crème & Emmental | Volaille | 30 | Hiver | Italien, Terroir & tradition | 894 | `gratin-pates-poulet-emmental-bechamel` |
+| Gratin Doré de Pâtes au Blanc de Poulet, Crème & Emmental | Volaille | 30 | Automne, Hiver | Italien, Terroir & tradition | 894 | `gratin-pates-poulet-emmental-bechamel` |
 | Gratin Fondant de Patates Douces aux Châtaignes & Crème Muscadée | Végétarien | 35 | Automne, Hiver | Terroir & tradition | 565 | `gratin-patates-douces-chataignes` |
-| Gratin Gourmand de Pâtes au Thon, Coulis de Tomate & Fromage Fondu | Poisson | 25 | Été, Hiver | Italien, Terroir & tradition | 629 | `gratin-de-pates-au-thon-coulis` |
+| Gratin Gourmand de Pâtes au Thon, Coulis de Tomate & Fromage Fondu | Poisson | 25 | Été, Automne, Hiver | Italien, Terroir & tradition | 629 | `gratin-de-pates-au-thon-coulis` |
 | Green Curry Ramen : Nouilles au Bouillon Vert Thaï & Petits Légumes | Végétarien | 20 | Printemps, Été | Asiatique, Orient & Indien | 620 | `green-curry-ramen-legumes` |
-| Grilled Cheese Moelleux à la Dinde, Comté AOP & Salade Croquante | Volaille | 15 | Été, Hiver | Street food, Frais & bowls, Orient & Indien | 635 | `grilled-cheese-dinde-comte` |
-| Hachis Parmentier Boeuf & Carottes, Purée Dorée | Viande | 30 | Hiver | Terroir & tradition | 632 | `hachis-parmentier-boeuf-carottes` |
+| Grilled Cheese Moelleux à la Dinde, Comté AOP & Salade Croquante | Volaille | 15 | Été | Street food, Frais & bowls, Orient & Indien | 635 | `grilled-cheese-dinde-comte` |
+| Hachis Parmentier Boeuf & Carottes, Purée Dorée | Viande | 30 | Automne, Hiver | Terroir & tradition | 632 | `hachis-parmentier-boeuf-carottes` |
 | Hachis Parmentier de Canard Confit & Purée Onctueuse au Beurre | Viande | 35 | Automne, Hiver | Terroir & tradition | 733 | `hachis-parmentier-canard-confit-puree-maison` |
 | Haricots verts à la sauce tomate & viande hachée | Viande | 9 | Printemps, Été | Du quotidien | 380 | `haricots-verts-sauce-tomate-viande-hachee` |
-| Haricots verts gratinés au comté | Végétarien | 23 | Hiver | Terroir & tradition | 307 | `haricots-verts-gratines-comte` |
+| Haricots verts gratinés au comté | Végétarien | 23 | Automne, Hiver | Terroir & tradition | 307 | `haricots-verts-gratines-comte` |
 | Huevos rotos | Viande | 30 | Hiver | Du quotidien | 328 | `huevos-rotos-pommes-de-terre-chorizo` |
 | Lasagna alla Boscaiola | Viande | 13 | Automne, Hiver | Italien, Asiatique | 946 | `lasagnes-boscaiola-lardons-champignons` |
 | Lasagnes express à la ratatouille | Végétarien | 42 | Été, Hiver | Italien, Asiatique | 505 | `lasagnes-express-ratatouille-mozzarella` |
@@ -213,7 +213,7 @@
 | Légumes du soleil & feta rôtis | Végétarien | 24 | Été | Terroir & tradition | 211 | `legumes-soleil-feta-rotis` |
 | Légumes sautés, gingembre & cajou | Végétarien | 15 | Printemps, Automne | Asiatique | 274 | `legumes-sautes-gingembre-cajou` |
 | Lentilles corail & patates douces au lait de coco | Végétarien | 30 | Automne | Orient & Indien, Terroir & tradition | 559 | `curry-lentilles-patates-douces-coco` |
-| Magret de canard à l'orange & salade | Volaille | 20 | Hiver | Asiatique, Terroir & tradition | 338 | `magret-canard-orange-glace` |
+| Magret de canard à l'orange & salade | Volaille | 20 | Printemps, Été | Asiatique, Terroir & tradition | 338 | `magret-canard-orange-glace` |
 | Magret de Canard Rôti au Four & Purée Mousseline Maison au Beurre | Volaille | 25 | Hiver | Terroir & tradition | 599 | `magret-canard-puree-maison` |
 | Mijoté de Poulet Doux au Lait de Coco, Curry & Tomates Cerises | Volaille | 20 | Été, Automne, Hiver | Orient & Indien, Terroir & tradition | 684 | `poulet-coco-curry-tomates-cerises` |
 | Mijoté de Poulet Fondant au Citron Confit, Olives & Semoule Épicée | Volaille | 25 | Printemps, Hiver | Orient & Indien, Terroir & tradition, Asiatique | 663 | `poulet-citron-confit-olives-couscous` |
@@ -247,7 +247,7 @@
 | Parmentier de Confit de Canard Effiloché, Échalotes Rissolées & Purée Mousseline Gratinée | Volaille | 45 | Automne, Hiver | Terroir & tradition | 802 | `parmentier-confit-canard-puree-mousseline` |
 | Parmentier express de Bœuf & Purée de Patate Douce | Viande | 25 | Automne, Hiver | Terroir & tradition | 546 | `hachis-parmentier-patate-douce` |
 | Parmentier Gourmand de Courgettes & Bœuf Haché Gratiné | Viande | 35 | Été, Automne, Hiver | Terroir & tradition | 552 | `parmentier-courgettes-boeuf-hache` |
-| Parmentier Réconfortant de Canard Effiloché & Patates Douces | Volaille | 30 | Hiver | Terroir & tradition | 605 | `parmentier-canard-patates-douces` |
+| Parmentier Réconfortant de Canard Effiloché & Patates Douces | Volaille | 30 | Automne, Hiver | Terroir & tradition | 605 | `parmentier-canard-patates-douces` |
 | Patates douces & chèvre rôtis au thym | Végétarien | 49 | Printemps, Hiver | Terroir & tradition | 286 | `patates-douces-chevre-rotis-thym-miel` |
 | Patates douces rôties au roquefort | Végétarien | 47 | Automne, Hiver | Terroir & tradition | 351 | `patates-douces-rotis-roquefort-noix` |
 | Pâtes à la Norma | Végétarien | 23 | Printemps, Été | Italien | 475 | `pates-norma-aubergines-ricotta` |
@@ -272,7 +272,7 @@
 | Penne au Thon, Coulis de Tomates mijoté & Olives | Poisson | 15 | Été | Italien, Terroir & tradition | 515 | `pates-thon-tomate-olives` |
 | Penne Crémeuses au Poulet Rissolé, Olives Noires & Basilic | Volaille | 20 | Printemps, Été | Italien | 756 | `pates-cremeuses-poulet-olives` |
 | Penne Rigate aux Petits Pois Tendres, Lardons Fumés & Crème | Viande | 20 | Printemps, Hiver | Italien | 833 | `penne-petits-pois-lardons-fumes-creme` |
-| Pennes Gourmandes au Poulet Saisi, Fondue de Poireaux & Pesto Verde | Volaille | 20 | Été, Automne | Italien | 816 | `pennes-poulet-poireaux-pesto-verde` |
+| Pennes Gourmandes au Poulet Saisi, Fondue de Poireaux & Pesto Verde | Volaille | 20 | Été, Automne, Hiver | Italien | 816 | `pennes-poulet-poireaux-pesto-verde` |
 | Poêlée campagnarde : Pommes de terre, Lardons & Oignons | Viande | 25 | Automne, Hiver | Terroir & tradition | 384 | `poelee-campagnarde-pommes-de-terre-lardons` |
 | Poêlée Colorée de Poulet aux Brocolis & Champignons de Paris | Volaille | 20 | Printemps, Automne | Asiatique | 295 | `poelee-poulet-brocolis-champignons` |
 | Poêlée de choux de Bruxelles & lardons | Viande | 14 | Hiver | Du quotidien | 241 | `poelee-choux-bruxelles-lardons` |
@@ -317,19 +317,19 @@
 | Poulet Tandoori Mariné aux Épices Indiennes & Riz Basmati Parfumé | Volaille | 20 | Printemps | Orient & Indien | 465 | `poulet-tandoori-riz-parfume` |
 | Poulet Tikka Masala Express & Riz Basmati Parfumé | Volaille | 20 | Été | Orient & Indien | 662 | `poulet-tikka-masala-express-riz` |
 | Poulet, poireaux & carottes au thym | Volaille | 48 | Automne, Hiver | Terroir & tradition | 397 | `poulet-poireaux-carottes-thym` |
-| Quenelles gratinées & salade verte | Végétarien | 20 | Été | Terroir & tradition, Frais & bowls | 692 | `quenelles-gratinees-salade-verte` |
+| Quenelles gratinées & salade verte | Végétarien | 20 | Été, Automne, Hiver | Terroir & tradition, Frais & bowls | 692 | `quenelles-gratinees-salade-verte` |
 | Quesadillas Croustillantes au Bœuf Épicé & Fromage Fondant | Viande | 15 | Été | Street food, Tex-Mex | 571 | `quesadillas-dorees-boeuf-fromage` |
 | Quesadillas Croustillantes au Poulet Mariné, Poivrons & Fromage Fondu | Volaille | 20 | Été | Street food, Tex-Mex | 295 | `quesadillas-poulet-dore-cheddar` |
 | Quesadillas Dorées à la Purée d'Avocat, Cheddar Fondu & Coriandre | Végétarien | 15 | Printemps, Été | Street food, Tex-Mex, Frais & bowls | 879 | `quesadillas-avocat-cheddar-fondu-coriandre` |
-| Quiche brocoli & fromage frais | Viande | 55 | Printemps, Hiver | Terroir & tradition | 584 | `quiche-brocoli-fromage-frais-lardons` |
-| Quiche chèvre épinards | Végétarien | 54 | Printemps | Terroir & tradition | 518 | `quiche-chevre-epinards` |
+| Quiche brocoli & fromage frais | Viande | 55 | Printemps, Automne, Hiver | Terroir & tradition | 584 | `quiche-brocoli-fromage-frais-lardons` |
+| Quiche chèvre épinards | Végétarien | 54 | Printemps, Automne, Hiver | Terroir & tradition | 518 | `quiche-chevre-epinards` |
 | Quiche chorizo & courgette | Viande | 47 | Été, Automne, Hiver | Terroir & tradition | 697 | `quiche-chorizo-courgette` |
 | Quiche Croustillante à la Fondue de Poireaux & Feta AOP Dorée | Végétarien | 35 | Été, Automne, Hiver | Terroir & tradition | 531 | `quiche-poireaux-feta-doree` |
-| Quiche Dorée aux Oignons Caramélisés, Bûche de Chèvre & Miel | Végétarien | 40 | Printemps, Hiver | Terroir & tradition | 696 | `quiche-oignons-chevre-miel` |
+| Quiche Dorée aux Oignons Caramélisés, Bûche de Chèvre & Miel | Végétarien | 40 | Printemps, Automne, Hiver | Terroir & tradition | 696 | `quiche-oignons-chevre-miel` |
 | Quiche légère sans pâte aux Poireaux & Dés de Jambon | Viande | 25 | Été, Automne, Hiver | Terroir & tradition | 344 | `quiche-sans-pate-poireaux-jambon` |
 | Quiche Lorraine Traditionnelle aux Lardons Fumés & Crème | Viande | 45 | Automne, Hiver | Terroir & tradition | 636 | `quiche-lorraine-traditionnelle-lardons` |
-| Quiche ratatouille & mozzarella | Végétarien | 60 | Été | Terroir & tradition | 486 | `quiche-ratatouille-mozzarella` |
-| Quiche thon, tomate & moutarde | Poisson | 60 | Été | Terroir & tradition | 452 | `quiche-thon-tomate-moutarde` |
+| Quiche ratatouille & mozzarella | Végétarien | 60 | Été, Automne, Hiver | Terroir & tradition | 486 | `quiche-ratatouille-mozzarella` |
+| Quiche thon, tomate & moutarde | Poisson | 60 | Été, Automne, Hiver | Terroir & tradition | 452 | `quiche-thon-tomate-moutarde` |
 | Ramen Japonais au Bœuf Émincé, Œuf Mollet & Nouilles de Blé | Viande | 20 | Printemps | Asiatique | 299 | `ramen-boeuf-nouilles-bouillon` |
 | Ramen Japonais aux Crevettes Snackées, Nouilles & Bouillon Soja | Poisson | 20 | Printemps, Été | Asiatique, Orient & Indien | 685 | `ramen-crevettes-bouillon-legumes` |
 | Ramen Réconfortant au Poulet Effiloché, Cacahuètes & Bouillon Parfumé | Volaille | 20 | Printemps, Été | Asiatique | 588 | `ramen-poulet-cacahuetes-bouillon` |
@@ -344,7 +344,7 @@
 | Risotto Crémeux au Comté AOP & Rondelles de Saucisse à l'Ancienne | Viande | 25 | Hiver | Italien, Terroir & tradition | 758 | `risotto-comte-saucisse-ancienne` |
 | Risotto Crémeux aux Champignons des Bois, Parmesan AOP & Noisettes Torréfiées | Végétarien | 35 | Automne | Italien | 619 | `risotto-champignons-sauvages-noisettes` |
 | Risotto crémeux aux Lardons dorés, Petits Pois & Parmesan | Viande | 25 | Printemps, Hiver | Italien | 613 | `risotto-cremeux-lardons-petits-pois-parmesan` |
-| Risotto Crémeux aux Noix de Saint-Jacques Dorées & Fondue de Poireaux | Poisson | 25 | Automne | Italien, Terroir & tradition | 520 | `risotto-saint-jacques-poireaux-parmesan` |
+| Risotto Crémeux aux Noix de Saint-Jacques Dorées & Fondue de Poireaux | Poisson | 25 | Automne, Hiver | Italien, Terroir & tradition | 520 | `risotto-saint-jacques-poireaux-parmesan` |
 | Risotto crémeux aux Poireaux fondus, Chèvre frais & Noix | Végétarien | 22 | Automne | Italien | 513 | `risotto-poireaux-chevre-noix` |
 | Risotto de quinoa aux carottes | Végétarien | 35 | Automne | Italien | 466 | `risotto-quinoa-carottes-parmesan` |
 | Risotto Doux aux Courgettes Fondantes, Bouillon de Légumes & Parmesan | Végétarien | 25 | Été, Automne, Hiver | Italien | 371 | `risotto-cremeux-courgettes-parmesan` |
@@ -359,7 +359,7 @@
 | Rouleaux de Printemps Fraîcheur aux Crevettes, Vermicelles & Menthe | Poisson | 20 | Printemps, Été | Asiatique, Frais & bowls | 298 | `rouleaux-de-printemps-crevettes-fraiches` |
 | Salade César tiède au Poulet croustillant maison & Croûtons | Volaille | 20 | Été | Frais & bowls | 507 | `poulet-facon-cesar-croustillant` |
 | Salade de pâtes à la grecque | Végétarien | 18 | Été | Italien, Frais & bowls | 414 | `salade-pates-grecque-feta-olives` |
-| Salade de pommes de terre au saumon | Poisson | 25 | Printemps, Été, Hiver | Frais & bowls | 248 | `salade-pommes-de-terre-saumon-fume-creme-herbes` |
+| Salade de pommes de terre au saumon | Poisson | 25 | Printemps, Été | Frais & bowls | 248 | `salade-pommes-de-terre-saumon-fume-creme-herbes` |
 | Salade Fraîche de Pâtes au Jambon Cru de Parme & Petits Pois Tendres | Viande | 15 | Printemps, Été | Italien, Frais & bowls | 526 | `salade-pates-jambon-cru-petits-pois` |
 | Salade Fraîche de Pâtes au Poulet, Dés d'Avocat Mûr & Boursin | Volaille | 15 | Printemps, Été | Italien, Frais & bowls | 808 | `salade-pates-boursin-avocat-poulet` |
 | Salade Fraîche de Riz Jasmin aux Crevettes Roses, Avocat & Citron | Poisson | 15 | Printemps, Été | Frais & bowls, Italien | 572 | `salade-riz-crevettes-avocat-citron` |
@@ -379,12 +379,12 @@
 | Sauté Wok de Poulet au Gingembre Frais, Soja & Noix de Cajou | Volaille | 20 | Automne | Asiatique | 568 | `poulet-saute-gingembre-noix-cajou` |
 | Shakshuka aux Poivrons confits, Feta & Œufs pochés | Végétarien | 25 | Été | Orient & Indien, Terroir & tradition | 495 | `shakshuka-poivrons-feta-oeufs` |
 | Soufflé au fromage | Végétarien | 38 | Été, Hiver | Terroir & tradition | 310 | `souffle-au-fromage` |
-| Soupe à l'oignon gratinée & croûtons | Végétarien | 45 | Hiver | Terroir & tradition | 368 | `soupe-a-l-oignon-gratinee` |
+| Soupe à l'oignon gratinée & croûtons | Végétarien | 45 | Automne, Hiver | Terroir & tradition | 368 | `soupe-a-l-oignon-gratinee` |
 | Soupe Réconfortante de Nouilles au Bouillon Curry & Légumes Croquants | Végétarien | 20 | Printemps, Automne, Hiver | Asiatique, Orient & Indien, Terroir & tradition | 603 | `soupe-nouilles-curry-legumes` |
 | Soupe Réconfortante de Poulet Pimenté, Nouilles & Petits Légumes | Volaille | 20 | Automne, Hiver | Asiatique, Terroir & tradition | 504 | `soupe-poulet-pimentee-nouilles` |
-| Soupe Veloutée de Butternut au Lait de Coco & Noisettes Torréfiées | Végétarien | 25 | Automne | Orient & Indien, Terroir & tradition | 266 | `soupe-veloutee-butternut-coco` |
+| Soupe Veloutée de Butternut au Lait de Coco & Noisettes Torréfiées | Végétarien | 25 | Automne, Hiver | Orient & Indien, Terroir & tradition | 266 | `soupe-veloutee-butternut-coco` |
 | Soupe-Repas Épaisse de Lentilles Vertes Mijotées au Poulet | Volaille | 25 | Automne, Hiver | Terroir & tradition, Asiatique, Orient & Indien | 750 | `soupe-lentilles-poulet-legumes` |
-| Soupe-Repas Thaï aux Crevettes, Coco & Champignons | Poisson | 20 | Printemps, Été, Automne | Asiatique, Terroir & tradition, Orient & Indien | 513 | `soupe-repas-thai-crevettes` |
+| Soupe-Repas Thaï aux Crevettes, Coco & Champignons | Poisson | 20 | toutes | Asiatique, Terroir & tradition, Orient & Indien | 513 | `soupe-repas-thai-crevettes` |
 | Spaghetti & bolognaise végé | Végétarien | 24 | Été, Automne | Italien | 727 | `spaghetti-bolognaise-vege-lentilles` |
 | Spaghetti alla bolognese express | Viande | 25 | Été, Hiver | Italien | 626 | `spaghetti-bolognese-express` |
 | Spaghetti crémeuses à l'avocat & basilic | Végétarien | 15 | Printemps, Été | Italien, Frais & bowls | 570 | `pates-cremeuses-avocat-citron` |
@@ -408,19 +408,19 @@
 | Tarte potimarron & chèvre | Végétarien | 55 | Printemps, Automne | Terroir & tradition | 426 | `tarte-potimarron-chevre` |
 | Tarte Printanière aux Petits Pois Tendres, Feta Émiettée & Menthe | Végétarien | 30 | Printemps | Terroir & tradition | 554 | `tarte-petits-pois-feta-menthe` |
 | Tarte Rustique aux Courgettes Râpées, Ricotta Onctueuse & Thym | Végétarien | 30 | Printemps, Été, Automne | Terroir & tradition, Italien | 453 | `tarte-rustique-courgettes-ricotta` |
-| Tarte Rustique Dorée aux Oignons Caramélisés & Fromage à Raclette | Végétarien | 35 | Hiver | Terroir & tradition | 632 | `tarte-rustique-oignons-raclette` |
+| Tarte Rustique Dorée aux Oignons Caramélisés & Fromage à Raclette | Végétarien | 35 | Automne, Hiver | Terroir & tradition | 632 | `tarte-rustique-oignons-raclette` |
 | Tarte Salée aux Aubergines Fondantes, Ricotta & Éclats de Noix | Végétarien | 35 | Printemps, Été, Automne | Terroir & tradition, Italien | 536 | `tarte-aubergines-ricotta-noix` |
 | Tarte Spirale Colorée aux Courgettes, Carottes & Bûche de Chèvre | Végétarien | 40 | Printemps, Été, Automne | Terroir & tradition | 567 | `tarte-spirale-legumes-chevre` |
-| Tartiflette Savoyarde Express aux Pommes de Terre, Lardons & Reblochon | Viande | 25 | Hiver | Terroir & tradition | 934 | `tartiflette-savoyarde-express-lardons-reblochon` |
+| Tartiflette Savoyarde Express aux Pommes de Terre, Lardons & Reblochon | Viande | 25 | Automne, Hiver | Terroir & tradition | 934 | `tartiflette-savoyarde-express-lardons-reblochon` |
 | Tex-Mex Fajitas au Poulet & Poivrons Fondants | Volaille | 15 | Été | Street food, Tex-Mex | 535 | `tex-mex-fajitas-poulet-poivrons` |
 | Tian à la mozzarella | Végétarien | 60 | Été | Du quotidien | 302 | `tian-legumes-mozzarella` |
 | Tikka Masala végé | Végétarien | 19 | Automne, Hiver | Orient & Indien | 385 | `tikka-masala-chou-fleur-riz` |
 | Tomates Farcies Traditionnelles au Bœuf & Riz Blanc | Viande | 50 | Été, Hiver | Terroir & tradition | 610 | `tomates-farcies-traditionnelles-riz` |
-| Tortilla fondante aux Pommes de Terre & Salade de Mâche | Végétarien | 22 | Été, Automne, Hiver | Terroir & tradition, Frais & bowls | 395 | `tortilla-espagnole-pommes-terre-salade` |
-| Velouté d'Automne : Butternut, Carottes & Croûtons dorés | Végétarien | 24 | Automne | Terroir & tradition | 367 | `soupe-repas-butternut-carottes-croutons` |
+| Tortilla fondante aux Pommes de Terre & Salade de Mâche | Végétarien | 22 | Été, Automne | Terroir & tradition, Frais & bowls | 395 | `tortilla-espagnole-pommes-terre-salade` |
+| Velouté d'Automne : Butternut, Carottes & Croûtons dorés | Végétarien | 24 | Automne, Hiver | Terroir & tradition | 367 | `soupe-repas-butternut-carottes-croutons` |
 | Velouté de Potimarron Crémeux, Lardons Grillés & Croûtons | Viande | 25 | Automne, Hiver | Terroir & tradition | 482 | `veloute-potimarron-lardons-croutes` |
 | Velouté Onctueux de Champignons de Paris au Parmesan & Croûtons Dorés | Végétarien | 20 | Automne, Hiver | Terroir & tradition | 227 | `veloute-champignons-parmesan-croutons` |
-| Véritable Chili Con Carne Mijoté au Bœuf Haché, Haricots Rouges & Maïs | Viande | 30 | Été, Hiver | Tex-Mex, Terroir & tradition | 889 | `chili-con-carne-traditionnel-haricots-rouges` |
+| Véritable Chili Con Carne Mijoté au Bœuf Haché, Haricots Rouges & Maïs | Viande | 30 | Été, Automne, Hiver | Tex-Mex, Terroir & tradition | 889 | `chili-con-carne-traditionnel-haricots-rouges` |
 | Wok croustillant de Dinde, Poivrons & Noix de Cajou | Volaille | 18 | Été, Automne | Asiatique | 577 | `wok-dinde-poivrons-cajou` |
 | Wok de Bœuf Sauté aux Légumes Croquants & Sauce Soja | Viande | 20 | Printemps, Été, Automne | Asiatique | 613 | `wok-boeuf-legumes-croquants` |
 | Wok de Crevettes, Fleurettes de Brocolis & Nouilles de Blé | Poisson | 18 | Printemps, Été | Asiatique | 444 | `wok-crevettes-brocolis-aigre-doux` |

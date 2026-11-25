@@ -40,8 +40,6 @@ test('classement : exemples de styles et de saisons', () => {
   assert.ok(L.recipeStyles(r('couscous-merguez-pois-chiches')).includes('orient'));
   assert.ok(L.recipeSeasons(r('gratin-poireaux-reblochon')).includes('hiver'));
   assert.ok(L.recipeSeasons(r('salade-pates-grecque-feta-olives')).includes('ete'));
-  assert.equal(L.recipeIsGamelle(r('croque-madame-four-oeuf-coule')), false);
-  assert.equal(L.recipeIsGamelle(r('salade-pates-grecque-feta-olives')), true);
 });
 
 test('régimes : sans porc, sans lactose, 1 poêle', () => {
@@ -86,7 +84,7 @@ test('génération : les filtres sont respectés', () => {
   const f1 = { seasons: ['ete'], styles: ['italien'] };
   run(f1).ids.forEach((id) => { assert.ok(L.recipeSeasons(byId[id]).includes('ete')); assert.ok(L.recipeStyles(byId[id]).includes('italien')); });
   run({ types: ['poisson'], noLactose: true }).ids.forEach((id) => { assert.equal(byId[id].type, 'poisson'); assert.equal(L.containsLactose(byId[id]), false); });
-  run({ budget: true, express: true, gamelle: true }).ids.forEach((id) => { const r = byId[id]; assert.ok(r.isBudget && r.timeMinutes <= 20 && L.recipeIsGamelle(r)); });
+  run({ budget: true, express: true }).ids.forEach((id) => { const r = byId[id]; assert.ok(r.isBudget && r.timeMinutes <= 20); });
   const fav = ['poulet-mafe-riz', 'spaghetti-bolognese-express', 'quiche-chevre-epinards'];
   const res = L.pickMenu({ recipes: RECIPES, count: 7, filters: { favoritesOnly: true }, favorites: fav, rng: seeded(1) });
   assert.deepEqual(plain(res.ids.slice().sort()), fav.slice().sort());
@@ -220,4 +218,78 @@ test('restes : mots simples, pluriels, accents et saisie vide', () => {
   assert.deepEqual(plain(rank([])), []);
   assert.deepEqual(plain(rank(['zzzzzz'])), []);
   assert.deepEqual(plain(rank(['a'])), [], 'un mot trop court ne ressort pas');
+});
+
+// ---------------------------------------------------------------- Météo et notifications
+test('météo : température de la semaine → humeur', () => {
+  assert.equal(L.weatherMood({ tempMax: 4 }).temp, 'froid');
+  assert.equal(L.weatherMood({ tempMax: 12 }).temp, 'frais');
+  assert.equal(L.weatherMood({ tempMax: 20 }).temp, 'doux');
+  assert.equal(L.weatherMood({ tempMax: 28 }).temp, 'chaud');
+  assert.equal(L.weatherMood(null), null);
+  assert.equal(L.weatherMood({ tempMax: NaN }), null);
+});
+
+test('météo : le froid favorise les plats réconfortants, la chaleur les plats frais', () => {
+  const share = (mood) => {
+    let comfort = 0, fresh = 0, total = 0;
+    for (let t = 0; t < 400; t++) {
+      for (const id of L.pickMenu({ recipes: RECIPES, count: 7, mood, rng: seeded(t + 500) }).ids) {
+        const m = L.weatherFit(byId[id], { temp: 'froid' }), h = L.weatherFit(byId[id], { temp: 'chaud' });
+        if (m > 1) comfort++; if (h > 1) fresh++; total++;
+      }
+    }
+    return { comfort: comfort / total, fresh: fresh / total };
+  };
+  const none = share(null), cold = share(L.weatherMood({ tempMax: 3, wet: true })), hot = share(L.weatherMood({ tempMax: 30 }));
+  assert.ok(cold.comfort > none.comfort + 0.1, `froid : ${cold.comfort.toFixed(2)} vs ${none.comfort.toFixed(2)}`);
+  assert.ok(cold.fresh < none.fresh, 'moins de plats frais par temps froid');
+  assert.ok(hot.fresh > none.fresh + 0.1, `chaud : ${hot.fresh.toFixed(2)} vs ${none.fresh.toFixed(2)}`);
+  assert.ok(hot.comfort < none.comfort);
+  // aucun plat n'est exclu : le catalogue reste entièrement accessible
+  assert.ok(RECIPES.every((r) => L.weatherFit(r, { temp: 'froid' }) > 0 && L.weatherFit(r, { temp: 'chaud' }) > 0));
+});
+
+test('météo : client Open-Meteo (réseau simulé) et erreurs', async () => {
+  let asked = '';
+  const body = { current: { weather_code: 61 }, daily: { temperature_2m_max: [4, 6, 5], precipitation_sum: [2, 5, 1] } };
+  const w = await L.fetchWeather(48.9012, 2.3, async (u) => { asked = u; return { ok: true, json: async () => body }; });
+  assert.ok(asked.startsWith('https://api.open-meteo.com/v1/forecast?latitude=48.90&longitude=2.30'));
+  assert.ok(!/key|token|apikey/i.test(asked), 'aucune clé');
+  assert.equal(w.tempMax, 5);
+  assert.equal(w.wet, true);
+  assert.equal(await L.fetchWeather(1, 1, async () => ({ ok: false })), null);
+  assert.equal(await L.fetchWeather(1, 1, async () => ({ ok: true, json: async () => ({ daily: {} }) })), null);
+});
+
+test('notifications : texte du message et sujet secret', async () => {
+  assert.equal(L.buildNotification({ name: 'Julie', staples: ['Lait', 'Avoine'] }), 'Julie a ajouté Lait, Avoine dans la liste de courses');
+  assert.equal(L.buildNotification({ staples: ['Lait'] }), 'A ajouté Lait dans la liste de courses');
+  assert.equal(L.buildNotification({ name: 'Paul', meals: ['Poulet mafé'] }), 'Paul a ajouté « Poulet mafé » au menu');
+  assert.equal(L.buildNotification({ name: 'Paul', staples: ['Lait'], meals: ['A', 'B'] }), 'Paul a ajouté Lait dans la liste de courses et 2 repas (A, B) au menu');
+  assert.match(L.buildNotification({ staples: ['a', 'b', 'c', 'd', 'e', 'f', 'g'] }), /a, b, c, d, e \+2/);
+  assert.equal(L.buildNotification({ name: 'X' }), null);
+  const t1 = await L.notifTopic('FOYER-AAAA-BBBB-CCCC'), t2 = await L.notifTopic('foyer-aaaa-bbbb-cccc'), t3 = await L.notifTopic('FOYER-ZZZZ');
+  assert.equal(t1, t2);
+  assert.notEqual(t1, t3);
+  assert.match(t1, /^gamelle-alerte-[0-9a-f]{20}$/);
+  assert.ok(!t1.includes('AAAA') && !t1.toLowerCase().includes('aaaa-bbbb'), 'le code n\'apparaît pas dans le sujet');
+});
+
+test('prix réels : le coefficient suit les tickets (médiane, borné, neutre sans historique)', () => {
+  assert.equal(L.priceFactor([]), 1);
+  assert.equal(L.priceFactor([{ total: 60, est: 40 }]), 1, 'un seul ticket ne suffit pas');
+  assert.equal(L.priceFactor([{ total: 60, est: 40 }, { total: 66, est: 44 }, { total: 150, est: 50 }]), 1.5);
+  assert.equal(L.priceFactor([{ total: 1, est: 100 }, { total: 1, est: 100 }]), 0.5, 'borné');
+});
+
+test('stock dégressif : la recette consomme le stock, l\'article épuisé est signalé', () => {
+  const r = L.consumeStock({ farine: { qty: 500, unit: 'g' }, lait: { qty: 1000, unit: 'ml' }, oeufs: { qty: 6, unit: 'piece' } },
+    [{ id: 'farine', qty: 600, unit: 'g' }, { id: 'lait', qty: 250, unit: 'ml' }, { id: 'oeufs', qty: 2, unit: 'ml' }, { id: 'sel', qty: 5, unit: 'g' }]);
+  assert.deepEqual(plain(r.depleted), ['farine']);
+  assert.deepEqual(plain(r.stock), { lait: { qty: 750, unit: 'ml' }, oeufs: { qty: 6, unit: 'piece' } }, 'unités différentes ignorées');
+  assert.deepEqual(plain(L.parseStockInput('1,5 kg')), { qty: 1500, unit: 'g' });
+  assert.deepEqual(plain(L.parseStockInput('2 L')), { qty: 2000, unit: 'ml' });
+  assert.deepEqual(plain(L.parseStockInput('6')), { qty: 6, unit: 'piece' });
+  assert.equal(L.parseStockInput('beaucoup'), null);
 });

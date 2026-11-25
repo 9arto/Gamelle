@@ -28,7 +28,7 @@ function build() {
   out.push('## Répartition\n\n| Type | Recettes |\n|---|---|\n' + row(cnt((r) => r.type), TYPE));
   out.push('\n| Saison (une recette peut compter dans plusieurs) | Recettes |\n|---|---|\n' + row(cnt((r) => r.seasons), seasonLabel));
   out.push('\n| Style | Recettes |\n|---|---|\n' + row(cnt((r) => r.styles), styleLabel));
-  out.push(`\n- « Pas cher » : ${R.filter((r) => r.isBudget).length} · moins de 20 min : ${R.filter((r) => r.timeMinutes <= 20).length} · bon en gamelle : ${R.filter((r) => r.gamelle).length}\n`);
+  out.push(`\n- « Pas cher » : ${R.filter((r) => r.isBudget).length} · moins de 20 min : ${R.filter((r) => r.timeMinutes <= 20).length}\n`);
   out.push('## Toutes les recettes\n');
   out.push('| Recette | Type | Min | Saisons | Styles | kcal/portion | Identifiant |\n|---|---|---|---|---|---|---|');
   for (const r of [...R].sort((a, b) => a.title.localeCompare(b.title, 'fr'))) {
