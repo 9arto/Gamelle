@@ -301,6 +301,16 @@
     return parts.length ? parts.join(' ') : null;
   }
 
+  // « il y a 2 h » (état de la synchro)
+  function syncAgeText(ts, now) {
+    if (!ts) return 'jamais';
+    const s = Math.max(0, Math.round(((now || Date.now()) - ts) / 1000));
+    if (s < 45) return "à l'instant";
+    if (s < 3600) return `il y a ${Math.max(1, Math.round(s / 60))} min`;
+    if (s < 86400) return `il y a ${Math.round(s / 3600)} h`;
+    return `il y a ${Math.round(s / 86400)} j`;
+  }
+
   // ---------------------------------------------------------------- Budget estimé (ordre de grandeur)
   const PRICE_KG = { 'fruits-legumes': 3.2, boucherie: 12, poissonnerie: 20, cremerie: 9, epicerie: 4 };
   const PRICE_PIECE = { 'fruits-legumes': 0.7, boucherie: 2.2, poissonnerie: 3.5, cremerie: 1.2, epicerie: 1.2 };
@@ -355,6 +365,6 @@
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
     SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost,
     encryptPayload, decryptPayload, cryptoAvailable,
-    weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification
+    weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
   };
 })(typeof window !== 'undefined' ? window : globalThis);

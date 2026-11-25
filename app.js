@@ -48,11 +48,15 @@ function safeImg(url) {
   return /^https?:\/\//i.test(u) ? u : IMG_PLACEHOLDER;
 }
 
+// Photo introuvable : secours (data-fallback) puis visuel du logo. Écouteurs globaux : pas de code dans le HTML (compatible CSP).
 function imgFallback(img) {
-  img.onerror = null;
+  if (img.dataset.fallback && !img.dataset.triedFallback) { img.dataset.triedFallback = '1'; img.src = img.dataset.fallback; return; }
+  if (img.src === IMG_PLACEHOLDER) return;
   img.src = IMG_PLACEHOLDER;
 }
-window.imgFallback = imgFallback;
+document.addEventListener('error', (e) => { if (e.target && e.target.tagName === 'IMG') imgFallback(e.target); }, true);
+// Fond « en chargement » discret retiré dès que la photo est affichée
+document.addEventListener('load', (e) => { if (e.target && e.target.tagName === 'IMG') e.target.classList.add('img-loaded'); }, true);
 
 // Accès au stockage local sans jamais planter (mode privé, quota plein, données corrompues)
 function safeGetItem(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
@@ -99,7 +103,7 @@ function sanitizeStaples(list) {
     if (!s || typeof s !== 'object') return null;
     const name = cleanStr(s.name, 80);
     if (!name) return null;
-    return { id: cleanStr(s.id, 60) || ('staple_' + Date.now() + '_' + i), name, checked: s.checked === true };
+    return { id: cleanStr(s.id, 60) || ('staple_' + Date.now() + '_' + i), name, checked: s.checked === true, qty: Math.round(cleanNum(s.qty, 1, 99, 1)) };
   }).filter(Boolean);
 }
 function sanitizeChecked(map) {
@@ -158,6 +162,37 @@ function sanitizeOffCache(map) {
 function sanitizeSpices(list) {
   const known = new Set(GL.SPICES_FULL);
   return sanitizeStringList(list, 40, 80).filter(n => known.has(n));
+}
+function sanitizeStock(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 300).forEach(k => {
+      const v = map[k];
+      if (!v || typeof v !== 'object') return;
+      const qty = cleanNum(v.qty, 0, 100000, NaN);
+      const unit = cleanStr(v.unit, 12);
+      if (Number.isFinite(qty) && ['g', 'ml', 'piece'].includes(unit)) out[cleanStr(k, 120)] = { qty, unit };
+    });
+  }
+  return out;
+}
+function sanitizeStapleHistory(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 300).forEach(k => {
+      const v = map[k];
+      if (v && typeof v === 'object' && Number.isFinite(v.n) && v.n > 0) out[cleanStr(k, 80)] = { n: Math.min(999, Math.round(v.n)), last: Number.isFinite(v.last) ? v.last : 0 };
+    });
+  }
+  return out;
+}
+function sanitizeTrips(list) {
+  if (!Array.isArray(list)) return [];
+  return list.slice(-30).map(t => {
+    if (!t || typeof t !== 'object') return null;
+    const total = cleanNum(t.total, 0, 5000, NaN), est = cleanNum(t.est, 0, 5000, 0);
+    return Number.isFinite(total) && Number.isFinite(t.t) ? { t: t.t, total, est, items: Math.round(cleanNum(t.items, 0, 500, 0)) } : null;
+  }).filter(Boolean);
 }
 function sanitizeGenFilters(f) {
   const out = {};
@@ -481,7 +516,11 @@ let state = {
   leftovers: [],       // produits qu'on a à la maison (« Finir mes restes »)
   notify: true,        // prévenir le foyer quand on ajoute un produit / un repas
   memberName: '',      // prénom (facultatif) affiché dans les notifications
-  weatherMood: null    // météo de la semaine (jamais affichée : elle oriente seulement le tirage des repas)
+  weatherMood: null,   // météo de la semaine (jamais affichée : elle oriente seulement le tirage des repas)
+  pantryStock: {},     // quantités en stock au placard { articleId: { qty, unit } } (facultatif)
+  stapleHistory: {},   // produits courants ajoutés { nom: { n, last } } → « vos habituels »
+  trips: [],           // dernières courses { t, total, est, items } → budget réaliste
+  sync: { lastOk: 0, pending: false, fail: false }
 };
 
 // Catalogue : affichage progressif (24 plats à la fois)
@@ -583,6 +622,10 @@ function loadFromLocalStorage() {
   state.aisleOrder = sanitizeStringList(readJSON('gamelle_aisle_order', []), 10, 30);
   state.off = sanitizeOffCache(readJSON('gamelle_off_cache', {}));
   state.leftovers = sanitizeStringList(readJSON('gamelle_leftovers', []), 30, 60);
+  state.pantryStock = sanitizeStock(readJSON('gamelle_pantry_stock', {}));
+  state.stapleHistory = sanitizeStapleHistory(readJSON('gamelle_staple_history', {}));
+  state.trips = sanitizeTrips(readJSON('gamelle_trips', []));
+  state.sync.lastOk = parseInt(safeGetItem('gamelle_sync_ok') || '0', 10) || 0;
   state.notify = safeGetItem('gamelle_notify') !== '0';
   state.memberName = cleanStr(safeGetItem('gamelle_member_name') || '', 30);
   { const w = readJSON('gamelle_weather', null); if (w && Number.isFinite(w.t) && w.w) state.weatherMood = GL.weatherMood(w.w); }
@@ -598,7 +641,8 @@ function loadFromLocalStorage() {
   state.checkedGroceries = sanitizeChecked(readJSON('gamelle_checked', {}));
 }
 
-function saveToLocalStorage() {
+// Écrit tout l'état local (sans diffuser) — utilisé aussi quand on applique une synchro reçue ou une restauration
+function persistLocal() {
   safeSetItem('gamelle_portions', state.portions);
   safeSetItem('gamelle_plan', JSON.stringify(state.plan));
   safeSetItem('gamelle_saved_menus', JSON.stringify(state.savedMenus));
@@ -610,12 +654,18 @@ function saveToLocalStorage() {
   safeSetItem('gamelle_gen_filters', JSON.stringify(state.genFilters || {}));
   safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
   safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
+  safeSetItem('gamelle_pantry_stock', JSON.stringify(state.pantryStock || {}));
+  safeSetItem('gamelle_staple_history', JSON.stringify(state.stapleHistory || {}));
+  safeSetItem('gamelle_trips', JSON.stringify(state.trips || []));
   safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
   safeSetItem('gamelle_leftovers', JSON.stringify(state.leftovers || []));
   safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
   safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
   const customList = (state.recipes || []).filter(r => r.id.startsWith('custom-'));
   safeSetItem('gamelle_custom_recipes', JSON.stringify(customList));
+}
+function saveToLocalStorage() {
+  persistLocal();
   updateQRCode();
   broadcastSync();
 }
@@ -685,7 +735,10 @@ async function applyPendingShare() {
       message: `Code « ${share.household} ». Votre menu, vos recettes et vos courses seront synchronisés avec ce foyer.`,
       confirmLabel: 'Rejoindre'
     });
-    if (ok) setHouseholdCode(share.household);
+    if (ok) {
+      if (isWeakHouseholdCode(share.household)) showToast('Code trop faible : demandez à l\'autre téléphone de changer de code', { duration: 6000 });
+      else setHouseholdCode(share.household);
+    }
   }
 }
 
@@ -2360,7 +2413,7 @@ function renderLeftovers() {
       ? '<span class="text-emerald-700 font-bold">Rien à acheter</span>'
       : `<span class="text-slate-500">Il manque : ${esc(missing.slice(0, 3).map(m => m.replace(/\s*\(.*?\)/g, '')).join(', '))}${missing.length > 3 ? ` +${missing.length - 3}` : ''}</span>`;
     return `<div class="ios-card p-2.5 flex gap-3 items-center" data-id="${esc(r.id)}">
-      <img src="${esc(thumbImg(r.image))}" alt="" loading="lazy" onerror="imgFallback(this)" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100">
+      <img src="${esc(thumbImg(r.image))}" alt="" loading="lazy" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100">
       <div class="flex-1 min-w-0 space-y-0.5">
         <p class="font-bold text-xs text-slate-800 leading-snug">${esc(r.title)}</p>
         <p class="text-[11px] text-slate-600">Utilise : ${esc(used.join(', '))}</p>
@@ -2610,7 +2663,7 @@ function renderPlanning() {
         </div>
         
         <div class="flex items-center gap-3.5 cursor-pointer btn-open-detail py-0.5" data-id="${esc(recipe.id)}">
-          <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-16 h-16 rounded-2xl object-cover shadow-sm flex-shrink-0">
+          <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" class="img-soft w-16 h-16 rounded-2xl object-cover shadow-sm flex-shrink-0">
           <div class="flex-1 min-w-0">
             <h3 class="font-bold text-sm text-slate-900 leading-snug">${esc(recipe.title)}</h3>
             <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">${esc(recipe.description)}</p>
@@ -2909,7 +2962,7 @@ function recipeCardHTML(recipe) {
   const isCustom = recipe.id.startsWith('custom-');
   return `
     <div class="ios-card p-3.5 flex gap-3 hover:border-brand-300 transition-all cursor-pointer btn-open-detail" data-id="${esc(recipe.id)}" role="button" tabindex="0">
-      <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
+      <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
       <div class="flex-1 min-w-0 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between gap-1 flex-wrap mb-0.5">
@@ -3236,7 +3289,7 @@ function openSelectMealModal(day) {
     item.className = 'ios-card p-2.5 flex items-center justify-between gap-3 cursor-pointer hover:border-brand-500 transition-all';
     item.innerHTML = `
       <div class="flex items-center gap-2.5 min-w-0">
-        <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-12 h-12 rounded-xl object-cover flex-shrink-0">
+        <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" class="img-soft w-12 h-12 rounded-xl object-cover flex-shrink-0">
         <div class="min-w-0">
           <h4 class="font-bold text-xs text-slate-800 truncate">${esc(recipe.title)}</h4>
           <span class="text-[11px] text-slate-400">⏱️ ${esc(recipe.timeMinutes)} min • ${esc(recipe.tag)}</span>
@@ -3746,6 +3799,8 @@ function setupEventListeners() {
   setupMoreFilters();
   setupLeftoversModal();
   setupNotifySettings();
+  setupBackupUI();
+  initSyncMonitoring();
   document.getElementById('btn-clear-menu').addEventListener('click', clearMenu);
 
   const saveMenuBtn = document.getElementById('btn-save-current-menu');
@@ -3919,15 +3974,6 @@ function setupEventListeners() {
   // Partage
   document.getElementById('btn-share-magic-link').addEventListener('click', shareMagicLink);
   document.getElementById('btn-share-whatsapp-text').addEventListener('click', copyFormattedText);
-
-  // Exporter JSON
-  document.getElementById('btn-export-json').addEventListener('click', () => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
-    const dlAnchorElem = document.createElement('a');
-    dlAnchorElem.setAttribute("href", dataStr);
-    dlAnchorElem.setAttribute("download", "gamelle_panier_sauvegarde.json");
-    dlAnchorElem.click();
-  });
 
   // Gestion du Studio de Recette Maison
   const btnOpenAddRecipe = document.getElementById('btn-open-add-recipe');
@@ -4196,11 +4242,12 @@ function registerServiceWorker() {
     const announce = (worker) => {
       pendingUpdateWorker = worker;
       refreshUpdateCard();
-      showToast('Nouvelle version disponible', {
-        action: 'Mettre à jour',
-        duration: 15000,
-        onAction: () => { worker.postMessage({ type: 'SKIP_WAITING' }); }
-      });
+      const banner = document.getElementById('banner-update');
+      if (banner) {
+        banner.classList.remove('hidden');
+        document.getElementById('btn-banner-update').onclick = () => { document.getElementById('btn-banner-update').textContent = 'Installation…'; worker.postMessage({ type: 'SKIP_WAITING' }); };
+        document.getElementById('btn-banner-later').onclick = () => banner.classList.add('hidden');
+      }
     };
     if (reg.waiting && navigator.serviceWorker.controller) announce(reg.waiting);
     reg.addEventListener('updatefound', () => {
@@ -4358,26 +4405,32 @@ function getHouseholdTopic() {
 async function attemptJoinHousehold(raw) {
   const code = cleanStr(raw, 60).toUpperCase();
   if (isWeakHouseholdCode(code)) {
-    const ok = await confirmDialog({
-      title: 'Code facile à deviner',
-      message: 'Ce code est court : quelqu\'un pourrait le deviner et voir votre menu. Utilisez « Générer un code sécurisé » pour un code unique.',
-      confirmLabel: 'Utiliser quand même'
-    });
-    if (!ok) return;
+    // Le code sert de mot de passe : un code faible est refusé (pas d'option « utiliser quand même »)
+    showToast('Code trop faible : utilisez « Générer un code sécurisé » ou le code complet donné par l\'autre téléphone', { duration: 6000 });
+    return;
   }
   setHouseholdCode(code);
 }
 
-function setHouseholdCode(code) {
+// options : { silent } sans message ; { keepState } on garde ses données et on les diffuse tout de suite (changement de code)
+function setHouseholdCode(code, opts = {}) {
   const clean = cleanStr(code || '', 60).toUpperCase();
   if (!clean) return;
 
   state.householdCode = clean;
   safeSetItem('gamelle_household_code', clean);
+  state.lastSyncTimestamp = 0;
+  safeSetItem('gamelle_last_sync', 0);
+  state.joinReceived = false;
   updateSyncStatusUI();
   initHouseholdSync();
-  broadcastSync();
-  showToast('Foyer connecté : synchronisation en direct');
+  if (opts.keepState) broadcastSync(true);
+  else {
+    // Rejoindre un foyer : on DEMANDE d'abord l'état de l'autre téléphone (sans l'écraser avec un état vide)
+    sendControl('request-state');
+    setTimeout(() => { if (!state.joinReceived && state.householdCode === clean) broadcastSync(true); }, 8000);
+  }
+  if (!opts.silent) showToast('Foyer connecté : synchronisation en direct');
 }
 
 function disconnectHousehold() {
@@ -4495,19 +4548,36 @@ function readNtfyPayload(entry) {
   return Promise.resolve(null);
 }
 
-function handleIncomingSync(payload) {
-  if (!payload || typeof payload !== 'object' || typeof payload.timestamp !== 'number' || !isFinite(payload.timestamp)) return false;
+// Contenu échangé avec le foyer ET enregistré dans les fichiers de sauvegarde
+function buildSyncPayload() {
+  const customList = (state.recipes || []).filter(r => r.id.startsWith('custom-'));
+  return {
+    version: 3,
+    timestamp: Date.now(),
+    senderId: state.deviceId,
+    portions: state.portions,
+    plan: state.plan,
+    lockedSlots: state.lockedSlots || [],
+    staples: state.staples || [],
+    checkedGroceries: state.checkedGroceries || {},
+    customRecipes: customList,
+    savedMenus: state.savedMenus || [],
+    favorites: state.favorites || [],
+    pantry: state.pantry || [],
+    pantryNeeded: state.pantryNeeded || [],
+    pantryStock: state.pantryStock || {},
+    spices: state.spices || [],
+    leftovers: state.leftovers || [],
+    stockBasics: !!state.stockBasics,
+    aisleOrder: state.aisleOrder || [],
+    notes: state.notes || {},
+    stapleHistory: state.stapleHistory || {},
+    trips: state.trips || []
+  };
+}
 
-  // Ignorer nos propres messages
-  if (payload.senderId && payload.senderId === state.deviceId) return false;
-
-  // Ignorer si ce message est plus ancien que notre dernière synchro
-  if (payload.timestamp <= (state.lastSyncTimestamp || 0)) return false;
-
-  state.lastSyncTimestamp = payload.timestamp;
-  safeSetItem('gamelle_last_sync', payload.timestamp);
-
-  // Appliquer les données reçues (toutes validées : un message ne peut pas injecter de code)
+// Applique des données reçues (synchro, restauration, fichier) : tout est validé, un message ne peut pas injecter de code
+function applyPayload(payload) {
   if (Array.isArray(payload.plan)) state.plan = sanitizePlan(payload.plan).map(resolveAlias);
   if (payload.portions) state.portions = Math.round(cleanNum(payload.portions, 1, 12, state.portions));
   if (Array.isArray(payload.lockedSlots)) state.lockedSlots = sanitizeSlots(payload.lockedSlots);
@@ -4517,11 +4587,14 @@ function handleIncomingSync(payload) {
   if (Array.isArray(payload.favorites)) state.favorites = resolveAliasList(sanitizeStringList(payload.favorites));
   if (Array.isArray(payload.pantry)) state.pantry = sanitizeStringList(payload.pantry, 400, 120);
   if (Array.isArray(payload.pantryNeeded)) state.pantryNeeded = sanitizeStringList(payload.pantryNeeded, 400, 120);
+  if (payload.pantryStock) state.pantryStock = sanitizeStock(payload.pantryStock);
   if (Array.isArray(payload.leftovers)) state.leftovers = sanitizeStringList(payload.leftovers, 30, 60);
   if (Array.isArray(payload.spices)) state.spices = sanitizeSpices(payload.spices);
   else if (payload.spiceLevel !== undefined) { const l = Math.round(cleanNum(payload.spiceLevel, 0, 2, 0)); state.spices = l >= 2 ? [...GL.SPICES_FULL] : l === 1 ? [...GL.SPICES_BASIC] : []; }
   if (typeof payload.stockBasics === 'boolean') state.stockBasics = payload.stockBasics;
   if (Array.isArray(payload.aisleOrder)) state.aisleOrder = sanitizeStringList(payload.aisleOrder, 10, 30);
+  if (payload.stapleHistory) state.stapleHistory = sanitizeStapleHistory(payload.stapleHistory);
+  if (Array.isArray(payload.trips)) state.trips = sanitizeTrips(payload.trips);
   // Avis / historique : fusion recette par recette (le plus récent gagne), rien n'est écrasé en bloc
   if (payload.notes && typeof payload.notes === 'object') {
     const incoming = sanitizeNotes(payload.notes);
@@ -4531,78 +4604,220 @@ function handleIncomingSync(payload) {
       else if (mine && (incoming[id].cooked || 0) > (mine.cooked || 0)) mine.cooked = incoming[id].cooked;
     });
   }
-
-  // Synchronisation des recettes personnalisées
+  // Recettes personnalisées
   if (Array.isArray(payload.customRecipes)) {
     const custom = sanitizeRecipeList(payload.customRecipes);
-    safeSetItem('gamelle_custom_recipes', JSON.stringify(custom));
     state.recipes = [...DEFAULT_RECIPES, ...custom];
   }
-
-  // Sauvegarder localement sans re-diffuser
-  safeSetItem('gamelle_portions', state.portions);
-  safeSetItem('gamelle_plan', JSON.stringify(state.plan));
-  safeSetItem('gamelle_saved_menus', JSON.stringify(state.savedMenus));
-  safeSetItem('gamelle_staples', JSON.stringify(state.staples));
-  safeSetItem('gamelle_checked', JSON.stringify(state.checkedGroceries));
-  safeSetItem('gamelle_locked_slots', JSON.stringify(state.lockedSlots || []));
-  safeSetItem('gamelle_favorites', JSON.stringify(state.favorites || []));
-  safeSetItem('gamelle_notes', JSON.stringify(state.notes || {}));
-  safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
-  safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
-  safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
-  safeSetItem('gamelle_leftovers', JSON.stringify(state.leftovers || []));
-  safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
-  safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
-
+  persistLocal();
   renderAll();
+}
+
+function markSyncOk() {
+  state.sync.lastOk = Date.now();
+  state.sync.pending = false;
+  state.sync.fail = false;
+  safeSetItem('gamelle_sync_ok', state.sync.lastOk);
+  updateSyncStatusLine();
+}
+
+function handleIncomingSync(payload) {
+  if (!payload || typeof payload !== 'object' || typeof payload.timestamp !== 'number' || !isFinite(payload.timestamp)) return false;
+
+  // Ignorer nos propres messages
+  if (payload.senderId && payload.senderId === state.deviceId) return false;
+
+  // Messages de contrôle (demande de restauration, changement de code)
+  if (payload.op) return handleControlMessage(payload);
+
+  // Ignorer si ce message est plus ancien que notre dernière synchro
+  if (payload.timestamp <= (state.lastSyncTimestamp || 0)) return false;
+
+  state.lastSyncTimestamp = payload.timestamp;
+  safeSetItem('gamelle_last_sync', payload.timestamp);
+  applyPayload(payload);
+  state.joinReceived = true;
+  markSyncOk();
   showToast('Synchronisé avec votre foyer');
   return true;
 }
 
-function broadcastSync() {
+// ---- Messages de contrôle échangés entre les téléphones du foyer (chiffrés comme le reste)
+async function sendControl(op, extra = {}, codeOverride) {
+  const code = codeOverride || state.householdCode;
+  if (!code || typeof fetch === 'undefined') return false;
+  const msg = { op, timestamp: Date.now(), senderId: state.deviceId, ...extra };
+  const body = GL.cryptoAvailable() ? await GL.encryptPayload(code, msg) : JSON.stringify(msg);
+  try {
+    const res = await fetch(`https://ntfy.sh/gamelle_foyer_${code.trim().toUpperCase()}`, { method: 'POST', headers: { 'Content-Type': 'application/json', Title: 'Gamelle Sync', Tags: 'arrows_counterclockwise' }, body });
+    return res.ok;
+  } catch (e) { return false; }
+}
+function handleControlMessage(msg) {
+  if (msg.op === 'request-state') {
+    // un téléphone du foyer demande l'état complet (nouvelle installation, restauration)
+    if (Date.now() - msg.timestamp < 10 * 60000) { state.syncDebounceTimer && clearTimeout(state.syncDebounceTimer); broadcastSync(true); }
+    return true;
+  }
+  if (msg.op === 'rekey' && typeof msg.newCode === 'string') {
+    const code = cleanStr(msg.newCode, 60).toUpperCase();
+    if (isWeakHouseholdCode(code) || Date.now() - msg.timestamp > 6 * 3600000) return false;
+    setHouseholdCode(code, { silent: true });
+    showToast('Le code du foyer a été changé par l\'autre téléphone');
+    return true;
+  }
+  return false;
+}
+
+function broadcastSync(immediate = false) {
   const topic = getHouseholdTopic();
   if (!topic || typeof fetch === 'undefined') return;
-
+  state.sync.pending = true;
+  updateStatusBanner();
   clearTimeout(state.syncDebounceTimer);
-  state.syncDebounceTimer = setTimeout(() => {
-    const customList = (state.recipes || []).filter(r => r.id.startsWith('custom-'));
-    const payload = {
-      version: 2,
-      timestamp: Date.now(),
-      senderId: state.deviceId,
-      portions: state.portions,
-      plan: state.plan,
-      lockedSlots: state.lockedSlots || [],
-      staples: state.staples || [],
-      checkedGroceries: state.checkedGroceries || {},
-      customRecipes: customList,
-      savedMenus: state.savedMenus || [],
-      favorites: state.favorites || [],
-      pantry: state.pantry || [],
-      pantryNeeded: state.pantryNeeded || [],
-      spices: state.spices || [],
-      leftovers: state.leftovers || [],
-      stockBasics: !!state.stockBasics,
-      aisleOrder: state.aisleOrder || [],
-      notes: state.notes || {}
-    };
-
-    // Le contenu est chiffré (AES-GCM, clé dérivée du code foyer) quand le navigateur le permet
-    const bodyPromise = GL.cryptoAvailable() ? GL.encryptPayload(state.householdCode, payload).catch(() => JSON.stringify(payload)) : Promise.resolve(JSON.stringify(payload));
-    bodyPromise.then(body => fetch(`https://ntfy.sh/${topic}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Title': 'Gamelle Sync',
-        'Tags': 'arrows_counterclockwise'
-      },
-      body
-    })).then(res => {
+  const run = async () => {
+    const payload = buildSyncPayload();
+    let body;
+    try { body = GL.cryptoAvailable() ? await GL.encryptPayload(state.householdCode, payload) : JSON.stringify(payload); }
+    catch (e) { body = JSON.stringify(payload); }
+    try {
+      const res = await fetch(`https://ntfy.sh/${topic}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Title': 'Gamelle Sync', 'Tags': 'arrows_counterclockwise' },
+        body
+      });
       if (res.ok) {
         state.lastSyncTimestamp = payload.timestamp;
         safeSetItem('gamelle_last_sync', payload.timestamp);
-      }
-    }).catch(err => console.warn('Broadcast error:', err));
-  }, 400);
+        markSyncOk();
+      } else state.sync.fail = true;
+    } catch (err) { state.sync.fail = true; }
+    updateStatusBanner();
+    updateSyncStatusLine();
+  };
+  if (immediate) run(); else state.syncDebounceTimer = setTimeout(run, 400);
+}
+
+// ==========================================
+// ÉTAT DE LA SYNCHRO, HORS CONNEXION, MISE À JOUR
+// ==========================================
+function updateStatusBanner() {
+  const box = document.getElementById('banner-status');
+  const text = document.getElementById('banner-status-text');
+  if (!box || !text) return;
+  let msg = '';
+  if (!navigator.onLine) msg = state.householdCode ? 'Hors connexion · vos modifications seront synchronisées dès le retour du réseau' : 'Hors connexion · vos données restent enregistrées sur ce téléphone';
+  else if (state.householdCode && state.sync.fail) msg = 'Synchronisation impossible pour le moment · nouvel essai automatique';
+  text.textContent = msg;
+  box.classList.toggle('hidden', !msg);
+}
+function updateSyncStatusLine() {
+  const el = document.getElementById('sync-status-line');
+  if (!el) return;
+  const age = GL.syncAgeText(state.sync.lastOk, Date.now());
+  const late = state.sync.lastOk && Date.now() - state.sync.lastOk > 3600000;
+  el.textContent = `Dernière synchro : ${age}` + (state.sync.fail ? ' · en attente de réseau' : '');
+  el.classList.toggle('text-amber-700', !!(state.sync.fail || late));
+  el.classList.toggle('text-emerald-800', !(state.sync.fail || late));
+}
+function initSyncMonitoring() {
+  updateStatusBanner();
+  updateSyncStatusLine();
+  window.addEventListener('offline', updateStatusBanner);
+  window.addEventListener('online', () => {
+    updateStatusBanner();
+    if (state.householdCode) { broadcastSync(true); pollLatestSync(); }
+  });
+  setInterval(() => {
+    updateSyncStatusLine();
+    if (state.householdCode && state.sync.fail && navigator.onLine) broadcastSync(true);
+  }, 60000);
+}
+
+// ==========================================
+// SAUVEGARDE, RESTAURATION, CODE DU FOYER
+// ==========================================
+function exportBackup() {
+  const file = { app: 'gamelle-panier', format: 1, exportedAt: new Date().toISOString(), data: buildSyncPayload() };
+  const blob = new Blob([JSON.stringify(file)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `gamelle-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  safeSetItem('gamelle_backup_at', Date.now());
+  updateBackupInfo();
+  showToast('Sauvegarde exportée');
+}
+function updateBackupInfo() {
+  const el = document.getElementById('backup-info');
+  if (!el) return;
+  const t = parseInt(safeGetItem('gamelle_backup_at') || '0', 10);
+  el.textContent = t ? `Dernière sauvegarde en fichier : ${new Date(t).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}` : 'Aucune sauvegarde en fichier pour le moment';
+}
+// Lit et valide un fichier de sauvegarde ; renvoie les données ou lève une erreur lisible
+function parseBackup(text) {
+  let file;
+  try { file = JSON.parse(text); } catch (e) { throw new Error('Ce fichier n\'est pas une sauvegarde Gamelle (format illisible)'); }
+  if (!file || file.app !== 'gamelle-panier' || !file.data || typeof file.data !== 'object') throw new Error('Ce fichier n\'est pas une sauvegarde Gamelle');
+  return file.data;
+}
+async function importBackupFile(file) {
+  if (!file) return;
+  let data;
+  try { data = parseBackup(await file.text()); } catch (e) { showToast(e.message); return; }
+  const ok = await confirmDialog({
+    title: 'Restaurer cette sauvegarde ?',
+    message: `Les données de ce téléphone (menu, favoris, courses, placard, recettes maison) seront remplacées par celles du fichier${file.name ? ' « ' + file.name + ' »' : ''}.`,
+    confirmLabel: 'Restaurer', danger: true
+  });
+  if (!ok) return;
+  const snapshot = takeSnapshot();
+  applyPayload(data);
+  saveToLocalStorage();
+  showToast('Sauvegarde restaurée', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
+}
+async function restoreFromHousehold() {
+  if (!state.householdCode) { showToast('Connectez d\'abord un foyer'); return; }
+  const ok = await confirmDialog({
+    title: 'Récupérer depuis l\'autre téléphone ?',
+    message: 'Les données de ce téléphone seront remplacées par celles de l\'autre téléphone du foyer (il doit être connecté).',
+    confirmLabel: 'Récupérer', danger: true
+  });
+  if (!ok) return;
+  state.lastSyncTimestamp = 0;
+  safeSetItem('gamelle_last_sync', 0);
+  const sent = await sendControl('request-state');
+  pollLatestSync();
+  showToast(sent ? 'Demande envoyée : les données arrivent dans quelques secondes' : 'Impossible de joindre le foyer (réseau ?)');
+}
+async function changeHouseholdCode() {
+  if (!state.householdCode) return;
+  const ok = await confirmDialog({
+    title: 'Changer le code du foyer ?',
+    message: 'Un nouveau code secret est créé. L\'autre téléphone passe automatiquement dessus (il doit être ouvert ou le rouvrir dans les 6 heures). Vos données sont conservées.',
+    confirmLabel: 'Changer le code'
+  });
+  if (!ok) return;
+  const newCode = generateHouseholdCode();
+  const sent = await sendControl('rekey', { newCode });
+  if (!sent) { showToast('Impossible de prévenir l\'autre téléphone (réseau ?) : réessayez'); return; }
+  setHouseholdCode(newCode, { keepState: true });
+  showToast('Nouveau code actif');
+}
+function setupBackupUI() {
+  const exp = document.getElementById('btn-export-json');
+  const file = document.getElementById('input-import-backup');
+  const imp = document.getElementById('btn-import-backup');
+  if (exp) exp.addEventListener('click', exportBackup);
+  if (imp && file) {
+    imp.addEventListener('click', () => file.click());
+    file.addEventListener('change', () => { importBackupFile(file.files[0]); file.value = ''; });
+  }
+  const restore = document.getElementById('btn-restore-household');
+  if (restore) restore.addEventListener('click', restoreFromHousehold);
+  const change = document.getElementById('btn-change-code');
+  if (change) change.addEventListener('click', changeHouseholdCode);
+  updateBackupInfo();
 }

@@ -17,42 +17,8 @@
   
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="tailwind.css">
-  <script>
-    // Thème : « system » (suit l'iPhone), « light » ou « dark ». Réglable dans Réglages > Apparence.
-    (function () {
-      var KEY = 'gamelle_theme';
-      var mq = window.matchMedia('(prefers-color-scheme: dark)');
-      function getPref() {
-        try {
-          var v = localStorage.getItem(KEY);
-          if (v === 'light' || v === 'dark') return v;
-        } catch (e) {}
-        return 'system';
-      }
-      function apply() {
-        var pref = getPref();
-        var dark = pref === 'dark' || (pref === 'system' && mq.matches);
-        document.documentElement.classList.toggle('dark', dark);
-        var tc = document.querySelector('meta[name="theme-color"]');
-        if (tc) tc.setAttribute('content', dark ? '#1c1c1e' : '#059669');
-        var bar = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-        if (bar) bar.setAttribute('content', dark ? 'black' : 'default');
-      }
-      window.gamelleTheme = {
-        get: getPref,
-        set: function (pref) {
-          try {
-            if (pref === 'system') localStorage.removeItem(KEY);
-            else localStorage.setItem(KEY, pref);
-          } catch (e) {}
-          apply();
-        }
-      };
-      apply();
-      if (mq.addEventListener) mq.addEventListener('change', apply);
-      else if (mq.addListener) mq.addListener(apply);
-    })();
-  </script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://ntfy.sh https://world.openfoodfacts.org https://search.openfoodfacts.org https://api.open-meteo.com; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self'">
+  <script src="theme.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen">
 
@@ -84,6 +50,11 @@
   </header>
 
   <!-- CONTENEUR PRINCIPAL DES VUES -->
+  <div id="app-banners" role="status" aria-live="polite">
+    <div id="banner-update" class="app-banner update hidden"><span>Nouvelle version disponible</span><span class="flex gap-2"><button id="btn-banner-update" type="button">Mettre à jour</button><button id="btn-banner-later" type="button" aria-label="Plus tard">✕</button></span></div>
+    <div id="banner-status" class="app-banner offline hidden"><span id="banner-status-text"></span></div>
+  </div>
+
   <main class="max-w-xl mx-auto px-4 py-4">
 
     <!-- ========================================== -->
@@ -399,6 +370,11 @@
                   </div>
                 </details>
               </div>
+              <p id="sync-status-line" class="text-[12px] font-semibold text-emerald-800"></p>
+              <div class="flex gap-2 flex-wrap">
+                <button id="btn-change-code" type="button" class="flex-1 bg-white border border-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl active:scale-95">Changer de code</button>
+                <button id="btn-restore-household" type="button" class="flex-1 bg-white border border-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl active:scale-95">Récupérer depuis l'autre téléphone</button>
+              </div>
               <div class="flex gap-2">
                 <button id="btn-force-sync" class="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl active:scale-95 transition-all flex items-center justify-center gap-1.5">
                   <span></span> Forcer la synchronisation maintenant
@@ -456,14 +432,17 @@
       </div>
 
       <!-- Sauvegarde locale -->
-      <div class="ios-card p-4 flex justify-between items-center text-xs">
+      <div class="ios-card p-4 space-y-3 text-xs">
         <div>
           <span class="font-bold text-slate-800 block">Sauvegarde de vos données</span>
-          <span class="text-slate-500">Vos repas et listes restent stockés dans votre téléphone</span>
+          <span class="text-slate-500">Vos repas et listes sont stockés dans ce téléphone : exportez-les de temps en temps, ou connectez un foyer (l'autre téléphone garde une copie).</span>
+          <span id="backup-info" class="block text-slate-500 mt-1"></span>
         </div>
-        <button id="btn-export-json" class="text-xs font-bold text-brand-600 hover:text-brand-700 border border-brand-200 px-3 py-1.5 rounded-lg active:scale-95">
-          Exporter (JSON)
-        </button>
+        <div class="flex gap-2 flex-wrap">
+          <button id="btn-export-json" class="text-xs font-bold text-brand-600 border border-brand-200 px-3 py-2 rounded-lg active:scale-95">Exporter une sauvegarde</button>
+          <button id="btn-import-backup" class="text-xs font-bold text-slate-700 border border-slate-200 px-3 py-2 rounded-lg active:scale-95">Restaurer un fichier</button>
+          <input type="file" id="input-import-backup" accept=".json,application/json" class="hidden">
+        </div>
       </div>
     </section>
 
@@ -477,7 +456,7 @@
       
       <!-- En-tête avec image -->
       <div class="relative h-44 w-full flex-shrink-0 bg-slate-900">
-        <img id="detail-recipe-image" src="" alt="" onerror="this.onerror=null; this.src='https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800';" class="w-full h-full object-cover opacity-85">
+        <img id="detail-recipe-image" src="" alt="" data-fallback="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover opacity-85">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/30"></div>
         <button id="btn-detail-fav" class="absolute top-4 right-14 w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center font-bold text-sm backdrop-blur-sm active:scale-95 transition-transform" title="Favori">
           <span id="detail-fav-icon" class="flex items-center justify-center"></span>
