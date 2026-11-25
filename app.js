@@ -1177,6 +1177,13 @@ function formatQuantityAndUnit(quantity, baseUnit, itemName = '', forShopping = 
   const label = LABELS[unit] ? LABELS[unit][isPlural ? 1 : 0] : unit;
   return `${numStr} ${label}`.trim();
 }
+// Formats d'achat courants : unité de la quantité calculée, taille du contenant, libellés singulier/pluriel
+const PACKS = {
+  "Crème fraîche (épaisse ou liquide)": { unit: 'ml', size: 200, label: 'pot (20 cl)', plural: 'pots (20 cl)' },
+  "Lait (demi-écrémé ou entier)": { unit: 'ml', size: 1000, label: 'brique (1 L)', plural: 'briques (1 L)' },
+  "Lait de coco": { unit: 'ml', size: 400, label: 'boîte (400 ml)', plural: 'boîtes (400 ml)' },
+  "Beurre (doux ou demi-sel)": { unit: 'g', size: 250, label: 'plaquette (250 g)', plural: 'plaquettes (250 g)' }
+};
 // [motif sur le nom sans accents, nom affiché dans les courses, unité cible (null = unité d'origine), rayon]
 const SPECIAL_PRODUCTS = [
   [/\bcamembert\b/, "Camembert", "piece", "cremerie"],
@@ -1905,6 +1912,14 @@ function computeGroceries() {
     if (item.convertedFromMass && w && units.length === 1) {
       const count = Math.max(1, Math.ceil(item.amounts[item.targetUnit] - 0.15));
       formatted += ` <span class="font-medium text-slate-400">(≈ ${formatQuantityAndUnit(count * w, 'g')})</span>`;
+    }
+
+    // Formats d'achat : on affiche ce qu'on met dans le caddie (1 pot de 20 cl) plutôt qu'un volume brut
+    const pack = PACKS[item.name];
+    if (pack && units.length === 1 && units[0] === pack.unit) {
+      const n = Math.max(1, Math.ceil(item.amounts[pack.unit] / pack.size - 0.1));
+      formatted = `${n} ${n > 1 ? pack.plural : pack.label}`;
+      formatted += ` <span class="font-medium text-slate-400">(≈ ${formatQuantityAndUnit(item.amounts[pack.unit], pack.unit)})</span>`;
     }
 
     // Conserver les articles déjà cochés avec l'ancienne clé (unité incluse)
