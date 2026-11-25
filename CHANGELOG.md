@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 25/11/2026 — v53 : retrait du mode courses
+- Titre « Liste de courses » (au lieu de « Courses à Grand Frais ») ; **mode courses supprimé** (on défilait plus pour voir les ingrédients). Gestes, rayons repliables et menu « … » conservés.
+
 ## 25/11/2026 — v52 : fiabilité, courses en magasin, contenu
 - **Sauvegarde et restauration** : export/import d'un fichier validé ; « Récupérer depuis l'autre téléphone » ; un téléphone neuf demande l'état du foyer au lieu de l'écraser.
 - **Synchro lisible** : « dernière synchro il y a 2 h », bandeau hors connexion, bandeau persistant de mise à jour.

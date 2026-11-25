@@ -527,7 +527,6 @@ let state = {
   memberName: '',      // prénom (facultatif) affiché dans les notifications
   weatherMood: null,   // météo de la semaine (jamais affichée : elle oriente seulement le tirage des repas)
   pantryStock: {},     // quantités en stock au placard { articleId: { qty, unit } } (facultatif)
-  shopMode: false,
   stapleHistory: {},   // produits courants ajoutés { nom: { n, last } } → « vos habituels »
   trips: [],           // dernières courses { t, total, est, items } → budget réaliste
   sync: { lastOk: 0, pending: false, fail: false }
@@ -634,7 +633,6 @@ function loadFromLocalStorage() {
   state.leftovers = sanitizeStringList(readJSON('gamelle_leftovers', []), 30, 60);
   state.pantryStock = sanitizeStock(readJSON('gamelle_pantry_stock', {}));
   state.stapleHistory = sanitizeStapleHistory(readJSON('gamelle_staple_history', {}));
-  state.shopMode = safeGetItem('gamelle_shop_mode') === '1';
   state.trips = sanitizeTrips(readJSON('gamelle_trips', []));
   state.sync.lastOk = parseInt(safeGetItem('gamelle_sync_ok') || '0', 10) || 0;
   state.notify = safeGetItem('gamelle_notify') !== '0';
@@ -1850,12 +1848,6 @@ function addMealSlot(recipeId = null) {
 }
 // 2. Rendu de la Liste de Courses Grand Frais
 const collapsedRayons = new Set();
-function applyShopMode() {
-  const on = state.shopMode === true;
-  document.body.classList.toggle('shop-mode', on);
-  const b = document.getElementById('btn-shop-mode');
-  if (b) { b.textContent = on ? 'Terminé' : 'Mode courses'; b.setAttribute('aria-pressed', on); }
-}
 // Gestes sur la liste : glisser à droite = coché, à gauche = « j'ai déjà » (ou retirer un produit courant)
 function setupGrocerySwipe() {
   const c = document.getElementById('grand-frais-aisles-container');
@@ -2119,7 +2111,6 @@ function renderGroceries() {
       renderGroceries();
     });
   });
-  applyShopMode();
 
   // Suppression des produits courants individuels
   container.querySelectorAll('.btn-delete-staple').forEach(btn => {
@@ -3043,25 +3034,6 @@ function setupEventListeners() {
   });
   renderHabituals();
   setupGrocerySwipe();
-
-  // Mode courses : écran sobre (gros texte, pas de saisie), « Terminé » range les articles cochés
-  document.getElementById('btn-shop-mode').addEventListener('click', () => {
-    if (state.shopMode) {
-      const anyChecked = Object.values(state.checkedGroceries).some(Boolean) || state.staples.some(s => s.checked);
-      state.shopMode = false;
-      safeSetItem('gamelle_shop_mode', '0');
-      applyShopMode();
-      if (anyChecked) {
-        const snapshot = takeSnapshot();
-        state.checkedGroceries = {};
-        state.staples = state.staples.filter(x => !x.checked);
-        saveToLocalStorage(); renderGroceries();
-        showToast('Courses terminées : articles cochés rangés', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
-      }
-    } else {
-      state.shopMode = true; safeSetItem('gamelle_shop_mode', '1'); applyShopMode();
-    }
-  });
 
   // Recherche & Filtres dans le catalogue
   let searchTimer = null;

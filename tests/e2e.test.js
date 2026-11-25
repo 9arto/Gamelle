@@ -212,7 +212,7 @@ test('navigateur : météo invisible (localisation simulée) et notification du 
   } finally { await browser.close(); srv.close(); }
 });
 
-test('navigateur : mode courses, quantité sur produit courant, menu « … », bandeau d\'état, aucune erreur CSP', { skip: !chromium && 'Playwright non installé' }, async () => {
+test('navigateur : quantité sur produit courant, menu « … », bandeau d\'état, aucune erreur CSP', { skip: !chromium && 'Playwright non installé' }, async () => {
   const srv = await serve();
   const url = `http://localhost:${srv.address().port}/index.html`;
   const browser = await chromium.launch();
@@ -240,15 +240,6 @@ test('navigateur : mode courses, quantité sur produit courant, menu « … », 
     assert.ok((await page.innerText('#grand-frais-aisles-container')).includes('×3'));
     assert.equal(await page.evaluate(() => state.stapleHistory.Lait.n), 3, 'habituels mémorisés');
     assert.ok(!(await page.innerText('#staple-habituals')).includes('Lait'), 'déjà dans la liste : pas proposé');
-
-    // Mode courses
-    await page.click('#btn-shop-mode');
-    assert.ok(await page.evaluate(() => document.body.classList.contains('shop-mode')));
-    assert.ok(!(await page.isVisible('#staple-input')), 'saisie masquée en mode courses');
-    await page.click('.grocery-check[data-type="staple"]');
-    await page.click('#btn-shop-mode'); // « Terminé »
-    assert.equal(await page.evaluate(() => state.staples.length), 0, 'les articles cochés sont rangés');
-    assert.ok(!(await page.evaluate(() => document.body.classList.contains('shop-mode'))));
 
     // Hors ligne : bandeau explicite
     await ctx.setOffline(true);
