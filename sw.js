@@ -1,10 +1,10 @@
 // Service worker Gamelle & Panier : fonctionne hors-ligne (magasin, sous-sol…)
-const VERSION = 'v36';
+const VERSION = 'v39';
 const APP_CACHE = `gamelle-app-${VERSION}`;
 const IMG_CACHE = 'gamelle-images-v1';
 const IMG_MAX = 250;
 const ASSETS = [
-  './', './index.html', './styles.css', './tailwind.css', './app.js', './recipes.js',
+  './', './index.html', './styles.css', './tailwind.css', './app.js', './recipes.js', './logic.js', './nutrition.js',
   './manifest.json', './logo.svg', './icon-192.png', './icon-512.png', './apple-touch-icon.png'
 ];
 

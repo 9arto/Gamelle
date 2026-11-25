@@ -1,0 +1,2432 @@
+{
+ "Abricots secs moelleux": {
+  "name": "Abricots secs moelleux",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Ail": {
+  "name": "Gousses d'ail",
+  "rayon": "fruits-legumes",
+  "unit": "gousse"
+ },
+ "Amandes (effilées)": {
+  "name": "Noisettes ou amandes décortiquées",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Ananas frais ou au jus": {
+  "name": "Ananas frais ou au jus",
+  "rayon": "fruits-legumes",
+  "unit": "boite"
+ },
+ "Aneth frais": {
+  "name": "Aneth frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Aneth ou ciboulette": {
+  "name": "Ciboulette fraîche",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Aneth ou persil frais": {
+  "name": "Persil plat frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Aubergines": {
+  "name": "Aubergines fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Aubergines fraîches": {
+  "name": "Aubergines fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Avocat": {
+  "name": "Avocats mûrs",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Avocats frais": {
+  "name": "Avocats mûrs",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Avocats mûrs": {
+  "name": "Avocats mûrs",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Avocats mûrs à point": {
+  "name": "Avocats mûrs",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Basilic (frais)": {
+  "name": "Basilic frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Basilic frais": {
+  "name": "Basilic frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Bavette ou rumsteck de bœuf": {
+  "name": "Bavette ou rumsteck de bœuf",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Beaufort d'alpage AOP râpé": {
+  "name": "Beaufort d'alpage AOP râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Béchamel (brique)": {
+  "name": "Béchamel (brique)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Beurre": {
+  "name": "Beurre (doux ou demi-sel)",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Beurre (doux ou demi-sel)": {
+  "name": "Beurre (doux ou demi-sel)",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Beurre de cacahuète": {
+  "name": "Beurre de cacahuète (pot)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Beurre de cacahuète (pot)": {
+  "name": "Beurre de cacahuète (pot)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Beurre demi-sel": {
+  "name": "Beurre (doux ou demi-sel)",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Beurre doux": {
+  "name": "Beurre (doux ou demi-sel)",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Blancs de poireaux": {
+  "name": "Blancs de poireaux",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Blancs de poulet": {
+  "name": "Filets de poulet frais",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Blé (à cuire)": {
+  "name": "Blé (à cuire)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Bœuf à mijoter (paleron ou gîte)": {
+  "name": "Bœuf à mijoter (paleron ou gîte)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Bœuf émincé pour wok": {
+  "name": "Bavette ou rumsteck de bœuf",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Bœuf émincé pour wok ou mijoté": {
+  "name": "Bavette ou rumsteck de bœuf",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Bœuf haché": {
+  "name": "Bœuf haché frais (pur bœuf)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Bœuf haché frais (15% MG)": {
+  "name": "Bœuf haché frais (pur bœuf)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Bœuf haché frais (pur bœuf)": {
+  "name": "Bœuf haché frais (pur bœuf)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Boisson coco": {
+  "name": "Boisson coco",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Bouillon (légumes ou volaille)": {
+  "name": "Bouillon (volaille ou légumes)",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Bouillon (volaille ou légumes)": {
+  "name": "Bouillon (volaille ou légumes)",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Bouillon cube de légumes": {
+  "name": "Bouillon (volaille ou légumes)",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Bouillon cube de volaille": {
+  "name": "Bouillon (volaille ou légumes)",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Bouillon de légumes (cube)": {
+  "name": "Bouillon (volaille ou légumes)",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Bouillon de volaille (cube)": {
+  "name": "Bouillon (volaille ou légumes)",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Bouillon de volaille ou légumes": {
+  "name": "Bouillon (volaille ou légumes)",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Bouquet de menthe fraîche": {
+  "name": "Menthe fraîche",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Bouquet garni": {
+  "name": "Bouquet garni",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Bouquet garni (thym, laurier)": {
+  "name": "Bouquet garni",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Brie fondant": {
+  "name": "Brie fondant",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Brocoli": {
+  "name": "Brocoli frais",
+  "rayon": "fruits-legumes",
+  "unit": "tete"
+ },
+ "Brocoli frais": {
+  "name": "Brocoli frais",
+  "rayon": "fruits-legumes",
+  "unit": "tete"
+ },
+ "Brocolis frais": {
+  "name": "Brocoli frais",
+  "rayon": "fruits-legumes",
+  "unit": "tete"
+ },
+ "Bûche de chèvre": {
+  "name": "Bûche de chèvre frais",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Bûche de chèvre frais": {
+  "name": "Bûche de chèvre frais",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Bûche de fromage de chèvre": {
+  "name": "Bûche de chèvre frais",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Burrata": {
+  "name": "Burrata",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Cacahuète": {
+  "name": "Cacahuètes grillées",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Cacahuètes grillées": {
+  "name": "Cacahuètes grillées",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Cacahuètes grillées non salées": {
+  "name": "Cacahuètes grillées",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Camembert au lait cru": {
+  "name": "Camembert",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Cannelle en poudre": {
+  "name": "Cannelle en poudre",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Câpres": {
+  "name": "Câpres",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Carotte (frais)": {
+  "name": "Carottes fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Carottes": {
+  "name": "Carottes fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Carottes fraîches": {
+  "name": "Carottes fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Cébette": {
+  "name": "Oignons nouveaux (cébettes)",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Cerneaux de noix": {
+  "name": "Cerneaux de noix",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Cerneaux de noix ou pignons": {
+  "name": "Cerneaux de noix",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Chair à saucisse": {
+  "name": "Saucisses de Toulouse ou fumées",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Champignons de Paris": {
+  "name": "Champignons de Paris frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Champignons de Paris frais": {
+  "name": "Champignons de Paris frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Chapelure": {
+  "name": "Chapelure fine (ou panko)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Chapelure dorée": {
+  "name": "Chapelure fine (ou panko)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Chapelure fine (ou panko)": {
+  "name": "Chapelure fine (ou panko)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Cheddar râpé": {
+  "name": "Cheddar râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Chili (épices)": {
+  "name": "Mélange d'épices (Fajitas / Chili)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Chorizo": {
+  "name": "Chorizo en tranches",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Chorizo doux ou fort": {
+  "name": "Chorizo en tranches",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Chorizo doux ou fort à cuire": {
+  "name": "Chorizo en tranches",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Chorizo en tranches": {
+  "name": "Chorizo en tranches",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Chou-fleur (frais)": {
+  "name": "Chou-fleur frais",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Chou-fleur frais": {
+  "name": "Chou-fleur frais",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Ciboulette": {
+  "name": "Ciboulette fraîche",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Ciboulette fraîche": {
+  "name": "Ciboulette fraîche",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Citron": {
+  "name": "Citrons jaunes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Citron confit": {
+  "name": "Citrons confits",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Citron jaune": {
+  "name": "Citrons jaunes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Citron jaune (zeste et jus)": {
+  "name": "Citrons jaunes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Citron jaune ou vert": {
+  "name": "Citrons jaunes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Citron vert": {
+  "name": "Citrons verts",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Citrons jaunes": {
+  "name": "Citrons jaunes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Citrons verts": {
+  "name": "Citrons verts",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Clémentine": {
+  "name": "Clémentine",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Comté AOP": {
+  "name": "Comté AOP râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Comté AOP affiné": {
+  "name": "Comté AOP râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Comté AOP râpé": {
+  "name": "Comté AOP râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Comté râpé": {
+  "name": "Comté AOP râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Concentré de tomate": {
+  "name": "Concentré de tomate",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Concentré de tomates": {
+  "name": "Concentré de tomate",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Concombre": {
+  "name": "Concombre frais",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Concombre frais": {
+  "name": "Concombre frais",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Concombres": {
+  "name": "Concombre frais",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Confit d'oignons": {
+  "name": "Confit d'oignons",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Coquillettes d'Alsace": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Cordons bleus de volaille": {
+  "name": "Cordons bleus de volaille",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Coriandre (frais)": {
+  "name": "Coriandre fraîche",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Coriandre fraîche": {
+  "name": "Coriandre fraîche",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Corn flakes": {
+  "name": "Corn flakes",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Côtes de porc": {
+  "name": "Côtes de porc",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Courge Butternut": {
+  "name": "Courge Butternut",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Courge Butternut fraîche": {
+  "name": "Courge Butternut",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Courgette": {
+  "name": "Courgettes fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Courgettes": {
+  "name": "Courgettes fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Courgettes fraîches": {
+  "name": "Courgettes fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Crème fraîche (épaisse ou liquide)": {
+  "name": "Crème fraîche (épaisse ou liquide)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Crème fraîche épaisse": {
+  "name": "Crème fraîche (épaisse ou liquide)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Crème fraîche liquide": {
+  "name": "Crème fraîche (épaisse ou liquide)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Crème liquide": {
+  "name": "Crème fraîche (épaisse ou liquide)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Crème liquide entière": {
+  "name": "Crème fraîche (épaisse ou liquide)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Crevettes cuites décortiquées": {
+  "name": "Crevettes cuites décortiquées",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Crevettes roses décortiquées": {
+  "name": "Crevettes cuites décortiquées",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Crottins de chèvre": {
+  "name": "Bûche de chèvre frais",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Crozets de Savoie": {
+  "name": "Crozets de Savoie",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Cuisses de canard confit": {
+  "name": "Cuisses de canard confites",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Cuisses de canard confites": {
+  "name": "Cuisses de canard confites",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Cuisses de poulet": {
+  "name": "Cuisses de poulet fraîches",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Cuisses de poulet fraîches": {
+  "name": "Cuisses de poulet fraîches",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Cumin (moulu)": {
+  "name": "Cumin en poudre",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Cumin en poudre": {
+  "name": "Cumin en poudre",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Cumin, origan et paprika doux": {
+  "name": "Cumin en poudre",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Curcuma": {
+  "name": "Curcuma en poudre",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Curcuma (poudre)": {
+  "name": "Curcuma en poudre",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Curcuma en poudre": {
+  "name": "Curcuma en poudre",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Curry (poudre)": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Curry doux en poudre": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Curry en poudre": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Dés de fromage frais": {
+  "name": "Dés de fromage frais",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Dos de cabillaud": {
+  "name": "Dos de cabillaud / Poisson blanc frais",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Dos de cabillaud / Poisson blanc": {
+  "name": "Dos de cabillaud / Poisson blanc frais",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Dos de cabillaud / Poisson blanc frais": {
+  "name": "Dos de cabillaud / Poisson blanc frais",
+  "rayon": "poissonnerie",
+  "unit": "pave"
+ },
+ "Échalote": {
+  "name": "Échalotes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Échalotes": {
+  "name": "Échalotes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Échine de porc en dés": {
+  "name": "Échine de porc",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Émincé végétal": {
+  "name": "Émincé végétal",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Emmental français râpé ou en tranches": {
+  "name": "Emmental râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Emmental râpé": {
+  "name": "Emmental râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Endives": {
+  "name": "Endives",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Épices à couscous (ras el hanout)": {
+  "name": "Épices à couscous (ras el hanout)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Épices mexicaines": {
+  "name": "Épices mexicaines",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Épinard (frais)": {
+  "name": "Pousses d'épinards frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Épinards surgelés": {
+  "name": "Épinards surgelés",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Escalopes de dinde": {
+  "name": "Escalopes de dinde fraîches",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Escalopes de dinde fraîches": {
+  "name": "Escalopes de dinde fraîches",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Escalopes de poulet": {
+  "name": "Filets de poulet frais",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Escalopes de veau": {
+  "name": "Veau français (sauté ou blanquette)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Falafels prêts à dorer": {
+  "name": "Falafels prêts à dorer",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Farine": {
+  "name": "Farine de blé ou fécule",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Farine de blé": {
+  "name": "Farine de blé ou fécule",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Farine de blé ou fécule": {
+  "name": "Farine de blé ou fécule",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Farine de blé ou fécule de maïs": {
+  "name": "Farine de blé ou fécule",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Fenouil": {
+  "name": "Fenouil",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Feta": {
+  "name": "Feta AOP",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Feta AOP": {
+  "name": "Feta AOP",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Feuilles de brick": {
+  "name": "Feuilles de brick",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Feuilles de lasagnes fraîches": {
+  "name": "Plaques de lasagne aux œufs",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Filet de porc": {
+  "name": "Filet de porc français",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Filet mignon de porc": {
+  "name": "Filet de porc français",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Filets d'anchois à l'huile": {
+  "name": "Filets d'anchois à l'huile",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Filets de cabillaud ou poisson blanc": {
+  "name": "Dos de cabillaud / Poisson blanc frais",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Filets de dinde": {
+  "name": "Escalopes de dinde fraîches",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Filets de poulet": {
+  "name": "Filets de poulet frais",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Filets de poulet frais": {
+  "name": "Filets de poulet frais",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Fleurettes de brocoli frais": {
+  "name": "Brocoli frais",
+  "rayon": "fruits-legumes",
+  "unit": "tete"
+ },
+ "Fond de veau": {
+  "name": "Fond de veau",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Fromage à raclette au lait cru": {
+  "name": "Fromage à raclette",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Fromage à trous (tranches)": {
+  "name": "Fromage à trous (tranches)",
+  "rayon": "cremerie",
+  "unit": "tranche"
+ },
+ "Fromage blanc (ou ricotta)": {
+  "name": "Ricotta fraîche",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Fromage bleu crémeux": {
+  "name": "Fromage bleu crémeux",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Fromage frais à tartiner": {
+  "name": "Fromage frais à tartiner",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Fromage frais à tartiner (type Saint Môret)": {
+  "name": "Fromage frais à tartiner",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Fromage frais ail & fines herbes": {
+  "name": "Fromage frais ail & fines herbes",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Fromage râpé": {
+  "name": "Fromage râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Fromage triangle": {
+  "name": "Fromage triangle",
+  "rayon": "cremerie",
+  "unit": "portion"
+ },
+ "Galettes de blé tortillas": {
+  "name": "Tortillas de blé",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Galettes de sarrasin (blé noir)": {
+  "name": "Galettes de sarrasin (blé noir)",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Galettes tortillas de blé": {
+  "name": "Tortillas de blé",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Garam masala": {
+  "name": "Garam masala",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Gingembre (frais)": {
+  "name": "Gingembre frais",
+  "rayon": "fruits-legumes",
+  "unit": "cm"
+ },
+ "Gingembre (moulu)": {
+  "name": "Gingembre moulu",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Gingembre frais": {
+  "name": "Gingembre frais",
+  "rayon": "fruits-legumes",
+  "unit": "cm"
+ },
+ "Gingembre frais râpé": {
+  "name": "Gingembre frais",
+  "rayon": "fruits-legumes",
+  "unit": "cm"
+ },
+ "Gnocchi à poêler": {
+  "name": "Gnocchis à poêler",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Gnocchis à poêler": {
+  "name": "Gnocchis à poêler",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Gorgonzola AOP": {
+  "name": "Gorgonzola AOP",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Gousses d'ail": {
+  "name": "Gousses d'ail",
+  "rayon": "fruits-legumes",
+  "unit": "gousse"
+ },
+ "Graines de courge": {
+  "name": "Graines de courge",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Graines de couscous moyen": {
+  "name": "Quinoa ou semoule complète",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Graines de sésame": {
+  "name": "Graines de sésame",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Graines de tournesol": {
+  "name": "Graines de tournesol",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Grenade": {
+  "name": "Grenade",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Haricots blancs nature (cuits)": {
+  "name": "Haricots blancs nature (cuits)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Haricots noirs (bocal)": {
+  "name": "Haricots noirs (bocal)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Haricots rouges (bocal)": {
+  "name": "Haricots rouges (bocal)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Haricots rouges (cuits)": {
+  "name": "Haricots rouges (bocal)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Haricots rouges en conserve": {
+  "name": "Haricots rouges (bocal)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Haricots verts fins frais": {
+  "name": "Haricots verts fins frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Haricots verts frais": {
+  "name": "Haricots verts fins frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Harissa (pâte)": {
+  "name": "Harissa (pâte)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Herbes de Provence": {
+  "name": "Herbes de Provence sèches",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Herbes de Provence sèches": {
+  "name": "Herbes de Provence sèches",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Huile": {
+  "name": "Huile",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Huile d'olive": {
+  "name": "Huile d'olive vierge extra",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Huile d’olive": {
+  "name": "Huile d'olive vierge extra",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Huile d'olive vierge extra": {
+  "name": "Huile d'olive vierge extra",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Huile de sésame": {
+  "name": "Huile de sésame",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Jambon blanc": {
+  "name": "Jambon blanc supérieur",
+  "rayon": "boucherie",
+  "unit": "tranche"
+ },
+ "Jambon blanc supérieur": {
+  "name": "Jambon blanc supérieur",
+  "rayon": "boucherie",
+  "unit": "tranche"
+ },
+ "Jambon cru (prosciutto)": {
+  "name": "Jambon cru (prosciutto)",
+  "rayon": "boucherie",
+  "unit": "tranche"
+ },
+ "Jeunes pousses d'épinards": {
+  "name": "Pousses d'épinards frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Jeunes pousses d'épinards frais": {
+  "name": "Pousses d'épinards frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Jus d'orange": {
+  "name": "Jus d'orange",
+  "rayon": "fruits-legumes",
+  "unit": "ml"
+ },
+ "Jus de citron": {
+  "name": "Jus de citron",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Kit burrito": {
+  "name": "Kit burrito",
+  "rayon": "epicerie",
+  "unit": "portion"
+ },
+ "Kit fajitas": {
+  "name": "Kit pour fajitas (galettes & épices)",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Kit pour fajitas (galettes & épices)": {
+  "name": "Kit pour fajitas (galettes & épices)",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Lait": {
+  "name": "Lait (demi-écrémé ou entier)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Lait (demi-écrémé ou entier)": {
+  "name": "Lait (demi-écrémé ou entier)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Lait de coco": {
+  "name": "Lait de coco",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Lait demi-écrémé": {
+  "name": "Lait (demi-écrémé ou entier)",
+  "rayon": "cremerie",
+  "unit": "ml"
+ },
+ "Laitue iceberg": {
+  "name": "Laitue iceberg",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Lard (tranches)": {
+  "name": "Lard (tranches)",
+  "rayon": "boucherie",
+  "unit": "tranche"
+ },
+ "Lardons fumés": {
+  "name": "Lardons fumés pur porc",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Lardons fumés ou bacon": {
+  "name": "Lardons fumés pur porc",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Lardons fumés pur porc": {
+  "name": "Lardons fumés pur porc",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Lasagnes (frais)": {
+  "name": "Plaques de lasagne aux œufs",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Lentilles (vertes ou corail)": {
+  "name": "Lentilles corail",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Lentilles corail": {
+  "name": "Lentilles corail",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Lentilles corail ou vertes": {
+  "name": "Lentilles corail",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Lentilles vertes françaises": {
+  "name": "Lentilles vertes françaises",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Magrets ou aiguillettes de canard": {
+  "name": "Magrets de canard",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Maïs doux en boîte": {
+  "name": "Maïs doux en boîte",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Maïs doux en conserve": {
+  "name": "Maïs doux en boîte",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Marrons (cuits en conserve)": {
+  "name": "Marrons cuits",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Marrons entiers cuits": {
+  "name": "Marrons cuits",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Mayonnaise": {
+  "name": "Mayonnaise",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Mélange céréales": {
+  "name": "Mélange céréales",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Mélange d'épices (Fajitas / Chili)": {
+  "name": "Mélange d'épices (Fajitas / Chili)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Mélange de jeunes pousses ou mâche": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Mélange épices mexicaines": {
+  "name": "Épices mexicaines",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Menthe (feuilles)": {
+  "name": "Menthe fraîche",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Menthe fraîche": {
+  "name": "Menthe fraîche",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Merguez": {
+  "name": "Merguez",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Miel": {
+  "name": "Miel toutes fleurs",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Miel (liquide)": {
+  "name": "Miel toutes fleurs",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Miel liquide": {
+  "name": "Miel toutes fleurs",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Miel toutes fleurs": {
+  "name": "Miel toutes fleurs",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Morbier": {
+  "name": "Morbier",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Morceaux de bœuf à braiser ou mijoter": {
+  "name": "Bœuf à mijoter (paleron ou gîte)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Moutarde": {
+  "name": "Moutarde à l'ancienne ou Dijon",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Moutarde à l'ancienne": {
+  "name": "Moutarde à l'ancienne ou Dijon",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Moutarde à l’ancienne": {
+  "name": "Moutarde à l'ancienne ou Dijon",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Moutarde à l'ancienne / Dijon": {
+  "name": "Moutarde à l'ancienne ou Dijon",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Moutarde à l'ancienne ou de Dijon": {
+  "name": "Moutarde à l'ancienne ou Dijon",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Moutarde à l'ancienne ou Dijon": {
+  "name": "Moutarde à l'ancienne ou Dijon",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Mozzarella": {
+  "name": "Mozzarella (boule ou râpée)",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Mozzarella (boule ou râpée)": {
+  "name": "Mozzarella (boule ou râpée)",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Mozzarella râpée ou en boule": {
+  "name": "Mozzarella (boule ou râpée)",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Mozzarella râpée ou fraîche": {
+  "name": "Mozzarella (boule ou râpée)",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Noisette": {
+  "name": "Noisettes ou amandes décortiquées",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Noisettes décortiquées": {
+  "name": "Noisettes ou amandes décortiquées",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Noisettes entières décortiquées": {
+  "name": "Noisettes ou amandes décortiquées",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Noisettes entières ou amandes": {
+  "name": "Noisettes ou amandes décortiquées",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Noisettes ou amandes décortiquées": {
+  "name": "Noisettes ou amandes décortiquées",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Noix": {
+  "name": "Cerneaux de noix",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Noix concassées": {
+  "name": "Cerneaux de noix",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Noix de cajou": {
+  "name": "Noix de cajou non salées",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Noix de cajou non salées": {
+  "name": "Noix de cajou non salées",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Noix de muscade": {
+  "name": "Noix de muscade râpée",
+  "rayon": "epicerie",
+  "unit": "pincee"
+ },
+ "Noix de muscade râpée": {
+  "name": "Noix de muscade râpée",
+  "rayon": "epicerie",
+  "unit": "pincee"
+ },
+ "Noix de Saint-Jacques": {
+  "name": "Noix de Saint-Jacques fraîches",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Nouilles asiatiques": {
+  "name": "Nouilles asiatiques (blé ou soba)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Nouilles asiatiques (blé ou soba)": {
+  "name": "Nouilles asiatiques (blé ou soba)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Nouilles asiatiques (udon ou ramen)": {
+  "name": "Nouilles asiatiques (blé ou soba)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Nouilles de blé asiatiques": {
+  "name": "Nouilles asiatiques (blé ou soba)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Nouilles de riz": {
+  "name": "Nouilles de riz",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Nouilles fraîches Udon": {
+  "name": "Nouilles asiatiques (blé ou soba)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Nouilles instantanées (curry)": {
+  "name": "Nouilles instantanées",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Œufs": {
+  "name": "Œufs frais",
+  "rayon": "cremerie",
+  "unit": "oeuf"
+ },
+ "Œufs frais": {
+  "name": "Œufs frais",
+  "rayon": "cremerie",
+  "unit": "oeuf"
+ },
+ "Oignon jaune": {
+  "name": "Oignons jaunes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Oignon rouge": {
+  "name": "Oignons rouges",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Oignons jaunes": {
+  "name": "Oignons jaunes",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Oignons nouveaux (cébettes)": {
+  "name": "Oignons nouveaux (cébettes)",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Oignons nouveaux / cébettes": {
+  "name": "Oignons nouveaux (cébettes)",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Oignons rouges": {
+  "name": "Oignons rouges",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Olives (noires ou vertes)": {
+  "name": "Olives (noires ou vertes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Olives noires (dénoyautées)": {
+  "name": "Olives (noires ou vertes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Olives noires dénoyautées": {
+  "name": "Olives (noires ou vertes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Olives vertes (dénoyautées)": {
+  "name": "Olives (noires ou vertes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Orange": {
+  "name": "Oranges",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Oranges à jus": {
+  "name": "Oranges",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Origan (séché)": {
+  "name": "Herbes de Provence sèches",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Origan séché": {
+  "name": "Herbes de Provence sèches",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Origan séché ou herbes de Provence": {
+  "name": "Herbes de Provence sèches",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Pain au levain ou galettes": {
+  "name": "Pain de campagne (ou pain de mie)",
+  "rayon": "epicerie",
+  "unit": "tranche"
+ },
+ "Pain de campagne (ou galettes)": {
+  "name": "Pain de campagne (ou pain de mie)",
+  "rayon": "epicerie",
+  "unit": "tranche"
+ },
+ "Pain de campagne (ou pain de mie)": {
+  "name": "Pain de campagne (ou pain de mie)",
+  "rayon": "epicerie",
+  "unit": "tranche"
+ },
+ "Pain de mie": {
+  "name": "Pain de campagne (ou pain de mie)",
+  "rayon": "epicerie",
+  "unit": "tranche"
+ },
+ "Pain de mie complet ou artisanal": {
+  "name": "Pain de campagne (ou pain de mie)",
+  "rayon": "epicerie",
+  "unit": "tranche"
+ },
+ "Pain de mie complet ou blanc": {
+  "name": "Pain de campagne (ou pain de mie)",
+  "rayon": "epicerie",
+  "unit": "tranche"
+ },
+ "Pains bagels aux graines de sésame": {
+  "name": "Pains bagels",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Pains burger aux graines": {
+  "name": "Pains burger aux graines",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Pains burger briochés": {
+  "name": "Pains burger briochés",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Paprika": {
+  "name": "Paprika doux (ou fumé)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Paprika (doux ou fumé)": {
+  "name": "Paprika doux (ou fumé)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Paprika doux": {
+  "name": "Paprika doux (ou fumé)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Paprika doux (ou fumé)": {
+  "name": "Paprika doux (ou fumé)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Paprika doux moulu": {
+  "name": "Paprika doux (ou fumé)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Paprika fumé": {
+  "name": "Paprika doux (ou fumé)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Parmesan": {
+  "name": "Parmesan AOP râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Parmesan AOP râpé": {
+  "name": "Parmesan AOP râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Parmesan râpé": {
+  "name": "Parmesan AOP râpé",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Patates douces": {
+  "name": "Patates douces",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Pâte à pizza": {
+  "name": "Pâte à pizza",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Pâte à tarte (feuilletée ou brisée)": {
+  "name": "Pâte à tarte (feuilletée ou brisée)",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Pâte brisée": {
+  "name": "Pâte à tarte (feuilletée ou brisée)",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Pâte brisée pur beurre": {
+  "name": "Pâte à tarte (feuilletée ou brisée)",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Pâte de curry (Korma)": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Pâte de curry (rouge)": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Pâte de curry (vert)": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Pâte de curry doux": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Pâte de curry vert": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Pâte de curry vert ou doux": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Pâte feuilletée": {
+  "name": "Pâte à tarte (feuilletée ou brisée)",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Pâte ou poudre de curry doux": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Pâtes (fusilli)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (linguine)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (orecchiette)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (pipe rigate)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (rigatoni)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (spaghetti ou rigatoni)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (spaghetti)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (tagliatelles ou penne)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (tagliatelles)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes de blé (penne, fusilli ou coquillettes)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes italiennes (spaghetti ou penne)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes italiennes de qualité (penne ou rigatoni)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pavés de saumon frais": {
+  "name": "Pavés de saumon frais",
+  "rayon": "poissonnerie",
+  "unit": "pave"
+ },
+ "Persil (frais)": {
+  "name": "Persil plat frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Persil frais": {
+  "name": "Persil plat frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Persil frais ou ciboulette": {
+  "name": "Persil plat frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Persil plat frais": {
+  "name": "Persil plat frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Persil plat ou coriandre fraîche": {
+  "name": "Persil plat frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Pesto alla genovese (pot)": {
+  "name": "Pesto alla genovese (pot)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Pesto verde ou rosso": {
+  "name": "Pesto alla genovese (pot)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Petits chèvres Cabécous": {
+  "name": "Petits chèvres Cabécous",
+  "rayon": "cremerie",
+  "unit": "piece"
+ },
+ "Petits pois (frais)": {
+  "name": "Petits pois frais (ou surgelés)",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Petits pois (surgelés)": {
+  "name": "Petits pois frais (ou surgelés)",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Petits pois frais": {
+  "name": "Petits pois frais (ou surgelés)",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Petits pois frais (ou surgelés)": {
+  "name": "Petits pois frais (ou surgelés)",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Petits pois surgelés": {
+  "name": "Petits pois frais (ou surgelés)",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pics à brochette": {
+  "name": "Pics à brochette",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Piment (doux)": {
+  "name": "Piment (doux)",
+  "rayon": "epicerie",
+  "unit": "pincee"
+ },
+ "Piment d'Espelette": {
+  "name": "Piment d'Espelette",
+  "rayon": "epicerie",
+  "unit": "pincee"
+ },
+ "Plaques de lasagne": {
+  "name": "Plaques de lasagne aux œufs",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Plaques de lasagne aux œufs": {
+  "name": "Plaques de lasagne aux œufs",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Plaques de lasagnes": {
+  "name": "Plaques de lasagne aux œufs",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Poireaux": {
+  "name": "Blancs de poireaux",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Poireaux frais": {
+  "name": "Blancs de poireaux",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Pois chiches (bocal)": {
+  "name": "Pois chiches (bocal)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pois gourmands": {
+  "name": "Pois gourmands",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Poivron (assortiment)": {
+  "name": "Poivrons (rouges ou tricolores)",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Poivron rouge": {
+  "name": "Poivrons (rouges ou tricolores)",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Poivrons (rouges / tricolores)": {
+  "name": "Poivrons (rouges ou tricolores)",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Poivrons (rouges ou jaunes)": {
+  "name": "Poivrons (rouges ou tricolores)",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Poivrons (rouges ou tricolores)": {
+  "name": "Poivrons (rouges ou tricolores)",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Poivrons verts": {
+  "name": "Poivrons (rouges ou tricolores)",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Pommes de terre": {
+  "name": "Pommes de terre fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pommes de terre (primeur)": {
+  "name": "Pommes de terre fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pommes de terre à chair ferme": {
+  "name": "Pommes de terre fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pommes de terre fondantes": {
+  "name": "Pommes de terre fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pommes de terre fraîches": {
+  "name": "Pommes de terre fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pommes de terre primeur": {
+  "name": "Pommes de terre fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pot de Houmous classique ou au sésame": {
+  "name": "Houmous classique",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pot de Ricotta fraîche": {
+  "name": "Ricotta fraîche",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Potimarron": {
+  "name": "Potimarron frais",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Poudre de curry doux": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Poulet (aiguillette)": {
+  "name": "Filets de poulet frais",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Poulet (cuisse)": {
+  "name": "Cuisses de poulet fraîches",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Poulet (entier)": {
+  "name": "Poulet entier",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Poulet (pané)": {
+  "name": "Poulet pané",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Poulet émincé (cuit)": {
+  "name": "Filets de poulet frais",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Pousses d'épinards fraîches": {
+  "name": "Pousses d'épinards frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pousses d'épinards frais": {
+  "name": "Pousses d'épinards frais",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pousses de haricots mungo": {
+  "name": "Pousses de soja",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Pulpe de tomates en dés": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Purée de sésame (Tahini)": {
+  "name": "Purée de sésame (Tahini)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Purée de tomates": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Quenelle nature": {
+  "name": "Quenelle nature",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Quinoa ou semoule complète": {
+  "name": "Quinoa ou semoule complète",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Ratatouille cuisinée": {
+  "name": "Ratatouille cuisinée",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Ravioles du Dauphiné": {
+  "name": "Ravioles du Dauphiné",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Ravioli frais aux champignons": {
+  "name": "Ravioli frais aux champignons",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Ravioli frais ricotta-épinards": {
+  "name": "Ravioli frais ricotta-épinards",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Reblochon": {
+  "name": "Reblochon de Savoie AOP",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Reblochon fermier AOP": {
+  "name": "Reblochon de Savoie AOP",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Ricotta": {
+  "name": "Ricotta fraîche",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Ricotta fraîche italienne": {
+  "name": "Ricotta fraîche",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Riz à risotto (Arborio ou Carnaroli)": {
+  "name": "Riz à risotto (Arborio ou Carnaroli)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Riz basmati": {
+  "name": "Riz blanc (basmati ou jasmin)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Riz basmati ou jasmin": {
+  "name": "Riz blanc (basmati ou jasmin)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Riz blanc (basmati ou jasmin)": {
+  "name": "Riz blanc (basmati ou jasmin)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Riz blanc ou basmati": {
+  "name": "Riz blanc (basmati ou jasmin)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Riz rond pour risotto ou basmati": {
+  "name": "Riz à risotto (Arborio ou Carnaroli)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Romarin (séché)": {
+  "name": "Romarin frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Romarin séché ou frais": {
+  "name": "Romarin frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Salade (coeur de laitue)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Salade (Mélange)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Salade (Romaine)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Salade (roquette)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Salade sucrine": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Salade verte (mâche ou roquette)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Salade verte (mâche)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Salade verte (mélange)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Salade verte (sucrine)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Sauce Arrabbiata": {
+  "name": "Sauce Arrabbiata",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Sauce barbecue": {
+  "name": "Sauce barbecue",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce César": {
+  "name": "Sauce César",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce Curry Korma": {
+  "name": "Pâte ou poudre de curry doux",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Sauce d'huitre": {
+  "name": "Sauce d'huitre",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce deluxe": {
+  "name": "Sauce deluxe",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Sauce pesto": {
+  "name": "Pesto alla genovese (pot)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce piment (Sriracha)": {
+  "name": "Sauce piment (Sriracha)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Sauce soja": {
+  "name": "Sauce soja salée",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce soja salée": {
+  "name": "Sauce soja salée",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce soja sucrée": {
+  "name": "Sauce soja sucrée",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce soja sucrée ou teriyaki": {
+  "name": "Sauce soja sucrée",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce teriyaki": {
+  "name": "Sauce teriyaki",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce Teriyaki": {
+  "name": "Sauce teriyaki",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Sauce tomate au basilic": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Saucisses de Toulouse ou fumées": {
+  "name": "Saucisses de Toulouse ou fumées",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Saucisses fumées": {
+  "name": "Saucisses de Toulouse ou fumées",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Saucisses fumées de campagne": {
+  "name": "Saucisses de Toulouse ou fumées",
+  "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Saumon fumé": {
+  "name": "Saumon fumé de qualité",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Saumon fumé de qualité": {
+  "name": "Saumon fumé de qualité",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Sauté d'agneau en morceaux": {
+  "name": "Sauté d'agneau en morceaux",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Semoule": {
+  "name": "Quinoa ou semoule complète",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Semoule de couscous moyenne": {
+  "name": "Quinoa ou semoule complète",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Steaks hachés du boucher (pur bœuf)": {
+  "name": "Bœuf haché frais (pur bœuf)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Steaks hachés pur bœuf": {
+  "name": "Bœuf haché frais (pur bœuf)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Steaks hachés pur bœuf façon bouchère": {
+  "name": "Bœuf haché frais (pur bœuf)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Sucre (en poudre)": {
+  "name": "Sucre (en poudre)",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Tabasco": {
+  "name": "Tabasco",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Tagliatelles fraîches": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Thon (conserve)": {
+  "name": "Thon au naturel (boîte)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Thon au citron (boîte)": {
+  "name": "Thon au naturel (boîte)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Thon au naturel (boîte)": {
+  "name": "Thon au naturel (boîte)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Thym": {
+  "name": "Thym frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Thym (feuilles)": {
+  "name": "Thym frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Thym frais": {
+  "name": "Thym frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
+ "Tomates": {
+  "name": "Tomates fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Tomates cerises": {
+  "name": "Tomates fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Tomates concassées": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Tomates concassées / Coulis": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Tomates concassées en boîte": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Tomates concassées en boîte ou fraîches": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Tomates fraîches": {
+  "name": "Tomates fraîches",
+  "rayon": "fruits-legumes",
+  "unit": "piece"
+ },
+ "Tomates fraîches ou concassées": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Tomates séchées": {
+  "name": "Tomates séchées",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Tortillas de blé": {
+  "name": "Tortillas de blé",
+  "rayon": "epicerie",
+  "unit": "piece"
+ },
+ "Tranches de cheddar affiné": {
+  "name": "Tranches de cheddar affiné",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Tranches de jambon blanc": {
+  "name": "Jambon blanc supérieur",
+  "rayon": "boucherie",
+  "unit": "tranche"
+ },
+ "Tranches de jambon supérieur": {
+  "name": "Jambon blanc supérieur",
+  "rayon": "boucherie",
+  "unit": "tranche"
+ },
+ "Tranches de saumon fumé": {
+  "name": "Saumon fumé de qualité",
+  "rayon": "poissonnerie",
+  "unit": "g"
+ },
+ "Veau (blanquette)": {
+  "name": "Veau français (sauté ou blanquette)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Vermicelles de riz": {
+  "name": "Vermicelles de riz",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Viande hachée pur bœuf 5% MG": {
+  "name": "Bœuf haché frais (pur bœuf)",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
+ "Vin blanc": {
+  "name": "Vin blanc sec de cuisine",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Vin blanc sec de cuisine": {
+  "name": "Vin blanc sec de cuisine",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Vin rouge": {
+  "name": "Vin rouge de cuisine",
+  "rayon": "epicerie",
+  "unit": "ml"
+ },
+ "Vinaigre balsamique": {
+  "name": "Vinaigre balsamique",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Vinaigre de cidre": {
+  "name": "Vinaigre de cidre (ou vin)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Vinaigre de vin": {
+  "name": "Vinaigre de cidre (ou vin)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Vinaigre de vin rouge": {
+  "name": "Vinaigre de cidre (ou vin)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Vinaigre de Xérès": {
+  "name": "Vinaigre de cidre (ou vin)",
+  "rayon": "epicerie",
+  "unit": "c. à soupe"
+ },
+ "Wasabi": {
+  "name": "Wasabi",
+  "rayon": "epicerie",
+  "unit": "c. à café"
+ },
+ "Yaourt grec": {
+  "name": "Yaourts (nature ou aux fruits)",
+  "rayon": "cremerie",
+  "unit": "pot"
+ },
+ "Yaourt Grec": {
+  "name": "Yaourts (nature ou aux fruits)",
+  "rayon": "cremerie",
+  "unit": "pot"
+ },
+ "Yaourt nature": {
+  "name": "Yaourts (nature ou aux fruits)",
+  "rayon": "cremerie",
+  "unit": "pot"
+ },
+ "Yaourts (nature ou aux fruits)": {
+  "name": "Yaourts (nature ou aux fruits)",
+  "rayon": "cremerie",
+  "unit": "pot"
+ }
+}
