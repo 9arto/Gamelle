@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 25/11/2026 — v61 : fond du logo
+- Le fond du logo reprend le dégradé vert des bandeaux Planning et Liste de courses (émeraude → teal).
+
 ## 25/11/2026 — v60 : nouveau logo
 - Logo « G + feuille » (G menthe sur fond vert foncé) : `logo.svg`, icônes 192/512 et icône iPhone régénérées. Sur l'iPhone, l'icône de l'écran d'accueil peut mettre du temps à changer (ou demander de réajouter l'app).
 
