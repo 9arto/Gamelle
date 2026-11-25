@@ -12,6 +12,7 @@ function cleanSearchText(str) {
 
 // Icônes vectorielles (nettes sur iPhone, suivent la couleur du texte en mode clair comme sombre)
 const ICONS = {
+  box: '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.3 7.5L12 12.5l8.7-5"/><path d="M12 12.5V22"/></svg>',
   lock: '<svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>',
   unlock: '<svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 7.75-1.4"/></svg>',
   heart: (filled, size = 'w-[18px] h-[18px]') => `<svg class="${size}" viewBox="0 0 24 24" fill="${filled ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.7 7.9 3.8 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.4 0 5.5 3.4 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>`
@@ -351,7 +352,7 @@ function promptDialog(opts) {
 }
 
 // --- Blocage du défilement derrière les fenêtres ouvertes ---
-const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal', 'scan-modal'];
+const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal', 'scan-modal', 'leftovers-modal'];
 function updateScrollLock() {
   const anyOpen = MODAL_IDS.some(id => {
     const el = document.getElementById(id);
@@ -367,7 +368,8 @@ function initModalBehaviour() {
     'cooking-modal': 'btn-close-cooking',
     'recipe-detail-modal': 'btn-close-detail',
     'generate-modal': 'btn-close-generate',
-    'scan-modal': 'btn-close-scan'
+    'scan-modal': 'btn-close-scan',
+    'leftovers-modal': 'btn-close-leftovers'
   };
   // Les fenêtres où un appui involontaire sur le fond ne fait rien perdre se ferment en touchant le fond
   const closeOnBackdrop = ['recipe-detail-modal', 'select-meal-modal', 'saved-menus-modal'];
@@ -468,7 +470,8 @@ let state = {
   aisleOrder: [],      // ordre des rayons dans le magasin
   notes: {},           // { idRecette: { r: 1|-1|0, cooked: horodatage, t: horodatage } }
   genFilters: {},      // derniers filtres de « Composer mes 7 repas »
-  off: {}              // cache Open Food Facts { article: { t, d } }
+  off: {},             // cache Open Food Facts { article: { t, d } }
+  leftovers: []        // produits qu'on a à la maison (« Finir mes restes »)
 };
 
 // Catalogue : affichage progressif (24 plats à la fois)
@@ -569,6 +572,7 @@ function loadFromLocalStorage() {
   state.stockBasics = safeGetItem('gamelle_stock_basics') === '1';
   state.aisleOrder = sanitizeStringList(readJSON('gamelle_aisle_order', []), 10, 30);
   state.off = sanitizeOffCache(readJSON('gamelle_off_cache', {}));
+  state.leftovers = sanitizeStringList(readJSON('gamelle_leftovers', []), 30, 60);
 
   // Planning (support migration objet {Lundi: ...} -> tableau [])
   let plan = readJSON('gamelle_plan', null);
@@ -594,6 +598,7 @@ function saveToLocalStorage() {
   safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
   safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
   safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
+  safeSetItem('gamelle_leftovers', JSON.stringify(state.leftovers || []));
   safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
   safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
   const customList = (state.recipes || []).filter(r => r.id.startsWith('custom-'));
@@ -1869,12 +1874,12 @@ function orderedRayons() {
   });
 }
 
-const HOME_REASONS = { placard: '🏠 placard', 'épices': '🧂 épices', base: '🫙 base' };
+const HOME_REASONS = { placard: 'placard', 'épices': 'épices', base: 'produits de base' };
 function renderAtHomeSection(container, atHome) {
   if (!atHome.length) return;
   const det = document.createElement('details');
   det.className = 'ios-card overflow-hidden';
-  det.innerHTML = `<summary class="p-3 text-xs font-bold text-slate-600 cursor-pointer flex items-center gap-2"><span>🏠</span> Déjà à la maison <span class="ml-auto text-[10px] font-semibold text-slate-400">${atHome.length} article${atHome.length > 1 ? 's' : ''} non listé${atHome.length > 1 ? 's' : ''}</span></summary><div class="divide-y divide-slate-100"></div>`;
+  det.innerHTML = `<summary class="p-3 text-xs font-bold text-slate-600 cursor-pointer flex items-center gap-2"><span class="text-slate-400">${ICONS.box}</span> Déjà à la maison <span class="ml-auto text-[10px] font-semibold text-slate-400">${atHome.length} article${atHome.length > 1 ? 's' : ''} non listé${atHome.length > 1 ? 's' : ''}</span></summary><div class="divide-y divide-slate-100"></div>`;
   const list = det.querySelector('div');
   atHome.forEach(({ item, reason }) => {
     const row = document.createElement('div');
@@ -1910,20 +1915,20 @@ function renderPantryCard() {
   const h = 'text-[10px] font-bold uppercase tracking-wider text-slate-400';
   body.innerHTML = `
     <div class="space-y-1.5">
-      <div class="flex items-center justify-between"><p class="${h}">🧂 Mes épices</p>
+      <div class="flex items-center justify-between"><p class="${h}">Mes épices</p>
         <span class="text-[10px] text-slate-400"><button type="button" class="spice-all underline" data-all="1">tout</button> · <button type="button" class="spice-all underline" data-all="0">aucune</button></span></div>
       <div class="flex gap-1.5 flex-wrap">${GL.SPICES.map(sp => { const on = state.spices.includes(sp.name); return `<button type="button" class="spice-chip ${chip(on)}" data-name="${esc(sp.name)}" aria-pressed="${on}">${on ? '✓ ' : ''}${esc(sp.label)}</button>`; }).join('')}</div>
       <p class="text-[10px] text-slate-400">Une épice « ✓ » n'est plus listée dans les courses.</p>
     </div>
     <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-stock-basics" class="w-4 h-4 rounded" ${state.stockBasics ? 'checked' : ''}>
       <span class="text-slate-700 font-semibold">Huile, farine, sucre, vinaigres, moutarde à la maison</span></label>
-    ${state.pantry.length ? `<div class="space-y-1.5"><p class="${h}">🏠 Mon placard</p>
+    ${state.pantry.length ? `<div class="space-y-1.5"><p class="${h}">Mon placard</p>
       <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => `<button type="button" class="pantry-remove px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200" data-id="${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))} ✕</button>`).join('')}</div></div>` : ''}
     <div class="flex gap-1.5 flex-wrap pt-1">
-      <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">🔎 Nutri-Score de ma liste</button>
-      <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">📷 Scanner un produit</button>
+      <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Nutri-Score de ma liste</button>
+      <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Scanner un produit</button>
     </div>
-    <details class="pt-1"><summary class="${h} cursor-pointer">🧭 Ordre des rayons dans mon magasin</summary>
+    <details class="pt-1"><summary class="${h} cursor-pointer">Ordre des rayons dans mon magasin</summary>
       <div class="space-y-1 mt-1.5">${rayons.map((r, i) => `<div class="flex items-center gap-2 bg-slate-50 rounded-lg px-2 py-1"><span>${r.icon}</span><span class="flex-1 text-slate-700">${esc(r.name)}</span>
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Monter">▲</button>
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="1" ${i === rayons.length - 1 ? 'disabled' : ''} aria-label="Descendre">▼</button></div>`).join('')}</div>
@@ -2015,16 +2020,16 @@ function renderGenerateModal() {
   const cur = GL.currentSeason();
   const curS = GL.SEASONS.find(x => x.id === cur);
   body.innerHTML = `
-    <div class="space-y-1.5"><p class="font-bold text-slate-700">Saison <button type="button" id="btn-gen-current-season" class="ml-1 text-[10px] font-semibold text-brand-700 underline">${curS.emoji} saison actuelle</button></p>
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">Saison <button type="button" id="btn-gen-current-season" class="ml-1 text-[10px] font-semibold text-brand-700 underline">saison actuelle</button></p>
       <div class="flex gap-1.5 flex-wrap">${genChipsHTML('seasons', GL.SEASONS, d.seasons || [])}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Type de plat</p>
       <div class="flex gap-1.5 flex-wrap">${genChipsHTML('types', [{ id: 'volaille', label: 'Volaille', emoji: '🍗' }, { id: 'viande', label: 'Viande', emoji: '🥩' }, { id: 'poisson', label: 'Poisson', emoji: '🐟' }, { id: 'vege', label: 'Végétarien', emoji: '🌱' }], d.types || [])}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Style de cuisine</p>
       <div class="flex gap-1.5 flex-wrap">${genChipsHTML('styles', GL.STYLES, d.styles || [])}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Pratique</p>
-      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', '💰 Pas cher')}${genFlagHTML('express', '⚡ &lt; 20 min')}${genFlagHTML('gamelle', '🍱 Bon en gamelle')}${genFlagHTML('onePan', '🍳 1 seule poêle')}${genFlagHTML('favoritesOnly', '❤️ Mes favoris')}</div></div>
+      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', 'Pas cher')}${genFlagHTML('express', 'Moins de 20 min')}${genFlagHTML('gamelle', 'Bon en gamelle')}${genFlagHTML('onePan', '1 seule poêle')}${genFlagHTML('favoritesOnly', 'Mes favoris')}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Régime</p>
-      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('noPork', '🚫🐖 Sans porc')}${genFlagHTML('noLactose', '🥛 Sans lactose')}</div></div>
+      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('noPork', 'Sans porc')}${genFlagHTML('noLactose', 'Sans lactose')}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">J'ai dans le frigo <span class="font-normal text-slate-400">(à utiliser en priorité)</span></p>
       <input type="text" id="gen-fridge" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs" placeholder="Ex : poulet, courgettes, champignons" value="${esc(d.fridge || '')}"></div>`;
   updateGenMatch();
@@ -2095,12 +2100,12 @@ function renderNutritionCard(recipe) {
   const p = n.perPortion;
   const chip = (label, v, unit) => `<span class="px-2 py-1 rounded-lg bg-slate-50 border border-slate-100 text-slate-600"><b class="text-slate-800">${v}</b> ${unit} ${label}</span>`;
   box.innerHTML = `
-    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5"><span>🔥</span> Nutrition estimée <span class="font-normal normal-case text-slate-400">par portion</span></h3>
+    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5"><span>Nutrition estimée</span> <span class="font-normal normal-case text-slate-400">par portion</span></h3>
     <div class="flex flex-wrap gap-1.5 text-[11px]">
       <span class="px-2 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900"><b>${p.kcal}</b> kcal</span>
       ${chip('protéines', p.protein, 'g')}${chip('glucides', p.carbs, 'g')}${chip('lipides', p.fat, 'g')}
     </div>
-    ${n.allergens.length ? `<p class="text-[11px] text-slate-600">⚠️ Contient : ${n.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</p>` : '<p class="text-[11px] text-slate-400">Aucun allergène majeur repéré.</p>'}
+    ${n.allergens.length ? `<p class="text-[11px] text-slate-600">Allergènes : ${n.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</p>` : '<p class="text-[11px] text-slate-400">Aucun allergène majeur repéré.</p>'}
     <p class="text-[10px] text-slate-400">Estimation à partir de valeurs moyennes par ingrédient (type Ciqual / Open Food Facts) : à titre indicatif.</p>`;
 }
 
@@ -2117,10 +2122,6 @@ function offBadgeHTML(name) {
   const parts = [];
   if (e.d.grade) parts.push(nutriBadge(e.d.grade, 16, 'Nutri-Score typique (Open Food Facts)'));
   return parts.join(' ');
-}
-function offAllergenText(name) {
-  const e = state.off[offKey(name)];
-  return e && e.d && e.d.allergens && e.d.allergens.length ? `⚠️ ${e.d.allergens.map(a => GN.allergenLabel(a)).join(', ')} · ` : '';
 }
 function saveOffCache() { safeSetItem('gamelle_off_cache', JSON.stringify(state.off)); }
 
@@ -2209,10 +2210,10 @@ async function lookupScannedProduct(code) {
       <div><p class="font-bold text-slate-800 text-sm">${esc(p.name || 'Produit sans nom')}</p><p class="text-slate-400">${esc(p.brand)}</p></div>
       <div class="flex items-center gap-2 flex-wrap">${grade}${p.nova ? `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold">NOVA ${p.nova}</span>` : ''}</div>
       <p class="text-slate-600">${p.kcal != null ? `<b>${p.kcal}</b> kcal` : ''}${p.protein != null ? ` · ${p.protein} g protéines` : ''}${p.carbs != null ? ` · ${p.carbs} g glucides` : ''}${p.fat != null ? ` · ${p.fat} g lipides` : ''} <span class="text-slate-400">pour 100 g</span></p>
-      ${p.allergens.length ? `<p class="text-amber-700">⚠️ Contient : ${p.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</p>` : ''}
+      ${p.allergens.length ? `<p class="text-amber-700">Allergènes : ${p.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</p>` : ''}
       <div class="flex gap-2 flex-wrap pt-1">
-        ${match ? `<button type="button" id="btn-scan-pantry" data-id="${esc(match.id)}" class="px-2.5 py-1.5 rounded-xl font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">🏠 « ${esc(match.name)} » au placard</button>` : ''}
-        <button type="button" id="btn-scan-staple" data-name="${esc(p.name)}" class="px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 border border-slate-200">🛒 Ajouter aux articles courants</button>
+        ${match ? `<button type="button" id="btn-scan-pantry" data-id="${esc(match.id)}" class="px-2.5 py-1.5 rounded-xl font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">« ${esc(match.name)} » au placard</button>` : ''}
+        <button type="button" id="btn-scan-staple" data-name="${esc(p.name)}" class="px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 border border-slate-200">Ajouter aux articles courants</button>
       </div>
     </div>`;
   const bp = document.getElementById('btn-scan-pantry');
@@ -2285,13 +2286,13 @@ function setupStapleAutocomplete() {
 }
 
 // --- Filtres du catalogue : « Plus de filtres » ---
-const FILTER_LABELS = { printemps: '🌸 Printemps', ete: '☀️ Été', automne: '🍁 Automne', hiver: '❄️ Hiver', 'style:street': '🌮 Street food', 'style:italien': '🇮🇹 Italien', 'style:asiatique': '🥢 Asiatique', 'style:orient': '🍛 Orient & Indien', 'style:mexicain': '🌶️ Tex-Mex', 'style:terroir': '🥘 Terroir', 'style:frais': '🥗 Frais & bowls', unepoele: '🍳 1 poêle', sanspork: '🚫🐖 Sans porc', sanslactose: '🥛 Sans lactose', maison: '⭐ Mes recettes' };
+const FILTER_LABELS = { printemps: '🌸 Printemps', ete: '☀️ Été', automne: '🍁 Automne', hiver: '❄️ Hiver', 'style:street': 'Street food', 'style:italien': 'Italien', 'style:asiatique': 'Asiatique', 'style:orient': 'Orient & Indien', 'style:mexicain': 'Tex-Mex', 'style:terroir': 'Terroir', 'style:frais': 'Frais & bowls', unepoele: '1 poêle', sanspork: 'Sans porc', sanslactose: 'Sans lactose', maison: 'Mes recettes' };
 function updateMoreFiltersButton() {
   const btn = document.getElementById('btn-more-filters');
   const panel = document.getElementById('more-filters');
   if (!btn || !panel) return;
   const label = FILTER_LABELS[state.activeFilter];
-  btn.textContent = label ? `${label} ✕` : (panel.classList.contains('hidden') ? '⚙️ Plus de filtres' : '⚙️ Moins de filtres');
+  btn.textContent = label ? `${label} ✕` : (panel.classList.contains('hidden') ? 'Plus de filtres' : 'Moins de filtres');
   btn.classList.toggle('bg-brand-600', !!label);
   btn.classList.toggle('text-white', !!label);
   btn.classList.toggle('bg-slate-100', !label);
@@ -2312,6 +2313,102 @@ function setupMoreFilters() {
   });
   // choisir un filtre dans le panneau le referme
   panel.addEventListener('click', (e) => { if (e.target.closest('.filter-btn')) { panel.classList.add('hidden'); updateMoreFiltersButton(); } });
+}
+
+// --- Finir mes restes ---
+let leftoversPool = null;
+function getLeftoversPool() {
+  if (!leftoversPool) {
+    const names = new Set();
+    try { state.recipes.forEach(r => (r.ingredients || []).forEach(i => names.add(normalizeIngredient(i).name.replace(/\s*\(.*?\)/g, '')))); } catch (e) { /* liste vide */ }
+    leftoversPool = [...names].filter(n => !GL.BASICS.some(b => b.startsWith(n)));
+  }
+  return leftoversPool;
+}
+function renderLeftovers() {
+  const chips = document.getElementById('leftovers-chips');
+  const box = document.getElementById('leftovers-results');
+  if (!chips || !box) return;
+  chips.innerHTML = state.leftovers.map(l => `<button type="button" class="leftover-chip px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold" data-label="${esc(l)}">${esc(l)} ✕</button>`).join('');
+  if (!state.leftovers.length) {
+    box.innerHTML = '<p class="text-xs text-slate-400 pt-2">Ajoutez un ou plusieurs produits (poulet, courgettes, riz, crème…). Les recettes qui les utilisent le mieux, avec le moins de courses à faire, apparaissent ici.</p>';
+    return;
+  }
+  const ranked = GL.rankByLeftovers(state.recipes, state.leftovers, {
+    articleOf: (ing) => normalizeIngredient(ing).name, pantry: state.pantry, spices: state.spices, limit: 12
+  });
+  if (!ranked.length) { box.innerHTML = '<p class="text-xs text-slate-500 pt-2">Aucune recette ne correspond. Essayez un mot plus simple (poulet, riz, courgette).</p>'; return; }
+  box.innerHTML = ranked.map(({ recipe: r, used, missing }) => {
+    const need = missing.length === 0
+      ? '<span class="text-emerald-700 font-bold">Rien à acheter</span>'
+      : `<span class="text-slate-500">Il manque : ${esc(missing.slice(0, 3).map(m => m.replace(/\s*\(.*?\)/g, '')).join(', '))}${missing.length > 3 ? ` +${missing.length - 3}` : ''}</span>`;
+    return `<div class="ios-card p-2.5 flex gap-3 items-center" data-id="${esc(r.id)}">
+      <img src="${esc(safeImg(r.image))}" alt="" loading="lazy" onerror="imgFallback(this)" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100">
+      <div class="flex-1 min-w-0 space-y-0.5">
+        <p class="font-bold text-xs text-slate-800 leading-snug">${esc(r.title)}</p>
+        <p class="text-[11px] text-slate-600">Utilise : ${esc(used.join(', '))}</p>
+        <p class="text-[11px]">${need}</p>
+        <div class="flex gap-1.5 pt-1">
+          <button type="button" class="leftover-view px-2 py-1 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-bold" data-id="${esc(r.id)}">Voir</button>
+          <button type="button" class="leftover-add px-2 py-1 rounded-lg bg-brand-50 text-brand-700 text-[11px] font-bold" data-id="${esc(r.id)}">Au menu</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function addLeftover(label) {
+  const clean = cleanStr(label, 60);
+  if (!clean || state.leftovers.some(l => GL.norm(l) === GL.norm(clean))) return;
+  state.leftovers.push(clean);
+  saveToLocalStorage();
+  renderLeftovers();
+}
+function openLeftoversModal() {
+  document.getElementById('leftovers-modal').classList.remove('hidden');
+  renderLeftovers();
+}
+function setupLeftoversModal() {
+  const modal = document.getElementById('leftovers-modal');
+  if (!modal) return;
+  const input = document.getElementById('leftovers-input');
+  const list = document.getElementById('leftovers-suggest');
+  document.getElementById('btn-open-leftovers').addEventListener('click', openLeftoversModal);
+  document.getElementById('btn-close-leftovers').addEventListener('click', () => modal.classList.add('hidden'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+  let items = [], active = -1;
+  const close = () => { list.classList.add('hidden'); list.innerHTML = ''; items = []; active = -1; };
+  const paint = () => {
+    list.innerHTML = items.map((t, i) => `<li role="option" data-i="${i}" class="px-3 py-2 text-xs ${i === active ? 'bg-brand-50 text-brand-800 font-bold' : 'text-slate-700'}">${esc(t)}</li>`).join('');
+    list.classList.toggle('hidden', !items.length);
+  };
+  input.addEventListener('input', () => { items = GL.suggestStaples(input.value, getLeftoversPool(), state.leftovers, 5); active = -1; paint(); });
+  input.addEventListener('keydown', (e) => {
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); active = (active + 1) % items.length; paint(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); active = (active - 1 + items.length) % items.length; paint(); }
+    else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); e.stopPropagation(); addLeftover(items[active]); input.value = ''; close(); }
+    else if (e.key === 'Escape') close();
+  });
+  list.addEventListener('pointerdown', (e) => {
+    const li = e.target.closest('li');
+    if (li) { e.preventDefault(); addLeftover(items[Number(li.dataset.i)]); input.value = ''; close(); input.focus(); }
+  });
+  input.addEventListener('blur', () => setTimeout(close, 120));
+  document.getElementById('leftovers-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    input.value.split(/[,;]/).forEach(v => addLeftover(v));
+    input.value = ''; close();
+  });
+  modal.addEventListener('click', (e) => {
+    const chip = e.target.closest('.leftover-chip');
+    const view = e.target.closest('.leftover-view');
+    const add = e.target.closest('.leftover-add');
+    if (chip) { state.leftovers = state.leftovers.filter(l => l !== chip.dataset.label); saveToLocalStorage(); renderLeftovers(); }
+    else if (view) { modal.classList.add('hidden'); openRecipeDetail(view.dataset.id); }
+    else if (add) {
+      addRecipeToPlan(add.dataset.id);
+    }
+  });
 }
 
 // ==========================================
@@ -2544,7 +2641,7 @@ function renderGroceries() {
   document.getElementById('courses-progress-bar').style.width = `${percentage}%`;
   const cost = GL.estimateCost(groceries);
   document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''}`;
-  document.getElementById('courses-budget-label').textContent = cost > 0 ? `budget ≈ ${cost} €` : '';
+  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €` : '';
   
   // Badge sur l'onglet inférieur
   const navBadge = document.getElementById('nav-badge-groceries');
@@ -2643,14 +2740,14 @@ function renderGroceries() {
               ${isStapleRayon ? '' : offBadgeHTML(item.name)}
             </div>
             ${item.recipes && item.recipes.length > 0 ? `
-              <span class="text-[10px] text-slate-400 truncate block">${isStapleRayon ? '' : esc(offAllergenText(item.name))}(${esc(item.recipes.join(', '))})</span>
+              <span class="text-[10px] text-slate-400 truncate block">(${esc(item.recipes.join(', '))})</span>
             ` : ''}
           </div>
         </label>
         ${isStapleRayon ? `
           <button class="btn-delete-staple text-slate-300 hover:text-red-500 text-xs px-1" data-id="${esc(item.id)}" aria-label="Retirer ${esc(item.name)}">✕</button>
         ` : `
-          <button class="btn-pantry text-slate-300 hover:text-emerald-600 text-xs px-1" data-id="${esc(item.id)}" title="J'en ai déjà (placard)" aria-label="J'ai déjà ${esc(item.name)}">🏠</button>
+          <button class="btn-pantry text-slate-300 hover:text-emerald-600 text-xs px-1" data-id="${esc(item.id)}" title="J'en ai déjà (placard)" aria-label="J'ai déjà ${esc(item.name)}">${ICONS.box}</button>
         `}
       `;
 
@@ -2730,7 +2827,7 @@ function recipeCardHTML(recipe) {
           <div class="flex items-center justify-between gap-1 flex-wrap mb-0.5">
             <div class="flex items-center gap-1.5 flex-wrap">
               <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600">${esc(recipe.tag)}</span>
-              ${isCustom ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded-md">⭐ Maison</span>` : ''}
+              ${isCustom ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded-md">Maison</span>` : ''}
             </div>
             <div class="flex items-center gap-1.5">
               ${recipe.isBudget ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
@@ -2940,7 +3037,7 @@ function openRecipeDetail(recipeId) {
   document.getElementById('detail-recipe-time').textContent = `${recipe.timeMinutes} min`;
   {
     const seasons = GL.recipeSeasons(recipe);
-    document.getElementById('detail-recipe-season').textContent = seasons.length >= 4 ? '✨ Toute saison'
+    document.getElementById('detail-recipe-season').textContent = seasons.length >= 4 ? 'Toute saison'
       : GL.SEASONS.filter(x => seasons.includes(x.id)).map(x => `${x.emoji} ${x.label}`).join(' · ');
   }
   renderNotesRow();
@@ -3033,7 +3130,7 @@ function openSelectMealModal(day) {
   // Bouton création rapide de recette maison pour ce jour
   const quickAddBtn = document.createElement('button');
   quickAddBtn.className = 'w-full py-2.5 px-3 bg-brand-50 hover:bg-brand-100 border border-brand-200 text-brand-700 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 mb-2 active:scale-95 transition-all shadow-xs';
-  quickAddBtn.innerHTML = '<span>➕</span> Créer une nouvelle recette maison';
+  quickAddBtn.innerHTML = 'Créer une nouvelle recette maison';
   quickAddBtn.addEventListener('click', () => {
     document.getElementById('select-meal-modal').classList.add('hidden');
     openCustomRecipeModal();
@@ -3155,7 +3252,7 @@ function renderCookingStep() {
   prevBtn.classList.toggle('opacity-50', stepIndex === 0);
 
   if (stepIndex === totalSteps - 1) {
-    nextBtn.innerHTML = `<span>🎉 Bon appétit !</span>`;
+    nextBtn.innerHTML = `<span>Bon appétit</span>`;
     nextBtn.className = "flex-2 w-2/3 bg-emerald-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
   } else {
     nextBtn.innerHTML = `<span>Étape suivante</span> →`;
@@ -3226,7 +3323,7 @@ function toggleCookingTimer(targetStepIndex = null) {
         if ('vibrate' in navigator) {
           try { navigator.vibrate([400, 200, 400, 200, 800]); } catch (e) {}
         }
-        showToast(`⏰ Minuteur terminé : ${timer.label}`, { duration: 9000 });
+        showToast(`Minuteur terminé : ${timer.label}`, { duration: 9000 });
         updateCookingTimerUI();
       }
     }, 1000);
@@ -3553,6 +3650,7 @@ function setupEventListeners() {
   setupScanModal();
   setupStapleAutocomplete();
   setupMoreFilters();
+  setupLeftoversModal();
   document.getElementById('btn-clear-menu').addEventListener('click', clearMenu);
 
   const saveMenuBtn = document.getElementById('btn-save-current-menu');
@@ -3853,7 +3951,7 @@ function setupEventListeners() {
     renderCatalog();
     renderPlanning();
     renderGroceries();
-    showSyncToast(existingId ? '✏️ Recette modifiée & synchronisée !' : '✨ Recette ajoutée au catalogue & synchronisée !');
+    showSyncToast(existingId ? 'Recette modifiée & synchronisée' : 'Recette ajoutée au catalogue & synchronisée');
   });
 
   // Boutons du Foyer Partagé en Direct
@@ -3906,7 +4004,7 @@ function setupEventListeners() {
     btnForceSync.addEventListener('click', () => {
       broadcastSync();
       pollLatestSync();
-      showSyncToast('🔄 Synchronisation forcée effectuée !');
+      showSyncToast('Synchronisation effectuée');
     });
   }
 
@@ -4318,6 +4416,7 @@ function handleIncomingSync(payload) {
   if (Array.isArray(payload.favorites)) state.favorites = resolveAliasList(sanitizeStringList(payload.favorites));
   if (Array.isArray(payload.pantry)) state.pantry = sanitizeStringList(payload.pantry, 400, 120);
   if (Array.isArray(payload.pantryNeeded)) state.pantryNeeded = sanitizeStringList(payload.pantryNeeded, 400, 120);
+  if (Array.isArray(payload.leftovers)) state.leftovers = sanitizeStringList(payload.leftovers, 30, 60);
   if (Array.isArray(payload.spices)) state.spices = sanitizeSpices(payload.spices);
   else if (payload.spiceLevel !== undefined) { const l = Math.round(cleanNum(payload.spiceLevel, 0, 2, 0)); state.spices = l >= 2 ? [...GL.SPICES_FULL] : l === 1 ? [...GL.SPICES_BASIC] : []; }
   if (typeof payload.stockBasics === 'boolean') state.stockBasics = payload.stockBasics;
@@ -4351,6 +4450,7 @@ function handleIncomingSync(payload) {
   safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
   safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
   safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
+  safeSetItem('gamelle_leftovers', JSON.stringify(state.leftovers || []));
   safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
   safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
 
@@ -4381,6 +4481,7 @@ function broadcastSync() {
       pantry: state.pantry || [],
       pantryNeeded: state.pantryNeeded || [],
       spices: state.spices || [],
+      leftovers: state.leftovers || [],
       stockBasics: !!state.stockBasics,
       aisleOrder: state.aisleOrder || [],
       notes: state.notes || {}

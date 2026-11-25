@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v40**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v41**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v40`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v41`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -44,9 +44,10 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 
 ## 3. Fonctionnement écran par écran
 
-### 3.1 Planning (« Mes repas au menu »)
+### 3.1 Planning (« Mes repas »)
 - Liste ordonnée de repas (sans notion de jour, maximum 60). Chaque repas : photo, titre, durée, tag, badge « 💰 Pas cher ».
-- **« ✨ 7 repas »** ouvre **« Composer mes 7 repas »** : filtres facultatifs **Saison** (🌸 ☀️ 🍁 ❄️, bouton « saison actuelle »), **Type** (volaille, viande, poisson, végétarien), **Style** (Street food, Italien, Asiatique, Orient & Indien, Tex-Mex, Terroir, Frais & bowls, Du quotidien), **Pratique** (pas cher, < 20 min, bon en gamelle, 1 seule poêle, mes favoris), **Régime** (sans porc, sans lactose) et **« J'ai dans le frigo »** (ingrédients à utiliser en priorité). Un compteur indique combien de plats correspondent ; les filtres sont mémorisés.
+- **« Finir mes restes »** : on saisit ce qu'on a à la maison (suggestions à la frappe : poulet, courgettes, riz…). L'app classe les recettes qui les utilisent : d'abord celles qui utilisent le plus de vos produits, puis celles où il **manque le moins** de courses (liste « Il manque : … » ou « Rien à acheter »). Le placard et vos épices comptent comme « déjà là » ; huile, farine, vinaigres et épices courantes ne bloquent jamais. Boutons « Voir » et « Au menu ». La liste est mémorisée et synchronisée (`gamelle_leftovers`).
+- **« 7 repas »** ouvre **« Composer mes 7 repas »** : filtres facultatifs **Saison** (🌸 ☀️ 🍁 ❄️, bouton « saison actuelle »), **Type** (volaille, viande, poisson, végétarien), **Style** (Street food, Italien, Asiatique, Orient & Indien, Tex-Mex, Terroir, Frais & bowls, Du quotidien), **Pratique** (pas cher, < 20 min, bon en gamelle, 1 seule poêle, mes favoris), **Régime** (sans porc, sans lactose) et **« J'ai dans le frigo »** (ingrédients à utiliser en priorité). Un compteur indique combien de plats correspondent ; les filtres sont mémorisés.
   - Tirage **proportionnel à la place de chaque type dans le catalogue** (tous les plats peuvent sortir), sans doublon, jamais plus de 3 plats du même type tant qu'il y a du choix ; les plats notés « 👎 Bof » et ceux cuisinés depuis moins de 21 jours sont évités, les « 👍 À refaire » favorisés.
   - Les repas **gardés** sont conservés, seuls les autres sont renouvelés. Remet à zéro les cases cochées de la liste de courses.
 - **« Garder / 🔓 »** sur un repas = « déjà à la maison » : le repas reste au menu mais **ses ingrédients sont exclus de la liste de courses**.
@@ -76,6 +77,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - **Mode cuisine pas à pas** : une étape par écran, ingrédients de l'étape, **minuteur** (alerte sonore, un minuteur par étape), **écran maintenu allumé** (Wake Lock).
 
 ### 3.3 bis Nutrition & Open Food Facts
+- **Allergènes** : affichés **uniquement sur les fiches recettes** (jamais dans la liste de courses). Seule la pastille Nutri-Score apparaît sur les articles.
 - **Fiche recette** : bloc « Nutrition estimée par portion » (kcal, protéines, glucides, lipides) et **allergènes** (gluten, lait, œufs, poisson, crustacés, soja, sésame, fruits à coque…). Calcul : poids de chaque ingrédient (mêmes conversions que les courses) × valeur moyenne par article (table `RULES` de `nutrition.js`, valeurs de type Ciqual arrondies). Affiché seulement si ≥ 70 % des ingrédients sont couverts ; l'huile de cuisson n'est comptée que partiellement (15 g/portion max). **Estimation indicative.**
 - **Courses → carte « Placard & réglages » → « Nutri-Score & allergènes de ma liste »** : interroge **Open Food Facts** (API publique, **aucune clé nécessaire**) pour les articles d'épicerie et de crèmerie (40 max) et affiche une pastille Nutri-Score A–E (note la plus fréquente parmi 10 produits du même type) ; mémorisé 30 jours sur le téléphone.
 - **« 📷 Scanner un produit »** : lecture du code-barres par la caméra (là où le navigateur gère `BarcodeDetector`) ou saisie du numéro ; affiche nom, marque, Nutri-Score, NOVA, kcal/macros pour 100 g, allergènes ; boutons « mettre l'article correspondant au placard » ou « ajouter aux articles courants ». Sur iPhone, la caméra n'est pas toujours disponible : la saisie manuelle fonctionne partout.
@@ -261,7 +263,7 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | `tests/nutrition.test.js` | chaque article a une valeur ; cohérence kcal/macros ; calories par portion plausibles pour les 302 recettes ; exemple vérifié à la main ; allergènes ; client Open Food Facts (réseau simulé : fiche produit, valeur typique, erreurs). |
 | `tests/e2e.test.js` | **navigateur réel** (Playwright, ignoré s'il n'est pas installé : `npm i -D playwright`) : données d'un utilisateur existant conservées (plan, favoris, case cochée, article courant, portions, ancien identifiant redirigé), « Composer mes 7 repas » avec filtres, placard, niveau d'épices, budget, filtre de style, avis, aucune erreur console. |
 
-État au 25/11/2026 : **65 tests passent, 0 échec**.
+État au 25/11/2026 : **69 tests passent, 0 échec**.
 
 ---
 
@@ -334,4 +336,5 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | 25/11/2026 (2) | **Catalogue nettoyé** (41 doublons fusionnés, 3 recettes corrigées, types unifiés, photos distinctes) ; **saisons ×4, styles, gamelle** sur toutes les recettes ; **« Composer mes 7 repas »** (filtres, frigo, tirage proportionnel) ; **placard, épices, produits de base, ordre des rayons** ; **budget estimé** ; **avis & historique** ; **synchro chiffrée** ; `logic.js` ; 52 tests dont navigateur réel. SW v38. |
 | 25/11/2026 (3) | **Nutrition** (kcal/macros/allergènes par portion), **Open Food Facts** (Nutri-Score sur les courses, scan de code-barres, sans clé API) ; `nutrition.js` ; 61 tests. SW v39. |
 | 25/11/2026 (4) | **+40 recettes Top Jow sans poisson** (342 au total) ; **suggestions à la frappe** pour les produits courants ; **épices une par une** (remplace les niveaux) ; Nutri-Score centré ; **interface épurée** (budget en pied d'en-tête, produits courants compacts, filtres secondaires repliés, rayons sans sous-titre, allergènes sur la ligne de détail) ; nems, pilons, haricots verts surgelés reconnus. 65 tests. SW v40. |
+| 25/11/2026 (5) | **Finir mes restes** (recettes déduites de ce qu'on a) ; allergènes retirés de la liste de courses ; « Budget » sur sa propre ligne ; **emojis décoratifs supprimés** (boutons, filtres, titres) et icône de placard remplacée par un petit pictogramme « colis » ; « Mes repas ». 69 tests. SW v41. |
 | (avant) | Anti-scintillement des fenêtres de recette, carte « Mise à jour », pastille foyer, correctifs de fusion de produits (SW v31–v36). |

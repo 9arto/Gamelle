@@ -70,7 +70,7 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     assert.equal(await page.evaluate(() => state.spices.length), 1, 'une épice cochée');
     await page.click('.spice-all[data-all="1"]');
     assert.equal(await page.evaluate(() => state.spices.length === GL.SPICES.length), true);
-    assert.match(await page.textContent('#courses-budget-label'), /budget ≈ \d+ €/);
+    assert.match(await page.textContent('#courses-budget-label'), /Budget ≈ \d+ €/);
 
     // Produits courants : suggestions à la frappe
     await page.fill('#staple-input', 'cer');
@@ -88,6 +88,20 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     assert.match(await page.textContent('#btn-more-filters'), /Street food/);
     const n = await page.evaluate(() => state.recipes.filter((r) => GL.recipeStyles(r).includes('street')).length);
     assert.match(await page.textContent('#recipes-count-label'), new RegExp(String(n)));
+
+    // Finir mes restes
+    await page.evaluate(() => switchTab('tab-planning'));
+    const planBefore = await page.evaluate(() => state.plan.length);
+    await page.click('#btn-open-leftovers');
+    await page.fill('#leftovers-input', 'pou');
+    await page.waitForSelector('#leftovers-suggest li');
+    await page.dispatchEvent('#leftovers-suggest li >> nth=0', 'pointerdown');
+    await page.waitForSelector('.leftover-add');
+    assert.ok(await page.evaluate(() => state.leftovers.length === 1));
+    assert.match(await page.textContent('#leftovers-results'), /Utilise : /);
+    await page.click('.leftover-add >> nth=0');
+    assert.equal(await page.evaluate(() => state.plan.length), planBefore + 1);
+    await page.click('#btn-close-leftovers');
 
     // Avis
     await page.evaluate(() => openRecipeDetail('poulet-mafe-riz'));
@@ -119,7 +133,7 @@ test('navigateur : nutrition sur la fiche recette, infos Open Food Facts et scan
     await page.evaluate(() => openRecipeDetail('spaghetti-bolognese-express'));
     const txt = await page.textContent('#detail-nutrition');
     assert.match(txt, /\d+\s*kcal/);
-    assert.match(txt, /Contient : .*gluten/);
+    assert.match(txt, /Allergènes : .*gluten/);
     await page.click('#btn-close-detail');
 
     // Courses : Nutri-Score de la liste

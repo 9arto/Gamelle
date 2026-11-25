@@ -179,3 +179,45 @@ test('synchro foyer : message chiffré, relu avec le bon code, illisible avec un
   assert.deepEqual(plain(await L.decryptPayload('X', JSON.stringify({ timestamp: 5 }))), { timestamp: 5 }, 'ancien format en clair toujours lu');
   assert.equal(await L.decryptPayload('X', 'pas du json'), null);
 });
+
+// ---------------------------------------------------------------- Finir mes restes
+const api = load(RECIPES).api;
+const articleOf = (i) => api.normalizeIngredient(i).name;
+const rank = (have, extra = {}) => L.rankByLeftovers(RECIPES, have, { articleOf, limit: 50, ...extra });
+
+test('restes : les recettes proposées utilisent bien ce qu\'on a', () => {
+  const res = rank(['poulet', 'courgette']);
+  assert.ok(res.length > 5);
+  for (const x of res) {
+    assert.ok(x.used.length >= 1);
+    const names = x.recipe.ingredients.map((i) => L.norm(i.name + ' ' + articleOf(i))).join(' ');
+    for (const u of x.used) assert.ok(names.includes(L.norm(u).replace(/s$/, '')), `${x.recipe.id} n'utilise pas ${u}`);
+  }
+  // celles qui utilisent les deux produits passent en premier
+  assert.equal(res[0].used.length, 2);
+  assert.ok(res.every((x, i) => i === 0 || res[i - 1].used.length >= x.used.length));
+});
+
+test('restes : moins il manque de produits, mieux c\'est classé ; épices et produits de base ne bloquent jamais', () => {
+  const res = rank(['riz']);
+  const mid = res.findIndex((x) => x.used.length === 1);
+  for (let i = mid + 1; i < res.length; i++) assert.ok(res[i - 1].missing.length <= res[i].missing.length || res[i - 1].used.length > res[i].used.length);
+  for (const x of res) assert.ok(!x.missing.some((m) => L.BASICS.includes(m) || L.SPICES.some((s) => s.name === m)), 'huile / épices jamais listées comme manquantes');
+});
+
+test('restes : le placard et les épices comptent comme « déjà là »', () => {
+  const base = rank(['poulet']).find((x) => x.recipe.id === 'poulet-mafe-riz');
+  assert.ok(base.missing.includes('Riz blanc (basmati ou jasmin)'));
+  const withPantry = rank(['poulet'], { pantry: ['riz blanc (basmati ou jasmin)'] }).find((x) => x.recipe.id === 'poulet-mafe-riz');
+  assert.ok(!withPantry.missing.includes('Riz blanc (basmati ou jasmin)'));
+  assert.ok(withPantry.missing.length === base.missing.length - 1);
+});
+
+test('restes : mots simples, pluriels, accents et saisie vide', () => {
+  assert.ok(rank(['Pommes de terre']).length > 10);
+  assert.ok(rank(['CRÈME']).length > 10);
+  assert.ok(rank(['courgettes']).length === rank(['courgette']).length);
+  assert.deepEqual(plain(rank([])), []);
+  assert.deepEqual(plain(rank(['zzzzzz'])), []);
+  assert.deepEqual(plain(rank(['a'])), [], 'un mot trop court ne ressort pas');
+});

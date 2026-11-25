@@ -13,14 +13,14 @@
     { id: 'hiver', label: 'Hiver', emoji: '❄️' }
   ];
   const STYLES = [
-    { id: 'street', label: 'Street food', emoji: '🌮' },
-    { id: 'italien', label: 'Italien', emoji: '🇮🇹' },
-    { id: 'asiatique', label: 'Asiatique', emoji: '🥢' },
-    { id: 'orient', label: 'Orient & Indien', emoji: '🍛' },
-    { id: 'mexicain', label: 'Tex-Mex', emoji: '🌶️' },
-    { id: 'terroir', label: 'Terroir & tradition', emoji: '🥘' },
-    { id: 'frais', label: 'Frais & bowls', emoji: '🥗' },
-    { id: 'quotidien', label: 'Du quotidien', emoji: '🍽️' }
+    { id: 'street', label: 'Street food', emoji: '' },
+    { id: 'italien', label: 'Italien', emoji: '' },
+    { id: 'asiatique', label: 'Asiatique', emoji: '' },
+    { id: 'orient', label: 'Orient & Indien', emoji: '' },
+    { id: 'mexicain', label: 'Tex-Mex', emoji: '' },
+    { id: 'terroir', label: 'Terroir & tradition', emoji: '' },
+    { id: 'frais', label: 'Frais & bowls', emoji: '' },
+    { id: 'quotidien', label: 'Du quotidien', emoji: '' }
   ];
 
   const SEASON_RULES = {
@@ -212,6 +212,39 @@
     return [...starts, ...words].slice(0, max || 6);
   }
 
+
+  // ---------------------------------------------------------------- « Finir mes restes » : recettes classées selon ce qu'on a déjà
+  const stem = (w) => w.replace(/(s|x)$/, '');
+  const tokens = (t) => norm(t).replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length >= 3).map(stem);
+  // `have` : libellés saisis ("poulet", "restes de riz", "pommes de terre") ; articleOf(ingredient) → nom d'article de courses
+  // opts : { articleOf, pantry: [id d'articles], spices: [noms], stockBasics, limit }
+  function rankByLeftovers(recipes, have, opts) {
+    const { articleOf, pantry = [], spices = [], limit = 12 } = opts || {};
+    const labels = (have || []).map((h) => ({ label: h, tok: tokens(h) })).filter((x) => x.tok.length);
+    if (!labels.length) return [];
+    const minor = new Set([...BASICS, ...SPICES.map((x) => x.name)]);
+    const out = [];
+    for (const r of recipes) {
+      const used = new Set();
+      const missing = [];
+      let main = 0, covered = 0;
+      for (const ing of r.ingredients || []) {
+        const article = articleOf(ing);
+        const hay = tokens(article + ' ' + ing.name);
+        const hit = labels.find((l) => l.tok.every((t) => hay.some((h) => h === t || h.startsWith(t))));
+        if (hit) { used.add(hit.label); main++; covered++; continue; }
+        if (minor.has(article)) continue; // huile, farine, épices courantes… : jamais bloquants
+        main++;
+        if (pantry.includes(article.toLowerCase()) || spices.includes(article)) { covered++; continue; }
+        missing.push(article);
+      }
+      if (!used.size) continue;
+      out.push({ recipe: r, used: [...used], missing, covered, main });
+    }
+    out.sort((a, b) => b.used.length - a.used.length || a.missing.length - b.missing.length || (b.covered / b.main) - (a.covered / a.main) || a.recipe.timeMinutes - b.recipe.timeMinutes);
+    return out.slice(0, limit);
+  }
+
   // ---------------------------------------------------------------- Budget estimé (ordre de grandeur)
   const PRICE_KG = { 'fruits-legumes': 3.2, boucherie: 12, poissonnerie: 20, cremerie: 9, epicerie: 4 };
   const PRICE_PIECE = { 'fruits-legumes': 0.7, boucherie: 2.2, poissonnerie: 3.5, cremerie: 1.2, epicerie: 1.2 };
@@ -264,7 +297,7 @@
     recipeSeasons, recipeStyles, recipeIsGamelle, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, estimateItemPrice, estimateCost,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost,
     encryptPayload, decryptPayload, cryptoAvailable
   };
 })(typeof window !== 'undefined' ? window : globalThis);
