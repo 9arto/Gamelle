@@ -11,6 +11,15 @@ function cleanSearchText(str) {
 // Logique de l'application Gamelle & Panier
 
 // Icônes vectorielles (nettes sur iPhone, suivent la couleur du texte en mode clair comme sombre)
+const RAYON_ICONS = {
+  'fruits-legumes': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c-4 0-7-3-7-7 0-3 2-6 7-6s7 3 7 6c0 4-3 7-7 7z"/><path d="M12 8c0-2 1-4 3-5"/></svg>',
+  'boucherie': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14c0-4 3-8 9-8 4 0 7 2 7 5 0 4-4 7-9 7-4 0-7-1-7-4z"/><circle cx="14" cy="11.5" r="1.6"/></svg>',
+  'poissonnerie': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12c3-5 9-6 14-3l4-2v10l-4-2c-5 3-11 2-14-3z"/><circle cx="8.5" cy="11" r=".8"/></svg>',
+  'cremerie': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-6 9 6v8H3z"/><circle cx="9" cy="15" r="1"/><circle cx="15" cy="14" r="1"/></svg>',
+  'epicerie': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10v3H7z"/><path d="M6 7h12v13H6z"/><path d="M9 11h6"/></svg>',
+  'courants': '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/><path d="M3 4h2.5l2.2 11h10l2-8H7"/></svg>'
+};
+const rayonIcon = (r) => RAYON_ICONS[r.id] || r.icon;
 const ICONS = {
   box: '<svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.3 7.5L12 12.5l8.7-5"/><path d="M12 12.5V22"/></svg>',
   lock: '<svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>',
@@ -2015,7 +2024,7 @@ function renderPantryCard() {
       <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Scanner un produit</button>
     </div>
     <details class="pt-1"><summary class="${h} cursor-pointer">Ordre des rayons dans mon magasin</summary>
-      <div class="space-y-1 mt-1.5">${rayons.map((r, i) => `<div class="flex items-center gap-2 bg-slate-50 rounded-lg px-2 py-1"><span>${r.icon}</span><span class="flex-1 text-slate-700">${esc(r.name)}</span>
+      <div class="space-y-1 mt-1.5">${rayons.map((r, i) => `<div class="flex items-center gap-2 bg-slate-50 rounded-lg px-2 py-1"><span class="text-slate-500">${rayonIcon(r)}</span><span class="flex-1 text-slate-700">${esc(r.name)}</span>
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Monter">▲</button>
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="1" ${i === rayons.length - 1 ? 'disabled' : ''} aria-label="Descendre">▼</button></div>`).join('')}</div>
     </details>`;
@@ -2968,7 +2977,7 @@ function renderGroceries() {
     section.innerHTML = `
       <button type="button" class="rayon-head w-full text-left p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between" data-rayon="${esc(rayon.id)}" aria-expanded="${!collapsed}">
         <div class="flex items-center gap-2">
-          <span class="text-base">${rayon.icon}</span>
+          <span class="text-slate-500">${rayonIcon(rayon)}</span>
           <h3 class="font-bold text-xs text-slate-800">${rayon.name}</h3>
         </div>
         <span class="text-[12px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
@@ -3357,7 +3366,7 @@ function openRecipeDetail(recipeId) {
 
     groupDiv.innerHTML = `
       <div class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-        <span>${rayon.icon}</span> <span>${rayon.name}</span>
+        <span class="text-slate-500">${rayonIcon(rayon)}</span> <span>${rayon.name}</span>
       </div>
       <div class="space-y-1.5 divide-y divide-slate-100">
         ${itemsInRayon.map(ing => {
