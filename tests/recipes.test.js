@@ -38,8 +38,8 @@ test('fichiers : app.js, recipes.js et sw.js se chargent sans erreur de syntaxe'
   }
 });
 
-test('catalogue : au moins 340 recettes, toutes avec un identifiant et un titre uniques', () => {
-  assert.ok(RECIPES.length >= 340, `trouvé ${RECIPES.length}`);
+test('catalogue : au moins 300 recettes, toutes avec un identifiant et un titre uniques', () => {
+  assert.ok(RECIPES.length >= 300, `trouvé ${RECIPES.length}`);
   assert.equal(new Set(RECIPES.map((r) => r.id)).size, RECIPES.length, 'identifiants uniques');
   const titles = RECIPES.map((r) => r.title.trim().toLowerCase());
   assert.equal(new Set(titles).size, titles.length, 'titres uniques');
@@ -227,24 +227,71 @@ test('instantané : correspondance « ingrédient de recette → article de cour
 });
 
 // ---------------------------------------------------------------------------
-// Constats sur les recettes EXISTANTES : signalés ici (« todo ») mais pas modifiés sans accord du propriétaire.
-test('À VALIDER — recettes existantes avec le même visuel (doublons probables)', { todo: 'à trancher avec le propriétaire : fusionner ou garder' }, () => {
+// Nettoyage du catalogue (doublons fusionnés, données corrigées)
+const SHARED_PHOTO_OK = [['tajine-poulet-olives-citron-confit', 'tajine-agneau-abricots-amandes-semoule']]; // plats différents, même univers
+
+test('nettoyage : plus de recettes avec la même photo (hors exceptions validées)', () => {
   const groups = {};
   for (const r of RECIPES) (groups[imageId(r)] ??= []).push(r.id);
-  const dup = Object.values(groups).filter((g) => g.length > 1);
+  const dup = Object.values(groups).filter((g) => g.length > 1)
+    .filter((g) => !SHARED_PHOTO_OK.some((ok) => ok.length === g.length && ok.every((x) => g.includes(x))));
   assert.deepEqual(plain(dup), []);
 });
 
-test('À VALIDER — ingrédient listé deux fois dans une même recette (quantité doublée dans les courses)', { todo: 'ramen-boeuf-nouilles-bouillon, boeuf-mijjote-mexicaine-riz, risotto-crevettes-chorizo-parmesan' }, () => {
+test('nettoyage : aucun titre quasi identique dans tout le catalogue', () => {
+  const stop = new Set('de du des la le les a au aux et en ou un une d l pour avec sur sous maison express facon dore doree fondant fondante cremeux cremeuse croustillant croustillante gourmand gourmande traditionnel traditionnelle frais fraiche petits petit rapide classique doux tendre mijote'.split(' '));
+  const toks = (t) => new Set(t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/œ/g, 'oe').replace(/[^a-z ]/g, ' ')
+    .split(/\s+/).filter((w) => w.length > 2 && !stop.has(w)).map((w) => w.replace(/(s|x)$/, '')));
+  const jac = (a, b) => { const i = [...a].filter((x) => b.has(x)).length; return i / (a.size + b.size - i); };
+  const T = RECIPES.map((r) => [r.id, toks(r.title)]);
+  const bad = [];
+  for (let i = 0; i < T.length; i++) for (let j = i + 1; j < T.length; j++) {
+    const v = jac(T[i][1], T[j][1]);
+    if (v >= 0.8) bad.push(`${T[i][0]} ≈ ${T[j][0]} (${Math.round(v * 100)} %)`);
+  }
+  assert.deepEqual(plain(bad), []);
+});
+
+test('nettoyage : anciens identifiants (alias) redirigés vers une recette qui existe', () => {
+  const ctx = { window: {} };
+  vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'recipes.js'), 'utf8'), ctx);
+  const aliases = ctx.window.RECIPE_ALIASES;
+  assert.ok(Object.keys(aliases).length >= 30);
+  for (const [from, to] of Object.entries(aliases)) {
+    assert.ok(!byId[from], `${from} est encore au catalogue`);
+    assert.ok(byId[to], `${from} → ${to} : cible introuvable`);
+    assert.ok(!aliases[to], `${from} → ${to} : chaîne d'alias`);
+  }
+});
+
+test('nettoyage : aucun ingrédient en double dans une recette', () => {
   const problems = [];
   for (const r of RECIPES) {
     const seen = new Set();
     for (const i of r.ingredients) { if (seen.has(i.name)) problems.push(`${r.id} : ${i.name}`); seen.add(i.name); }
   }
   assert.deepEqual(plain(problems), []);
+  const risotto = byId['risotto-crevettes-chorizo-parmesan'];
+  assert.ok(risotto.ingredients.some((i) => i.name === 'Chorizo' && i.rayon === 'boucherie'));
 });
 
-test('À VALIDER — types de recette ignorés par « Générer un menu » et par les filtres', { todo: 'poulet / porc / boeuf ne sont pas reconnus' }, () => {
-  const bad = RECIPES.filter((r) => !TYPES_AUTO_MENU.includes(r.type)).map((r) => `${r.id} (${r.type})`);
+test('nettoyage : tous les types de recette sont reconnus par « Générer un menu » et les filtres', () => {
+  const bad = RECIPES.filter((r) => !['volaille', 'poisson', 'vege', 'viande'].includes(r.type)).map((r) => `${r.id} (${r.type})`);
   assert.deepEqual(plain(bad), []);
+});
+
+test('classement : chaque recette a des saisons, des styles et un indicateur gamelle ; les 4 saisons sont bien représentées', () => {
+  const L = (() => { const c = { window: {} }; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(ROOT, 'logic.js'), 'utf8'), c); return c.window.GamelleLogic; })();
+  const seasons = L.SEASONS.map((x) => x.id), styles = L.STYLES.map((x) => x.id);
+  const count = Object.fromEntries(seasons.map((x) => [x, 0]));
+  const styleCount = Object.fromEntries(styles.map((x) => [x, 0]));
+  for (const r of RECIPES) {
+    assert.ok(Array.isArray(r.seasons) && r.seasons.length >= 1 && r.seasons.every((x) => seasons.includes(x)), `${r.id} : saisons`);
+    assert.ok(Array.isArray(r.styles) && r.styles.length >= 1 && r.styles.every((x) => styles.includes(x)), `${r.id} : styles`);
+    assert.equal(typeof r.gamelle, 'boolean', `${r.id} : gamelle`);
+    r.seasons.forEach((x) => count[x]++); r.styles.forEach((x) => styleCount[x]++);
+  }
+  for (const x of seasons) assert.ok(count[x] >= RECIPES.length * 0.25, `saison ${x} sous-représentée : ${count[x]}`);
+  for (const x of ['street', 'italien', 'asiatique', 'orient', 'mexicain', 'terroir', 'frais']) assert.ok(styleCount[x] >= 10, `style ${x} : ${styleCount[x]}`);
 });

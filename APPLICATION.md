@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v37**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v38**.
 
 ---
 
@@ -30,12 +30,12 @@ Principes de conception (à ne pas casser) :
 | Élément | Détail |
 |---|---|
 | Hébergement | GitHub Pages (dépôt `9arto/Gamelle`, branche `main`, racine). `.nojekyll` présent. |
-| Fichiers | `index.html` (structure + fenêtres), `app.js` (toute la logique), `recipes.js` (catalogue + rayons), `styles.css` + `tailwind.css` (CSS pré-compilé, pas de CDN), `sw.js` (service worker), `manifest.json`, icônes. |
-| Données recettes | `window.DEFAULT_RECIPES` (343 recettes) et `window.GRAND_FRAIS_RAYONS` (6 rayons) dans `recipes.js`. |
+| Fichiers | `index.html` (structure + fenêtres), `app.js` (interface et état), `logic.js` (logique pure testée : saisons, styles, génération du menu, placard, budget, chiffrement), `recipes.js` (catalogue + rayons + anciens identifiants), `styles.css` + `tailwind.css` (CSS pré-compilé, pas de CDN), `sw.js` (service worker), `manifest.json`, icônes. |
+| Données recettes | `window.DEFAULT_RECIPES` (302 recettes) et `window.RECIPE_ALIASES` (anciens identifiants → recette conservée) et `window.GRAND_FRAIS_RAYONS` (6 rayons) dans `recipes.js`. |
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v37`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v38`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -46,7 +46,9 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 
 ### 3.1 Planning (« Mes repas au menu »)
 - Liste ordonnée de repas (sans notion de jour, maximum 60). Chaque repas : photo, titre, durée, tag, badge « 💰 Pas cher ».
-- **« ✨ 7 repas »** : génère/renouvelle le menu. Composition visée : végétarien, viande, poisson, volaille, viande, poisson, volaille (tirage aléatoire sans doublon). Les repas **gardés** sont conservés, seuls les autres sont renouvelés. Remet à zéro les cases cochées de la liste de courses.
+- **« ✨ 7 repas »** ouvre **« Composer mes 7 repas »** : filtres facultatifs **Saison** (🌸 ☀️ 🍁 ❄️, bouton « saison actuelle »), **Type** (volaille, viande, poisson, végétarien), **Style** (Street food, Italien, Asiatique, Orient & Indien, Tex-Mex, Terroir, Frais & bowls, Du quotidien), **Pratique** (pas cher, < 20 min, bon en gamelle, 1 seule poêle, mes favoris), **Régime** (sans porc, sans lactose) et **« J'ai dans le frigo »** (ingrédients à utiliser en priorité). Un compteur indique combien de plats correspondent ; les filtres sont mémorisés.
+  - Tirage **proportionnel à la place de chaque type dans le catalogue** (tous les plats peuvent sortir), sans doublon, jamais plus de 3 plats du même type tant qu'il y a du choix ; les plats notés « 👎 Bof » et ceux cuisinés depuis moins de 21 jours sont évités, les « 👍 À refaire » favorisés.
+  - Les repas **gardés** sont conservés, seuls les autres sont renouvelés. Remet à zéro les cases cochées de la liste de courses.
 - **« Garder / 🔓 »** sur un repas = « déjà à la maison » : le repas reste au menu mais **ses ingrédients sont exclus de la liste de courses**.
 - **« Changer »** : choisir un autre plat. **« ✕ »** retire le repas. **« + Ajouter un plat »**.
 - **Sauvegarder / Mes menus** : enregistre le menu en cours (nom, portions, plan, articles courants), 30 menus maximum ; ouverture/suppression.
@@ -58,16 +60,19 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Liste **simplifiée** calculée à partir des repas non « gardés » (§7) : un produit = une ligne, quantités additionnées, classés en **6 rayons** : 🥬 Fruits & Légumes, 🥩 Boucherie & Volailles, 🐟 Poissonnerie & Marée, 🧀 Fromagerie & Crèmerie, 🥫 Épicerie, 🛒 Articles courants (hors recettes).
 - Chaque ligne : case à cocher, quantité, nom, et entre parenthèses la ou les recettes concernées. Les articles cochés descendent en bas de leur rayon.
 - Barre de progression « N / M articles trouvés », pastille de comptage sur l'onglet.
+- **Budget estimé** affiché sous le compteur (« ≈ 61 € », ordre de grandeur par rayon, pas un prix de magasin).
+- **🏠 Placard** : le bouton 🏠 d'un article = « j'en ai déjà » (mémorisé d'une semaine à l'autre, annulable). Les articles masqués restent consultables dans **« Déjà à la maison »** avec un bouton **« Il m'en faut »**.
+- Carte **« Placard & réglages »** : **niveau d'épices** (Aucune / Basiques / Bien garni), **produits de base à la maison** (huile, farine, sucre, vinaigres, moutarde, chapelure), **ordre des rayons** dans mon magasin (▲▼), liste du placard.
 - **Articles courants** : champ libre + pastilles 1 tap (Banane, Lait, Fruits, Kéfir, Yaourt, Pain de mie, Flocons d'avoine) ; supprimables un par un.
 - **📋 Copier** : texte propre (WhatsApp / Notes) avec `[ ]` par article. **🗑️** : décocher tout (annulable).
 - Bandeau 🔒 si des repas sont gardés.
 
 ### 3.3 Recettes (catalogue)
-- 343 plats affichés par 24 (bouton « Afficher plus » + chargement automatique au défilement).
+- 302 plats affichés par 24 (bouton « Afficher plus » + chargement automatique au défilement).
 - **Recherche** insensible à la casse/accents/ponctuation (titre, description, ingrédients).
-- **Filtres** : Tous · 💰 Pas cher · 🍁 Automne · ⚡ < 20 min · 🍗 Volaille · 🥩 Viande · 🐟 Poisson · 🌱 Végétarien · ❄️ Hiver · ❤️ Favoris · ⭐ Mes recettes.
+- **Filtres** : Tous · 💰 Pas cher · 🌸 Printemps · ☀️ Été · 🍁 Automne · ❄️ Hiver · ⚡ < 20 min · 🍱 Gamelle · 🍗 Volaille · 🥩 Viande · 🐟 Poisson · 🌱 Végétarien · styles (🌮 Street food, 🇮🇹 Italien, 🥢 Asiatique, 🍛 Orient & Indien, 🌶️ Tex-Mex, 🥘 Terroir, 🥗 Frais & bowls) · 🍳 1 poêle · 🚫🐖 Sans porc · 🥛 Sans lactose · ❤️ Favoris · ⭐ Mes recettes.
 - **Tri** : Recommandé / Moins cher d'abord / Plus rapide.
-- **Fiche recette** : photo, durée, saison, tag, portions ajustables (propres à la fiche), ingrédients (quantités converties), étapes, bouton ❤️ (favori), « Ajouter au menu », « Cuisiner ». Recette maison : boutons modifier / supprimer.
+- **Fiche recette** : photo, durée, saison, tag, portions ajustables (propres à la fiche), ingrédients (quantités converties), étapes, bouton ❤️ (favori), **avis** (👍 À refaire / 👎 Bof / ✅ Cuisiné — « cuisiné » est aussi coché automatiquement à la fin du mode cuisine), « Ajouter au menu », « Cuisiner ». Recette maison : boutons modifier / supprimer.
 - **Mode cuisine pas à pas** : une étape par écran, ingrédients de l'étape, **minuteur** (alerte sonore, un minuteur par étape), **écran maintenu allumé** (Wake Lock).
 
 ### 3.4 Studio de recette maison
@@ -89,7 +94,9 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 |---|---|
 | Portions | Toutes les recettes sont écrites **pour 4 portions** (`basePortions: 4`). Les quantités sont multipliées par `portions / basePortions`. |
 | Repas gardé | Index du repas dans `lockedSlots` → ignoré par le calcul des courses. |
-| Génération de menu | 7 repas selon les types `vege`, `viande`, `poisson`, `volaille` (voir §10 pour les types non reconnus). |
+| Génération de menu | Tirage proportionnel au catalogue filtré (voir §3.1). Types valides : `vege`, `viande`, `poisson`, `volaille` (les anciens `poulet`, `boeuf`, `porc` ont été rattachés). |
+| Saisons | Chaque recette a `seasons` (1 à 4 parmi `printemps`, `ete`, `automne`, `hiver`), `styles` (1 à 3) et `gamelle` (vrai/faux), calculés par `classifyRecipe` (logic.js) puis figés dans `recipes.js`. Les recettes maison sont classées à la volée (champ « saison » du studio). Chaque saison couvre au moins 25 % du catalogue. |
+| Anciens identifiants | `RECIPE_ALIASES` : menu, favoris, menus enregistrés et liens partagés qui citent une recette fusionnée sont redirigés vers la recette conservée. |
 | Recette introuvable | Un identifiant du menu sans recette (ex. recette maison supprimée) est ignoré sans erreur. |
 | Suppression d'une recette maison | Retire aussi la recette du menu et réindexe les repas gardés. |
 | Codes foyer | `FOYER-XXXX-XXXX-XXXX` (aléatoire sécurisé). Un code « faible » demande confirmation. |
@@ -104,7 +111,10 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
   "id": "poulet-mafe-riz",            // unique, minuscules/chiffres/tirets
   "title": "Poulet façon mafé & riz",
   "description": "…",                   // 1–2 phrases
-  "season": "toute_saison",            // automne | hiver | toutes | toute_saison (le filtre ne distingue que automne / hiver)
+  "season": "toute_saison",            // ancien champ éditorial (conservé)
+  "seasons": ["printemps","ete"],      // saisons où le plat est proposé (filtres + génération)
+  "styles": ["italien"],               // street | italien | asiatique | orient | mexicain | terroir | frais | quotidien
+  "gamelle": true,                      // se réchauffe / se mange froid sans problème
   "timeMinutes": 21,                    // préparation + cuisson (le filtre « Express » = ≤ 20)
   "tag": "Hit Jow & Express",
   "type": "volaille",                  // volaille | poisson | vege | viande
@@ -119,15 +129,60 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Unités reconnues : g, kg, ml, cl, l, c. à soupe, c. à café, pièce(s), gousse, botte/bouquet, brin, branche, tige, tête, tranche, pavé, œuf, pincée, poignée, quartier, pot, cube, boîte, paquet, cm, portion, sachet, morceau, bouteille.
 
 ### 5.2 État du catalogue (25/11/2026)
-- **343 recettes** : 305 d'origine + **38 nouvelles « Top Jow »** (novembre 2026).
-- Les 38 nouvelles : sélectionnées parmi les recettes les plus « likées » de Jow (≈ 70 000 à 190 000 likes), hors desserts/petits-déjeuners, **absentes** du catalogue d'origine (contrôle par photo + titre + ingrédients). Répartition : 18 végétariennes, 11 viande/porc, 5 poisson, 4 volaille ; 26 « pas cher » ; 16 en ≤ 20 min.
-- Quantités recalculées pour 4 portions à partir des quantités par personne de Jow ; photos officielles Jow (`static.jow.fr`, 550×550).
+- **302 recettes** : 305 d'origine − 41 doublons fusionnés + **38 nouvelles « Top Jow »** (priorité donnée aux recettes Jow les plus « likées » : dans chaque groupe de doublons, la version la plus proche de la recette Jow d'origine a été gardée).
+- Répartition par saison (une recette peut compter dans 2–4 saisons) : voir le test « classement ». Chaque saison couvre au moins 25 % du catalogue.
+- Quantités des 38 nouvelles recettes recalculées pour 4 portions ; photos officielles Jow (`static.jow.fr`, 550×550).
+
+#### Doublons fusionnés (ancien identifiant → recette conservée)
+| Supprimée | Conservée |
+|---|---|
+| `croque-monsieur-gourmand-bechamel-four` | `croque-monsieur-four-bechamel` |
+| `fajitas-boeuf-poivrons-express` | `fajitas-tex-mex-boeuf-poivrons-guacamole` |
+| `poulet-tikka-masala-express-riz-basmati` | `poulet-tikka-masala-express-riz` |
+| `gnocchi-epinards-gorgonzola-creme` | `gnocchis-epinards-creme-gorgonzola` |
+| `gnocchis-sauce-cremeuse-gorgonzola-epinards` | `gnocchis-epinards-creme-gorgonzola` |
+| `brochettes-yakitori-boeuf-fromage-riz` | `yakitori-boeuf-fromage-riz` |
+| `croque-madame-dore-four-salade` | `croque-madame-four-oeuf-coule` |
+| `quiche-doree-poireaux-feta` | `quiche-poireaux-feta-doree` |
+| `lasagnes-vege-courgettes-champignons` | `lasagnes-vegetariennes-courgettes-champignons-ricotta` |
+| `risotto-saint-jacques-poireaux-fondants` | `risotto-saint-jacques-poireaux-parmesan` |
+| `burger-parisien-boucher-champignons-frites` | `burger-parisien-boeuf-comte-frites` |
+| `curry-crevettes-lait-coco-poivron` | `curry-crevettes-lait-coco-riz` |
+| `blanquette-crevettes-poireaux-riz` | `blanquette-express-crevettes-riz` |
+| `poulet-miel-haricots-verts-ail` | `poulet-laque-miel-haricots-verts` |
+| `burrito-boeuf-haricots-cheddar` | `burrito-boeuf-cheddar-fondant` |
+| `gnocchis-poeles-tomates-mozzarella` | `gnocchi-poeles-tomates-cerises-basilic` |
+| `pates-alfredo-poulet-parmesan` | `pates-alfredo-au-poulet-dore` |
+| `pad-thai-aux-crevettes` | `pad-thai-crevettes-cacahuetes` |
+| `curry-d-aubergines-fondant-coco` | `curry-aubergines-lait-coco-pois-chiches` |
+| `salade-de-pates-jambon-cru-petits-pois` | `salade-pates-jambon-cru-petits-pois` |
+| `veloute-champignons-parmesan` | `veloute-champignons-parmesan-croutons` |
+| `boulettes-poulet-thai-gingembre-coco` | `boulettes-poulet-thai-coco` |
+| `risotto-cremeux-crevettes-chorizo` | `risotto-crevettes-chorizo-parmesan` |
+| `soupe-lentilles-poulet-repas` | `soupe-lentilles-poulet-legumes` |
+| `pates-cremeuses-poulet-olives-herbes` | `pates-cremeuses-poulet-olives` |
+| `bowl-poulet-laque-teriyaki-sesame-riz` | `bowl-poulet-teriyaki-sesame-riz` |
+| `poulet-basquaise-poivrons-tomates-mijjote` | `poulet-basquaise-poivrons-riz` |
+| `pates-ragout-canard-mijote` | `rigatoni-ragout-canard-confit-tomate` |
+| `enchiladas-dorees-boeuf-sauce-tomate-fromage` | `enchiladas-boeuf-cheddar-gratine` |
+| `lentilles-carottes-saucisses-volaille` | `saucisses-toulouse-lentilles-vertes-carottes` |
+| `tartiflette-poelee-rapide-reblochon` | `tartiflette-savoyarde-express-lardons-reblochon` |
+| `poulet-citron-olives-couscous` | `poulet-citron-confit-olives-couscous` |
+| `riz-saute-poulet-petits-pois-oeuf` | `riz-cantonais-poulet-petits-pois` |
+| `lasagnes-courgette-ricotta-fondantes` | `lasagnes-vegetariennes-courgettes-champignons-ricotta` |
+| `chili-con-carne-boeuf-haricots` | `chili-con-carne-traditionnel-haricots-rouges` |
+| `wok-poulet-legumes-sauce-cacahuete` | `wok-poulet-cacahuete-legumes-croquants` |
+| `parmentier-de-canard-patates-douces` | `parmentier-canard-patates-douces` |
+| `curry-lentilles-vertes-patate-douce` | `curry-lentilles-patates-douces-coco` |
+| `tarte-fine-tomates-moutarde-pesto` | `tarte-fine-tomates-moutarde-herbes` |
+| `blanquette-veau-traditionnelle-carottes-riz` | `blanquette-veau-traditionnelle-riz-pilaf` |
+| `boulettes-bolognaise-spaghetti-parmesan` | `boulettes-boeuf-sauce-tomate-spaghetti` |
 
 ### 5.3 Ajouter des recettes — marche à suivre
-1. Vérifier l'absence de doublon (titre, photo, plat équivalent).
+1. Vérifier l'absence de doublon (titre, photo, plat équivalent) — le test « nettoyage » le contrôle.
 2. Ajouter l'objet dans `DEFAULT_RECIPES` (`recipes.js`) avec un `id` nouveau.
 3. Utiliser des noms d'ingrédients clairs ; si un produit est nouveau ou ambigu, vérifier le résultat dans la liste de courses (§7.5).
-4. Ajouter l'`id` dans `NEW_JOW_IDS` (tests) si c'est un lot à contrôler ; `npm test`.
+4. Calculer `seasons` / `styles` / `gamelle` avec `GamelleLogic.classifyRecipe` ; ajouter l'`id` dans `NEW_JOW_IDS` (tests) si c'est un lot à contrôler ; `npm test`.
 5. Si l'instantané des ingrédients change : relire le diff, puis `UPDATE_SNAPSHOT=1 node --test tests/`.
 6. **Incrémenter `VERSION` dans `sw.js`**.
 
@@ -136,12 +191,13 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 ## 6. Données, synchronisation, partage
 
 ### 6.1 Clés `localStorage` (ne jamais renommer sans migration)
-`gamelle_plan`, `gamelle_portions`, `gamelle_locked_slots`, `gamelle_checked`, `gamelle_staples`, `gamelle_favorites`, `gamelle_saved_menus`, `gamelle_custom_recipes`, `gamelle_household_code`, `gamelle_last_sync`, `gamelle_device_id`, `gamelle_tab`, plus le thème.
+`gamelle_plan`, `gamelle_portions`, `gamelle_locked_slots`, `gamelle_checked`, `gamelle_staples`, `gamelle_favorites`, `gamelle_saved_menus`, `gamelle_custom_recipes`, `gamelle_notes`, `gamelle_gen_filters`, `gamelle_pantry`, `gamelle_pantry_needed`, `gamelle_spice_level`, `gamelle_stock_basics`, `gamelle_aisle_order`, `gamelle_household_code`, `gamelle_last_sync`, `gamelle_device_id`, `gamelle_tab`, plus le thème.
 
 ### 6.2 Synchronisation « foyer »
-- Chaque appareil publie son état complet (version 2 : portions, plan, repas gardés, articles courants, cases cochées, recettes maison, menus enregistrés, favoris) sur `https://ntfy.sh/gamelle_foyer_<CODE>`, **400 ms après** chaque modification, et écoute le flux en direct (SSE) + une lecture au démarrage.
-- Règle : **le message le plus récent gagne** (horodatage) ; ses propres messages sont ignorés (`deviceId`). Aucun contenu reçu n'est exécuté : tout passe par `sanitize*`.
-- Limites connues : tout le foyer partage le même topic public → le code doit rester secret ; si deux personnes modifient exactement en même temps, la dernière écriture écrase l'autre.
+- Chaque appareil publie son état complet (portions, plan, repas gardés, articles courants, cases cochées, recettes maison, menus enregistrés, favoris, placard, niveau d'épices, ordre des rayons, avis) sur `https://ntfy.sh/gamelle_foyer_<CODE>`, **400 ms après** chaque modification, et écoute le flux en direct (SSE) + une lecture au démarrage.
+- **Contenu chiffré** (AES-GCM 256, clé dérivée du code foyer) : ntfy.sh ne voit plus le menu en clair. Les anciens messages en clair restent lus. ⚠️ Un téléphone qui n'a pas encore la mise à jour ne comprend pas les messages chiffrés : **mettre à jour les deux téléphones**.
+- Règle : **le message le plus récent gagne** (horodatage), sauf les **avis / historique**, fusionnés recette par recette ; ses propres messages sont ignorés (`deviceId`). Aucun contenu reçu n'est exécuté : tout passe par `sanitize*`.
+- Limites connues : le nom du topic dérive du code → le code doit rester secret ; si deux personnes modifient exactement en même temps, la dernière écriture écrase l'autre (sauf avis).
 
 ### 6.3 Partage
 - **Lien magique** : `?menu=id1,id2,…&portions=4&staples=…&household=CODE` ; à l'ouverture, l'application **demande confirmation** avant d'importer le menu ou de rejoindre le foyer, puis nettoie l'adresse.
@@ -170,6 +226,9 @@ Si plusieurs unités sont possibles pour un même article, la priorité est : **
 ### 7.4 Cases cochées
 La clé d'un article = son nom normalisé en minuscules. Pour ne pas perdre de coches lors des évolutions, les **anciennes clés** (rayon+nom+unité, et nom d'origine de la recette) sont reconnues.
 
+### 7.4 bis Placard, épices, produits de base (`splitGroceries`, logic.js)
+Après le calcul, chaque article est classé « à acheter » ou « déjà à la maison » : (1) « Il m'en faut » l'emporte toujours ; (2) article du **placard** ; (3) **épice** couverte par le niveau choisi (Basiques : paprika, cumin, curcuma, herbes de Provence, muscade, cannelle ; Bien garni : + curry, fajitas/chili, couscous, piment, garam masala, gingembre moulu, tabasco, harissa…) ; (4) **produit de base** si l'option est activée (huile, farine, sucre, vinaigres, moutarde, chapelure). Les listes sont dans `SPICES_*` / `BASICS` (les noms doivent exister dans les courses : test dédié).
+
 ### 7.5 Ajouter / corriger un produit — marche à suivre
 1. Ajouter la règle dans `normalizeIngredient` (ou une ligne dans `SPECIAL_PRODUCTS` si le nom contient un autre produit). L'**ordre des règles compte** (la première qui correspond gagne).
 2. Si le produit se compte à la pièce : ajouter son poids dans `UNIT_WEIGHTS` (clé = nom normalisé exact).
@@ -191,25 +250,23 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | Fichier | Contrôle |
 |---|---|
 | `tests/groceries.test.js` | unités (toutes les écritures), conversions, arrondis et grammaire ; regroupement des variantes d'un même produit ; produits non absorbés ; rayons ; additions entre repas ; poids/pièces ; **indépendance vis-à-vis de l'ordre des repas** ; doses (×portions) ; repas gardés exclus ; planning vide/recette inconnue ; quantités inconvertibles conservées ; cases cochées conservées ; anciennes recettes maison ; invariants sur **tout le catalogue** (liste valide pour chaque recette, aucune quantité perdue, pas de doublon de ligne, pas de produit en double sous deux noms). |
-| `tests/recipes.test.js` | syntaxe des fichiers ; structure de chaque recette ; unicité id/titre ; lot « Top Jow » (présence, aucun doublon photo/titre, types reconnus, durées et quantités réalistes, étapes sans texte parasite, minuteurs cohérents) ; **cas précis de courses** des nouvelles recettes ; **instantané** `tests/fixtures/ingredient-mapping.json` (chaque nom d'ingrédient → article de courses : tout changement doit être voulu). |
-| « À VALIDER » (marqués *todo*) | constats sur des recettes **existantes** non corrigées sans accord (voir §10) ; ils s'affichent sans faire échouer la suite. |
+| `tests/recipes.test.js` | syntaxe des fichiers ; **nettoyage** (pas de photo partagée, pas de titre quasi identique, alias valides, pas d'ingrédient en double, types valides) ; **classement** (saisons/styles/gamelle présents, 4 saisons ≥ 25 %) ; structure de chaque recette ; unicité id/titre ; lot « Top Jow » (présence, aucun doublon photo/titre, types reconnus, durées et quantités réalistes, étapes sans texte parasite, minuteurs cohérents) ; **cas précis de courses** des nouvelles recettes ; **instantané** `tests/fixtures/ingredient-mapping.json` (chaque nom d'ingrédient → article de courses : tout changement doit être voulu). |
+| `tests/logic.test.js` | saison actuelle ; classement saisons/styles/gamelle ; régimes (sans porc / lactose / 1 poêle) ; **génération proportionnelle**, plafond par type, tous les plats peuvent sortir ; filtres respectés ; plats verrouillés, « bof », cuisinés récemment, frigo ; placard / épices / base ; noms d'épices valides ; budget plausible ; **chiffrement** de la synchro. |
+| `tests/e2e.test.js` | **navigateur réel** (Playwright, ignoré s'il n'est pas installé : `npm i -D playwright`) : données d'un utilisateur existant conservées (plan, favoris, case cochée, article courant, portions, ancien identifiant redirigé), « Composer mes 7 repas » avec filtres, placard, niveau d'épices, budget, filtre de style, avis, aucune erreur console. |
 
-État au 25/11/2026 : **33 tests passent, 3 constats « À VALIDER »**.
+État au 25/11/2026 : **52 tests passent, 0 échec**.
 
 ---
 
-## 10. Points connus à valider avec le propriétaire (non modifiés)
+## 10. Points connus / limites
 
-1. **Doublons probables dans les 305 recettes d'origine** : 40 groupes (85 recettes) partagent la même photo et sont quasi identiques (ex. plusieurs « gnocchis épinards gorgonzola », « croque-monsieur », « pad thaï crevettes », « quiche poireaux feta »…). Proposition : en garder une par groupe (ou assumer des variantes).
-2. **Ingrédient en double dans une même recette** (la quantité est doublée dans les courses) :
-   - `ramen-boeuf-nouilles-bouillon` : « Bœuf émincé » 600 g ×2 ;
-   - `boeuf-mijjote-mexicaine-riz` : « Bœuf émincé » 600 g ×2 ;
-   - `risotto-crevettes-chorizo-parmesan` : le riz est listé deux fois (la 2ᵉ ligne, rangée en boucherie, devrait être le **chorizo**).
-3. **Types de recette non reconnus** : 34 recettes ont `type` = `poulet` (24), `boeuf` (6), `porc` (4) au lieu de `volaille` / `viande`. Conséquence : elles n'apparaissent pas dans les filtres 🍗 Volaille / 🥩 Viande et ne sont **jamais tirées** par « ✨ 7 repas ». (5 autres ont `vegetarien`, reconnu.) Correction simple : les rattacher à `volaille` / `viande`.
-4. **Jambon cru** : des recettes intitulées « jambon cru » utilisent l'ingrédient « Jambon blanc supérieur » (la liste de courses affiche donc du jambon blanc).
-5. **Saisons** : 230 recettes utilisent `toute_saison`, 7 `toute-saison`, 40 `toutes` — trois écritures pour la même chose (sans effet visible aujourd'hui, à unifier).
-6. **Gingembre** : « 1 c. à soupe » est converti en 3 cm (≈ 5 g/cm) ; approximation acceptable, à affiner si besoin.
-7. **Épinards** : frais et surgelés sont distincts depuis cette version (surgelés = ligne « Épinards surgelés » en épicerie).
+1. **Tajines** : `tajine-poulet-…` et `tajine-agneau-…` partagent encore la même photo (plats différents, exception validée dans les tests).
+2. **Jambon cru** : des recettes intitulées « jambon cru » utilisent l'ingrédient « Jambon blanc supérieur » (à corriger recette par recette si besoin).
+3. **Gingembre** : « 1 c. à soupe » est converti en 3 cm (≈ 5 g/cm) ; approximation.
+4. **Budget estimé** : ordre de grandeur par rayon, pas un vrai prix.
+5. **Classement saisons/styles** : automatique (mots-clés) ; quelques plats peuvent être mal rangés — corriger `seasons` / `styles` à la main dans `recipes.js` (les tests restent valables).
+6. **Synchro** : « le dernier écrit gagne » (sauf avis) ; deux appareils non mis à jour ne comprennent pas les messages chiffrés.
+7. **Import de recette par lien (Jow, Marmiton…)** : impossible depuis un navigateur sans serveur intermédiaire (blocage CORS) ; le studio de recette maison accepte le copier-coller des ingrédients.
 
 ---
 
@@ -232,6 +289,10 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 - [ ] Réglages : Clair/Sombre/Système, carte « Mise à jour » (version affichée = `VERSION`), export JSON.
 - [ ] Visuel : aucune différence involontaire (barres, fenêtres de recette sans scintillement, défilement).
 - [ ] Nouvelles recettes : photo qui s'affiche, durée, ingrédients et étapes lisibles.
+- [ ] « Composer mes 7 repas » : filtres saison/style/régime/frigo, compteur, résultat conforme.
+- [ ] Placard : 🏠 sur un article, « Déjà à la maison », « Il m'en faut », niveau d'épices, ordre des rayons.
+- [ ] Avis : 👍/👎/✅ sur une fiche ; synchro des avis entre les deux téléphones.
+- [ ] Foyer après mise à jour des **deux** téléphones (messages chiffrés).
 
 ---
 
@@ -243,19 +304,14 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 
 ---
 
-## 13. Idées d'évolution (à valider)
-1. **Nettoyage du catalogue** : fusionner les ~40 doublons, corriger les 3 recettes à ingrédient doublé, unifier `type` et `season`.
-2. **« Déjà à la maison » par article** (et non par repas entier) : cocher « j'ai déjà du riz » retire l'article des courses de la semaine ; mémoriser un « placard » (huile, épices, riz…).
-3. **Stock de base automatique** : ne pas lister sel, poivre, huile d'olive, farine… sauf demande (option).
-4. **Ordre de passage dans le magasin** : trier les rayons dans l'ordre réel du Grand Frais et mémoriser l'ordre.
-5. **Gamelles** : repérer les plats qui se réchauffent bien / se mangent froids (étiquette « 🍱 Gamelle ») et filtre dédié.
-6. **Budget estimé** par menu et par semaine.
-7. **Planning avec jours** (optionnel) et rappel « sortir du congélateur ».
-8. **Résolution de conflits de synchro** (fusion plutôt que « le dernier gagne ») et chiffrement du contenu du topic ntfy.
-9. **Import de recettes par lien** (Jow, Marmiton…) vers le studio de recette maison.
-10. **Filtres supplémentaires** : sans porc, sans lactose, « 1 seule poêle », par ingrédient du frigo (« j'ai du poulet et des courgettes »).
-11. **Notes et historique** : « on a adoré / à refaire », éviter de reproposer un plat cuisiné récemment.
-12. **Tests de bout en bout** dans un navigateur (Playwright) pour automatiser une partie de la check-list §11.
+## 13. Idées d'évolution
+**Réalisées le 25/11/2026** : nettoyage du catalogue ; placard (par article) ; stock de base optionnel ; niveau d'épices ; ordre des rayons ; étiquette et filtre « gamelle » ; budget estimé ; filtres (sans porc, sans lactose, 1 poêle, frigo) ; avis et historique ; chiffrement de la synchro ; tests de bout en bout. *(Planning avec jours : refusé par le propriétaire.)*
+
+**Reste à étudier**
+1. Fusion complète de la synchro (au-delà des avis) pour deux modifications simultanées.
+2. Import d'une recette par lien (nécessite un petit serveur relais).
+3. Vrais prix par article (saisie ou import d'un ticket).
+4. Alertes : « sortir du congélateur », plat du soir à lancer.
 
 ---
 
@@ -264,4 +320,5 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | Date | Évolution |
 |---|---|
 | 25/11/2026 | **Liste de courses simplifiée fiabilisée** : résultat indépendant de l'ordre des repas ; produits qui disparaissaient ou fusionnaient à tort corrigés (fromage ail & fines herbes, ravioli, thon au citron, épices à couscous, sauce/purée de tomates, côtes de porc, jambon cru, épinards surgelés, kit fajitas, oranges à jus, tomates « fraîches ou concassées », lentilles « vertes ou corail », bœuf émincé, citron en quartiers, laitue, yaourt en cuillères) ; cases cochées conservées ; suite de **33 tests** + instantané du regroupement. **+38 recettes Top Jow** (343 au total). SW v37. Ce document. |
+| 25/11/2026 (2) | **Catalogue nettoyé** (41 doublons fusionnés, 3 recettes corrigées, types unifiés, photos distinctes) ; **saisons ×4, styles, gamelle** sur toutes les recettes ; **« Composer mes 7 repas »** (filtres, frigo, tirage proportionnel) ; **placard, épices, produits de base, ordre des rayons** ; **budget estimé** ; **avis & historique** ; **synchro chiffrée** ; `logic.js` ; 52 tests dont navigateur réel. SW v38. |
 | (avant) | Anti-scintillement des fenêtres de recette, carte « Mise à jour », pastille foyer, correctifs de fusion de produits (SW v31–v36). |

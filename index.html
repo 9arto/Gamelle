@@ -185,6 +185,12 @@
         </div>
       </div>
 
+      <!-- PLACARD & RÉGLAGES DES COURSES -->
+      <details id="pantry-card" class="ios-card overflow-hidden">
+        <summary class="p-3 text-xs font-bold text-slate-700 cursor-pointer flex items-center gap-2"><span>🏠</span> Placard &amp; réglages <span id="pantry-summary" class="ml-auto text-[10px] font-semibold text-slate-400"></span></summary>
+        <div id="pantry-body" class="p-3 pt-0 space-y-3 text-xs"></div>
+      </details>
+
       <!-- CONTENEUR DES RAYONS GRAND FRAIS -->
       <div id="grand-frais-aisles-container" class="space-y-3">
         <!-- Rempli dynamiquement par rayon -->
@@ -207,13 +213,26 @@
         <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
           <button class="filter-btn active whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-brand-600 text-white shadow-sm" data-filter="all">Tous les plats</button>
           <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="budget">💰 Pas cher</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="printemps">🌸 Printemps</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="ete">☀️ Été</button>
           <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="automne">🍁 Automne</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="express">⚡ < 20 min</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="hiver">❄️ Hiver</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="express">⚡ &lt; 20 min</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="gamelle">🍱 Gamelle</button>
           <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="volaille">🍗 Volaille</button>
           <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="viande">🥩 Viande</button>
           <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="poisson">🐟 Poisson</button>
           <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="vege">🌱 Végétarien</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="hiver">❄️ Hiver</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:street">🌮 Street food</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:italien">🇮🇹 Italien</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:asiatique">🥢 Asiatique</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:orient">🍛 Orient &amp; Indien</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:mexicain">🌶️ Tex-Mex</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:terroir">🥘 Terroir</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:frais">🥗 Frais &amp; bowls</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="unepoele">🍳 1 poêle</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="sanspork">🚫🐖 Sans porc</button>
+          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="sanslactose">🥛 Sans lactose</button>
           <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="favoris">&#x2764;&#xFE0F; Favoris</button>
           <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="maison">⭐ Mes recettes</button>
         </div>
@@ -481,6 +500,14 @@
           </div>
         </div>
 
+        <!-- Avis & historique -->
+        <div id="detail-notes-row" class="flex items-center gap-2 flex-wrap pt-2 border-t border-slate-100">
+          <button type="button" id="btn-note-like" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">👍 À refaire</button>
+          <button type="button" id="btn-note-dislike" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">👎 Bof</button>
+          <button type="button" id="btn-note-cooked" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">✅ Cuisiné</button>
+          <span id="detail-notes-info" class="text-[10px] text-slate-400"></span>
+        </div>
+
         <!-- Section Résumé des étapes -->
         <div class="space-y-2 pt-2 border-t border-slate-100">
           <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
@@ -626,6 +653,29 @@
     </div>
   </div>
 
+
+  <!-- ============================================================ -->
+  <!-- MODAL : COMPOSER MES 7 REPAS (filtres de génération)         -->
+  <!-- ============================================================ -->
+  <div id="generate-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md max-h-[90vh] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-slate-800 text-sm">Composer mes 7 repas</h3>
+          <p id="gen-match-label" class="text-xs text-slate-400">Tous les plats</p>
+        </div>
+        <button id="btn-close-generate" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" aria-label="Fermer">✕</button>
+      </div>
+      <div id="gen-body" class="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
+        <!-- Rempli en JS -->
+      </div>
+      <div class="p-3 border-t border-slate-100 flex items-center gap-2">
+        <button id="btn-gen-reset" class="px-3 py-2.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 active:scale-95">Réinitialiser</button>
+        <button id="btn-gen-go" class="flex-1 px-3 py-2.5 rounded-xl text-xs font-bold bg-brand-600 text-white active:scale-95">✨ Générer le menu</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ============================================================ -->
   <!-- MODAL 3 : CRÉER MA PROPRE RECETTE                           -->
   <!-- ============================================================ -->
@@ -664,6 +714,8 @@
             <label class="font-bold text-slate-700 block mb-1">Saison</label>
             <select id="custom-season" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none font-semibold">
               <option value="toutes">✨ Toute saison</option>
+              <option value="printemps">🌸 Printemps</option>
+              <option value="ete">☀️ Été</option>
               <option value="automne">🍁 Automne</option>
               <option value="hiver">❄️ Hiver</option>
             </select>
@@ -777,6 +829,7 @@
 
   <!-- Scripts de l'application -->
   <script src="recipes.js"></script>
+  <script src="logic.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

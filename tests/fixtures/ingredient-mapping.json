@@ -109,11 +109,6 @@
   "rayon": "epicerie",
   "unit": "c. à soupe"
  },
- "Beurre de cacahuète pur": {
-  "name": "Beurre de cacahuète (pot)",
-  "rayon": "epicerie",
-  "unit": "c. à soupe"
- },
  "Beurre demi-sel": {
   "name": "Beurre (doux ou demi-sel)",
   "rayon": "cremerie",
@@ -354,11 +349,6 @@
   "rayon": "epicerie",
   "unit": "g"
  },
- "Cheddar ou emmental râpé": {
-  "name": "Emmental râpé",
-  "rayon": "cremerie",
-  "unit": "g"
- },
  "Cheddar râpé": {
   "name": "Cheddar râpé",
   "rayon": "cremerie",
@@ -454,11 +444,6 @@
   "rayon": "fruits-legumes",
   "unit": "piece"
  },
- "Comté": {
-  "name": "Comté AOP râpé",
-  "rayon": "cremerie",
-  "unit": "g"
- },
  "Comté AOP": {
   "name": "Comté AOP râpé",
   "rayon": "cremerie",
@@ -539,11 +524,6 @@
   "rayon": "boucherie",
   "unit": "piece"
  },
- "Coulis de tomate au basilic": {
-  "name": "Tomates concassées / Coulis",
-  "rayon": "epicerie",
-  "unit": "g"
- },
  "Courge Butternut": {
   "name": "Courge Butternut",
   "rayon": "fruits-legumes",
@@ -595,11 +575,6 @@
   "unit": "ml"
  },
  "Crevettes cuites décortiquées": {
-  "name": "Crevettes cuites décortiquées",
-  "rayon": "poissonnerie",
-  "unit": "g"
- },
- "Crevettes roses cuites décortiquées": {
   "name": "Crevettes cuites décortiquées",
   "rayon": "poissonnerie",
   "unit": "g"
@@ -824,11 +799,6 @@
   "rayon": "cremerie",
   "unit": "piece"
  },
- "Feuilles de lasagnes": {
-  "name": "Plaques de lasagne aux œufs",
-  "rayon": "epicerie",
-  "unit": "g"
- },
  "Feuilles de lasagnes fraîches": {
   "name": "Plaques de lasagne aux œufs",
   "rayon": "epicerie",
@@ -979,11 +949,6 @@
   "rayon": "cremerie",
   "unit": "g"
  },
- "Gorgonzola crémeux": {
-  "name": "Gorgonzola AOP",
-  "rayon": "cremerie",
-  "unit": "g"
- },
  "Gousses d'ail": {
   "name": "Gousses d'ail",
   "rayon": "fruits-legumes",
@@ -1030,11 +995,6 @@
   "unit": "g"
  },
  "Haricots rouges (cuits)": {
-  "name": "Haricots rouges (bocal)",
-  "rayon": "epicerie",
-  "unit": "g"
- },
- "Haricots rouges en boîte": {
   "name": "Haricots rouges (bocal)",
   "rayon": "epicerie",
   "unit": "g"
@@ -1309,11 +1269,6 @@
   "rayon": "boucherie",
   "unit": "g"
  },
- "Morceaux de veau pour blanquette": {
-  "name": "Veau français (sauté ou blanquette)",
-  "rayon": "boucherie",
-  "unit": "g"
- },
  "Moutarde": {
   "name": "Moutarde à l'ancienne ou Dijon",
   "rayon": "epicerie",
@@ -1344,11 +1299,6 @@
   "rayon": "epicerie",
   "unit": "c. à soupe"
  },
- "Moutarde de Dijon": {
-  "name": "Moutarde à l'ancienne ou Dijon",
-  "rayon": "epicerie",
-  "unit": "c. à soupe"
- },
  "Mozzarella": {
   "name": "Mozzarella (boule ou râpée)",
   "rayon": "cremerie",
@@ -1357,12 +1307,7 @@
  "Mozzarella (boule ou râpée)": {
   "name": "Mozzarella (boule ou râpée)",
   "rayon": "cremerie",
-  "unit": "g"
- },
- "Mozzarella di bufala": {
-  "name": "Mozzarella (boule ou râpée)",
-  "rayon": "cremerie",
-  "unit": "g"
+  "unit": "piece"
  },
  "Mozzarella râpée ou en boule": {
   "name": "Mozzarella (boule ou râpée)",
@@ -1574,11 +1519,6 @@
   "rayon": "epicerie",
   "unit": "tranche"
  },
- "Pain de mie complet": {
-  "name": "Pain de campagne (ou pain de mie)",
-  "rayon": "epicerie",
-  "unit": "tranche"
- },
  "Pain de mie complet ou artisanal": {
   "name": "Pain de campagne (ou pain de mie)",
   "rayon": "epicerie",
@@ -1649,11 +1589,6 @@
   "rayon": "cremerie",
   "unit": "g"
  },
- "Parmesan râpé AOP": {
-  "name": "Parmesan AOP râpé",
-  "rayon": "cremerie",
-  "unit": "g"
- },
  "Patates douces": {
   "name": "Patates douces",
   "rayon": "fruits-legumes",
@@ -1698,11 +1633,6 @@
   "name": "Pâte ou poudre de curry doux",
   "rayon": "epicerie",
   "unit": "c. à soupe"
- },
- "Pâte de curry rouge ou jaune": {
-  "name": "Pâte ou poudre de curry doux",
-  "rayon": "epicerie",
-  "unit": "c. à café"
  },
  "Pâte de curry vert": {
   "name": "Pâte ou poudre de curry doux",
@@ -1929,16 +1859,6 @@
   "rayon": "fruits-legumes",
   "unit": "piece"
  },
- "Poivrons rouges": {
-  "name": "Poivrons (rouges ou tricolores)",
-  "rayon": "fruits-legumes",
-  "unit": "piece"
- },
- "Poivrons tricolores": {
-  "name": "Poivrons (rouges ou tricolores)",
-  "rayon": "fruits-legumes",
-  "unit": "piece"
- },
  "Poivrons verts": {
   "name": "Poivrons (rouges ou tricolores)",
   "rayon": "fruits-legumes",
@@ -2014,11 +1934,6 @@
   "rayon": "boucherie",
   "unit": "piece"
  },
- "Poulet émincé (cru)": {
-  "name": "Filets de poulet frais",
-  "rayon": "boucherie",
-  "unit": "g"
- },
  "Poulet émincé (cuit)": {
   "name": "Filets de poulet frais",
   "rayon": "boucherie",
@@ -2035,11 +1950,6 @@
   "unit": "g"
  },
  "Pousses de haricots mungo": {
-  "name": "Pousses de soja",
-  "rayon": "fruits-legumes",
-  "unit": "g"
- },
- "Pousses de soja (germes de haricots mungo)": {
   "name": "Pousses de soja",
   "rayon": "fruits-legumes",
   "unit": "g"
@@ -2094,22 +2004,12 @@
   "rayon": "cremerie",
   "unit": "g"
  },
- "Reblochon de Savoie AOP": {
-  "name": "Reblochon de Savoie AOP",
-  "rayon": "cremerie",
-  "unit": "g"
- },
  "Reblochon fermier AOP": {
   "name": "Reblochon de Savoie AOP",
   "rayon": "cremerie",
   "unit": "g"
  },
  "Ricotta": {
-  "name": "Ricotta fraîche",
-  "rayon": "cremerie",
-  "unit": "g"
- },
- "Ricotta fraîche": {
   "name": "Ricotta fraîche",
   "rayon": "cremerie",
   "unit": "g"
@@ -2141,11 +2041,6 @@
  },
  "Riz blanc ou basmati": {
   "name": "Riz blanc (basmati ou jasmin)",
-  "rayon": "epicerie",
-  "unit": "g"
- },
- "Riz rond arborio à risotto": {
-  "name": "Riz à risotto (Arborio ou Carnaroli)",
   "rayon": "epicerie",
   "unit": "g"
  },
@@ -2279,11 +2174,6 @@
   "rayon": "epicerie",
   "unit": "c. à soupe"
  },
- "Sauce tikka masala": {
-  "name": "Sauce tikka masala",
-  "rayon": "epicerie",
-  "unit": "g"
- },
  "Sauce tomate au basilic": {
   "name": "Tomates concassées / Coulis",
   "rayon": "epicerie",
@@ -2291,11 +2181,6 @@
  },
  "Saucisses de Toulouse ou fumées": {
   "name": "Saucisses de Toulouse ou fumées",
-  "rayon": "boucherie",
-  "unit": "piece"
- },
- "Saucisses de volaille fermière": {
-  "name": "Saucisses de volaille",
   "rayon": "boucherie",
   "unit": "piece"
  },
@@ -2400,11 +2285,6 @@
   "unit": "piece"
  },
  "Tomates cerises": {
-  "name": "Tomates fraîches",
-  "rayon": "fruits-legumes",
-  "unit": "piece"
- },
- "Tomates cerises fraîches": {
   "name": "Tomates fraîches",
   "rayon": "fruits-legumes",
   "unit": "piece"

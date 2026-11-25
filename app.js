@@ -117,6 +117,28 @@ function sanitizeSavedMenus(list) {
     };
   }).filter(Boolean);
 }
+function sanitizeNotes(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 800).forEach(k => {
+      const v = map[k];
+      if (!v || typeof v !== 'object') return;
+      const r = v.r === 1 ? 1 : v.r === -1 ? -1 : 0;
+      const cooked = Number.isFinite(v.cooked) ? v.cooked : 0;
+      const t = Number.isFinite(v.t) ? v.t : 0;
+      if (r || cooked) out[cleanStr(k, 80)] = { r, cooked, t };
+    });
+  }
+  return out;
+}
+function sanitizeGenFilters(f) {
+  const out = {};
+  if (!f || typeof f !== 'object') return out;
+  ['seasons', 'types', 'styles'].forEach(k => { if (Array.isArray(f[k])) out[k] = sanitizeStringList(f[k], 12, 30); });
+  ['budget', 'express', 'gamelle', 'onePan', 'favoritesOnly', 'noPork', 'noLactose'].forEach(k => { if (f[k] === true) out[k] = true; });
+  if (typeof f.fridge === 'string') out.fridge = cleanStr(f.fridge, 120);
+  return out;
+}
 const KNOWN_RECIPE_TYPES = ['volaille', 'poisson', 'vege', 'vegetarien', 'viande'];
 function sanitizeCustomRecipe(r) {
   if (!r || typeof r !== 'object') return null;
@@ -152,7 +174,7 @@ function sanitizeCustomRecipe(r) {
     id,
     title,
     description: cleanStr(r.description || 'Recette maison personnalisée', 300),
-    season: ['automne', 'hiver', 'toutes'].includes(r.season) ? r.season : 'toutes',
+    season: ['printemps', 'ete', 'automne', 'hiver', 'toutes'].includes(r.season) ? r.season : 'toutes',
     timeMinutes: Math.round(cleanNum(r.timeMinutes, 1, 600, 25)),
     tag: cleanStr(r.tag || 'Recette Maison', 60),
     type: KNOWN_RECIPE_TYPES.includes(r.type) ? r.type : 'volaille',
@@ -308,7 +330,7 @@ function promptDialog(opts) {
 }
 
 // --- Blocage du défilement derrière les fenêtres ouvertes ---
-const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal'];
+const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal'];
 function updateScrollLock() {
   const anyOpen = MODAL_IDS.some(id => {
     const el = document.getElementById(id);
@@ -322,7 +344,8 @@ function initModalBehaviour() {
     'select-meal-modal': 'btn-close-select-meal',
     'saved-menus-modal': 'btn-close-saved-menus',
     'cooking-modal': 'btn-close-cooking',
-    'recipe-detail-modal': 'btn-close-detail'
+    'recipe-detail-modal': 'btn-close-detail',
+    'generate-modal': 'btn-close-generate'
   };
   // Les fenêtres où un appui involontaire sur le fond ne fait rien perdre se ferment en touchant le fond
   const closeOnBackdrop = ['recipe-detail-modal', 'select-meal-modal', 'saved-menus-modal'];
@@ -357,7 +380,9 @@ function takeSnapshot() {
     plan: state.plan,
     lockedSlots: state.lockedSlots,
     checkedGroceries: state.checkedGroceries,
-    staples: state.staples
+    staples: state.staples,
+    pantry: state.pantry,
+    pantryNeeded: state.pantryNeeded
   });
 }
 function restoreSnapshot(snapshot) {
@@ -367,12 +392,22 @@ function restoreSnapshot(snapshot) {
     state.lockedSlots = sanitizeSlots(s.lockedSlots);
     state.checkedGroceries = sanitizeChecked(s.checkedGroceries);
     state.staples = sanitizeStaples(s.staples);
+    state.pantry = sanitizeStringList(s.pantry, 400, 120);
+    state.pantryNeeded = sanitizeStringList(s.pantryNeeded, 400, 120);
   } catch (e) { return; }
   saveToLocalStorage();
   renderAll();
 }
 
 const DEFAULT_RECIPES = window.DEFAULT_RECIPES || [];
+const RECIPE_ALIASES = window.RECIPE_ALIASES || {};
+const GL = window.GamelleLogic;
+// Recettes fusionnées (doublons) : un ancien identifiant pointe vers la recette conservée
+function resolveAlias(id) { return (typeof id === 'string' && RECIPE_ALIASES[id]) || id; }
+function resolveAliasList(ids) {
+  const seen = new Set();
+  return (ids || []).map(resolveAlias).filter(id => { if (!id) return true; if (seen.has(id)) return false; seen.add(id); return true; });
+}
 const GRAND_FRAIS_RAYONS = window.GRAND_FRAIS_RAYONS || [];
 
 // Constantes des jours de la semaine
@@ -402,7 +437,14 @@ let state = {
   deviceId: safeGetItem('gamelle_device_id') || ('dev-' + Math.random().toString(36).substring(2, 9)),
   syncEventSource: null,
   syncDebounceTimer: null,
-  favorites: [] // IDs des recettes favorites
+  favorites: [], // IDs des recettes favorites
+  pantry: [],          // articles « déjà à la maison » mémorisés (identifiants d'articles de courses)
+  pantryNeeded: [],    // articles qu'on veut quand même acheter (prioritaire sur placard / épices / base)
+  spiceLevel: 0,       // 0 aucune · 1 basiques · 2 bien garni
+  stockBasics: false,  // ne pas lister huile, farine, sucre, vinaigre, moutarde…
+  aisleOrder: [],      // ordre des rayons dans le magasin
+  notes: {},           // { idRecette: { r: 1|-1|0, cooked: horodatage, t: horodatage } }
+  genFilters: {}       // derniers filtres de « Composer mes 7 repas »
 };
 
 // Catalogue : affichage progressif (24 plats à la fois)
@@ -487,16 +529,23 @@ function loadFromLocalStorage() {
 
   // Plats gardés (chargés avant toute génération de menu)
   state.lockedSlots = sanitizeSlots(readJSON('gamelle_locked_slots', []));
+  state.favorites = resolveAliasList(sanitizeStringList(readJSON('gamelle_favorites', [])));
+  state.notes = sanitizeNotes(readJSON('gamelle_notes', {}));
+  state.genFilters = sanitizeGenFilters(readJSON('gamelle_gen_filters', {}));
+  state.pantry = sanitizeStringList(readJSON('gamelle_pantry', []), 400, 120);
+  state.pantryNeeded = sanitizeStringList(readJSON('gamelle_pantry_needed', []), 400, 120);
+  state.spiceLevel = Math.round(cleanNum(safeGetItem('gamelle_spice_level'), 0, 2, 0));
+  state.stockBasics = safeGetItem('gamelle_stock_basics') === '1';
+  state.aisleOrder = sanitizeStringList(readJSON('gamelle_aisle_order', []), 10, 30);
 
   // Planning (support migration objet {Lundi: ...} -> tableau [])
   let plan = readJSON('gamelle_plan', null);
   if (plan && !Array.isArray(plan) && typeof plan === 'object') plan = Object.values(plan);
-  state.plan = Array.isArray(plan) ? sanitizePlan(plan) : [];
+  state.plan = Array.isArray(plan) ? sanitizePlan(plan).map(resolveAlias) : [];
   if (state.plan.length === 0) generateBalancedWeek();
 
-  state.savedMenus = sanitizeSavedMenus(readJSON('gamelle_saved_menus', []));
+  state.savedMenus = sanitizeSavedMenus(readJSON('gamelle_saved_menus', [])).map(m => ({ ...m, plan: m.plan.map(resolveAlias) }));
   state.staples = sanitizeStaples(readJSON('gamelle_staples', []));
-  state.favorites = sanitizeStringList(readJSON('gamelle_favorites', []));
   state.checkedGroceries = sanitizeChecked(readJSON('gamelle_checked', {}));
 }
 
@@ -508,6 +557,13 @@ function saveToLocalStorage() {
   safeSetItem('gamelle_checked', JSON.stringify(state.checkedGroceries));
   safeSetItem('gamelle_locked_slots', JSON.stringify(state.lockedSlots || []));
   safeSetItem('gamelle_favorites', JSON.stringify(state.favorites || []));
+  safeSetItem('gamelle_notes', JSON.stringify(state.notes || {}));
+  safeSetItem('gamelle_gen_filters', JSON.stringify(state.genFilters || {}));
+  safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
+  safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
+  safeSetItem('gamelle_spice_level', state.spiceLevel || 0);
+  safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
+  safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
   const customList = (state.recipes || []).filter(r => r.id.startsWith('custom-'));
   safeSetItem('gamelle_custom_recipes', JSON.stringify(customList));
   updateQRCode();
@@ -523,7 +579,7 @@ function checkUrlParamsForSharing() {
   pendingShare = { household: household || null, menu: null };
 
   if (menuParam) {
-    const ids = menuParam.split(',').map(s => cleanStr(s, 80)).filter(Boolean).slice(0, 60);
+    const ids = menuParam.split(',').map(s => resolveAlias(cleanStr(s, 80))).filter(Boolean).slice(0, 60);
     let staples = null;
     const rawStaples = params.get('staples');
     if (rawStaples) {
@@ -586,14 +642,8 @@ async function applyPendingShare() {
 // ==========================================
 // GESTION DES REPAS & PLANNING
 // ==========================================
-function generateBalancedWeek(forceAll = false) {
-  const volailles = state.recipes.filter(r => r.type === 'volaille');
-  const poissons = state.recipes.filter(r => r.type === 'poisson');
-  const veges = state.recipes.filter(r => r.type === 'vege' || r.type === 'vegetarien');
-  const viandes = state.recipes.filter(r => r.type === 'viande');
-
-  const shuffle = (arr) => [...arr].sort(() => 0.5 - Math.random());
-
+function generateBalancedWeek(forceAll = false, filtersArg) {
+  const filters = filtersArg || state.genFilters || {};
   const targetCount = 7;
   const lockedIndices = (!forceAll && Array.isArray(state.lockedSlots)) ? state.lockedSlots : [];
 
@@ -606,7 +656,6 @@ function generateBalancedWeek(forceAll = false) {
   // Plats verrouillés à préserver
   const lockedRecipeIds = new Set();
   const newPlan = [];
-
   for (let i = 0; i < targetCount; i++) {
     if (lockedIndices.includes(i) && state.plan[i]) {
       newPlan[i] = state.plan[i];
@@ -616,35 +665,19 @@ function generateBalancedWeek(forceAll = false) {
     }
   }
 
-  // Pools de recettes sans les recettes déjà verrouillées
-  const availableVolailles = shuffle(volailles.filter(r => !lockedRecipeIds.has(r.id)));
-  const availablePoissons = shuffle(poissons.filter(r => !lockedRecipeIds.has(r.id)));
-  const availableVeges = shuffle(veges.filter(r => !lockedRecipeIds.has(r.id)));
-  const availableViandes = shuffle(viandes.filter(r => !lockedRecipeIds.has(r.id)));
-
-  const targetTypes = ['vege', 'viande', 'poisson', 'volaille', 'viande', 'poisson', 'volaille'];
-
-  for (let i = 0; i < targetCount; i++) {
-    if (newPlan[i] !== null) continue; // Déjà verrouillé
-
-    const preferredType = targetTypes[i % targetTypes.length];
-    let candidate = null;
-
-    if (preferredType === 'vege' && availableVeges.length > 0) candidate = availableVeges.shift();
-    else if (preferredType === 'viande' && availableViandes.length > 0) candidate = availableViandes.shift();
-    else if (preferredType === 'poisson' && availablePoissons.length > 0) candidate = availablePoissons.shift();
-    else if (preferredType === 'volaille' && availableVolailles.length > 0) candidate = availableVolailles.shift();
-
-    if (!candidate) {
-      const allLeft = [...availableVeges, ...availableVolailles, ...availablePoissons, ...availableViandes];
-      candidate = allLeft[0] || state.recipes[Math.floor(Math.random() * state.recipes.length)];
-    }
-
-    if (candidate) {
-      newPlan[i] = candidate.id;
-      lockedRecipeIds.add(candidate.id);
-    }
+  // Tirage proportionnel à la place de chaque type de plat dans le catalogue (filtré), sans doublon
+  const need = newPlan.filter(x => x === null).length;
+  const res = GL.pickMenu({
+    recipes: state.recipes, count: need, filters, excludeIds: [...lockedRecipeIds],
+    favorites: state.favorites, notes: state.notes
+  });
+  if (res.ids.length === 0 && need > 0) {
+    showToast('Aucun plat ne correspond à ces filtres');
+    return;
   }
+  let k = 0;
+  for (let i = 0; i < targetCount; i++) if (newPlan[i] === null) newPlan[i] = res.ids[k++] || null;
+  if (res.ids.length < need) showToast(`Seulement ${res.ids.length} plat${res.ids.length > 1 ? 's' : ''} correspond${res.ids.length > 1 ? 'ent' : ''} à vos filtres`);
 
   state.plan = newPlan.filter(Boolean);
   state.lockedSlots = state.lockedSlots.filter(idx => idx < state.plan.length);
@@ -1778,6 +1811,225 @@ function computeGroceries() {
 }
 
 // ==========================================
+// PLACARD, ÉPICES, ORDRE DES RAYONS, AVIS
+// ==========================================
+function currentSplit() {
+  return GL.splitGroceries(computeGroceries(), {
+    pantry: state.pantry, needed: state.pantryNeeded, spiceLevel: state.spiceLevel, stockBasics: state.stockBasics
+  });
+}
+
+function orderedRayons() {
+  const all = [...GRAND_FRAIS_RAYONS];
+  const order = state.aisleOrder || [];
+  return all.sort((a, b) => {
+    const ia = order.indexOf(a.id), ib = order.indexOf(b.id);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+  });
+}
+
+const HOME_REASONS = { placard: '🏠 placard', 'épices': '🧂 épices', base: '🫙 base' };
+function renderAtHomeSection(container, atHome) {
+  if (!atHome.length) return;
+  const det = document.createElement('details');
+  det.className = 'ios-card overflow-hidden';
+  det.innerHTML = `<summary class="p-3 text-xs font-bold text-slate-600 cursor-pointer flex items-center gap-2"><span>🏠</span> Déjà à la maison <span class="ml-auto text-[10px] font-semibold text-slate-400">${atHome.length} article${atHome.length > 1 ? 's' : ''} non listé${atHome.length > 1 ? 's' : ''}</span></summary><div class="divide-y divide-slate-100"></div>`;
+  const list = det.querySelector('div');
+  atHome.forEach(({ item, reason }) => {
+    const row = document.createElement('div');
+    row.className = 'p-3 flex items-center justify-between gap-3';
+    row.innerHTML = `
+      <div class="flex-1 min-w-0">
+        <div class="flex items-baseline gap-1.5 flex-wrap">
+          <span class="font-bold text-xs text-slate-500">${item.formattedQty || ''}</span>
+          <span class="text-xs text-slate-700 font-medium">${esc(item.name)}</span>
+        </div>
+        <span class="text-[10px] text-slate-400">${HOME_REASONS[reason] || ''}</span>
+      </div>
+      <button class="btn-need text-[11px] font-bold text-brand-700 bg-brand-50 border border-brand-200 px-2 py-1 rounded-lg" data-id="${esc(item.id)}">Il m'en faut</button>`;
+    list.appendChild(row);
+  });
+  container.appendChild(det);
+  det.querySelectorAll('.btn-need').forEach(btn => btn.addEventListener('click', (e) => {
+    const id = e.currentTarget.dataset.id;
+    state.pantry = state.pantry.filter(x => x !== id);
+    if (!state.pantryNeeded.includes(id)) state.pantryNeeded.push(id);
+    saveToLocalStorage();
+    renderGroceries();
+  }));
+}
+
+function renderPantryCard() {
+  const body = document.getElementById('pantry-body');
+  const summary = document.getElementById('pantry-summary');
+  if (!body) return;
+  const lvl = GL.SPICE_LEVELS.find(l => l.id === state.spiceLevel) || GL.SPICE_LEVELS[0];
+  if (summary) summary.textContent = `épices : ${lvl.label.toLowerCase()} · ${state.pantry.length} en placard`;
+  const pill = (active) => 'px-2.5 py-1.5 rounded-full font-semibold border ' + (active ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-slate-600 border-slate-200');
+  const rayons = orderedRayons();
+  body.innerHTML = `
+    <div class="space-y-1.5">
+      <p class="font-bold text-slate-700">🧂 Niveau d'épices à la maison</p>
+      <div class="flex gap-1.5 flex-wrap">${GL.SPICE_LEVELS.map(l => `<button type="button" class="spice-level-btn ${pill(l.id === state.spiceLevel)}" data-level="${l.id}">${l.label}</button>`).join('')}</div>
+      <p class="text-[10px] text-slate-400">${esc(lvl.hint)}. Ces épices ne sont plus listées (visibles dans « Déjà à la maison »).</p>
+    </div>
+    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-stock-basics" class="w-4 h-4 rounded" ${state.stockBasics ? 'checked' : ''}>
+      <span><span class="font-bold text-slate-700">Produits de base à la maison</span><span class="block text-[10px] text-slate-400">Huile, farine, sucre, vinaigres, moutarde, chapelure non listés</span></span></label>
+    <div class="space-y-1.5">
+      <p class="font-bold text-slate-700">🧭 Ordre des rayons dans mon magasin</p>
+      <div class="space-y-1">${rayons.map((r, i) => `<div class="flex items-center gap-2 bg-slate-50 rounded-lg px-2 py-1"><span>${r.icon}</span><span class="flex-1 text-slate-700">${esc(r.name)}</span>
+        <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Monter">▲</button>
+        <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="1" ${i === rayons.length - 1 ? 'disabled' : ''} aria-label="Descendre">▼</button></div>`).join('')}</div>
+    </div>
+    <div class="space-y-1.5">
+      <p class="font-bold text-slate-700">🏠 Mon placard (${state.pantry.length})</p>
+      ${state.pantry.length ? `<div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => `<button type="button" class="pantry-remove px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200" data-id="${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))} ✕</button>`).join('')}</div>`
+        : '<p class="text-[10px] text-slate-400">Appuyez sur 🏠 à côté d\'un article pour dire « j\'en ai déjà » : il ne sera plus listé.</p>'}
+    </div>`;
+}
+
+function setupPantryCard() {
+  const body = document.getElementById('pantry-body');
+  if (!body) return;
+  body.addEventListener('click', (e) => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    if (t.classList.contains('spice-level-btn')) {
+      state.spiceLevel = Number(t.dataset.level) || 0;
+      state.pantryNeeded = [];
+    } else if (t.classList.contains('aisle-move')) {
+      const ids = orderedRayons().map(r => r.id);
+      const i = ids.indexOf(t.dataset.id), j = i + Number(t.dataset.dir);
+      if (i < 0 || j < 0 || j >= ids.length) return;
+      [ids[i], ids[j]] = [ids[j], ids[i]];
+      state.aisleOrder = ids;
+    } else if (t.classList.contains('pantry-remove')) {
+      state.pantry = state.pantry.filter(x => x !== t.dataset.id);
+    } else return;
+    saveToLocalStorage();
+    renderGroceries();
+  });
+  body.addEventListener('change', (e) => {
+    if (e.target.id === 'chk-stock-basics') {
+      state.stockBasics = e.target.checked;
+      saveToLocalStorage();
+      renderGroceries();
+    }
+  });
+}
+
+// --- Avis & historique d'une recette ---
+function setNote(recipeId, patch, silent) {
+  if (!recipeId) return;
+  const cur = state.notes[recipeId] || { r: 0, cooked: 0, t: 0 };
+  state.notes[recipeId] = { ...cur, ...patch, t: Date.now() };
+  if (!state.notes[recipeId].r && !state.notes[recipeId].cooked) delete state.notes[recipeId];
+  saveToLocalStorage();
+  if (!silent) renderNotesRow();
+}
+function renderNotesRow() {
+  const id = state.activeDetailRecipeId;
+  const n = (id && state.notes[id]) || { r: 0, cooked: 0 };
+  const like = document.getElementById('btn-note-like');
+  const dis = document.getElementById('btn-note-dislike');
+  const info = document.getElementById('detail-notes-info');
+  if (!like || !dis || !info) return;
+  const on = 'border-emerald-300 bg-emerald-50 text-emerald-800';
+  like.className = like.className.replace(on, '').trim() + (n.r === 1 ? ' ' + on : '');
+  dis.className = dis.className.replace('border-rose-300 bg-rose-50 text-rose-700', '').trim() + (n.r === -1 ? ' border-rose-300 bg-rose-50 text-rose-700' : '');
+  if (n.cooked) {
+    const days = Math.floor((Date.now() - n.cooked) / 86400000);
+    info.textContent = days <= 0 ? 'Cuisiné aujourd\'hui' : `Cuisiné il y a ${days} j`;
+  } else info.textContent = '';
+}
+function setupNotesRow() {
+  const like = document.getElementById('btn-note-like');
+  const dis = document.getElementById('btn-note-dislike');
+  const cooked = document.getElementById('btn-note-cooked');
+  if (!like) return;
+  like.addEventListener('click', () => { const id = state.activeDetailRecipeId; setNote(id, { r: (state.notes[id] && state.notes[id].r === 1) ? 0 : 1 }); });
+  dis.addEventListener('click', () => { const id = state.activeDetailRecipeId; setNote(id, { r: (state.notes[id] && state.notes[id].r === -1) ? 0 : -1 }); });
+  cooked.addEventListener('click', () => { setNote(state.activeDetailRecipeId, { cooked: Date.now() }); showToast('Noté : cuisiné aujourd\'hui'); });
+}
+
+// --- Fenêtre « Composer mes 7 repas » ---
+let genDraft = {};
+function genChipsHTML(group, items, selected) {
+  return items.map(it => `<button type="button" class="gen-chip px-2.5 py-1.5 rounded-full font-semibold border ${selected.includes(it.id) ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-slate-600 border-slate-200'}" data-group="${group}" data-value="${it.id}">${it.emoji ? it.emoji + ' ' : ''}${esc(it.label)}</button>`).join('');
+}
+function genFlagHTML(key, label) {
+  return `<button type="button" class="gen-flag px-2.5 py-1.5 rounded-full font-semibold border ${genDraft[key] ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-slate-600 border-slate-200'}" data-flag="${key}">${label}</button>`;
+}
+function renderGenerateModal() {
+  const body = document.getElementById('gen-body');
+  if (!body) return;
+  const d = genDraft;
+  const cur = GL.currentSeason();
+  const curS = GL.SEASONS.find(x => x.id === cur);
+  body.innerHTML = `
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">Saison <button type="button" id="btn-gen-current-season" class="ml-1 text-[10px] font-semibold text-brand-700 underline">${curS.emoji} saison actuelle</button></p>
+      <div class="flex gap-1.5 flex-wrap">${genChipsHTML('seasons', GL.SEASONS, d.seasons || [])}</div></div>
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">Type de plat</p>
+      <div class="flex gap-1.5 flex-wrap">${genChipsHTML('types', [{ id: 'volaille', label: 'Volaille', emoji: '🍗' }, { id: 'viande', label: 'Viande', emoji: '🥩' }, { id: 'poisson', label: 'Poisson', emoji: '🐟' }, { id: 'vege', label: 'Végétarien', emoji: '🌱' }], d.types || [])}</div></div>
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">Style de cuisine</p>
+      <div class="flex gap-1.5 flex-wrap">${genChipsHTML('styles', GL.STYLES, d.styles || [])}</div></div>
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">Pratique</p>
+      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', '💰 Pas cher')}${genFlagHTML('express', '⚡ &lt; 20 min')}${genFlagHTML('gamelle', '🍱 Bon en gamelle')}${genFlagHTML('onePan', '🍳 1 seule poêle')}${genFlagHTML('favoritesOnly', '❤️ Mes favoris')}</div></div>
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">Régime</p>
+      <div class="flex gap-1.5 flex-wrap">${genFlagHTML('noPork', '🚫🐖 Sans porc')}${genFlagHTML('noLactose', '🥛 Sans lactose')}</div></div>
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">J'ai dans le frigo <span class="font-normal text-slate-400">(à utiliser en priorité)</span></p>
+      <input type="text" id="gen-fridge" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs" placeholder="Ex : poulet, courgettes, champignons" value="${esc(d.fridge || '')}"></div>`;
+  updateGenMatch();
+}
+function updateGenMatch() {
+  const label = document.getElementById('gen-match-label');
+  if (!label) return;
+  const n = state.recipes.filter(r => GL.recipeMatchesFilters(r, genDraft, state.favorites)).length;
+  label.textContent = n === state.recipes.length ? `Tous les plats (${n})` : `${n} plat${n > 1 ? 's' : ''} correspondent`;
+}
+function openGenerateModal() {
+  genDraft = JSON.parse(JSON.stringify(state.genFilters || {}));
+  renderGenerateModal();
+  document.getElementById('generate-modal').classList.remove('hidden');
+}
+function closeGenerateModal() { document.getElementById('generate-modal').classList.add('hidden'); }
+function setupGenerateModal() {
+  const modal = document.getElementById('generate-modal');
+  if (!modal) return;
+  document.getElementById('btn-close-generate').addEventListener('click', closeGenerateModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeGenerateModal(); });
+  document.getElementById('gen-body').addEventListener('click', (e) => {
+    const chip = e.target.closest('.gen-chip');
+    const flag = e.target.closest('.gen-flag');
+    if (chip) {
+      const g = chip.dataset.group, v = chip.dataset.value;
+      const arr = genDraft[g] || [];
+      genDraft[g] = arr.includes(v) ? arr.filter(x => x !== v) : [...arr, v];
+    } else if (flag) {
+      genDraft[flag.dataset.flag] = !genDraft[flag.dataset.flag];
+    } else if (e.target.id === 'btn-gen-current-season') {
+      genDraft.seasons = [GL.currentSeason()];
+    } else return;
+    const fr = document.getElementById('gen-fridge'); if (fr) genDraft.fridge = fr.value;
+    renderGenerateModal();
+  });
+  document.getElementById('gen-body').addEventListener('input', (e) => {
+    if (e.target.id === 'gen-fridge') genDraft.fridge = e.target.value;
+  });
+  document.getElementById('btn-gen-reset').addEventListener('click', () => { genDraft = {}; renderGenerateModal(); });
+  document.getElementById('btn-gen-go').addEventListener('click', () => {
+    state.genFilters = sanitizeGenFilters(genDraft);
+    closeGenerateModal();
+    const snapshot = takeSnapshot();
+    const hadMeals = state.plan.some(Boolean);
+    generateBalancedWeek(false, state.genFilters);
+    if (hadMeals && takeSnapshot() !== snapshot) {
+      showToast('Nouveau menu généré', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
+    }
+  });
+}
+
+// ==========================================
 function renderAll() {
   document.getElementById('current-portions-badge').textContent = `${state.portions} part${state.portions > 1 ? 's' : ''}`;
 
@@ -1988,7 +2240,9 @@ function renderGroceries() {
   const container = document.getElementById('grand-frais-aisles-container');
   container.innerHTML = '';
 
-  const groceries = computeGroceries();
+  const split = currentSplit();
+  const groceries = split.toBuy;
+  const atHome = split.atHome;
   let totalItems = groceries.length + state.staples.length;
   let checkedCount = 0;
 
@@ -2003,7 +2257,8 @@ function renderGroceries() {
   // Mise à jour de la barre de progression
   const percentage = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
   document.getElementById('courses-progress-bar').style.width = `${percentage}%`;
-  document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''} (${percentage}%)`;
+  const cost = GL.estimateCost(groceries);
+  document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''} (${percentage}%)` + (cost > 0 ? ` · budget ≈ ${cost} €` : '');
   
   // Badge sur l'onglet inférieur
   const navBadge = document.getElementById('nav-badge-groceries');
@@ -2038,7 +2293,7 @@ function renderGroceries() {
   }
 
   // Rendu de chaque rayon Grand Frais
-  GRAND_FRAIS_RAYONS.forEach(rayon => {
+  orderedRayons().forEach(rayon => {
     const isStapleRayon = rayon.id === 'courants';
     let itemsInRayon = isStapleRayon 
       ? [...state.staples] 
@@ -2108,7 +2363,9 @@ function renderGroceries() {
         </label>
         ${isStapleRayon ? `
           <button class="btn-delete-staple text-slate-300 hover:text-red-500 text-xs px-1" data-id="${esc(item.id)}" aria-label="Retirer ${esc(item.name)}">✕</button>
-        ` : ''}
+        ` : `
+          <button class="btn-pantry text-slate-300 hover:text-emerald-600 text-xs px-1" data-id="${esc(item.id)}" title="J'en ai déjà (placard)" aria-label="J'ai déjà ${esc(item.name)}">🏠</button>
+        `}
       `;
 
       listContainer.appendChild(itemRow);
@@ -2126,6 +2383,22 @@ function renderGroceries() {
       </div>
     `;
   }
+
+  renderAtHomeSection(container, atHome);
+  renderPantryCard();
+
+  // « J'en ai déjà » : mémorisé dans le placard
+  container.querySelectorAll('.btn-pantry').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const id = e.currentTarget.dataset.id;
+      const snapshot = takeSnapshot();
+      if (!state.pantry.includes(id)) state.pantry.push(id);
+      state.pantryNeeded = state.pantryNeeded.filter(x => x !== id);
+      saveToLocalStorage();
+      renderGroceries();
+      showToast('Ajouté au placard', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
+    });
+  });
 
   // Événements pour cocher / décocher
   container.querySelectorAll('.grocery-check').forEach(input => {
@@ -2229,20 +2502,29 @@ function renderCatalog(resetLimit = false) {
   let filtered = [...state.recipes];
 
   // Filtrage par catégorie
-  if (state.activeFilter === 'budget') {
+  const f = state.activeFilter;
+  if (f === 'budget') {
     filtered = filtered.filter(r => r.isBudget === true);
-  } else if (state.activeFilter === 'automne') {
-    filtered = filtered.filter(r => r.season === 'automne');
-  } else if (state.activeFilter === 'hiver') {
-    filtered = filtered.filter(r => r.season === 'hiver');
-  } else if (state.activeFilter === 'express') {
+  } else if (['printemps', 'ete', 'automne', 'hiver'].includes(f)) {
+    filtered = filtered.filter(r => GL.recipeSeasons(r).includes(f));
+  } else if (f.startsWith('style:')) {
+    filtered = filtered.filter(r => GL.recipeStyles(r).includes(f.slice(6)));
+  } else if (f === 'gamelle') {
+    filtered = filtered.filter(r => GL.recipeIsGamelle(r));
+  } else if (f === 'unepoele') {
+    filtered = filtered.filter(r => GL.isOnePan(r));
+  } else if (f === 'sanspork') {
+    filtered = filtered.filter(r => !GL.containsPork(r));
+  } else if (f === 'sanslactose') {
+    filtered = filtered.filter(r => !GL.containsLactose(r));
+  } else if (f === 'express') {
     filtered = filtered.filter(r => r.timeMinutes <= 20);
-  } else if (state.activeFilter === 'favoris') {
+  } else if (f === 'favoris') {
     filtered = filtered.filter(r => state.favorites.includes(r.id));
-  } else if (state.activeFilter === 'maison') {
+  } else if (f === 'maison') {
     filtered = filtered.filter(r => r.id.startsWith('custom-'));
-  } else if (state.activeFilter !== 'all') {
-    filtered = filtered.filter(r => r.type === state.activeFilter);
+  } else if (f !== 'all') {
+    filtered = filtered.filter(r => r.type === f || (f === 'vege' && r.type === 'vegetarien'));
   }
 
   // Filtrage par recherche (insensible à la casse, accents et ponctuation)
@@ -2370,7 +2652,12 @@ function openRecipeDetail(recipeId) {
   document.getElementById('detail-recipe-title').textContent = recipe.title;
   document.getElementById('detail-recipe-tag').textContent = recipe.tag;
   document.getElementById('detail-recipe-time').textContent = `${recipe.timeMinutes} min`;
-  document.getElementById('detail-recipe-season').textContent = recipe.season === 'automne' ? '🍁 Automne' : (recipe.season === 'hiver' ? '❄️ Hiver' : '✨ Toute saison');
+  {
+    const seasons = GL.recipeSeasons(recipe);
+    document.getElementById('detail-recipe-season').textContent = seasons.length >= 4 ? '✨ Toute saison'
+      : GL.SEASONS.filter(x => seasons.includes(x.id)).map(x => `${x.emoji} ${x.label}`).join(' · ');
+  }
+  renderNotesRow();
   
   const budgetBadge = document.getElementById('detail-recipe-budget');
   if (recipe.isBudget) {
@@ -2849,7 +3136,7 @@ function shareMagicLink() {
 
 // 2. Texte propre pour WhatsApp ou Notes Apple
 function getFormattedGroceriesText() {
-  const groceries = computeGroceries();
+  const groceries = currentSplit().toBuy;
   let text = `🛒 *COURSES GRAND FRAIS* (${state.portions} portions)\n`;
   text += `📅 Semaine du ${new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}\n\n`;
 
@@ -2972,14 +3259,10 @@ function setupEventListeners() {
   }
 
   // Générer & Effacer le planning
-  document.getElementById('btn-generate-menu').addEventListener('click', () => {
-    const snapshot = takeSnapshot();
-    const hadMeals = state.plan.some(Boolean);
-    generateBalancedWeek(false);
-    if (hadMeals && takeSnapshot() !== snapshot) {
-      showToast('Nouveau menu généré', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
-    }
-  });
+  document.getElementById('btn-generate-menu').addEventListener('click', openGenerateModal);
+  setupGenerateModal();
+  setupPantryCard();
+  setupNotesRow();
   document.getElementById('btn-clear-menu').addEventListener('click', clearMenu);
 
   const saveMenuBtn = document.getElementById('btn-save-current-menu');
@@ -3122,6 +3405,7 @@ function setupEventListeners() {
       state.cookingStepIndex++;
       renderCookingStep();
     } else {
+      if (state.cookingRecipe && state.cookingRecipe.id) setNote(state.cookingRecipe.id, { cooked: Date.now() }, true);
       document.getElementById('cooking-modal').classList.add('hidden');
       resetAllCookingTimers();
       releaseWakeLock();
@@ -3711,11 +3995,12 @@ function pollLatestSync() {
 // ntfy.sh transforme automatiquement les messages de plus de 4 Ko en pièce jointe :
 // on lit alors le JSON depuis l'URL de la pièce jointe.
 function readNtfyPayload(entry) {
+  const decode = (raw) => GL.decryptPayload(state.householdCode, raw);
   try {
     if (entry.attachment && entry.attachment.url) {
-      return fetch(entry.attachment.url).then(r => r.json()).catch(() => null);
+      return fetch(entry.attachment.url).then(r => r.text()).then(decode).catch(() => null);
     }
-    if (entry.message) return Promise.resolve(JSON.parse(entry.message));
+    if (entry.message) return decode(entry.message);
   } catch (e) {}
   return Promise.resolve(null);
 }
@@ -3733,13 +4018,27 @@ function handleIncomingSync(payload) {
   safeSetItem('gamelle_last_sync', payload.timestamp);
 
   // Appliquer les données reçues (toutes validées : un message ne peut pas injecter de code)
-  if (Array.isArray(payload.plan)) state.plan = sanitizePlan(payload.plan);
+  if (Array.isArray(payload.plan)) state.plan = sanitizePlan(payload.plan).map(resolveAlias);
   if (payload.portions) state.portions = Math.round(cleanNum(payload.portions, 1, 12, state.portions));
   if (Array.isArray(payload.lockedSlots)) state.lockedSlots = sanitizeSlots(payload.lockedSlots);
   if (Array.isArray(payload.staples)) state.staples = sanitizeStaples(payload.staples);
   if (payload.checkedGroceries && typeof payload.checkedGroceries === 'object') state.checkedGroceries = sanitizeChecked(payload.checkedGroceries);
   if (Array.isArray(payload.savedMenus)) state.savedMenus = sanitizeSavedMenus(payload.savedMenus);
-  if (Array.isArray(payload.favorites)) state.favorites = sanitizeStringList(payload.favorites);
+  if (Array.isArray(payload.favorites)) state.favorites = resolveAliasList(sanitizeStringList(payload.favorites));
+  if (Array.isArray(payload.pantry)) state.pantry = sanitizeStringList(payload.pantry, 400, 120);
+  if (Array.isArray(payload.pantryNeeded)) state.pantryNeeded = sanitizeStringList(payload.pantryNeeded, 400, 120);
+  if (payload.spiceLevel !== undefined) state.spiceLevel = Math.round(cleanNum(payload.spiceLevel, 0, 2, state.spiceLevel));
+  if (typeof payload.stockBasics === 'boolean') state.stockBasics = payload.stockBasics;
+  if (Array.isArray(payload.aisleOrder)) state.aisleOrder = sanitizeStringList(payload.aisleOrder, 10, 30);
+  // Avis / historique : fusion recette par recette (le plus récent gagne), rien n'est écrasé en bloc
+  if (payload.notes && typeof payload.notes === 'object') {
+    const incoming = sanitizeNotes(payload.notes);
+    Object.keys(incoming).forEach(id => {
+      const mine = state.notes[id];
+      if (!mine || (incoming[id].t || 0) > (mine.t || 0)) state.notes[id] = { ...incoming[id], cooked: Math.max(incoming[id].cooked || 0, mine ? mine.cooked || 0 : 0) };
+      else if (mine && (incoming[id].cooked || 0) > (mine.cooked || 0)) mine.cooked = incoming[id].cooked;
+    });
+  }
 
   // Synchronisation des recettes personnalisées
   if (Array.isArray(payload.customRecipes)) {
@@ -3756,6 +4055,12 @@ function handleIncomingSync(payload) {
   safeSetItem('gamelle_checked', JSON.stringify(state.checkedGroceries));
   safeSetItem('gamelle_locked_slots', JSON.stringify(state.lockedSlots || []));
   safeSetItem('gamelle_favorites', JSON.stringify(state.favorites || []));
+  safeSetItem('gamelle_notes', JSON.stringify(state.notes || {}));
+  safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
+  safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
+  safeSetItem('gamelle_spice_level', state.spiceLevel || 0);
+  safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
+  safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
 
   renderAll();
   showToast('Synchronisé avec votre foyer');
@@ -3780,18 +4085,26 @@ function broadcastSync() {
       checkedGroceries: state.checkedGroceries || {},
       customRecipes: customList,
       savedMenus: state.savedMenus || [],
-      favorites: state.favorites || []
+      favorites: state.favorites || [],
+      pantry: state.pantry || [],
+      pantryNeeded: state.pantryNeeded || [],
+      spiceLevel: state.spiceLevel || 0,
+      stockBasics: !!state.stockBasics,
+      aisleOrder: state.aisleOrder || [],
+      notes: state.notes || {}
     };
 
-    fetch(`https://ntfy.sh/${topic}`, {
+    // Le contenu est chiffré (AES-GCM, clé dérivée du code foyer) quand le navigateur le permet
+    const bodyPromise = GL.cryptoAvailable() ? GL.encryptPayload(state.householdCode, payload).catch(() => JSON.stringify(payload)) : Promise.resolve(JSON.stringify(payload));
+    bodyPromise.then(body => fetch(`https://ntfy.sh/${topic}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Title': 'Gamelle Sync',
         'Tags': 'arrows_counterclockwise'
       },
-      body: JSON.stringify(payload)
-    }).then(res => {
+      body
+    })).then(res => {
       if (res.ok) {
         state.lastSyncTimestamp = payload.timestamp;
         safeSetItem('gamelle_last_sync', payload.timestamp);

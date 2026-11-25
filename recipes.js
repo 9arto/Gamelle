@@ -106,7 +106,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "saumon-brocolis-teriyaki",
@@ -209,7 +216,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "gnocchis-epinards-champignons-ricotta",
@@ -306,7 +320,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-fajitas-bol-quinoa",
@@ -419,7 +441,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "mexicain",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "dhal-lentilles-corail-coco",
@@ -531,7 +563,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "one-pot-saumon-poireaux",
@@ -635,7 +676,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "boeuf-saute-oignons-poivrons",
@@ -749,7 +798,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "shakshuka-poivrons-feta-oeufs",
@@ -866,7 +922,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 5
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "patate-douce-poulet-tahini",
@@ -982,7 +1046,18 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "terroir",
+      "frais",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "cabillaud-croute-herbes-butternut",
@@ -1091,7 +1166,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "wok-nouilles-poulet-legumes",
@@ -1195,7 +1277,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "chili-sin-carne-patate-douce",
@@ -1308,7 +1397,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 5
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "mexicain"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-coquillettes-champignons-jambon",
@@ -1413,7 +1510,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "dinde-moutarde-ecrase-carottes",
@@ -1517,7 +1621,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-vert-poulet-legumes",
@@ -1622,7 +1733,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "soupe-repas-thai-crevettes",
@@ -1741,7 +1861,18 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "asiatique",
+      "terroir",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "tortilla-espagnole-pommes-terre-salade",
@@ -1829,7 +1960,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-thon-tomate-olives",
@@ -1918,187 +2059,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "lentilles-carottes-saucisses-volaille",
-    "title": "Mijoté de Lentilles vertes, Carottes & Saucisses de Volaille",
-    "description": "Un plat rustique d'automne sain et très bon marché, riche en fer et parfait pour affronter les premiers froids.",
-    "season": "automne",
-    "timeMinutes": 28,
-    "tag": "Volaille & Réconfort",
-    "type": "volaille",
-    "isBudget": true,
-    "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/1550441882.jpg",
-    "ingredients": [
-      {
-        "name": "Lentilles vertes françaises",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Saucisses de volaille fermière",
-        "quantity": 4,
-        "unit": "pièces",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Carottes fraîches",
-        "quantity": 4,
-        "unit": "pièces",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Bouquet garni (thym, laurier)",
-        "quantity": 1,
-        "unit": "bouquet",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Moutarde à l'ancienne / Dijon",
-        "quantity": 1,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Rincez les lentilles. Épluchez les carottes et taillez-les en rondelles. Émincez l'oignon.",
-        "ingredients": [
-          "300g Lentilles",
-          "4 Carottes",
-          "1 Oignon"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une cocotte, faites dorer les saucisses de volaille 4 minutes avec un filet d'huile. Réservez-les coupées en morceaux.",
-        "ingredients": [
-          "4 Saucisses"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Mettez les lentilles, les carottes, l'oignon, le thym et le laurier dans la cocotte. Couvrez de 3 fois leur volume d'eau froide. Portez à ébullition et laissez frémir 20 min sans saler (pour que la peau reste tendre).",
-        "ingredients": [
-          "Lentilles",
-          "Carottes",
-          "Aromates"
-        ],
-        "timerMinutes": 20
-      },
-      {
-        "instruction": "Ajoutez les morceaux de saucisses, salez, poivrez et laissez mijoter encore 5 minutes. Servez chaud avec une pointe de moutarde.",
-        "ingredients": [
-          "Saucisses",
-          "Moutarde"
-        ],
-        "timerMinutes": 5
-      }
-    ]
-  },
-  {
-    "id": "riz-saute-poulet-petits-pois-oeuf",
-    "title": "Riz sauté express façon Cantonais au Poulet & Petits Pois",
-    "description": "Le sauveur des soirs pressés : du riz complet, du poulet doré, des petits pois et des œufs brouillés en 15 minutes.",
-    "season": "toutes",
-    "timeMinutes": 18,
-    "tag": "Volaille & Économique",
-    "type": "volaille",
-    "isBudget": true,
-    "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/wuyd2h1765655837.jpg",
-    "ingredients": [
-      {
-        "name": "Riz blanc (basmati ou jasmin)",
-        "quantity": 280,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Filets de poulet frais",
-        "quantity": 450,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Œufs frais",
-        "quantity": 3,
-        "unit": "œufs",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Petits pois frais (ou surgelés)",
-        "quantity": 200,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Oignons nouveaux / cébettes",
-        "quantity": 3,
-        "unit": "tiges",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Sauce soja salée",
-        "quantity": 3,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Huile de sésame",
-        "quantity": 1,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      }
+    "seasons": [
+      "ete"
     ],
-    "steps": [
-      {
-        "instruction": "Cuisez le riz à l'eau bouillante salée si ce n'est pas déjà fait, égouttez-le bien.",
-        "ingredients": [
-          "280g Riz"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Dans une grande poêle ou un wok chaud avec 1 c. à soupe d'huile, faites dorer les dés de poulet pendant 4 min. Réservez.",
-        "ingredients": [
-          "450g Poulet"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Battez les œufs avec une pincée de sel, versez-les dans la poêle chaude et brouillez-les 1 minute. Réservez avec le poulet.",
-        "ingredients": [
-          "3 Œufs"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Faites sauter le riz cuit avec les petits pois et la sauce soja pendant 3 min à feu vif pour qu'il crépite légèrement.",
-        "ingredients": [
-          "Riz cuit",
-          "Petits pois",
-          "Sauce soja"
-        ],
-        "timerMinutes": 3
-      },
-      {
-        "instruction": "Ajoutez le poulet, les œufs brouillés et la cébette émincée. Mélangez 1 minute et servez.",
-        "ingredients": [
-          "Cébette"
-        ],
-        "timerMinutes": 1
-      }
-    ]
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "frittata-poireaux-champignons-chevre",
@@ -2194,7 +2163,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "lieu-noir-poireaux-fondants-citron",
@@ -2275,7 +2252,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": false
   },
   {
     "id": "hachis-parmentier-patate-douce",
@@ -2364,7 +2348,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 6
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-oeufs-durs-tomates-coco",
@@ -2466,7 +2458,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-poulet-champignons-creme-ail",
@@ -2561,96 +2562,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "chili-con-carne-boeuf-haricots",
-    "title": "Chili con Carne traditionnel au Bœuf & Haricots rouges",
-    "description": "Le plat du soir par excellence qui est encore deux fois meilleur réchauffé le lendemain au bureau.",
-    "season": "automne",
-    "timeMinutes": 25,
-    "tag": "Viande & Économique",
-    "type": "viande",
-    "isBudget": true,
-    "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/uuqvwu1504629254.jpg",
-    "ingredients": [
-      {
-        "name": "Bœuf haché frais (pur bœuf)",
-        "quantity": 500,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Haricots rouges (bocal)",
-        "quantity": 500,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Maïs doux en boîte",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Tomates concassées / Coulis",
-        "quantity": 500,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Mélange d'épices (Fajitas / Chili)",
-        "quantity": 2,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Riz blanc (basmati ou jasmin)",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Faites suer l'oignon dans une cocotte 2 min avec un filet d'huile, puis ajoutez le bœuf haché et faites-le dorer 4 min.",
-        "ingredients": [
-          "1 Oignon",
-          "500g Bœuf"
-        ],
-        "timerMinutes": 6
-      },
-      {
-        "instruction": "Ajoutez les épices chili, les tomates concassées et 100 ml d'eau. Salez, couvrez et laissez mijoter 12 min à petits bouillons.",
-        "ingredients": [
-          "Épices",
-          "500g Tomates"
-        ],
-        "timerMinutes": 12
-      },
-      {
-        "instruction": "Lancez la cuisson du riz dans une casserole séparée.",
-        "ingredients": [
-          "250g Riz"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Ajoutez les haricots rouges rincés et le maïs dans la cocotte pour les 5 dernières minutes de cuisson. Servez avec le riz.",
-        "ingredients": [
-          "Haricots rouges",
-          "Maïs"
-        ],
-        "timerMinutes": 5
-      }
-    ]
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poelee-dinde-courgettes-parmesan",
@@ -2732,7 +2651,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "bowl-falafels-carottes-houmous",
@@ -2820,7 +2747,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "street",
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "saumon-pates-epinards-citron",
@@ -2902,7 +2839,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-lentilles-corail-potimarron",
@@ -2997,7 +2941,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "escalopes-dinde-milanaise-haricots",
@@ -3099,7 +3051,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "wok-crevettes-brocolis-aigre-doux",
@@ -3199,103 +3158,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "curry-lentilles-vertes-patate-douce",
-    "title": "Curry de Lentilles Vertes, Patates Douces & Coco",
-    "description": "Un plat d'automne généreux et économique. Les lentilles vertes françaises apportent un fondant incomparable.",
-    "season": "automne",
-    "timeMinutes": 25,
-    "tag": "Végétarien & Économique",
-    "type": "vege",
-    "isBudget": true,
-    "basePortions": 4,
-    "image": "https://images.pexels.com/photos/674574/pexels-photo-674574.jpeg?auto=compress&cs=tinysrgb&w=800",
-    "ingredients": [
-      {
-        "name": "Lentilles vertes françaises",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Patates douces",
-        "quantity": 2,
-        "unit": "pièces",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Lait de coco",
-        "quantity": 400,
-        "unit": "ml",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Pousses d'épinards frais",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Pâte de curry doux",
-        "quantity": 2,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Riz blanc (basmati ou jasmin)",
-        "quantity": 280,
-        "unit": "g",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Épluchez les patates douces et coupez-les en cubes de 1,5 cm. Émincez l'oignon.",
-        "ingredients": [
-          "2 Patates douces",
-          "1 Oignon"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites suer l'oignon avec 1 c. à soupe d'huile dans une cocotte 2 min. Ajoutez la pâte de curry.",
-        "ingredients": [
-          "1 c. à soupe Huile",
-          "Pâte de curry"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Ajoutez les cubes de patate douce, les lentilles vertes rincées, le lait de coco et 200 ml d'eau. Couvrez et laissez mijoter 15 min.",
-        "ingredients": [
-          "250g Lentilles",
-          "400ml Lait de coco"
-        ],
-        "timerMinutes": 15
-      },
-      {
-        "instruction": "Cuisez le riz basmati en parallèle.",
-        "ingredients": [
-          "280g Riz"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Ajoutez les pousses d'épinards dans la cocotte 2 min avant de servir. Dressez avec le riz chaud.",
-        "ingredients": [
-          "150g Épinards"
-        ],
-        "timerMinutes": 2
-      }
-    ]
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "papillote-saumon-legumes-croquants",
@@ -3388,7 +3259,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": false
   },
   {
     "id": "gratin-chou-fleur-pommes-terre-comte",
@@ -3481,7 +3359,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": 15
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "boulettes-boeuf-sauce-tomate-spaghetti",
@@ -3584,7 +3470,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "wok-dinde-poivrons-cajou",
@@ -3680,7 +3574,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": false
   },
   {
     "id": "chakchouka-verte-epinards-courgettes-feta",
@@ -3692,7 +3594,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/6287519/pexels-photo-6287519.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/QtWYOqgjvy.png",
     "ingredients": [
       {
         "name": "Œufs frais",
@@ -3782,7 +3684,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 5
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-colin-coco-petits-pois",
@@ -3877,7 +3788,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "penne-poulet-citron-romarin",
@@ -3965,7 +3883,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "saute-porc-caramel-poivrons",
@@ -4060,7 +3987,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-poireaux-chevre-noix",
@@ -4155,7 +4089,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "bowl-cajun-poulet-haricots-avocat",
@@ -4251,7 +4192,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "mexicain",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "quiche-sans-pate-poireaux-jambon",
@@ -4347,7 +4297,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "soupe-repas-butternut-carottes-croutons",
@@ -4443,7 +4402,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "nouilles-soba-saumon-brocolis-teriyaki",
@@ -4539,7 +4505,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "gnocchis-cremeux-lardons-champignons",
@@ -4551,7 +4524,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/MHqaVeCqrXr6mw.png",
     "ingredients": [
       {
         "name": "Gnocchis à poêler",
@@ -4637,7 +4610,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": false
   },
   {
     "id": "pates-poireaux-lardons-creme",
@@ -4649,7 +4630,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/SnuQhlGqDYM0yQ.png",
     "ingredients": [
       {
         "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
@@ -4734,7 +4715,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poelee-campagnarde-pommes-de-terre-lardons",
@@ -4832,7 +4821,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-cremeux-champignons-moutarde",
@@ -4844,7 +4841,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/4htbtm1783803558.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/GNulDBHcgEZDIg.png",
     "ingredients": [
       {
         "name": "Filets de poulet frais",
@@ -4930,7 +4927,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 4
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-curry-coco-poivrons",
@@ -5036,97 +5040,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 10
       }
-    ]
-  },
-  {
-    "id": "tartiflette-poelee-rapide-reblochon",
-    "title": "Poêlée façon Tartiflette : Pommes de terre, Lardons & Reblochon",
-    "description": "Tout le réconfort de la montagne en 25 minutes à la poêle. Le fromage fondu et les lardons croustillants font l'unanimité.",
-    "season": "automne",
-    "timeMinutes": 25,
-    "tag": "Fromager & Très Gourmand",
-    "type": "viande",
-    "isBudget": false,
-    "basePortions": 4,
-    "image": "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=800",
-    "ingredients": [
-      {
-        "name": "Pommes de terre fraîches",
-        "quantity": 800,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Lardons fumés pur porc",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Reblochon de Savoie AOP",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Crème fraîche (épaisse ou liquide)",
-        "quantity": 2,
-        "unit": "c. à soupe",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Salade verte (mâche ou roquette)",
-        "quantity": 1,
-        "unit": "salade",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Épluchez les pommes de terre et taillez-les en rondelles de 5 mm. Émincez finement les oignons.",
-        "ingredients": [
-          "800g Pommes de terre",
-          "2 Oignons"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une grande sauteuse, faites revenir les lardons à sec pendant 3 minutes, puis ajoutez les oignons et laissez-les fondre 4 minutes.",
-        "ingredients": [
-          "250g Lardons fumés",
-          "Oignons"
-        ],
-        "timerMinutes": 7
-      },
-      {
-        "instruction": "Ajoutez les rondelles de pommes de terre, salez modérément (les lardons sont déjà salés), poivrez. Couvrez et faites cuire 15 minutes à feu moyen en remuant délicatement pour ne pas briser les pommes de terre.",
-        "ingredients": [
-          "Pommes de terre"
-        ],
-        "timerMinutes": 15
-      },
-      {
-        "instruction": "Ajoutez 2 cuillères de crème fraîche. Coupez le Reblochon en tranches et déposez-les sur toute la surface de la poêlée.",
-        "ingredients": [
-          "2 c. à soupe Crème",
-          "250g Reblochon"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Couvrez la sauteuse et laissez à feu très doux 5 minutes : le Reblochon va fondre et napper l'ensemble des pommes de terre. Servez avec une salade verte croquante.",
-        "ingredients": [
-          "Salade verte"
-        ],
-        "timerMinutes": 5
-      }
-    ]
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "emince-porc-caramel-carottes-riz",
@@ -5225,7 +5146,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-cremeux-lardons-petits-pois-parmesan",
@@ -5237,7 +5168,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/5638527/pexels-photo-5638527.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/o0kACXjkr2lBBQ.png",
     "ingredients": [
       {
         "name": "Riz à risotto (Arborio ou Carnaroli)",
@@ -5323,7 +5254,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-roti-express-patates-douces-courgettes",
@@ -5421,7 +5360,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "saucisses-toulouse-lentilles-vertes-carottes",
@@ -5515,7 +5462,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-facon-cesar-croustillant",
@@ -5613,7 +5568,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "frais"
+    ],
+    "gamelle": false
   },
   {
     "id": "saute-boeuf-oignons-caramelises-puree",
@@ -5625,7 +5587,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/zCYcRoRqyihV0Q.png",
     "ingredients": [
       {
         "name": "Bavette ou rumsteck de bœuf",
@@ -5712,7 +5674,18 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 3
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "blanquette-veau-traditionnelle-riz-pilaf",
@@ -5724,7 +5697,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/6287519/pexels-photo-6287519.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/XohONptLQtWCzw.png",
     "ingredients": [
       {
         "name": "Veau (blanquette)",
@@ -5832,7 +5805,15 @@ window.DEFAULT_RECIPES = [
           "Persil frais"
         ]
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "boeuf-bourguignon-traditionnel-champignons",
@@ -5951,7 +5932,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 6
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "dos-cabillaud-papillote-legumes-hiver",
@@ -5963,7 +5952,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/1683545/pexels-photo-1683545.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/e3SoLhh7hb92qw.png",
     "ingredients": [
       {
         "name": "Dos de cabillaud",
@@ -6043,7 +6032,16 @@ window.DEFAULT_RECIPES = [
         "instruction": "Ouvrez les papillotes avec précaution (attention à la vapeur !), servez le cabillaud avec le jus de cuisson sur le riz.",
         "ingredients": []
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": false
   },
   {
     "id": "tajine-poulet-olives-citron-confit",
@@ -6177,7 +6175,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 5
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "gratin-pates-jambon-bechamel",
@@ -6264,7 +6270,16 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": 15
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "hachis-parmentier-boeuf-carottes",
@@ -6378,7 +6393,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": 5
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-moutarde-four-pommes-de-terre",
@@ -6390,7 +6412,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/262959/pexels-photo-262959.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/j0kN8m8EQG4Z6A.png",
     "ingredients": [
       {
         "name": "Cuisses de poulet fraîches",
@@ -6462,7 +6484,14 @@ window.DEFAULT_RECIPES = [
         "instruction": "Laissez reposer 2 min hors du four avant de servir directement dans le plat.",
         "ingredients": []
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "veloute-potimarron-lardons-croutes",
@@ -6570,7 +6599,15 @@ window.DEFAULT_RECIPES = [
         "instruction": "Servez le velouté dans des bols profonds, garni des lardons grillés et des croûtons. Un filet de crème pour la présentation.",
         "ingredients": []
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "lasagnes-bolognaise-maison-bechamel",
@@ -6719,7 +6756,18 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": 20
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-champignons-sauvages-noisettes",
@@ -6731,7 +6779,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/5638527/pexels-photo-5638527.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/59Wa3XciH6gLzg.png",
     "ingredients": [
       {
         "name": "Riz à risotto (Arborio ou Carnaroli)",
@@ -6844,7 +6892,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "saumon-feuillete-croustillant-poireaux-aneth",
@@ -6958,7 +7013,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 20
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": false
   },
   {
     "id": "poulet-creme-champignons-sauvages-echalotes",
@@ -6970,7 +7034,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/4htbtm1783803558.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/TVTyokiNb6iZ9A.png",
     "ingredients": [
       {
         "name": "Filets de poulet frais",
@@ -7081,7 +7145,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 12
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "tajine-agneau-abricots-amandes-semoule",
@@ -7225,7 +7296,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 5
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "orient",
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "parmentier-confit-canard-puree-mousseline",
@@ -7339,7 +7420,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 15
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "rougail-saucisse-reunionnais",
@@ -7451,7 +7540,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 11
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "orient",
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "one-pan-gnocchis-saucisses-butternut",
@@ -7557,7 +7655,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "aubergines-parmigiana-mozzarella",
@@ -7659,7 +7765,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 12
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "quiche-oignons-chevre-miel",
@@ -7766,102 +7880,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 25
       }
-    ]
-  },
-  {
-    "id": "croque-monsieur-gourmand-bechamel-four",
-    "title": "Croque-Monsieur Gourmand Béchamel au Four & Salade Verte",
-    "description": "Le roi du réconfort rapide sur Jow (174k likes) : tranches de pain dorées, jambon blanc supérieur, béchamel onctueuse liée à l'emmental et muscade, croûte gratinée dorée sous le gril et salade verte.",
-    "season": "toutes",
-    "timeMinutes": 20,
-    "tag": "Hit Jow & Express",
-    "type": "viande",
-    "isBudget": true,
-    "basePortions": 4,
-    "image": "https://static.jow.fr/550x550/recipes/R7I529gwWaQcqA.png",
-    "ingredients": [
-      {
-        "name": "Pain de campagne (ou pain de mie)",
-        "quantity": 8,
-        "unit": "tranche",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Jambon blanc supérieur",
-        "quantity": 4,
-        "unit": "tranche",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Emmental râpé",
-        "quantity": 120,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Beurre (doux ou demi-sel)",
-        "quantity": 30,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Farine de blé ou fécule",
-        "quantity": 30,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Lait (demi-écrémé ou entier)",
-        "quantity": 250,
-        "unit": "ml",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Noix de muscade râpée",
-        "quantity": 1,
-        "unit": "pincee",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Salade verte (mâche ou roquette)",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Préchauffez votre four à 200°C en mode gril. Préparez la béchamel express : dans une casserole, faites fondre 30g de beurre, ajoutez la farine en fouettant 1 minute, puis versez le lait progressivement jusqu'à épaississement. Assaisonnez de sel, poivre et muscade, puis incorporez la moitié de l'emmental râpé (60g).",
-        "ingredients": [
-          "Beurre (doux ou demi-sel)",
-          "Farine de blé ou fécule",
-          "Lait (demi-écrémé ou entier)",
-          "Noix de muscade râpée",
-          "Emmental râpé"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Disposez 4 tranches de pain sur une plaque recouverte de papier sulfurisé. Tartinez chaque tranche d'une belle cuillère de béchamel, déposez une tranche de jambon blanc pliée, puis recouvrez avec les 4 autres tranches de pain.",
-        "ingredients": [
-          "Pain de campagne (ou pain de mie)",
-          "Jambon blanc supérieur"
-        ]
-      },
-      {
-        "instruction": "Nappez généreusement le dessus des croques avec le reste de béchamel et parsemez avec le reste d'emmental râpé (60g).",
-        "ingredients": [
-          "Emmental râpé"
-        ]
-      },
-      {
-        "instruction": "Enfournez pendant 10 à 12 minutes à 200°C jusqu'à ce que le fromage soit gratiné, croustillant et doré à souhait. Servez avec une salade verte fraîche.",
-        "ingredients": [
-          "Salade verte (mâche ou roquette)"
-        ],
-        "timerMinutes": 11
-      }
-    ]
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "parmentier-courgettes-boeuf-hache",
@@ -7968,7 +7995,16 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": 10
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "tex-mex-fajitas-poulet-poivrons",
@@ -8062,117 +8098,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "wok-poulet-legumes-sauce-cacahuete",
-    "title": "Wok de Poulet Sauté aux Légumes & Sauce Cacahuète",
-    "description": "Un délice asiatique aux plus de 136 000 likes : émincé de poulet doré, tagliatelles de carottes et courgettes, enrobés d'une sauce onctueuse cacahuète-soja.",
-    "season": "toute-saison",
-    "timeMinutes": 25,
-    "tag": "Volaille & Gourmand",
-    "type": "volaille",
-    "isBudget": true,
-    "basePortions": 4,
-    "image": "https://static.jow.fr/550x550/recipes/rBM6cPoPIQWOCQ.png",
-    "ingredients": [
-      {
-        "name": "Filets de poulet",
-        "quantity": 550,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Carottes fraîches",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Courgettes fraîches",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Gousses d'ail",
-        "quantity": 2,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Beurre de cacahuète",
-        "quantity": 4,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Sauce soja salée",
-        "quantity": 3,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Riz blanc (basmati ou jasmin)",
-        "quantity": 280,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Graines de sésame",
-        "quantity": 1,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Huile d'olive",
-        "quantity": 2,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Faites cuire le riz blanc dans une grande casserole d'eau bouillante salée selon le temps indiqué. Égouttez et réservez au chaud.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "À l'aide d'un économe, taillez les carottes et les courgettes lavées en fines lamelles façon tagliatelles.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Découpez les filets de poulet en bouchées régulières.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une grande poêle ou un wok avec un filet d'huile, faites sauter les légumes 5 minutes avec sel et poivre. Réservez-les sur une assiette.",
-        "ingredients": [],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Dans la même poêle, faites dorer le poulet 5 à 6 minutes avec l'ail râpé.",
-        "ingredients": [],
-        "timerMinutes": 6
-      },
-      {
-        "instruction": "Préparez la sauce : fouettez le beurre de cacahuète avec la sauce soja et 3 à 4 cuillères à soupe d'eau tiède pour obtenir une crème lisse.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Remettez les légumes avec le poulet, versez la sauce cacahuète et enrobez le tout 2 à 3 minutes à feu doux.",
-        "ingredients": [],
-        "timerMinutes": 3
-      },
-      {
-        "instruction": "Dressez le riz chaud dans les assiettes ou gamelles, nappez généreusement de sauté de poulet aux légumes et parsemez de graines de sésame.",
-        "ingredients": [],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": true
   },
   {
     "id": "dahl-lentilles-corail-oeufs-mollets",
@@ -8283,7 +8217,16 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "nouilles-sautees-legumes-oeufs",
@@ -8382,7 +8325,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": false
   },
   {
     "id": "one-pan-cuisses-poulet-legumes-rotis",
@@ -8481,7 +8432,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "cabillaud-beurre-blanc-haricots-pommes-de-terre",
@@ -8568,7 +8527,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "riz-cantonais-poulet-petits-pois",
@@ -8667,7 +8634,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "asiatique",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "galette-complete-bretonne",
@@ -8753,7 +8728,15 @@ window.DEFAULT_RECIPES = [
           "Salade verte (mâche ou roquette)"
         ]
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "pates-carbonara-traditionnelles",
@@ -8826,7 +8809,15 @@ window.DEFAULT_RECIPES = [
         "instruction": "Servez immédiatement dans des assiettes creuses et parsemez d'un supplément de parmesan râpé.",
         "ingredients": []
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "spaghetti-ail-persil-crevettes",
@@ -8917,7 +8908,14 @@ window.DEFAULT_RECIPES = [
         "instruction": "Dressez chaud avec un dernier filet d'huile d'olive et un tour de moulin à poivre.",
         "ingredients": []
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "wok-boeuf-legumes-croquants",
@@ -9028,7 +9026,16 @@ window.DEFAULT_RECIPES = [
           "Graines de sésame"
         ]
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "flammekueche-alsacienne-traditionnelle",
@@ -9127,7 +9134,15 @@ window.DEFAULT_RECIPES = [
           "Salade verte (mâche ou roquette)"
         ]
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-tikka-masala-express-riz",
@@ -9234,7 +9249,14 @@ window.DEFAULT_RECIPES = [
           "Coriandre fraîche"
         ]
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "gnocchis-epinards-creme-gorgonzola",
@@ -9313,7 +9335,15 @@ window.DEFAULT_RECIPES = [
           "Cerneaux de noix"
         ]
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "tomates-farcies-traditionnelles-riz",
@@ -9438,7 +9468,15 @@ window.DEFAULT_RECIPES = [
         "instruction": "Servez les tomates bien moelleuses accompagnées du riz parfumé au jus de cuisson.",
         "ingredients": []
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "yakitori-boeuf-fromage-riz",
@@ -9527,7 +9565,15 @@ window.DEFAULT_RECIPES = [
           "Graines de sésame"
         ]
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "cabillaud-croute-chorizo-pommes-vapeur",
@@ -9618,14 +9664,22 @@ window.DEFAULT_RECIPES = [
           "Salade verte (mâche ou roquette)"
         ]
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "terroir",
+      "frais"
+    ],
+    "gamelle": false
   },
   {
     "id": "gratin-chou-fleur-bechamel-emmental",
     "title": "Gratin Crémeux de Chou-Fleur à la Béchamel & Emmental Doré",
     "timeMinutes": 35,
     "tag": "Végétarien & Réconfort",
-    "type": "vegetarien",
+    "type": "vege",
     "season": "automne",
     "isBudget": true,
     "description": "Un grand classique réconfortant : fleurettes de chou-fleur fondantes nappées d'une onctueuse béchamel maison à la muscade et gratinées à l'emmental.",
@@ -9707,14 +9761,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 15
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-lentilles-patates-douces-coco",
     "title": "Curry Fondant de Lentilles Corail & Patates Douces au Lait de Coco",
     "timeMinutes": 30,
     "tag": "Végétarien & Épicé",
-    "type": "vegetarien",
+    "type": "vege",
     "season": "automne",
     "isBudget": true,
     "description": "Un délice végétarien complet et parfumé : dés de patates douces et lentilles corail mijotées au lait de coco onctueux et épices douces.",
@@ -9803,389 +9865,22 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "croque-madame-dore-four-salade",
-    "title": "Croque-Madame Doré au Four, Jambon, Emmental & Œuf au Plat",
-    "timeMinutes": 20,
-    "tag": "Porc & Express",
-    "type": "porc",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Le réconfort bistro à la maison : pain croustillant garni de crème, emmental et jambon supérieur, couronné d'un œuf au plat et servi avec une salade croquante.",
-    "image": "https://static.jow.fr/550x550/recipes/TazGA1Oi8cGmaQ.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Pain de mie complet",
-        "quantity": 8,
-        "unit": "tranches",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Jambon blanc supérieur",
-        "quantity": 4,
-        "unit": "tranches",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Emmental râpé",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Œufs frais",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Beurre doux",
-        "quantity": 20,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Salade verte (mâche ou roquette)",
-        "quantity": 1,
-        "unit": "sachet",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Préchauffez votre four à 200°C en mode grill. Tartinez 4 tranches de pain de mie d'une généreuse cuillère de crème fraîche.",
-        "ingredients": [
-          "Pain de mie complet",
-          "Crème fraîche épaisse"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Disposez une tranche de jambon pliée en deux et une belle poignée d'emmental râpé sur chaque tranche. Recouvrez avec les 4 tranches restantes.",
-        "ingredients": [
-          "Jambon blanc supérieur",
-          "Emmental râpé",
-          "Pain de mie complet"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Nappez le dessus d'un peu de crème fraîche et du reste d'emmental râpé. Enfournez 10 minutes jusqu'à ce que le fromage soit bien gratiné et doré.",
-        "ingredients": [
-          "Crème fraîche épaisse",
-          "Emmental râpé"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Pendant ce temps, faites fondre le beurre dans une grande poêle et cuisez les 4 œufs au plat jusqu'à ce que le blanc soit pris mais le jaune encore coulant.",
-        "ingredients": [
-          "Beurre doux",
-          "Œufs frais"
-        ],
-        "timerMinutes": 3
-      },
-      {
-        "instruction": "Déposez un œuf au plat sur chaque croque à la sortie du four, salez, poivrez et servez avec la salade verte assaisonnée.",
-        "ingredients": [
-          "Salade verte (mâche ou roquette)"
-        ],
-        "timerMinutes": null
-      }
-    ]
-  },
-  {
-    "id": "quiche-doree-poireaux-feta",
-    "title": "Quiche Dorée aux Poireaux Fondants & Feta AOP",
-    "timeMinutes": 45,
-    "tag": "Végétarien & Four",
-    "type": "vegetarien",
-    "season": "automne",
-    "isBudget": true,
-    "description": "Une garniture fondante de blancs de poireaux mijotés, un appareil crémeux aux œufs et crème, relevé par des dés de feta grecque AOP sur pâte croustillante.",
-    "image": "https://static.jow.fr/550x550/recipes/O7Xm9c1MA1shpA.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Poireaux frais",
-        "quantity": 3,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Pâte brisée pur beurre",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Feta AOP",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Œufs frais",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 200,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Lait demi-écrémé",
-        "quantity": 10,
-        "unit": "cl",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Moutarde de Dijon",
-        "quantity": 1,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      }
+    "seasons": [
+      "automne"
     ],
-    "steps": [
-      {
-        "instruction": "Lavez soigneusement les poireaux et émincez-les finement en rondelles. Faites-les fondre dans une sauteuse avec une noix de beurre à feu doux pendant 15 minutes à couvert.",
-        "ingredients": [
-          "Poireaux frais"
-        ],
-        "timerMinutes": 15
-      },
-      {
-        "instruction": "Préchauffez le four à 180°C. Déroulez la pâte brisée dans un moule à tarte, piquez le fond à la fourchette et étalez la cuillère de moutarde au fond.",
-        "ingredients": [
-          "Pâte brisée pur beurre",
-          "Moutarde de Dijon"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans un saladier, battez les 4 œufs avec la crème fraîche, le lait, du sel, du poivre et une pointe de muscade.",
-        "ingredients": [
-          "Œufs frais",
-          "Crème fraîche épaisse",
-          "Lait demi-écrémé"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Répartissez la fondue de poireaux sur la pâte, émiettez la feta par-dessus et versez l'appareil à quiche.",
-        "ingredients": [
-          "Poireaux frais",
-          "Feta AOP"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Enfournez pendant 30 minutes jusqu'à ce que la quiche soit bien gonflée et dorée. Dégustez tiède ou froide en gamelle.",
-        "ingredients": [],
-        "timerMinutes": 30
-      }
-    ]
-  },
-  {
-    "id": "lasagnes-vege-courgettes-champignons",
-    "title": "Lasagnes Végétariennes aux Courgettes, Champignons & Mozzarella",
-    "timeMinutes": 45,
-    "tag": "Végétarien & Italien",
-    "type": "vegetarien",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Une version végétale ultra gourmande avec de fines rondelles de courgettes poêlées, des champignons dorés, du coulis mijoté et beaucoup de mozzarella fondante.",
-    "image": "https://static.jow.fr/550x550/recipes/J0OOIxfN7eNuYw.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Feuilles de lasagnes",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Courgettes fraîches",
-        "quantity": 3,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Champignons de Paris",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Coulis de tomate au basilic",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Mozzarella di bufala",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Herbes de Provence",
-        "quantity": 1,
-        "unit": "c. à café",
-        "rayon": "epicerie"
-      }
+    "styles": [
+      "orient",
+      "terroir"
     ],
-    "steps": [
-      {
-        "instruction": "Lavez les courgettes et émincez-les en fines rondelles. Émincez les champignons de Paris.",
-        "ingredients": [
-          "Courgettes fraîches",
-          "Champignons de Paris"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une grande poêle avec un filet d'huile d'olive, faites sauter les courgettes et champignons pendant 6 à 7 minutes avec les herbes de Provence.",
-        "ingredients": [
-          "Courgettes fraîches",
-          "Champignons de Paris",
-          "Herbes de Provence"
-        ],
-        "timerMinutes": 7
-      },
-      {
-        "instruction": "Préchauffez le four à 190°C. Dans un plat à gratin, nappez le fond d'une fine couche de coulis de tomate.",
-        "ingredients": [
-          "Coulis de tomate au basilic"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Alternez couches de lasagnes, légumes sautés, coulis de tomate et tranches de mozzarella. Terminez par une belle couche de coulis et de mozzarella.",
-        "ingredients": [
-          "Feuilles de lasagnes",
-          "Coulis de tomate au basilic",
-          "Mozzarella di bufala"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Enfournez pour 25 à 30 minutes jusqu'à ce que les pâtes soient tendres et le dessus joliment gratiné.",
-        "ingredients": [],
-        "timerMinutes": 28
-      }
-    ]
-  },
-  {
-    "id": "risotto-saint-jacques-poireaux-fondants",
-    "title": "Risotto Crémeux aux Noix de Saint-Jacques & Poireaux Fondants",
-    "timeMinutes": 30,
-    "tag": "Poisson & Raffiné",
-    "type": "poisson",
-    "season": "automne",
-    "isBudget": false,
-    "description": "Un risotto digne des grands restaurants : riz carnaroli nacré, blancs de poireaux confits et noix de Saint-Jacques poêlées au beurre noisette.",
-    "image": "https://static.jow.fr/550x550/recipes/T8IsrhBD5B.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Noix de Saint-Jacques",
-        "quantity": 350,
-        "unit": "g",
-        "rayon": "poissonnerie"
-      },
-      {
-        "name": "Riz rond arborio à risotto",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Poireaux frais",
-        "quantity": 3,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Parmesan râpé AOP",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Beurre doux",
-        "quantity": 40,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Bouillon cube de légumes",
-        "quantity": 1,
-        "unit": "cube",
-        "rayon": "epicerie"
-      }
-    ],
-    "steps": [
-      {
-        "instruction": "Préparez 1 litre de bouillon de légumes chaud. Émincez finement les blancs de poireaux.",
-        "ingredients": [
-          "Bouillon cube de légumes",
-          "Poireaux frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une sauteuse avec la moitié du beurre, faites fondre les poireaux 8 minutes à feu doux jusqu'à ce qu'ils soient translucides.",
-        "ingredients": [
-          "Beurre doux",
-          "Poireaux frais"
-        ],
-        "timerMinutes": 8
-      },
-      {
-        "instruction": "Ajoutez le riz arborio et faites-le nacrer 2 minutes en remuant. Mouillez louche par louche avec le bouillon chaud pendant 18 minutes sans cesser de remuer doucement.",
-        "ingredients": [
-          "Riz rond arborio à risotto",
-          "Bouillon cube de légumes"
-        ],
-        "timerMinutes": 18
-      },
-      {
-        "instruction": "Hors du feu, incorporez le parmesan et une noisette de beurre pour la mantecatura. Couvrez 2 minutes.",
-        "ingredients": [
-          "Parmesan râpé AOP",
-          "Beurre doux"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Dans une poêle très chaude avec le reste de beurre, snackez les noix de Saint-Jacques 1 minute par face. Déposez-les sur le risotto chaud et servez immédiatement.",
-        "ingredients": [
-          "Noix de Saint-Jacques",
-          "Beurre doux"
-        ],
-        "timerMinutes": 2
-      }
-    ]
+    "gamelle": true
   },
   {
     "id": "burger-parisien-boeuf-comte-frites",
     "title": "Burger Parisien Pur Bœuf, Comté Fondu, Confit d'Oignons & Frites",
     "timeMinutes": 35,
     "tag": "Bœuf & Gourmand",
-    "type": "boeuf",
+    "type": "viande",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Un burger maison bistronomique avec steak haché pur bœuf juteux, comté affiné fondu, compotée d'oignons caramélisés et frites dorées au four.",
@@ -10269,7 +9964,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "bouillon-ramen-poulet-nouilles-udon",
@@ -10367,105 +10070,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "curry-crevettes-lait-coco-poivron",
-    "title": "Curry Onctueux de Crevettes au Lait de Coco, Poivron Rouge & Riz Basmati",
-    "timeMinutes": 20,
-    "tag": "Poisson & Exotique",
-    "type": "poisson",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Un plat complet en 20 minutes chrono : crevettes roses parfumées dans une sauce onctueuse au curry doux et lait de coco, servies sur un riz basmati léger.",
-    "image": "https://static.jow.fr/550x550/recipes/Sug62chFqFf2Tw.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Crevettes roses cuites décortiquées",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "poissonnerie"
-      },
-      {
-        "name": "Riz basmati",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Poivrons rouges",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Lait de coco",
-        "quantity": 400,
-        "unit": "ml",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Pâte de curry rouge ou jaune",
-        "quantity": 2,
-        "unit": "c. à café",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Citron vert",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Gousses d'ail",
-        "quantity": 1,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Faites cuire le riz basmati dans une casserole d'eau bouillante salée pendant 10 à 11 minutes, puis égouttez-le.",
-        "ingredients": [
-          "Riz basmati"
-        ],
-        "timerMinutes": 11
-      },
-      {
-        "instruction": "Lavez les poivrons rouges et taillez-les en fines lanières. Hachez la gousse d'ail.",
-        "ingredients": [
-          "Poivrons rouges",
-          "Gousses d'ail"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans un wok ou une sauteuse avec un filet d'huile, faites revenir les poivrons et l'ail pendant 5 minutes à feu vif.",
-        "ingredients": [
-          "Poivrons rouges",
-          "Gousses d'ail"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Ajoutez la pâte de curry et mélangez 30 secondes pour libérer les arômes. Versez le lait de coco et laissez mijoter 5 minutes.",
-        "ingredients": [
-          "Pâte de curry rouge ou jaune",
-          "Lait de coco"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Ajoutez les crevettes décortiquées et poursuivez la cuisson 2 minutes pour bien les réchauffer. Arrosez d'un filet de citron vert et servez avec le riz chaud.",
-        "ingredients": [
-          "Crevettes roses cuites décortiquées",
-          "Citron vert",
-          "Riz basmati"
-        ],
-        "timerMinutes": 2
-      }
-    ]
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "wraps-saumon-fume-fromage-frais-epinards",
@@ -10553,7 +10165,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "street",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "blanquette-poulet-express-champignons-riz",
@@ -10659,14 +10279,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 3
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "quiche-lorraine-traditionnelle-lardons",
     "title": "Quiche Lorraine Traditionnelle aux Lardons Fumés & Crème",
     "timeMinutes": 45,
     "tag": "Porc & Tradition",
-    "type": "porc",
+    "type": "viande",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Le grand classique indémodable : pâte brisée dorée pur beurre garnie de lardons fumés dorés et d'un appareil onctueux aux œufs frais et crème épaisse.",
@@ -10747,7 +10374,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": 32
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "pad-thai-poulet-cacahuetes-citron",
@@ -10845,304 +10480,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "blanquette-crevettes-poireaux-riz",
-    "title": "Blanquette Onctueuse de Crevettes aux Poireaux Fondants & Riz",
-    "timeMinutes": 25,
-    "tag": "Poisson & Raffiné",
-    "type": "poisson",
-    "season": "automne",
-    "isBudget": true,
-    "description": "Une revisite marine ultra gourmande : crevettes roses mijotées dans une sauce blanche parfumée avec fondue de poireaux, carottes et champignons émincés.",
-    "image": "https://static.jow.fr/550x550/recipes/64hFX400z7dksg.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Crevettes cuites décortiquées",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "poissonnerie"
-      },
-      {
-        "name": "Blancs de poireaux",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Carottes fraîches",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Champignons de Paris",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Riz blanc (basmati ou jasmin)",
-        "quantity": 280,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Crème fraîche liquide",
-        "quantity": 20,
-        "unit": "cl",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Bouillon (volaille ou légumes)",
-        "quantity": 1,
-        "unit": "cube",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Lavez les poireaux et carottes, coupez-les en fines rondelles. Émincez les champignons.",
-        "ingredients": [
-          "Blancs de poireaux",
-          "Carottes fraîches",
-          "Champignons de Paris"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une sauteuse avec une noisette de beurre, faites revenir les légumes 5 minutes à feu moyen.",
-        "ingredients": [
-          "Blancs de poireaux",
-          "Carottes fraîches",
-          "Champignons de Paris"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Versez 20 cl d'eau et émiettez le cube de bouillon. Couvrez et laissez mijoter à feu doux 15 minutes jusqu'à ce que les carottes soient tendres.",
-        "ingredients": [
-          "Bouillon (volaille ou légumes)"
-        ],
-        "timerMinutes": 15
-      },
-      {
-        "instruction": "Faites cuire le riz dans une casserole d'eau bouillante salée 10 minutes puis égouttez-le.",
-        "ingredients": [
-          "Riz blanc (basmati ou jasmin)"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Ajoutez la crème liquide et les crevettes décortiquées dans la sauteuse. Laissez chauffer 3 minutes à feu doux pour napper la sauce sans bouillir.",
-        "ingredients": [
-          "Crème fraîche liquide",
-          "Crevettes cuites décortiquées"
-        ],
-        "timerMinutes": 3
-      },
-      {
-        "instruction": "Dressez le riz chaud dans les assiettes, nappez de blanquette aux crevettes et poireaux, poivrez et servez.",
-        "ingredients": [
-          "Riz blanc (basmati ou jasmin)"
-        ],
-        "timerMinutes": null
-      }
-    ]
-  },
-  {
-    "id": "poulet-miel-haricots-verts-ail",
-    "title": "Émincé de Poulet Doré au Miel, Haricots Verts & Ail Rôti",
-    "timeMinutes": 20,
-    "tag": "Volaille & Express",
-    "type": "volaille",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Le repas sain et rapide par excellence : tendres morceaux de poulet caramélisés au miel et à l'ail, accompagnés d'une généreuse poêlée de haricots verts frais.",
-    "image": "https://static.jow.fr/550x550/recipes/tdd1337mDRrP7Q.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Filets de poulet frais",
-        "quantity": 500,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Haricots verts frais",
-        "quantity": 500,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Miel liquide",
-        "quantity": 2,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Gousses d'ail",
-        "quantity": 2,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Citrons jaunes",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      }
+    "seasons": [
+      "printemps"
     ],
-    "steps": [
-      {
-        "instruction": "Équeutez les haricots verts et plongez-les dans une casserole d'eau bouillante salée pendant 8 à 10 minutes jusqu'à ce qu'ils soient tendres mais encore croquants. Égouttez-les.",
-        "ingredients": [
-          "Haricots verts frais"
-        ],
-        "timerMinutes": 9
-      },
-      {
-        "instruction": "Pendant ce temps, coupez les filets de poulet en dés ou aiguillettes et émincez l'ail.",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Gousses d'ail"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une grande poêle avec un filet d'huile d'olive, faites dorer le poulet à feu vif pendant 5 minutes.",
-        "ingredients": [
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Baissez le feu, ajoutez l'ail émincé, le miel liquide et un filet de jus de citron. Laissez caraméliser 2 minutes en remuant bien.",
-        "ingredients": [
-          "Gousses d'ail",
-          "Miel liquide",
-          "Citrons jaunes"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Ajoutez les haricots verts dans la poêle pour les imprégner du jus caramélisé pendant 1 minute, salez, poivrez et servez aussitôt.",
-        "ingredients": [
-          "Haricots verts frais"
-        ],
-        "timerMinutes": 1
-      }
-    ]
-  },
-  {
-    "id": "burrito-boeuf-haricots-cheddar",
-    "title": "Burritos Chauds au Bœuf Haché Épicé, Haricots Rouges & Cheddar",
-    "timeMinutes": 25,
-    "tag": "Bœuf & Mexicain",
-    "type": "boeuf",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Des burritos mexicains généreux et fondants : bœuf pur bœuf mijoté avec haricots rouges et oignons, garni de cheddar fondant et crème dans des tortillas dorées.",
-    "image": "https://static.jow.fr/550x550/recipes/RGnMOZBlhPi8lw.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Bœuf haché frais (pur bœuf)",
-        "quantity": 450,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Galettes tortillas de blé",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Haricots rouges en boîte",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Cheddar ou emmental râpé",
-        "quantity": 100,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Oignons rouges",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Riz blanc (basmati ou jasmin)",
-        "quantity": 200,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 100,
-        "unit": "g",
-        "rayon": "cremerie"
-      }
+    "styles": [
+      "street",
+      "asiatique"
     ],
-    "steps": [
-      {
-        "instruction": "Faites cuire le riz dans une casserole d'eau bouillante salée 10 minutes puis égouttez-le.",
-        "ingredients": [
-          "Riz blanc (basmati ou jasmin)"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Émincez l'oignon rouge. Dans une poêle avec un filet d'huile, faites revenir l'oignon 2 minutes, puis ajoutez le bœuf haché, du sel, du poivre et une pointe de paprika ou cumin.",
-        "ingredients": [
-          "Oignons rouges",
-          "Bœuf haché frais (pur bœuf)"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Rincez et égouttez les haricots rouges, versez-les dans la poêle et laissez mijoter 3 minutes avec le bœuf.",
-        "ingredients": [
-          "Haricots rouges en boîte"
-        ],
-        "timerMinutes": 3
-      },
-      {
-        "instruction": "Chauffez les tortillas 30 secondes au micro-ondes ou à sec dans une poêle pour les assouplir.",
-        "ingredients": [
-          "Galettes tortillas de blé"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Garnissez le centre de chaque tortilla d'une cuillère de riz, du mélange bœuf et haricots chauds, d'une cuillère de crème fraîche et de cheddar râpé.",
-        "ingredients": [
-          "Riz blanc (basmati ou jasmin)",
-          "Crème fraîche épaisse",
-          "Cheddar ou emmental râpé"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Rabattez les côtés et roulez fermement les burritos. Toastez-les 1 minute sur chaque face dans une poêle chaude pour faire fondre le fromage. Dégustez !",
-        "ingredients": [],
-        "timerMinutes": 2
-      }
-    ]
+    "gamelle": true
   },
   {
     "id": "quesadillas-dorees-boeuf-fromage",
     "title": "Quesadillas Croustillantes au Bœuf Épicé & Fromage Fondant",
     "timeMinutes": 15,
     "tag": "Bœuf & Express",
-    "type": "boeuf",
+    "type": "viande",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Le régal express crousti-fondant : tortillas pliées en demi-lune dorées à la poêle, farcies de bœuf savoureux mijoté à la tomate et de fromage très filant.",
@@ -11227,7 +10580,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": false
   },
   {
     "id": "crevettes-miel-sesame-riz-jasmin",
@@ -11331,97 +10692,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "gnocchis-poeles-tomates-mozzarella",
-    "title": "Gnocchis Poêlés Croustillants aux Tomates Douces & Mozzarella",
-    "timeMinutes": 15,
-    "tag": "Végétarien & Express",
-    "type": "vegetarien",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "La poêlée italienne minute qui plaît à tous : gnocchis crousti-moelleux dorés au beurre, tomates cerises confites à l'ail, mozzarella fondante et basilic frais.",
-    "image": "https://static.jow.fr/550x550/recipes/83DqXt70id.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Gnocchis à poêler",
-        "quantity": 500,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Tomates cerises fraîches",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Mozzarella (boule ou râpée)",
-        "quantity": 125,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Salade verte (mâche ou roquette)",
-        "quantity": 1,
-        "unit": "sachet",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Gousses d'ail",
-        "quantity": 1,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Basilic frais",
-        "quantity": 1,
-        "unit": "bouquet",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Lavez les tomates cerises et coupez-les en deux. Hachez la gousse d'ail.",
-        "ingredients": [
-          "Tomates cerises fraîches",
-          "Gousses d'ail"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une grande poêle avec une belle noisette de beurre et un filet d'huile d'olive, faites dorer les gnocchis à feu moyen pendant 6 à 7 minutes en remuant régulièrement jusqu'à ce qu'ils soient bien dorés et croustillants.",
-        "ingredients": [
-          "Gnocchis à poêler"
-        ],
-        "timerMinutes": 7
-      },
-      {
-        "instruction": "Ajoutez les demi-tomates cerises et l'ail dans la poêle. Poursuivez la cuisson 3 minutes pour qu'elles compotent légèrement.",
-        "ingredients": [
-          "Tomates cerises fraîches",
-          "Gousses d'ail"
-        ],
-        "timerMinutes": 3
-      },
-      {
-        "instruction": "Hors du feu, émiettez la mozzarella par-dessus et parsemez de feuilles de basilic frais ciselées. La mozzarella fond doucement avec la chaleur.",
-        "ingredients": [
-          "Mozzarella (boule ou râpée)",
-          "Basilic frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Servez aussitôt avec quelques feuilles de roquette ou salade verte assaisonnée.",
-        "ingredients": [
-          "Salade verte (mâche ou roquette)"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "poke-bowl-saumon-avocat-sesame",
@@ -11512,7 +10791,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "gratin-dauphinois-traditionnel",
@@ -11604,14 +10892,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 45
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-alfredo-au-poulet-dore",
     "title": "Pâtes Alfredo Crémeuses au Poulet Doré, Ail & Parmesan AOP",
     "timeMinutes": 15,
     "tag": "Pâtes Gourmandes",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "L'iconique recette italo-américaine aux 180 000 likes : de généreuses tagliatelles enrobées d'une sauce crémeuse liée au parmesan râpé, surmontées d'émincés de blanc de poulet dorés à l'ail.",
@@ -11688,7 +10984,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "lasagnes-saumon-et-epinards",
@@ -11796,14 +11102,23 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 30
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "cordon-bleu-croustillant-puree-maison",
     "title": "Cordon Bleu Maison Pané Croustillant & Purée Mousseline au Beurre",
     "timeMinutes": 25,
     "tag": "Classique Bistrot",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Le plaisir régressif suprême fait maison : escalopes de poulet garnies de jambon blanc et d'emmental coulant, panées dorées à la poêle et servies avec une vraie purée maison onctueuse.",
@@ -11907,7 +11222,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "salade-de-chevre-chaud-et-miel",
@@ -12007,7 +11330,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "terroir",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "chili-sin-carne-mexicain",
@@ -12114,118 +11446,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "pad-thai-aux-crevettes",
-    "title": "Pad Thaï Express aux Crevettes Dorées, Nouilles de Riz & Cacahuètes",
-    "timeMinutes": 15,
-    "tag": "Asiatique & Wok",
-    "type": "poisson",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Le roi de la street food thaïlandaise en version 15 minutes chrono : crevettes sautées, nouilles de riz plates enrobées d'une sauce aigre-douce au soja, germes de soja croquants et cacahuètes pilées.",
-    "image": "https://static.jow.fr/550x550/recipes/OqYMAdMnVIxUag.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Crevettes cuites décortiquées",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "poissonnerie"
-      },
-      {
-        "name": "Nouilles de riz",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Pousses de soja (germes de haricots mungo)",
-        "quantity": 200,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Gousses d'ail",
-        "quantity": 2,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Sauce soja salée",
-        "quantity": 4,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Beurre de cacahuète pur",
-        "quantity": 2,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Citrons verts",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Cacahuètes grillées non salées",
-        "quantity": 30,
-        "unit": "g",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Faites cuire les nouilles de riz dans une grande casserole d'eau bouillante pendant 4 à 5 minutes (selon l'emballage), puis égouttez-les et rincez-les rapidement à l'eau froide pour stopper la cuisson.",
-        "ingredients": [
-          "Nouilles de riz"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Préparez la sauce Pad Thaï dans un bol : fouettez la sauce soja avec le beurre de cacahuète, le jus du citron vert et 2 cuillères à soupe d'eau chaude jusqu'à obtenir une émulsion homogène.",
-        "ingredients": [
-          "Sauce soja salée",
-          "Beurre de cacahuète pur",
-          "Citrons verts"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile dans un wok ou une grande poêle à feu vif. Ajoutez l'ail émincé et les crevettes, puis faites sauter pendant 2 minutes jusqu'à belle coloration dorée.",
-        "ingredients": [
-          "Gousses d'ail",
-          "Crevettes cuites décortiquées"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Baissez le feu à moyen, versez les nouilles égouttées et la sauce au beurre de cacahuète dans la poêle. Mélangez vivement à l'aide d'une pince pour enrober toutes les nouilles.",
-        "ingredients": [
-          "Nouilles de riz",
-          "Crevettes cuites décortiquées"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Incorporez les pousses de soja au dernier moment et faites sauter encore 1 minute pour qu'elles restent bien croquantes.",
-        "ingredients": [
-          "Pousses de soja (germes de haricots mungo)"
-        ],
-        "timerMinutes": 1
-      },
-      {
-        "instruction": "Dressez dans 4 assiettes creuses, parsemez de cacahuètes grossièrement concassées et d'un quartier de citron vert. Dégustez bien chaud !",
-        "ingredients": [
-          "Cacahuètes grillées non salées",
-          "Citrons verts"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "mexicain"
+    ],
+    "gamelle": true
   },
   {
     "id": "soupe-veloutee-butternut-coco",
@@ -12323,7 +11551,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "croque-monsieur-fondant-poireaux",
@@ -12430,14 +11666,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 10
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "street"
+    ],
+    "gamelle": false
   },
   {
     "id": "curry-de-boeuf-thai-au-coco",
     "title": "Curry de Bœuf Thaï Mijoté au Lait de Coco, Carottes & Pommes de Terre",
     "timeMinutes": 25,
     "tag": "Asiatique & Wok",
-    "type": "boeuf",
+    "type": "viande",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Un curry thaï parfumé et réconfortant : bœuf haché frais mijoté avec des dés de carottes et pommes de terre dans un bouillon épicé lié au lait de coco, sauce soja et zeste de citron vert.",
@@ -12548,7 +11792,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "asiatique",
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-chou-fleur-lentilles-riz",
@@ -12647,7 +11900,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "soupe-a-l-oignon-gratinee",
@@ -12744,114 +12005,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 7
       }
-    ]
-  },
-  {
-    "id": "parmentier-de-canard-patates-douces",
-    "title": "Parmentier de Confit de Canard Effiloché & Purée de Patates Douces",
-    "timeMinutes": 30,
-    "tag": "Tradition & Four",
-    "type": "poulet",
-    "season": "hiver",
-    "isBudget": false,
-    "description": "Le mariage parfait sucré-salé du terroir : cuisses de canard confites effilochées revenues avec des échalotes, surmontées d'un écrasé soyeux de patates douces gratiné à la chapelure.",
-    "image": "https://static.jow.fr/550x550/recipes/0BxcSy95nRbHzQ.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Cuisses de canard confites",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Patates douces",
-        "quantity": 800,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Échalotes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Lait (demi-écrémé ou entier)",
-        "quantity": 20,
-        "unit": "cl",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Beurre (doux ou demi-sel)",
-        "quantity": 30,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Chapelure fine (ou panko)",
-        "quantity": 40,
-        "unit": "g",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Préchauffez le four à 210°C. Épluchez les patates douces, coupez-les en morceaux et faites-les cuire 15 minutes dans une casserole d'eau bouillante salée.",
-        "ingredients": [
-          "Patates douces"
-        ],
-        "timerMinutes": 15
-      },
-      {
-        "instruction": "Pendant ce temps, émincez les échalotes. Réchauffez les cuisses de canard 2 minutes pour faire fondre la graisse, puis effilochez la chair à la fourchette en retirant peau et os.",
-        "ingredients": [
-          "Échalotes",
-          "Cuisses de canard confites"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Dans une poêle avec une cuillère de graisse de canard, faites suer les échalotes 3 minutes puis mélangez-y la chair de canard effilochée. Poivrez bien.",
-        "ingredients": [
-          "Échalotes",
-          "Cuisses de canard confites"
-        ],
-        "timerMinutes": 3
-      },
-      {
-        "instruction": "Égouttez les patates douces et écrasez-les au presse-purée avec le lait chaud et le beurre. Salez, poivrez et ajoutez une pointe de muscade.",
-        "ingredients": [
-          "Patates douces",
-          "Lait (demi-écrémé ou entier)",
-          "Beurre (doux ou demi-sel)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans un plat à gratin, déposez le canard aux échalotes dans le fond. Recouvrez avec la purée de patates douces et saupoudrez de chapelure.",
-        "ingredients": [
-          "Cuisses de canard confites",
-          "Patates douces",
-          "Chapelure fine (ou panko)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Enfournez pendant 15 minutes à 210°C jusqu'à belle coloration dorée et croustillante. Servez avec une salade verte assaisonnée.",
-        "ingredients": [
-          "Chapelure fine (ou panko)"
-        ],
-        "timerMinutes": 15
-      }
-    ]
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "gnocchis-bolognaise-express",
     "title": "Gnocchis Croustillants Poêlés à la Bolognaise Pur Bœuf & Parmesan",
     "timeMinutes": 15,
     "tag": "Plats du Soir",
-    "type": "boeuf",
+    "type": "viande",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Un dîner express prêt en 15 minutes chrono : gnocchis dorés à la poêle avec du beurre, enrobés d'une sauce bolognaise savoureuse au bœuf haché, échalote et coulis de tomate, saupoudrés de parmesan.",
@@ -12934,221 +12102,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "lasagnes-courgette-ricotta-fondantes",
-    "title": "Lasagnes Végétariennes Fondantes aux Courgettes, Ricotta & Mozzarella",
-    "timeMinutes": 45,
-    "tag": "Pâtes Gourmandes",
-    "type": "vege",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Un grand plat familial tout en douceur et légèreté : lamelles de courgettes rôties, crème onctueuse de ricotta fraîche au basilic et feuilles de lasagnes gratinées à la mozzarella filante.",
-    "image": "https://static.jow.fr/550x550/recipes/fDKcBVKAM7ZvuA.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Plaques de lasagne aux œufs",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Courgettes fraîches",
-        "quantity": 3,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Ricotta fraîche",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Mozzarella (boule ou râpée)",
-        "quantity": 125,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Gousses d'ail",
-        "quantity": 2,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Parmesan AOP râpé",
-        "quantity": 50,
-        "unit": "g",
-        "rayon": "cremerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Préchauffez le four à 180°C. Lavez les courgettes et coupez-les en fines rondelles à la mandoline.",
-        "ingredients": [
-          "Courgettes fraîches"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une grande poêle avec un filet d'huile d'olive, faites sauter les rondelles de courgettes avec l'ail émincé pendant 6 minutes jusqu'à ce qu'elles soient tendres.",
-        "ingredients": [
-          "Courgettes fraîches",
-          "Gousses d'ail"
-        ],
-        "timerMinutes": 6
-      },
-      {
-        "instruction": "Dans un bol, détendez la ricotta avec 3 cuillères d'eau chaude, du sel, du poivre et la moitié du parmesan pour former une crème onctueuse.",
-        "ingredients": [
-          "Ricotta fraîche",
-          "Parmesan AOP râpé"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans un plat à gratin huilé, disposez une couche de feuilles de lasagnes, une couche de courgettes dorées et nappez de ricotta. Répétez l'opération sur deux couches.",
-        "ingredients": [
-          "Plaques de lasagne aux œufs",
-          "Courgettes fraîches",
-          "Ricotta fraîche"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Terminez par une couche de lasagnes, le reste de ricotta, la mozzarella coupée en tranches et le reste de parmesan râpé.",
-        "ingredients": [
-          "Plaques de lasagne aux œufs",
-          "Mozzarella (boule ou râpée)",
-          "Parmesan AOP râpé"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Enfournez pendant 30 minutes à 180°C jusqu'à ce que les lasagnes soient bien dorées et fondantes sous la lame du couteau.",
-        "ingredients": [
-          "Mozzarella (boule ou râpée)"
-        ],
-        "timerMinutes": 30
-      }
-    ]
-  },
-  {
-    "id": "curry-d-aubergines-fondant-coco",
-    "title": "Curry Onctueux d'Aubergines Fondantes au Lait de Coco & Coriandre",
-    "timeMinutes": 25,
-    "tag": "Épicé & Végétarien",
-    "type": "vege",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Un ragoût végétarien parfumé et fondant en bouche : dés d'aubergines bien dorés à l'huile d'olive puis mijotés dans une sauce soyeuse au lait de coco, curry et tomate, servis avec du riz basmati.",
-    "image": "https://static.jow.fr/550x550/recipes/HqLvSCl2NQ.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Aubergines fraîches",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Lait de coco",
-        "quantity": 30,
-        "unit": "cl",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Tomates concassées / Coulis",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Gousses d'ail",
-        "quantity": 2,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Pâte ou poudre de curry doux",
-        "quantity": 2,
-        "unit": "c. à café",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Riz blanc (basmati ou jasmin)",
-        "quantity": 280,
-        "unit": "g",
-        "rayon": "epicerie"
-      }
+    "seasons": [
+      "ete"
     ],
-    "steps": [
-      {
-        "instruction": "Lancez la cuisson du riz basmati dans une casserole d'eau bouillante salée pendant 10 minutes, puis égouttez et réservez.",
-        "ingredients": [
-          "Riz blanc (basmati ou jasmin)"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Lavez les aubergines et taillez-les en cubes de 2 cm. Épluchez et émincez l'oignon et les gousses d'ail.",
-        "ingredients": [
-          "Aubergines fraîches",
-          "Oignons jaunes",
-          "Gousses d'ail"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une sauteuse chaude avec un généreux filet d'huile d'olive, faites dorer les cubes d'aubergines et l'oignon pendant 8 minutes à feu moyen-vif en remuant souvent.",
-        "ingredients": [
-          "Aubergines fraîches",
-          "Oignons jaunes"
-        ],
-        "timerMinutes": 8
-      },
-      {
-        "instruction": "Ajoutez l'ail haché et la pâte de curry, faites torréfier 1 minute. Versez la pulpe de tomate et le lait de coco. Salez et poivrez.",
-        "ingredients": [
-          "Gousses d'ail",
-          "Pâte ou poudre de curry doux",
-          "Tomates concassées / Coulis",
-          "Lait de coco"
-        ],
-        "timerMinutes": 1
-      },
-      {
-        "instruction": "Couvrez et laissez compoter 15 minutes à feu doux jusqu'à ce que les aubergines soient ultra fondantes et confites.",
-        "ingredients": [
-          "Aubergines fraîches",
-          "Lait de coco"
-        ],
-        "timerMinutes": 15
-      },
-      {
-        "instruction": "Servez chaud dans des assiettes creuses avec le riz basmati parfumé.",
-        "ingredients": [
-          "Riz blanc (basmati ou jasmin)"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "styles": [
+      "italien"
+    ],
+    "gamelle": false
   },
   {
     "id": "poulet-satay-sauce-cacahuete",
     "title": "Émincé de Poulet Satay Doré, Sauce Cacahuète Onctueuse & Riz Jasmin",
     "timeMinutes": 20,
     "tag": "Asiatique & Wok",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "L'incroyable recette balinaise aux 80 000 likes : morceaux de filets de poulet dorés à la poêle, nappés d'une sauce veloutée au beurre de cacahuète, lait de coco et sauce soja salée.",
@@ -13247,7 +12215,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "crumble-courgettes-chevre-pesto",
@@ -13338,7 +12315,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 20
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "gratin-de-pates-au-thon-coulis",
@@ -13422,98 +12408,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 15
       }
-    ]
-  },
-  {
-    "id": "salade-de-pates-jambon-cru-petits-pois",
-    "title": "Salade de Pâtes à l'Italienne : Chiffonnade de Jambon Cru, Petits Pois & Parmesan",
-    "timeMinutes": 15,
-    "tag": "Salades & Légèreté",
-    "type": "porc",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "La salade repas idéale pour la gamelle du midi : fusilli al dente, petits pois croquants, chiffonnade de jambon cru et copeaux de parmesan, relevée d'un filet d'huile d'olive citronnée.",
-    "image": "https://static.jow.fr/550x550/recipes/140tfaBK7AhBvg.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
-        "quantity": 350,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Jambon blanc supérieur",
-        "quantity": 4,
-        "unit": "tranche",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Petits pois frais (ou surgelés)",
-        "quantity": 200,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Parmesan AOP râpé",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Huile d'olive vierge extra",
-        "quantity": 3,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Citrons jaunes",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Faites cuire les pâtes dans une grande casserole d'eau bouillante salée. Ajoutez les petits pois 3 minutes avant la fin de cuisson des pâtes.",
-        "ingredients": [
-          "Pâtes de blé (penne, fusilli ou coquillettes)",
-          "Petits pois frais (ou surgelés)"
-        ],
-        "timerMinutes": 8
-      },
-      {
-        "instruction": "Égouttez les pâtes et les petits pois, puis passez-les sous l'eau froide pour stopper la cuisson et les refroidir rapidement.",
-        "ingredients": [
-          "Pâtes de blé (penne, fusilli ou coquillettes)",
-          "Petits pois frais (ou surgelés)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Découpez les tranches de jambon en lanières ou chiffonnade.",
-        "ingredients": [
-          "Jambon blanc supérieur"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans un grand saladier, réunissez les pâtes, les petits pois et le jambon. Arrosez d'huile d'olive et du jus de citron frais. Salez et poivrez.",
-        "ingredients": [
-          "Jambon blanc supérieur",
-          "Huile d'olive vierge extra",
-          "Citrons jaunes"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Parsemez de copeaux de parmesan râpé au moment de servir. Parfait pour déguster frais le soir ou dans la boîte à lunch !",
-        "ingredients": [
-          "Parmesan AOP râpé"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "saumon-roti-four-ail-citron",
@@ -13605,14 +12509,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "frittata-champignons-poitrine-fumee",
     "title": "Frittata Moelleuse aux Champignons de Paris, Poitrine Fumée & Comté",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "porc",
+    "type": "viande",
     "season": "toute_saison",
     "isBudget": true,
     "description": "L'omelette épaisse à l'italienne cuite à la poêle puis dorée au four : œufs battus avec un trait de crème, champignons dorés, lardons fumés croustillants et fromage fondu.",
@@ -13699,103 +12610,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 4
       }
-    ]
-  },
-  {
-    "id": "tarte-fine-tomates-moutarde-pesto",
-    "title": "Tarte Fine Croustillante aux Tomates, Moutarde à l'Ancienne & Pesto Verde",
-    "timeMinutes": 30,
-    "tag": "Tradition & Four",
-    "type": "vege",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "La tarte du soir croustillante et parfumée : pâte feuilletée pur beurre badigeonnée de moutarde à l'ancienne et pesto verde, garnie de rondelles de tomates fraîches et mozzarella fondue.",
-    "image": "https://static.jow.fr/550x550/recipes/bqiPGm6LrF5iBA.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Pâte à tarte (feuilletée ou brisée)",
-        "quantity": 1,
-        "unit": "piece",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Tomates fraîches",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Moutarde à l'ancienne ou Dijon",
-        "quantity": 2,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Pesto alla genovese (pot)",
-        "quantity": 3,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Mozzarella (boule ou râpée)",
-        "quantity": 125,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Salade verte (mâche ou roquette)",
-        "quantity": 1,
-        "unit": "sachet",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Préchauffez le four à 200°C. Déroulez la pâte feuilletée sur une plaque de four et piquez le fond à la fourchette.",
-        "ingredients": [
-          "Pâte à tarte (feuilletée ou brisée)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Tartinez uniformément le fond de tarte avec la moutarde à l'ancienne puis étalez le pesto verde par-dessus.",
-        "ingredients": [
-          "Moutarde à l'ancienne ou Dijon",
-          "Pesto alla genovese (pot)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Lavez les tomates et coupez-les en rondelles régulières. Disposez-les harmonieusement en rosace sur le fond de tarte. Salez et poivrez.",
-        "ingredients": [
-          "Tomates fraîches"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Égouttez la mozzarella, déchirez-la en morceaux et répartissez-la entre les tomates.",
-        "ingredients": [
-          "Mozzarella (boule ou râpée)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Enfournez pour 22 minutes à 200°C jusqu'à ce que la pâte soit bien dorée et croustillante sur les bords. Servez tiède avec une salade verte !",
-        "ingredients": [
-          "Pâte à tarte (feuilletée ou brisée)",
-          "Salade verte (mâche ou roquette)"
-        ],
-        "timerMinutes": 22
-      }
-    ]
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "quesadillas-poulet-dore-cheddar",
     "title": "Quesadillas Croustillantes au Poulet Mariné, Poivrons & Fromage Fondu",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Le festin tex-mex croustillant et ultra convivial : tortillas toastées à la poêle garnies de poulet émincé aux épices, dés de poivrons fondants et double dose de fromage filant.",
@@ -13875,7 +12705,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": false
   },
   {
     "id": "rouleaux-de-printemps-crevettes-fraiches",
@@ -13975,14 +12813,23 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "one-pan-tacos-boeuf-poivrons",
     "title": "One Pan Tacos de Bœuf Épicé, Poivrons & Haricots Noirs",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "boeuf",
+    "type": "viande",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Tout cuit dans une seule poêle : bœuf haché revenu avec oignons, lanières de poivrons, haricots noirs et épices mexicaines, nappé de cheddar coulant et dégusté avec tortillas croustillantes.",
@@ -14065,97 +12912,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
-  },
-  {
-    "id": "veloute-champignons-parmesan",
-    "title": "Velouté Onctueux de Champignons de Paris, Crème & Parmesan AOP",
-    "timeMinutes": 20,
-    "tag": "Soupes & Veloutés",
-    "type": "vege",
-    "season": "automne",
-    "isBudget": true,
-    "description": "Un velouté d'automne soyeux et raffiné : champignons de Paris frais dorés au beurre et à l'échalote, mijotés dans un bouillon léger, mixés avec de la crème fraîche et relevés de copeaux de parmesan.",
-    "image": "https://static.jow.fr/550x550/recipes/Ecvqxzaj7B.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Champignons de Paris frais",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Échalotes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Crème fraîche (épaisse ou liquide)",
-        "quantity": 150,
-        "unit": "ml",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Parmesan AOP râpé",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Beurre (doux ou demi-sel)",
-        "quantity": 20,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Bouillon (volaille ou légumes)",
-        "quantity": 600,
-        "unit": "ml",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Nettoyez et émincez les champignons de Paris. Épluchez et émincez les échalotes.",
-        "ingredients": [
-          "Champignons de Paris frais",
-          "Échalotes"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une casserole à feu moyen avec le beurre, faites suer les échalotes 2 minutes, puis ajoutez les champignons et faites dorer 6 minutes en remuant.",
-        "ingredients": [
-          "Échalotes",
-          "Beurre (doux ou demi-sel)",
-          "Champignons de Paris frais"
-        ],
-        "timerMinutes": 6
-      },
-      {
-        "instruction": "Versez le bouillon chaud à niveau, portez à ébullition, couvrez et laissez cuire 10 minutes à feu doux.",
-        "ingredients": [
-          "Bouillon (volaille ou légumes)"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Ajoutez la crème fraîche, salez, poivrez et mixez finement au mixeur plongeant jusqu'à obtenir un velouté parfait.",
-        "ingredients": [
-          "Crème fraîche (épaisse ou liquide)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Servez dans des assiettes creuses et parsemez généreusement de parmesan râpé sur le dessus.",
-        "ingredients": [
-          "Parmesan AOP râpé"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": false
   },
   {
     "id": "burger-avocat-saumon-frais",
@@ -14246,209 +13011,23 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "boulettes-poulet-thai-gingembre-coco",
-    "title": "Boulettes Maison de Poulet Façon Thaï, Lait de Coco & Nouilles de Blé",
-    "timeMinutes": 20,
-    "tag": "Asiatique & Wok",
-    "type": "poulet",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "De savoureuses boulettes de poulet maison parfumées à l'ail et au gingembre, saisies à la poêle puis enrobées d'une sauce veloutée coco-curry vert, servies sur un lit de nouilles asiatiques.",
-    "image": "https://static.jow.fr/550x550/recipes/oJoFM8XF0jaLqg.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Filets de poulet frais",
-        "quantity": 500,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Nouilles asiatiques (blé ou soba)",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Lait de coco",
-        "quantity": 25,
-        "unit": "cl",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Pâte ou poudre de curry doux",
-        "quantity": 2,
-        "unit": "c. à café",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Sauce soja sucrée",
-        "quantity": 3,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Gousses d'ail",
-        "quantity": 2,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Citrons verts",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Faites cuire les nouilles dans de l'eau bouillante pendant 4 minutes, égouttez et réservez.",
-        "ingredients": [
-          "Nouilles asiatiques (blé ou soba)"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Hachez le poulet au couteau ou au robot avec l'ail, du sel et du poivre. Façonnez environ 12 à 16 petites boulettes avec des mains légèrement huilées.",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Gousses d'ail"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Dans une grande poêle avec un filet d'huile à feu moyen-vif, faites dorer les boulettes pendant 6 minutes en les retournant régulièrement.",
-        "ingredients": [
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": 6
-      },
-      {
-        "instruction": "Déglacez avec la sauce soja sucrée, ajoutez la pâte de curry et versez le lait de coco. Baissez le feu, couvrez et laissez mijoter 5 minutes jusqu'à ce que la sauce soit liée.",
-        "ingredients": [
-          "Sauce soja sucrée",
-          "Pâte ou poudre de curry doux",
-          "Lait de coco"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Dressez les nouilles au fond des bols, disposez les boulettes et nappez généreusement de sauce coco au citron vert.",
-        "ingredients": [
-          "Nouilles asiatiques (blé ou soba)",
-          "Citrons verts"
-        ],
-        "timerMinutes": null
-      }
-    ]
-  },
-  {
-    "id": "risotto-cremeux-crevettes-chorizo",
-    "title": "Risotto Crémeux aux Crevettes Sautées, Dés de Chorizo & Parmesan",
-    "timeMinutes": 25,
-    "tag": "Tradition & Four",
-    "type": "poisson",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "L'alliance terre-mer parfaite dans un risotto onctueux : riz arborio nacré et mijoté au vin blanc et bouillon, lié au parmesan et garni de crevettes roses sautées et petits dés de chorizo croustillants.",
-    "image": "https://static.jow.fr/550x550/recipes/Tv6NA5tiOWPpjg.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Riz à risotto (Arborio ou Carnaroli)",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Crevettes cuites décortiquées",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "poissonnerie"
-      },
-      {
-        "name": "Chorizo en tranches",
-        "quantity": 100,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Échalotes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Parmesan AOP râpé",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Bouillon (volaille ou légumes)",
-        "quantity": 800,
-        "unit": "ml",
-        "rayon": "epicerie"
-      }
+    "seasons": [
+      "printemps",
+      "ete"
     ],
-    "steps": [
-      {
-        "instruction": "Épluchez et émincez les échalotes. Coupez le chorizo en petits dés.",
-        "ingredients": [
-          "Échalotes",
-          "Chorizo en tranches"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une grande sauteuse, faites dorer le chorizo 2 minutes sans matière grasse pour libérer son huile parfumée. Retirez la moitié du chorizo pour le dressage.",
-        "ingredients": [
-          "Chorizo en tranches"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Ajoutez les échalotes et le riz arborio dans la sauteuse. Faites nacrer le riz 2 minutes en remuant jusqu'à ce que les grains soient translucides.",
-        "ingredients": [
-          "Échalotes",
-          "Riz à risotto (Arborio ou Carnaroli)"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Versez une louche de bouillon chaud sur le riz. Laissez absorber en remuant, puis ajoutez le reste de bouillon louche par louche pendant environ 18 minutes.",
-        "ingredients": [
-          "Bouillon (volaille ou légumes)",
-          "Riz à risotto (Arborio ou Carnaroli)"
-        ],
-        "timerMinutes": 18
-      },
-      {
-        "instruction": "Hors du feu, incorporez les crevettes roses, le parmesan râpé et un tour de moulin à poivre. Couvrez 2 minutes pour réchauffer les crevettes et faire fondre le fromage.",
-        "ingredients": [
-          "Crevettes cuites décortiquées",
-          "Parmesan AOP râpé"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Dressez dans 4 assiettes creuses et parsemez des dés de chorizo croustillants réservés.",
-        "ingredients": [
-          "Chorizo en tranches"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "styles": [
+      "street",
+      "frais"
+    ],
+    "gamelle": false
   },
   {
     "id": "poulet-sauce-moutarde-a-l-ancienne",
     "title": "Émincé de Poulet Doré à la Crème de Moutarde à l'Ancienne & Champignons",
     "timeMinutes": 20,
     "tag": "Tradition & Four",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "La recette culte aux 196 000 likes : émincé de filets de poulet doré à la poêle avec champignons de Paris et oignons, nappé d'une sauce veloutée à la moutarde à l'ancienne et crème fraîche.",
@@ -14539,7 +13118,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "pancakes-de-courgettes-au-parmesan",
@@ -14636,14 +13222,23 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-imperial-poivrons-cajou",
     "title": "Poulet Impérial Façon Wok aux Poivrons, Soja & Noix de Cajou",
     "timeMinutes": 20,
     "tag": "Asiatique & Wok",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Le fameux Kung Pao chicken asiatique : dés de poulet marinés à la sauce soja, sautés au wok à feu vif avec poivrons croquants, oignons et généreuse poignée de noix de cajou dorées.",
@@ -14740,14 +13335,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-laque-miel-haricots-verts",
     "title": "Émincé de Poulet Laqué au Miel Doré, Haricots Verts & Ail Rôti",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Une assiette équilibrée et savoureuse aux 120 000 likes : émincé de poulet doré caramélisé au miel toutes fleurs et sauce soja, accompagné de haricots verts frais croquants revenus à l'ail.",
@@ -14831,14 +13434,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "asiatique",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "spaghetti-cremeuses-poulet-citron",
     "title": "Spaghetti Crémeuses au Poulet Doré, Citron Jaune & Pousses d'Épinards",
     "timeMinutes": 15,
     "tag": "Pâtes Gourmandes",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "La fraîcheur italienne à son apogée : de généreuses spaghetti nappées d'une sauce veloutée au zeste de citron jaune, parmesan et crème, garnies d'émincé de poulet et pousses d'épinards.",
@@ -14921,14 +13532,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "tacos-verde-au-poulet",
     "title": "Tacos Verde Moelleux au Poulet Épicé, Poivrons & Cheddar Fondant",
     "timeMinutes": 15,
     "tag": "Plats du Soir",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Une pépite mexicaine aux 33 000 likes : tortillas garnies d'émincé de poulet doré aux épices mexicaines, poivrons verts fondants, sucrine fraîche et cheddar fondant.",
@@ -15032,14 +13650,23 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": false
   },
   {
     "id": "poulet-a-la-toscane-ail-epinards",
     "title": "Poulet Doré à la Toscane : Crème d'Ail, Tomates Séchées & Épinards",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Un immense classique toscan réconfortant : blancs de poulet rissolés dans une sauce crémée au parmesan, parfumée à l'ail, tomates séchées et jeunes pousses d'épinards fondantes.",
@@ -15128,14 +13755,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-poelee-legumes-curry",
     "title": "Poêlée Dorée de Poulet aux Légumes Fondants au Curry Doux",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Le plat complet rapide et plein de saveurs : émincé de poulet doré sauté à la poêle avec courgettes, carottes et oignons émincés, enrobé d'une sauce parfumée au curry doux.",
@@ -15220,14 +13855,22 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 3
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "puree-maison-poulet-a-la-creme",
     "title": "Filets de Poulet Sautés à la Crème & Purée Mousseline Maison au Beurre",
     "timeMinutes": 25,
     "tag": "Classique Bistrot",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Le réconfort absolu de la cuisine familiale : émincés de poulet dorés à la poêle et nappés d'une sauce crémée, accompagnés d'une vraie purée de pommes de terre maison fondante au beurre.",
@@ -15311,14 +13954,23 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "saute-dinde-libanaise-yaourt",
     "title": "Sauté de Dinde Parfumé à la Libanaise, Sauce Yaourt Frais & Riz",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Saveurs orientales et légèreté : morceaux d'escalopes de dinde marinés au cumin et paprika, dorés à la poêle et servis avec un riz chaud et une sauce fraîche au yaourt et ail.",
@@ -15402,106 +14054,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "poulet-citron-olives-couscous",
-    "title": "Mijoté de Poulet au Citron Confit, Olives Vertes & Semoule Moelleuse",
-    "timeMinutes": 25,
-    "tag": "Plats du Soir",
-    "type": "poulet",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Une invitation aux saveurs méditerranéennes : morceaux de poulet mijotés dans une sauce citronnée parfumée aux olives vertes et oignons fondants, servis sur un lit de semoule égrainée.",
-    "image": "https://static.jow.fr/550x550/recipes/3Z770u7ia0E0SQ.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Filets de poulet frais",
-        "quantity": 500,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Quinoa ou semoule complète",
-        "quantity": 280,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Olives (noires ou vertes)",
-        "quantity": 100,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Citrons jaunes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Cumin en poudre",
-        "quantity": 1,
-        "unit": "c. à café",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Épluchez et émincez l'oignon. Coupez le poulet en gros cubes.",
-        "ingredients": [
-          "Oignons jaunes",
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une sauteuse avec un filet d'huile d'olive, faites dorer le poulet et les oignons 5 minutes à feu moyen-vif.",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Oignons jaunes"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Ajoutez le cumin, les olives vertes, le jus d'un citron et un demi-verre d'eau. Couvrez et laissez mijoter 12 minutes à feu doux.",
-        "ingredients": [
-          "Cumin en poudre",
-          "Olives (noires ou vertes)",
-          "Citrons jaunes"
-        ],
-        "timerMinutes": 12
-      },
-      {
-        "instruction": "Pendant ce temps, préparez la semoule : versez le même volume d'eau bouillante salée sur la semoule dans un saladier, couvrez 5 minutes et égrainez à la fourchette avec un filet d'huile d'olive.",
-        "ingredients": [
-          "Quinoa ou semoule complète"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Dressez la semoule dans les assiettes et nappez avec le poulet mijoté aux olives et sa sauce au citron.",
-        "ingredients": [
-          "Quinoa ou semoule complète",
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-tandoori-riz-parfume",
     "title": "Poulet Tandoori Mariné aux Épices Indiennes & Riz Basmati Parfumé",
     "timeMinutes": 20,
     "tag": "Épicé & Végétarien",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Toutes les couleurs et parfums de l'Inde : morceaux de poulet enrobés d'épices tandoori et yaourt, rôtis à la poêle pour une viande ultra tendre et juteuse, accompagnés de riz basmati.",
@@ -15586,14 +14153,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-saute-gingembre-noix-cajou",
     "title": "Sauté Wok de Poulet au Gingembre Frais, Soja & Noix de Cajou",
     "timeMinutes": 20,
     "tag": "Asiatique & Wok",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Le croquant et l'énergie du wok : émincé de poulet sauté minute avec gingembre râpé, oignons nouveaux et sauce soja, parsemé de noix de cajou croustillantes et servi sur riz tiède.",
@@ -15685,14 +14259,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "bouillon-pappardelle-poulet-fondant",
     "title": "Bouillon Réconfortant de Poulet Effiloché, Pappardelle & Petits Légumes",
     "timeMinutes": 25,
     "tag": "Soupes & Veloutés",
-    "type": "poulet",
+    "type": "volaille",
     "season": "hiver",
     "isBudget": true,
     "description": "Le remède d'hiver le plus réconfortant : larges rubans de pappardelle baignant dans un bouillon de volaille chaud et parfumé aux carottes, garni d'effiloché de poulet tendre et persil frais.",
@@ -15776,107 +14357,23 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 7
       }
-    ]
-  },
-  {
-    "id": "soupe-lentilles-poulet-repas",
-    "title": "Soupe-Repas de Lentilles Vertes Mijotées au Poulet & Carottes",
-    "timeMinutes": 25,
-    "tag": "Soupes & Veloutés",
-    "type": "poulet",
-    "season": "hiver",
-    "isBudget": true,
-    "description": "Une soupe-repas d'hiver rassasiante et pleine d'énergie : lentilles vertes mijotées avec dés de carottes, oignon et morceaux de poulet fondant dans un bouillon d'herbes aromatiques.",
-    "image": "https://static.jow.fr/550x550/recipes/jz4XcLrfXd.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Filets de poulet frais",
-        "quantity": 450,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Lentilles vertes françaises",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Carottes fraîches",
-        "quantity": 3,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Bouillon (volaille ou légumes)",
-        "quantity": 800,
-        "unit": "ml",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Herbes de Provence sèches",
-        "quantity": 1,
-        "unit": "c. à café",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Épluchez l'oignon et les carottes. Coupez l'oignon en dés et les carottes en petits tronçons. Découpez le poulet en cubes.",
-        "ingredients": [
-          "Oignons jaunes",
-          "Carottes fraîches",
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une cocotte avec un filet d'huile d'olive, faites revenir l'oignon et le poulet 4 minutes à feu moyen.",
-        "ingredients": [
-          "Oignons jaunes",
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Ajoutez les lentilles rincées, les carottes, les herbes de Provence et le bouillon chaud. Salez et poivrez.",
-        "ingredients": [
-          "Lentilles vertes françaises",
-          "Carottes fraîches",
-          "Herbes de Provence sèches",
-          "Bouillon (volaille ou légumes)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Couvrez et laissez mijoter à feu doux pendant 20 minutes jusqu'à ce que les lentilles soient bien tendres.",
-        "ingredients": [
-          "Lentilles vertes françaises"
-        ],
-        "timerMinutes": 20
-      },
-      {
-        "instruction": "Servez bien chaud dans des bols avec un filet d'huile d'olive vierge extra.",
-        "ingredients": [
-          "Lentilles vertes françaises"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "saute-poulet-sauce-yaourt-grec",
     "title": "Sauté Minute de Poulet Doré, Sauce Onctueuse au Yaourt Grec & Herbes",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Une cuisson saine et pleine d'onctuosité : aiguillettes de poulet dorées à la poêle, nappées d'une sauce soyeuse au yaourt grec, ail, jus de citron et ciboulette, servies sur riz chaud.",
@@ -15962,14 +14459,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 1
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "wok-poulet-cacahuete-legumes-croquants",
     "title": "Wok de Poulet Émincé, Sauce Cacahuète & Légumes Verts Croquants",
     "timeMinutes": 20,
     "tag": "Asiatique & Wok",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Une explosion de textures croquantes et de saveurs douces : poulet doré minute avec brocoli, carottes et pousses de soja dans une sauce crémeuse au beurre de cacahuète et soja.",
@@ -16055,7 +14559,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "tarte-spirale-legumes-chevre",
@@ -16153,14 +14665,23 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 30
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "brochettes-poulet-tsukune-soja",
     "title": "Brochettes Japonaises Tsukune de Poulet Laqué au Soja & Riz Blanc",
     "timeMinutes": 20,
     "tag": "Asiatique & Wok",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Les fameuses brochettes de l'izakaya japonais : boulettes allongées de poulet haché parfumées aux oignons et gingembre, dorées à la poêle et laquées à la sauce soja sucrée.",
@@ -16244,14 +14765,21 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-dore-semoule-persillee",
     "title": "Bouchées de Poulet Doré au Paprika & Semoule Moelleuse Persillée",
     "timeMinutes": 20,
     "tag": "Plats du Soir",
-    "type": "poulet",
+    "type": "volaille",
     "season": "toute_saison",
     "isBudget": true,
     "description": "Simple, ultra rapide et réconfortant : dés de poulet marinés à l'huile d'olive et au paprika doux, servis sur une semoule parfumée au persil plat frais et amandes effilées.",
@@ -16336,7 +14864,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "street",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-pane-a-la-milanaise",
@@ -16490,7 +15028,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "nouilles-sautees-poulet-brocoli",
@@ -16626,7 +15172,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "poelee-pommes-de-terre-poulet-chorizo",
@@ -16740,7 +15293,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-cremeuses-poulet-olives",
@@ -16842,7 +15402,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "bowl-poulet-sauce-cacahuete-riz",
@@ -16948,7 +15516,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "frais",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "bowl-poulet-teriyaki-sesame-riz",
@@ -17084,7 +15661,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-coco-curry-tomates-cerises",
@@ -17199,7 +15784,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-epinards-creme-riz",
@@ -17276,7 +15871,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-croustillant-parmesan-brocoli",
@@ -17421,7 +16023,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "street",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "tagliatelle-poulet-champignons-creme",
@@ -17526,7 +16136,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poelee-poulet-brocolis-champignons",
@@ -17624,7 +16241,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "canard-orange-ecrase-patate-douce",
@@ -17738,7 +16363,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "salade-poulet-avocat-lard-dore",
@@ -17859,7 +16492,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "tacos-champignons-poulet-comte",
@@ -17991,7 +16631,16 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": false
   },
   {
     "id": "cuisse-poulet-legumes-rotis-herbes",
@@ -18086,7 +16735,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "dinde-aux-marrons-puree-maison",
@@ -18180,7 +16838,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-au-sesame-dore-riz",
@@ -18272,7 +16938,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "street",
+      "asiatique"
+    ],
+    "gamelle": false
   },
   {
     "id": "croustiwrap-poulet-croustillant-bacon",
@@ -18371,7 +17045,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "street"
+    ],
+    "gamelle": false
   },
   {
     "id": "cheese-naan-express-poulet-curry",
@@ -18495,7 +17177,19 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "orient",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "canard-dore-ravioles-forestieres",
@@ -18586,7 +17280,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-basquaise-poivrons-riz",
@@ -18706,7 +17409,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "cordon-bleu-spaghetti-tomates-cerises",
@@ -18816,7 +17527,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "italien",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "parmentier-canard-patates-douces",
@@ -18905,7 +17625,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 20
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "magret-canard-orange-glace",
@@ -19003,7 +17730,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "asiatique",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "magret-canard-puree-maison",
@@ -19115,111 +17850,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "pates-ragout-canard-mijote",
-    "title": "Rigatoni au Ragoût Mijoté de Canard, Carottes & Thym Frais",
-    "timeMinutes": 25,
-    "tag": "Pâtes Gourmandes",
-    "type": "volaille",
-    "season": "toute_saison",
-    "isBudget": false,
-    "description": "Une recette d'inspiration toscane aux 18 000 likes : pâtes rigatoni enrobées d'un effiloché de canard mijoté à petit feu dans une sauce tomate aux aromates.",
-    "image": "https://static.jow.fr/550x550/recipes/DDRcGvguFNr3rQ.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Pâtes (spaghetti ou rigatoni)",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Cuisses de canard confites",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Tomates fraîches ou concassées",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Échalote",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Parmesan râpé",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Vin rouge",
-        "quantity": 0.04,
-        "unit": "litre",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Dans une casserole d'eau chaude, faites cuire les pâtes selon les instructions du paquet.",
-        "ingredients": [
-          "Pâtes (spaghetti ou rigatoni)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Détaillez les cuisses de confit de canard en retirant le gras.",
-        "ingredients": [
-          "Cuisses de canard confites"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Émincez les échalotes.",
-        "ingredients": [
-          "Échalote"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Placez les échalotes et les cuisses de canard dans une poêle à feu fort et faites revenir pendant 5 minutes.",
-        "ingredients": [
-          "Cuisses de canard confites",
-          "Échalote"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Ajoutez les tomates pelées et le vin rouge, salez, poivrez, couvrez et laissez cuire à feu doux 5 minutes.",
-        "ingredients": [
-          "Tomates fraîches ou concassées",
-          "Vin rouge"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Placez les pâtes dans la poêle et faites les sauter 2 minutes dans la sauce.",
-        "ingredients": [
-          "Pâtes (spaghetti ou rigatoni)"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Servez (optionnel : ajoutez du parmesan ou des herbes fraîches). C'est prêt !",
-        "ingredients": [
-          "Tomates fraîches ou concassées",
-          "Parmesan râpé"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-roti-harissa-epices",
@@ -19294,7 +17932,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-bang-bang-asiatique",
@@ -19413,7 +18059,17 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "asiatique",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "brochette-poulet-poivrons-semoule",
@@ -19511,7 +18167,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "brochettes-poulet-coco-coriandre",
@@ -19612,7 +18275,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "bouchees-dinde-carottes-roties-yaourt",
@@ -19750,7 +18422,17 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "terroir",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "soupe-poulet-pimentee-nouilles",
@@ -19869,7 +18551,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "asiatique",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "one-pot-poulet-pommes-de-terre-citron",
@@ -19979,7 +18670,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "ramen-poulet-cacahuetes-bouillon",
@@ -20097,7 +18796,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "soupe-lentilles-poulet-legumes",
@@ -20235,7 +18942,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir",
+      "asiatique",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-roti-duo-patates-four",
@@ -20334,7 +19051,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "grilled-cheese-dinde-comte",
@@ -20450,7 +19174,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "frais",
+      "orient"
+    ],
+    "gamelle": false
   },
   {
     "id": "boeuf-haricots-verts-puree-beurre",
@@ -20548,7 +19282,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "boeuf-sauce-roquefort-frites-four",
@@ -20610,7 +19353,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 2
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "ramen-boeuf-nouilles-bouillon",
@@ -20635,12 +19387,6 @@ window.DEFAULT_RECIPES = [
         "quantity": 4,
         "unit": "pièce",
         "rayon": "epicerie"
-      },
-      {
-        "name": "Bœuf émincé pour wok",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "boucherie"
       },
       {
         "name": "Sauce soja salée",
@@ -20693,7 +19439,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "enchiladas-boeuf-cheddar-gratine",
@@ -20794,89 +19547,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 15
       }
-    ]
-  },
-  {
-    "id": "fajitas-boeuf-poivrons-express",
-    "title": "Fajitas Express au Bœuf Émincé, Poivrons Sautés & Guacamole",
-    "timeMinutes": 15,
-    "tag": "Plats du Soir",
-    "type": "viande",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Une ambiance festive aux 74 000 likes : émincé de bœuf mariné aux épices fajitas, lamelles de poivrons multicolores et tortillas de blé chaudes.",
-    "image": "https://static.jow.fr/550x550/recipes/EGKfHWv98SOvcQ.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Tortillas de blé",
-        "quantity": 8,
-        "unit": "pièce",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Steaks hachés pur bœuf",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Tomates fraîches ou concassées",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 200,
-        "unit": "ml",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Fromage râpé",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Coriandre (frais)",
-        "quantity": 0.4,
-        "unit": "bouquet",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Dans une poêle chaude, ajoutez un filet d'huile d'olive et les steaks. Faites revenir à feu vif pendant 2 minutes en les cassant avec une spatule. Salez, poivrez*.\n*Consultez nos tips pour cette étape",
-        "ingredients": [
-          "Steaks hachés pur bœuf"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Ajoutez les tomates, mélangez et laissez mijoter 2 minutes de plus à feu doux. N'hésitez pas à ajouter un peu de piment si vous en avez.",
-        "ingredients": [
-          "Tomates fraîches ou concassées"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Pendant ce temps, faites réchauffer vos tortillas à la poêle (30 sec de chaque côté) ou au micro-ondes (30 secondes).",
-        "ingredients": [
-          "Tortillas de blé"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Quand votre viande est prête, garnissez les tortillas avec le mélange bœuf-tomate. Ajoutez le fromage râpé, la crème et quelques feuilles de coriandre si vous en avez. Salez et poivrez. C'est prêt !",
-        "ingredients": [
-          "Tortillas de blé",
-          "Steaks hachés pur bœuf",
-          "Crème fraîche épaisse"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "mexicain",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "burrito-boeuf-cheddar-fondant",
@@ -20976,128 +19656,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "boulettes-bolognaise-spaghetti-parmesan",
-    "title": "Spaghetti aux Boulettes de Bœuf Façon Grand-Mère & Sauce Tomate",
-    "timeMinutes": 20,
-    "tag": "Pâtes Gourmandes",
-    "type": "viande",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "L'incontournable italien aux 155 000 likes : boulettes de pur bœuf assaisonnées dorées à la poêle, mijotées dans un coulis de tomate basilic sur des spaghetti.",
-    "image": "https://static.jow.fr/550x550/recipes/UXjpOZ7o1Ik3ng.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Pâtes (spaghetti ou rigatoni)",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Steaks hachés pur bœuf",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Parmesan râpé",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Échalote",
-        "quantity": 1,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Tomates fraîches ou concassées",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Œufs frais",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Chapelure",
-        "quantity": 4,
-        "unit": "cuillère à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Basilic (frais)",
-        "quantity": 0.4,
-        "unit": "bouquet",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Si besoin, faites décongeler les steaks hachés. Épluchez puis émincez finement les échalotes.",
-        "ingredients": [
-          "Steaks hachés pur bœuf",
-          "Échalote"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Préparez les boulettes de bœuf. Dans un saladier, ajoutez : le bœuf haché, les œufs, les échalotes, la chapelure et la moitié du parmesan. Salez et poivrez, puis mélangez le tout à l'aide de vos mains.",
-        "ingredients": [
-          "Steaks hachés pur bœuf",
-          "Parmesan râpé",
-          "Échalote"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Formez les boulettes de bœuf en les roulant entre vos mains. Réservez sur une assiette.",
-        "ingredients": [
-          "Steaks hachés pur bœuf"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu vif. Ajoutez les boulettes et faites-les revenir 5 minutes en remuant, jusqu'à ce qu'elles soient bien colorées.",
-        "ingredients": [],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "En fin de cuisson, ajoutez le coulis de tomate, salez et poivrez. Couvrez et laissez mijoter 3 à 4 minutes, sur feu très doux, en mélangeant.",
-        "ingredients": [],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pâtes selon les instructions du paquet. En fin de cuisson, égouttez-les.",
-        "ingredients": [
-          "Pâtes (spaghetti ou rigatoni)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Ajoutez les pâtes égouttées à la poêle et mélangez-les avec la sauce et les boulettes de bœuf.",
-        "ingredients": [
-          "Pâtes (spaghetti ou rigatoni)",
-          "Steaks hachés pur bœuf"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Servez les spaghetti à la bolognaise dans une assiette. Parsemez du reste de parmesan râpé et ajoutez quelques feuilles de basilic, si vous en avez. C'est prêt !",
-        "ingredients": [
-          "Parmesan râpé",
-          "Basilic (frais)"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": true
   },
   {
     "id": "escalope-veau-lasagnes-petits-pois",
@@ -21185,7 +19752,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "croziflette-camembert-jambon-champignons",
@@ -21291,7 +19867,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "frittata-courgette-jambon-mozza",
@@ -21384,7 +19968,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "tajine-vege-legumes-semoule",
@@ -21481,7 +20073,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-crevettes-lait-coco-riz",
@@ -21595,7 +20195,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "nouilles-udon-crevettes-soja",
@@ -21698,7 +20306,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-saint-jacques-poireaux-parmesan",
@@ -21831,7 +20447,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "quiche-poireaux-feta-doree",
@@ -21939,7 +20563,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "cheeseburger-bleu-frites-patates-douces",
@@ -22061,77 +20694,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "gnocchi-epinards-gorgonzola-creme",
-    "title": "Gnocchi Moelleux Poêlés, Sauce Onctueuse au Gorgonzola & Épinards",
-    "timeMinutes": 15,
-    "tag": "Pâtes Gourmandes",
-    "type": "vege",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "La gourmandise italienne aux 97 000 likes : gnocchi dorés à la poêle, enrobés d'une crème fondante au gorgonzola crémeux et pousses d'épinards fraîches.",
-    "image": "https://static.jow.fr/550x550/recipes/XRCY6aA9xQTCNA.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Gnocchi à poêler",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Épinard (frais)",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Fromage bleu crémeux",
-        "quantity": 120,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 200,
-        "unit": "ml",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Noix",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Faites fondre une noisette de beurre dans une poêle, sur feu vif. Ajoutez les gnocchi et faites-les revenir 2 minutes.",
-        "ingredients": [
-          "Gnocchi à poêler"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Baissez le feu, puis ajoutez les épinards, la crème liquide et le gorgonzola en morceaux. Salez, poivrez et mélangez. Couvrez et poursuivez la cuisson 3 à 4 minutes.",
-        "ingredients": [
-          "Épinard (frais)",
-          "Crème fraîche épaisse"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Servez les gnocchi crémeux au gorgonzola dans une assiette creuse ou un bol. Parsemez de noix concassées, c'est prêt !",
-        "ingredients": [
-          "Gnocchi à poêler",
-          "Fromage bleu crémeux",
-          "Noix"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "gnocchi-poeles-tomates-cerises-basilic",
@@ -22214,7 +20786,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": false
   },
   {
     "id": "gnocchi-parisienne-bechamel-gratine",
@@ -22312,7 +20892,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "aubergines-gratinees-tomate-mozzarella",
@@ -22449,7 +21037,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-aubergines-lait-coco-pois-chiches",
@@ -22575,7 +21172,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-lentilles-poivrons-riz",
@@ -22651,7 +21255,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "veloute-champignons-parmesan-croutons",
@@ -22741,7 +21354,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "croque-monsieur-four-bechamel",
@@ -22853,7 +21474,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "boulettes-poulet-thai-coco",
@@ -22978,7 +21607,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "asiatique",
+      "orient",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-piccata-citron-capres",
@@ -23091,7 +21729,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-clementine-moutarde-miel",
@@ -23195,7 +21841,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-pane-mayo-wasabi-riz",
@@ -23315,7 +21968,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "asiatique"
+    ],
+    "gamelle": false
   },
   {
     "id": "risotto-comte-saucisse-ancienne",
@@ -23439,7 +22100,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poireaux-gratines-jambon-bechamel",
@@ -23519,7 +22188,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "croque-madame-four-oeuf-coule",
@@ -23654,7 +22331,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "pates-saucisses-fenouil-parmesan",
@@ -23750,7 +22435,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-a-la-sicilienne-aubergines",
@@ -23862,7 +22556,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-cremeuses-avocat-citron",
@@ -23961,7 +22662,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "tarte-rustique-oignons-raclette",
@@ -24088,7 +22798,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "wraps-courgettes-chevre-noisettes",
@@ -24187,7 +22904,16 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "street"
+    ],
+    "gamelle": true
   },
   {
     "id": "tarte-petits-pois-feta-menthe",
@@ -24290,7 +23016,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 15
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "tarte-rustique-courgettes-ricotta",
@@ -24445,7 +23178,17 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": 30
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "terroir",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "tarte-aubergines-ricotta-noix",
@@ -24542,7 +23285,17 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "terroir",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "tarte-fine-tomates-moutarde-herbes",
@@ -24624,7 +23377,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "gratin-patates-douces-chataignes",
@@ -24706,7 +23466,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "quenelles-gratinees-salade-verte",
@@ -24798,7 +23566,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "terroir",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "gnocchi-piquants-all-arrabbiata",
@@ -24873,7 +23649,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "gnocchi-champignons-feta-poeles",
@@ -24969,7 +23752,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "tagliata-boeuf-courgettes-poelees",
@@ -25056,7 +23848,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "boeuf-mijjote-mexicaine-riz",
@@ -25105,12 +23906,6 @@ window.DEFAULT_RECIPES = [
         "quantity": 0.4,
         "unit": "bouquet",
         "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Bœuf émincé pour wok ou mijoté",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "boucherie"
       },
       {
         "name": "Galettes de blé tortillas",
@@ -25165,7 +23960,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "mexicain",
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "salade-pates-jambon-cru-petits-pois",
@@ -25243,7 +24047,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "salade-courgettes-poelees-jambon-cru",
@@ -25317,7 +24130,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "frais",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-crevettes-chorizo-parmesan",
@@ -25338,8 +24159,8 @@ window.DEFAULT_RECIPES = [
         "rayon": "epicerie"
       },
       {
-        "name": "Riz rond pour risotto ou basmati",
-        "quantity": 300,
+        "name": "Chorizo",
+        "quantity": 100,
         "unit": "g",
         "rayon": "boucherie"
       },
@@ -25429,7 +24250,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-coquillettes-jambon-comte",
@@ -25554,7 +24383,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-cremeux-courgettes-parmesan",
@@ -25692,7 +24529,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "risotto-express-pesto-burrata",
@@ -25793,7 +24639,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "blanquette-express-crevettes-riz",
@@ -25900,7 +24753,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "terroir",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "ramen-crevettes-bouillon-legumes",
@@ -25978,7 +24841,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "pad-thai-crevettes-cacahuetes",
@@ -26104,7 +24976,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "asiatique",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "salade-riz-crevettes-avocat-citron",
@@ -26191,7 +25073,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "frais",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "bouillon-coco-crevettes-gingembre",
@@ -26308,7 +25199,19 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "asiatique",
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-doux-saint-jacques-riz",
@@ -26400,7 +25303,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-poisson-blanc-legumes-riz",
@@ -26491,7 +25402,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "soupe-nouilles-curry-legumes",
@@ -26612,7 +25531,18 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "asiatique",
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "green-curry-ramen-legumes",
@@ -26689,7 +25619,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "dahl-lentilles-gingembre-coco",
@@ -26777,7 +25716,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "asiatique",
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "legumes-fondants-coco-curry-riz",
@@ -26906,104 +25854,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "pates-alfredo-poulet-parmesan",
-    "title": "Pâtes Alfredo Crémeuses au Poulet Saisi & Parmesan",
-    "timeMinutes": 15,
-    "tag": "Pâtes Gourmandes",
-    "type": "volaille",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Le classique italo-américain aux 179 000 likes : émincé de poulet doré à la poêle enrobé de fettucine ou tagliatelles dans une crème onctueuse au beurre et parmesan.",
-    "image": "https://static.jow.fr/550x550/recipes/edqIvzR7riiiLg.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Pâtes italiennes de qualité (penne ou rigatoni)",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Poulet émincé (cru)",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 250,
-        "unit": "ml",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Ail",
-        "quantity": 2,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Parmesan râpé",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "cremerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pâtes selon les instructions du paquet. Égouttez-les en fin de cuisson.",
-        "ingredients": [
-          "Pâtes italiennes de qualité (penne ou rigatoni)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez le poulet.* Salez, poivrez et faites-le revenir 4 à 5 minutes sur chaque face, jusqu'à ce qu'il soit bien doré.\n*Consultez nos tips pour cette étape",
-        "ingredients": [
-          "Poulet émincé (cru)"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Une fois le poulet cuit, ajoutez l'ail râpé. Faites revenir le tout 1 minute, en remuant.",
-        "ingredients": [
-          "Poulet émincé (cru)",
-          "Parmesan râpé"
-        ],
-        "timerMinutes": 1
-      },
-      {
-        "instruction": "Versez la crème liquide et mélangez.",
-        "ingredients": [
-          "Crème fraîche épaisse"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Ajoutez le parmesan râpé. Poivrez puis mélangez. Laissez fondre 2 minutes.",
-        "ingredients": [
-          "Parmesan râpé"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Ajoutez les pâtes égouttées et mélangez à nouveau.",
-        "ingredients": [
-          "Pâtes italiennes de qualité (penne ou rigatoni)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Servez les pâtes Alfredo au poulet, dans une assiette. Ré-assaisonnez selon vos goûts, c'est prêt !",
-        "ingredients": [
-          "Pâtes italiennes de qualité (penne ou rigatoni)",
-          "Poulet émincé (cru)"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "orient",
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-poulet-chorizo-creme-paprika",
@@ -27131,7 +25992,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "gratin-gnocchi-poulet-pesto-rosso-mozza",
@@ -27255,7 +26126,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "salade-pates-boursin-avocat-poulet",
@@ -27342,109 +26221,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "pates-cremeuses-poulet-olives-herbes",
-    "title": "Pâtes Crémeuses aux Dés de Poulet, Olives Noires & Basilic",
-    "timeMinutes": 20,
-    "tag": "Pâtes Gourmandes",
-    "type": "volaille",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Une sauce veloutée aux 55 000 likes : poulet doré mijoté dans une crème parfumée aux olives noires à la grecque et herbes de Provence.",
-    "image": "https://static.jow.fr/550x550/recipes/noyqoWoyDSQQNg.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Pâtes italiennes de qualité (penne ou rigatoni)",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Ricotta fraîche italienne",
-        "quantity": 250,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Filets de poulet frais",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Olives vertes (dénoyautées)",
-        "quantity": 80,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Ail",
-        "quantity": 1,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 250,
-        "unit": "ml",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Piment d'Espelette",
-        "quantity": 4,
-        "unit": "pincée",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire les pâtes selon les instructions du paquet. En fin de cuisson, réservez une petite louche d'eau de cuisson, puis égouttez les pâtes.",
-        "ingredients": [
-          "Pâtes italiennes de qualité (penne ou rigatoni)"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Pendant ce temps, coupez le poulet en cubes.",
-        "ingredients": [
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez l'ail râpé et faites-le revenir 30 secondes, en mélangeant.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Ajoutez le poulet dans la poêle. Salez, poivrez et ajoutez le piment d'Espelette*. Faites revenir le tout 4 à 5 minutes, en mélangeant régulièrement.\n*Consultez nos tips pour cette étape",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Piment d'Espelette"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Baissez le feu, puis ajoutez la ricotta, la crème, les olives et l'eau de cuisson réservée. Mélangez bien, puis ajoutez les pâtes égouttées. Mélangez à nouveau et laissez cuire 1 minute supplémentaire.",
-        "ingredients": [
-          "Pâtes italiennes de qualité (penne ou rigatoni)",
-          "Ricotta fraîche italienne",
-          "Olives vertes (dénoyautées)"
-        ],
-        "timerMinutes": 1
-      },
-      {
-        "instruction": "Servez les pâtes dans une assiette. Re-assaisonnez d'une pincée de piment et d'un filet d'huile d'olive. C'est prêt !",
-        "ingredients": [
-          "Pâtes italiennes de qualité (penne ou rigatoni)",
-          "Piment d'Espelette"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "poelee-gnocchi-poulet-champignons-cabecou",
@@ -27538,7 +26324,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-miel-moutarde-brocolis-pates",
@@ -27644,7 +26438,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "gratin-pates-poulet-emmental-bechamel",
@@ -27721,7 +26523,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "burger-poulet-croustillant-deluxe-potatoes",
@@ -27886,7 +26696,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "street"
+    ],
+    "gamelle": false
   },
   {
     "id": "cheeseburger-poulet-cheddar-miel-moutarde",
@@ -27969,353 +26787,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "poulet-basquaise-poivrons-tomates-mijjote",
-    "title": "Authentique Poulet Basquaise Mijoté aux Poivrons Doux & Tomates",
-    "timeMinutes": 35,
-    "tag": "Tradition & Four",
-    "type": "volaille",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Le grand classique du Sud-Ouest aux 42 000 likes : cuisses ou filets de poulet mijotés dans une piperade parfumée de poivrons rouges et jaunes, ail et piment d'Espelette.",
-    "image": "https://static.jow.fr/550x550/recipes/5uv0HdXp6BMqiQ.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Tomates concassées en boîte ou fraîches",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Poivrons tricolores",
-        "quantity": 3,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Cuisses de poulet",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Vin blanc",
-        "quantity": 0.14,
-        "unit": "litre",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Bouquet garni",
-        "quantity": 0.4,
-        "unit": "pièce",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Ail",
-        "quantity": 2,
-        "unit": "gousse",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Épluchez puis hachez l'oignon.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Épluchez puis hachez finement l'ail.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Lavez puis coupez les tomates en morceaux.",
-        "ingredients": [
-          "Tomates concassées en boîte ou fraîches"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Lavez les poivrons, coupez le haut puis retirez le centre avec les pépins. Coupez ensuite les poivrons en lamelles.",
-        "ingredients": [
-          "Poivrons tricolores"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile d'olive dans un fait-tout. Ajoutez les oignons, l'ail et les poivrons. Faites cuire pendant 5 minutes à feu moyen.",
-        "ingredients": [
-          "Poivrons tricolores",
-          "Oignons jaunes"
-        ],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Ajoutez les tomates, du sel et du poivre puis mélangez. Couvrez et laissez cuire pendant 20 minutes.",
-        "ingredients": [
-          "Tomates concassées en boîte ou fraîches"
-        ],
-        "timerMinutes": 20
-      },
-      {
-        "instruction": "Pendant ce temps, faites chauffer une poêle à feu vif avec un filet d'huile d'olive. Faites dorer les cuisses de poulet pendant 2 minutes de chaque côté.",
-        "ingredients": [
-          "Cuisses de poulet"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Ajoutez ensuite les cuisses de poulet aux légumes ainsi que le bouquet garni et le vin blanc. Couvrez et laissez mijoter le tout pendant 35 minutes.",
-        "ingredients": [
-          "Cuisses de poulet",
-          "Vin blanc",
-          "Bouquet garni"
-        ],
-        "timerMinutes": 35
-      },
-      {
-        "instruction": "Servez le poulet et les légumes accompagnés de riz ou de pâtes. C'est prêt !",
-        "ingredients": [
-          "Cuisses de poulet"
-        ],
-        "timerMinutes": null
-      }
-    ]
-  },
-  {
-    "id": "poulet-tikka-masala-express-riz-basmati",
-    "title": "Poulet Tikka Masala Onctueux aux Épices Douces & Riz Basmati",
-    "timeMinutes": 25,
-    "tag": "Asiatique & Wok",
-    "type": "volaille",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "La pépite indienne aux 124 000 likes : morceaux de poulet marinés saisis puis mijotés dans une sauce tomatée au yaourt, garam masala et crème onctueuse.",
-    "image": "https://static.jow.fr/550x550/recipes/IcBcrJUne6.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Riz basmati ou jasmin",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Filets de poulet frais",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Sauce tikka masala",
-        "quantity": 320,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Cumin (moulu)",
-        "quantity": 2,
-        "unit": "cuillère à café",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Gingembre (moulu)",
-        "quantity": 2,
-        "unit": "cuillère à café",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Coriandre (frais)",
-        "quantity": 8,
-        "unit": "brin",
-        "rayon": "fruits-legumes"
-      }
+    "seasons": [
+      "ete"
     ],
-    "steps": [
-      {
-        "instruction": "Dans une casserole d'eau bouillante salée, faites cuire le riz selon les instructions du paquet. En fin de cuisson, égouttez-le et réservez au chaud.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Pendant ce temps, coupez le poulet en morceaux.",
-        "ingredients": [
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez le poulet, le gingembre et le cumin. Salez, poivrez et faites-les revenir 3 à 4 minutes, en mélangeant.",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Cumin (moulu)",
-          "Gingembre (moulu)"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Une fois le poulet doré, ajoutez la sauce tikka masala. Mélangez et poursuivez la cuisson 8 à 10 minutes, sur feu doux.",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Sauce tikka masala"
-        ],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Servez le poulet tikka masala dans une assiette avec le riz. Parsemez de feuilles de coriandre, si vous en avez. Re-assaisonnez selon vos goûts, c'est prêt !",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Sauce tikka masala",
-          "Coriandre (frais)"
-        ],
-        "timerMinutes": null
-      }
-    ]
-  },
-  {
-    "id": "bowl-poulet-laque-teriyaki-sesame-riz",
-    "title": "Bowl Japonais au Poulet Laqué Teriyaki, Sésame & Riz Jasmin",
-    "timeMinutes": 20,
-    "tag": "Asiatique & Wok",
-    "type": "volaille",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Le bowl star aux 94 000 likes : bouchées de poulet caramélisées dans une sauce soja-teriyaki maison, servies sur un bol de riz parfumé aux graines de sésame.",
-    "image": "https://static.jow.fr/550x550/recipes/OtP47dljmcQezA.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Tomates concassées en boîte ou fraîches",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Filets de poulet frais",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Sauce soja sucrée ou teriyaki",
-        "quantity": 4,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Riz basmati ou jasmin",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Graines de sésame",
-        "quantity": 80,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Salade (roquette)",
-        "quantity": 4,
-        "unit": "poignée",
-        "rayon": "fruits-legumes"
-      }
+    "styles": [
+      "street"
     ],
-    "steps": [
-      {
-        "instruction": "Faites cuire le riz selon les indications du paquet soit environ 8 à 10 min.",
-        "ingredients": [],
-        "timerMinutes": 10
-      },
-      {
-        "instruction": "Pendant ce temps, coupez les tomates cerises en deux. Réservez.",
-        "ingredients": [
-          "Tomates concassées en boîte ou fraîches"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Coupez le poulet en morceaux.",
-        "ingredients": [
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Optionnel : pour des morceaux de poulet plus croustillants, roulez-les dans la farine.",
-        "ingredients": [
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Égouttez le riz.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile d'olive dans une poêle bien chaude puis ajoutez les cubes de poulet.",
-        "ingredients": [
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites cuire 2-3 minutes sur feu moyen, en retournant les cubes de poulet, ils doivent être dorés sur chaque face. Poivrez.",
-        "ingredients": [
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": 3
-      },
-      {
-        "instruction": "Ajoutez la sauce teriyaki. Continuez de cuire pendant 2 min sur feu doux en arrosant les cubes de poulet de sauce.",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Sauce soja sucrée ou teriyaki"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Ajoutez le sésame et mélangez. Les morceaux de poulet doivent être caramélisés. Une fois le poulet cuit, réservez.",
-        "ingredients": [
-          "Filets de poulet frais",
-          "Graines de sésame"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Gardez la même poêle, versez un filet d'huile et ajoutez les tomates cerises. Faites-les revenir quelques minutes sur feu moyen.",
-        "ingredients": [
-          "Tomates concassées en boîte ou fraîches"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dressez dans une assiette. Ajoutez le riz, le poulet, les tomates cerises et la roquette. Poivrez et versez un filet d'huile d'olive.",
-        "ingredients": [
-          "Tomates concassées en boîte ou fraîches",
-          "Filets de poulet frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Versez un filet de sauce soja sucrée si vous le souhaitez et parsemez de quelques graines de sésame si vous en avez, poivrez. C'est prêt !",
-        "ingredients": [
-          "Sauce soja sucrée ou teriyaki",
-          "Graines de sésame"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "gamelle": false
   },
   {
     "id": "brochettes-poulet-teriyaki-riz-saute",
@@ -28452,7 +26931,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-citron-confit-olives-couscous",
@@ -28567,7 +27054,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "orient",
+      "terroir",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-doux-poulet-ananas-coco-riz",
@@ -28693,7 +27190,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "asiatique",
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "lasagnes-poulet-courgettes-reblochon-dore",
@@ -28799,7 +27305,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "enchiladas-gratinees-poulet-champignons-cheddar",
@@ -28922,7 +27437,18 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": 25
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "mexicain",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "pennes-poulet-poireaux-pesto-verde",
@@ -29038,7 +27564,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": false
   },
   {
     "id": "gnocchis-poulet-epinards-creme-parmesan",
@@ -29147,103 +27681,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "brochettes-yakitori-boeuf-fromage-riz",
-    "title": "Brochettes Japonaises Yakitori Bœuf-Fromage Caramélisées & Riz",
-    "timeMinutes": 20,
-    "tag": "Asiatique & Wok",
-    "type": "viande",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Le classique des izakayas aux 52 000 likes : bâtonnets de gouda ou emmental enroulés de fines lamelles de bœuf, dorés et laqués à la sauce soja sucrée.",
-    "image": "https://static.jow.fr/550x550/recipes/fUZ0nCvxV1rZMQ.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Morceaux de bœuf à braiser ou mijoter",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Emmental râpé",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Sauce soja sucrée ou teriyaki",
-        "quantity": 4,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Riz basmati ou jasmin",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Pics à brochette",
-        "quantity": 24,
-        "unit": "pièce",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Versez le riz dans l'eau bouillante et suivez le temps de cuisson du paquet. Égouttez en fin de cuisson.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Coupez le fromage en bâtonnets de 1 cm de large environ.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Piquez chaque morceaux avec un pic à brochette en allant bien jusqu'au bout.*\n*Consultez nos tips pour cette étape",
-        "ingredients": [
-          "Morceaux de bœuf à braiser ou mijoter",
-          "Pics à brochette"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Optionnel : si vous en avez, ajoutez 1 cuillère à café de sauce soja salé dans votre sauce.",
-        "ingredients": [
-          "Sauce soja sucrée ou teriyaki"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Enroulez 1 tranche de carpaccio autour de chaque morceau de fromage. Prenez soin de bien enrober tout le fromage.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Venez laquer vos brochettes avec la sauce, sur les quatre faces.",
-        "ingredients": [
-          "Sauce soja sucrée ou teriyaki",
-          "Pics à brochette"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans une poêle à feu vif, cuire les brochettes 1 minute sur chaque face.",
-        "ingredients": [
-          "Pics à brochette"
-        ],
-        "timerMinutes": 1
-      },
-      {
-        "instruction": "Servez chaud avec un bol de riz. C'est prêt !",
-        "ingredients": [],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "chili-con-carne-traditionnel-haricots-rouges",
@@ -29368,7 +27813,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "mexicain",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "fajitas-tex-mex-boeuf-poivrons-guacamole",
@@ -29379,7 +27833,7 @@ window.DEFAULT_RECIPES = [
     "season": "toute_saison",
     "isBudget": true,
     "description": "L'ambiance conviviale aux 83 000 likes : lamelles de bœuf saisies vivement avec oignons et poivrons aux épices fajitas, à rouler dans des tortillas chaudes.",
-    "image": "https://static.jow.fr/550x550/recipes/O6o8fUU1mPyxaw.png",
+    "image": "https://static.jow.fr/550x550/recipes/kj0y0LdAaJJmYw.png",
     "basePortions": 4,
     "ingredients": [
       {
@@ -29462,7 +27916,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": true
   },
   {
     "id": "fajitas-express-boeuf-hache-cheddar",
@@ -29544,106 +28006,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "enchiladas-dorees-boeuf-sauce-tomate-fromage",
-    "title": "Enchiladas Dorées au Bœuf Épicé, Sauce Tomate Cumin & Fromage Fondu",
-    "timeMinutes": 30,
-    "tag": "Tradition & Four",
-    "type": "viande",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "La star mexicaine au four aux 143 000 likes : tortillas garnies d'un mijoté de bœuf haché parfumé, disposées en plat et gratinées avec une généreuse couche de fromage.",
-    "image": "https://static.jow.fr/550x550/recipes/kTHX7vgHs5oNug.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Galettes de blé tortillas",
-        "quantity": 8,
-        "unit": "pièce",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Poivrons tricolores",
-        "quantity": 3,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Tomates concassées en boîte ou fraîches",
-        "quantity": 400,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Steaks hachés du boucher (pur bœuf)",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 250,
-        "unit": "ml",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Tranches de cheddar affiné",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Préchauffez votre four à 200°C. Coupez les poivrons en petits dés.",
-        "ingredients": [
-          "Poivrons tricolores"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Émincez les oignons.",
-        "ingredients": [
-          "Oignons jaunes"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Cuire les oignons et les poivrons 6 à 7 minutes dans une poêle chaude avec un filet d'huile d'olive à feu moyen, à couvert.",
-        "ingredients": [
-          "Poivrons tricolores",
-          "Oignons jaunes"
-        ],
-        "timerMinutes": 7
-      },
-      {
-        "instruction": "Ajoutez le bœuf haché dans la poêle, 1/3 de la chair de tomate (optionnel : ajoutez un mélange d'épices mexicaines et du cumin) et laissez mijoter 5 minutes supplémentaires.",
-        "ingredients": [],
-        "timerMinutes": 5
-      },
-      {
-        "instruction": "Garnir chaque tortilla de crème fraîche, de la poêlée, roulez-les et placez-les dans un plat allant au four",
-        "ingredients": [
-          "Crème fraîche épaisse"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Couvrez de chair de tomate, de cheddar et enfournez 15 minutes. Servez les enchiladas avec un filet de jus de citron vert et de la sauce piquante, si vous le souhaitez. C'est prêt !",
-        "ingredients": [
-          "Tranches de cheddar affiné"
-        ],
-        "timerMinutes": 15
-      }
-    ]
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "mexicain"
+    ],
+    "gamelle": true
   },
   {
     "id": "boeuf-bourguignon-mijjote-carottes-champignons",
@@ -29755,146 +28126,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "blanquette-veau-traditionnelle-carottes-riz",
-    "title": "Traditionnelle Blanquette de Veau Fondante, Sauce Crémée & Riz Blanc",
-    "timeMinutes": 45,
-    "tag": "Tradition & Four",
-    "type": "viande",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "La fierté du bistrot aux 72 000 likes : tendres morceaux de veau pochés avec carottes et poireaux, enrobés d'une sauce veloutée liée à la crème et au jaune d'œuf.",
-    "image": "https://static.jow.fr/550x550/recipes/XohONptLQtWCzw.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Morceaux de veau pour blanquette",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Carottes fraîches",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Blancs de poireaux",
-        "quantity": 3,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Champignons de Paris frais",
-        "quantity": 300,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Vin blanc",
-        "quantity": 0.08,
-        "unit": "litre",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Farine de blé",
-        "quantity": 4,
-        "unit": "cuillère à café",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 250,
-        "unit": "ml",
-        "rayon": "cremerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Épluchez puis émincez finement les oignons.",
-        "ingredients": [
-          "Oignons jaunes"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Épluchez les carottes. Coupez-les en deux dans le sens de la longueur, puis en biseaux.",
-        "ingredients": [
-          "Carottes fraîches"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Coupez les extrémités du poireau pour ne garder que le blanc, puis coupez le blanc en tronçons d'environ 5 cm. Placez-les dans une passoire et rincez abondamment pour retirer les impuretés.",
-        "ingredients": [
-          "Morceaux de veau pour blanquette",
-          "Vin blanc"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile d'olive dans une grande casserole ou une cocotte, sur feu moyen. Ajoutez les oignons et le veau préalablement coupé en gros morceaux. Faites-les revenir 2 minutes, en mélangeant.",
-        "ingredients": [
-          "Morceaux de veau pour blanquette",
-          "Oignons jaunes"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Ajoutez la farine et mélangez bien.",
-        "ingredients": [
-          "Farine de blé"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Déglacez au vin blanc, puis ajoutez les poireaux, les carottes et 100 ml d'eau par personne.* Assaisonnez selon vos goûts et mélangez bien. Couvrez et laissez mijoter 1 h, sur feu doux.\n*Consultez nos tips pour cette étape",
-        "ingredients": [
-          "Morceaux de veau pour blanquette",
-          "Carottes fraîches",
-          "Blancs de poireaux"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Pendant ce temps, lavez puis coupez les champignons en lamelles.",
-        "ingredients": [
-          "Champignons de Paris frais"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Au bout d'1 h, ajoutez les champignons dans la casserole. Mélangez puis couvrez et poursuivez la cuisson 30 minutes, sur feu doux.",
-        "ingredients": [
-          "Morceaux de veau pour blanquette",
-          "Champignons de Paris frais"
-        ],
-        "timerMinutes": 30
-      },
-      {
-        "instruction": "En fin de cuisson, ajoutez la crème fraîche et mélangez bien.",
-        "ingredients": [
-          "Crème fraîche épaisse"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Servez la blanquette de veau avec du riz. Re-assaisonnez selon vos goûts, c'est prêt !",
-        "ingredients": [
-          "Morceaux de veau pour blanquette"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "porc-au-caramel-ambre-gingembre-riz",
@@ -29977,7 +28217,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "poelee-porc-hache-courgettes-soja",
@@ -30067,7 +28315,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "rigatoni-ragout-canard-confit-tomate",
@@ -30171,7 +28427,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "hachis-parmentier-canard-confit-puree-maison",
@@ -30314,132 +28578,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "burger-parisien-boucher-champignons-frites",
-    "title": "Burger Parisien au Steak Haché du Boucher, Champignons & Sauce Moutarde",
-    "timeMinutes": 25,
-    "tag": "Street Food & Burgers",
-    "type": "viande",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "Le burger façon brasserie aux 50 000 likes : steak pur bœuf saignant, poêlée de champignons de Paris, emmental fondu et sauce moutarde à l'ancienne avec frites dorées.",
-    "image": "https://static.jow.fr/550x550/recipes/SMpBDC2YJK7inA.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Pains burger briochés",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Steaks hachés du boucher (pur bœuf)",
-        "quantity": 4,
-        "unit": "pièce",
-        "rayon": "boucherie"
-      },
-      {
-        "name": "Pommes de terre",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Comté",
-        "quantity": 120,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Oignons jaunes",
-        "quantity": 2,
-        "unit": "pièce",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Salade (coeur de laitue)",
-        "quantity": 4,
-        "unit": "poignée",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Moutarde à l'ancienne",
-        "quantity": 2,
-        "unit": "c. à soupe",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Préchauffez votre four à 200°C. Épluchez puis coupez les pommes de terre en frites. Rincez-les pour retirer l'amidon puis égouttez-les.",
-        "ingredients": [
-          "Pommes de terre"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans un saladier, ajoutez les frites avec un filet d'huile d'olive. Salez et poivrez. mélangez.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Disposez les frites sur une plaque recouverte de papier cuisson et enfournez 40 minutes à 200°C.",
-        "ingredients": [],
-        "timerMinutes": 40
-      },
-      {
-        "instruction": "Pendant ce temps, coupez le comté en tranches.",
-        "ingredients": [
-          "Comté"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Dans un bol, ajoutez le steak haché. Salez, poivrez puis mélangez bien. Reformez le steak à l'aide de vos mains.",
-        "ingredients": [],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Faites chauffer un petit filet d'huile d'olive dans une poêle, sur feu moyen. Ajoutez les pains burger côté mie et faites-les toaster 2 minutes. Réservez.",
-        "ingredients": [
-          "Pains burger briochés"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Faites chauffer un filet d'huile d'olive dans la même poêle, sur feu moyen. Ajoutez les steaks hachés et faites-les cuire 2 minutes sur une face.",
-        "ingredients": [
-          "Steaks hachés du boucher (pur bœuf)"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Retournez les steaks puis ajoutez le comté sur le dessus. Couvrez et poursuivez la cuisson 2 minutes, jusqu'à ce que le fromage soit bien fondu.",
-        "ingredients": [
-          "Steaks hachés du boucher (pur bœuf)",
-          "Comté"
-        ],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Garnissez les pains à burger en tartinant la base de moutarde. Ajoutez la salade et le steak avec le comté fondu. Tartinez le haut du pain de confit d'oignons puis refermez le burger.",
-        "ingredients": [
-          "Pains burger briochés",
-          "Comté",
-          "Oignons jaunes"
-        ],
-        "timerMinutes": null
-      },
-      {
-        "instruction": "Une fois les frites cuites et bien dorées, sortez la plaque du four. Servez le burger à la parisienne dans une assiette avec les frites. Re-assaisonnez selon vos goûts. C'est prêt !",
-        "ingredients": [
-          "Pains burger briochés"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "cordon-bleu-dore-maison-riz-saute",
@@ -30558,7 +28705,17 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "asiatique",
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "coquillettes-beaufort-fondu-jambon-blanc",
@@ -30638,7 +28795,17 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "penne-petits-pois-lardons-fumes-creme",
@@ -30723,7 +28890,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "tartiflette-savoyarde-express-lardons-reblochon",
@@ -30830,7 +29005,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": false
   },
   {
     "id": "bagel-oeufs-brouilles-bacon-grille-cheddar",
@@ -30907,74 +29089,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
-  },
-  {
-    "id": "gnocchis-sauce-cremeuse-gorgonzola-epinards",
-    "title": "Gnocchi Fondants à la Sauce Crémeuse au Gorgonzola & Pousses d'Épinards",
-    "timeMinutes": 15,
-    "tag": "Pâtes Gourmandes",
-    "type": "vege",
-    "season": "toute_saison",
-    "isBudget": true,
-    "description": "L'Italie gourmande aux 98 000 likes : gnocchis moelleux nappés d'une crème au gorgonzola fondu et jeunes pousses d'épinards tombées minute.",
-    "image": "https://static.jow.fr/550x550/recipes/XRCY6aA9xQTCNA.png",
-    "basePortions": 4,
-    "ingredients": [
-      {
-        "name": "Gnocchis à poêler",
-        "quantity": 600,
-        "unit": "g",
-        "rayon": "epicerie"
-      },
-      {
-        "name": "Jeunes pousses d'épinards frais",
-        "quantity": 200,
-        "unit": "g",
-        "rayon": "fruits-legumes"
-      },
-      {
-        "name": "Gorgonzola crémeux",
-        "quantity": 150,
-        "unit": "g",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Crème fraîche épaisse",
-        "quantity": 250,
-        "unit": "ml",
-        "rayon": "cremerie"
-      },
-      {
-        "name": "Noix",
-        "quantity": 60,
-        "unit": "g",
-        "rayon": "epicerie"
-      }
     ],
-    "steps": [
-      {
-        "instruction": "Faites fondre une noisette de beurre dans une poêle, sur feu vif. Ajoutez les gnocchi et faites-les revenir 2 minutes.",
-        "ingredients": [],
-        "timerMinutes": 2
-      },
-      {
-        "instruction": "Baissez le feu, puis ajoutez les épinards, la crème liquide et le gorgonzola en morceaux. Salez, poivrez et mélangez. Couvrez et poursuivez la cuisson 3 à 4 minutes.",
-        "ingredients": [
-          "Gorgonzola crémeux",
-          "Crème fraîche épaisse"
-        ],
-        "timerMinutes": 4
-      },
-      {
-        "instruction": "Servez les gnocchi crémeux au gorgonzola dans une assiette creuse ou un bol. Parsemez de noix concassées, c'est prêt !",
-        "ingredients": [
-          "Gorgonzola crémeux",
-          "Noix"
-        ],
-        "timerMinutes": null
-      }
-    ]
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "street",
+      "asiatique"
+    ],
+    "gamelle": false
   },
   {
     "id": "lasagnes-vegetariennes-courgettes-champignons-ricotta",
@@ -31078,7 +29201,18 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "quesadillas-avocat-cheddar-fondu-coriandre",
@@ -31190,7 +29324,17 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "mexicain",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-mafe-riz",
@@ -31293,7 +29437,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "tagliatelles-crevettes-chorizo-petits-pois",
@@ -31378,7 +29530,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "riz-facon-grand-mere-poulet-champignons",
@@ -31491,7 +29651,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "quiche-chevre-epinards",
@@ -31586,7 +29754,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "poulet-ail-fines-herbes-lard-pommes-de-terre",
@@ -31677,7 +29852,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "paella-express-chorizo-petits-pois",
@@ -31762,7 +29944,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "poelee-patates-douces-feta-oeuf-au-plat",
@@ -31860,7 +30049,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": false
   },
   {
     "id": "lasagnes-express-ratatouille-mozzarella",
@@ -31939,7 +30135,16 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "ravioli-toscane-tomates-sechees-epinards",
@@ -32038,7 +30243,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-chorizo-ricotta-sauce-tomate",
@@ -32141,7 +30353,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "huevos-rotos-pommes-de-terre-chorizo",
@@ -32249,7 +30469,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": false
   },
   {
     "id": "gratin-gnocchi-brocolis-ricotta",
@@ -32361,7 +30588,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "lasagnes-boscaiola-lardons-champignons",
@@ -32457,7 +30692,16 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "ravioli-creme-champignons",
@@ -32558,7 +30802,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "rosti-pommes-de-terre-salade",
@@ -32668,7 +30919,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": false
   },
   {
     "id": "salade-pates-grecque-feta-olives",
@@ -32774,7 +31032,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien",
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "filet-mignon-moutarde-miel-pommes-de-terre",
@@ -32865,7 +31131,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "riz-saute-tomate-curcuma-yaourt",
@@ -32980,7 +31253,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "patates-douces-chevre-rotis-thym-miel",
@@ -33066,7 +31347,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "gratin-ravioles-courgettes-comte",
@@ -33172,7 +31461,16 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "quiche-thon-tomate-moutarde",
@@ -33266,7 +31564,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": 45
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "salade-pommes-de-terre-saumon-fume-creme-herbes",
@@ -33353,7 +31658,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "frais"
+    ],
+    "gamelle": true
   },
   {
     "id": "bricks-courgette-curry-feta-yaourt-ail",
@@ -33489,7 +31803,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "street",
+      "orient",
+      "frais"
+    ],
+    "gamelle": false
   },
   {
     "id": "brochettes-dinde-paprika-haricots-semoule",
@@ -33613,7 +31936,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "ete"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-brocoli-anchois-parmesan",
@@ -33720,7 +32051,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-brie-courgette-creme",
@@ -33820,7 +32158,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "gratin-poireaux-reblochon",
@@ -33903,7 +32250,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne",
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "spaghetti-bolognese-express",
@@ -34026,7 +32381,15 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete",
+      "hiver"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "curry-haricots-rouges-coco-riz",
@@ -34139,7 +32502,14 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "orient"
+    ],
+    "gamelle": true
   },
   {
     "id": "endives-au-jambon-bechamel",
@@ -34232,7 +32602,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "cabillaud-puree-carottes-tomates-cerises",
@@ -34311,7 +32688,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "quotidien"
+    ],
+    "gamelle": true
   },
   {
     "id": "pates-thon-citron-ricotta",
@@ -34398,7 +32782,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   },
   {
     "id": "nouilles-riz-champignons-sesame",
@@ -34485,7 +32876,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "automne"
+    ],
+    "styles": [
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "tarte-fine-pommes-de-terre-morbier",
@@ -34589,7 +32987,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "couscous-merguez-pois-chiches",
@@ -34698,7 +33103,15 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "orient",
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "cote-porc-miel-curry-puree-patate-douce",
@@ -34804,7 +33217,16 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "printemps",
+      "automne"
+    ],
+    "styles": [
+      "orient",
+      "asiatique"
+    ],
+    "gamelle": true
   },
   {
     "id": "poelee-pommes-de-terre-saucisse-fumee",
@@ -34910,7 +33332,14 @@ window.DEFAULT_RECIPES = [
         "ingredients": [],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "hiver"
+    ],
+    "styles": [
+      "terroir"
+    ],
+    "gamelle": true
   },
   {
     "id": "rigatoni-tomates-cerises-prosciutto-burrata",
@@ -34996,9 +33425,62 @@ window.DEFAULT_RECIPES = [
         ],
         "timerMinutes": null
       }
-    ]
+    ],
+    "seasons": [
+      "ete"
+    ],
+    "styles": [
+      "italien"
+    ],
+    "gamelle": true
   }
 ];
+
+// Anciens identifiants de recettes fusionnées (doublons) → recette conservée : les menus, favoris et menus enregistrés sont redirigés.
+window.RECIPE_ALIASES = {
+  "croque-monsieur-gourmand-bechamel-four": "croque-monsieur-four-bechamel",
+  "fajitas-boeuf-poivrons-express": "fajitas-tex-mex-boeuf-poivrons-guacamole",
+  "poulet-tikka-masala-express-riz-basmati": "poulet-tikka-masala-express-riz",
+  "gnocchi-epinards-gorgonzola-creme": "gnocchis-epinards-creme-gorgonzola",
+  "gnocchis-sauce-cremeuse-gorgonzola-epinards": "gnocchis-epinards-creme-gorgonzola",
+  "brochettes-yakitori-boeuf-fromage-riz": "yakitori-boeuf-fromage-riz",
+  "croque-madame-dore-four-salade": "croque-madame-four-oeuf-coule",
+  "quiche-doree-poireaux-feta": "quiche-poireaux-feta-doree",
+  "lasagnes-vege-courgettes-champignons": "lasagnes-vegetariennes-courgettes-champignons-ricotta",
+  "risotto-saint-jacques-poireaux-fondants": "risotto-saint-jacques-poireaux-parmesan",
+  "burger-parisien-boucher-champignons-frites": "burger-parisien-boeuf-comte-frites",
+  "curry-crevettes-lait-coco-poivron": "curry-crevettes-lait-coco-riz",
+  "blanquette-crevettes-poireaux-riz": "blanquette-express-crevettes-riz",
+  "poulet-miel-haricots-verts-ail": "poulet-laque-miel-haricots-verts",
+  "burrito-boeuf-haricots-cheddar": "burrito-boeuf-cheddar-fondant",
+  "gnocchis-poeles-tomates-mozzarella": "gnocchi-poeles-tomates-cerises-basilic",
+  "pates-alfredo-poulet-parmesan": "pates-alfredo-au-poulet-dore",
+  "pad-thai-aux-crevettes": "pad-thai-crevettes-cacahuetes",
+  "curry-d-aubergines-fondant-coco": "curry-aubergines-lait-coco-pois-chiches",
+  "salade-de-pates-jambon-cru-petits-pois": "salade-pates-jambon-cru-petits-pois",
+  "veloute-champignons-parmesan": "veloute-champignons-parmesan-croutons",
+  "boulettes-poulet-thai-gingembre-coco": "boulettes-poulet-thai-coco",
+  "risotto-cremeux-crevettes-chorizo": "risotto-crevettes-chorizo-parmesan",
+  "soupe-lentilles-poulet-repas": "soupe-lentilles-poulet-legumes",
+  "pates-cremeuses-poulet-olives-herbes": "pates-cremeuses-poulet-olives",
+  "bowl-poulet-laque-teriyaki-sesame-riz": "bowl-poulet-teriyaki-sesame-riz",
+  "poulet-basquaise-poivrons-tomates-mijjote": "poulet-basquaise-poivrons-riz",
+  "pates-ragout-canard-mijote": "rigatoni-ragout-canard-confit-tomate",
+  "enchiladas-dorees-boeuf-sauce-tomate-fromage": "enchiladas-boeuf-cheddar-gratine",
+  "lentilles-carottes-saucisses-volaille": "saucisses-toulouse-lentilles-vertes-carottes",
+  "tartiflette-poelee-rapide-reblochon": "tartiflette-savoyarde-express-lardons-reblochon",
+  "poulet-citron-olives-couscous": "poulet-citron-confit-olives-couscous",
+  "riz-saute-poulet-petits-pois-oeuf": "riz-cantonais-poulet-petits-pois",
+  "lasagnes-courgette-ricotta-fondantes": "lasagnes-vegetariennes-courgettes-champignons-ricotta",
+  "chili-con-carne-boeuf-haricots": "chili-con-carne-traditionnel-haricots-rouges",
+  "wok-poulet-legumes-sauce-cacahuete": "wok-poulet-cacahuete-legumes-croquants",
+  "parmentier-de-canard-patates-douces": "parmentier-canard-patates-douces",
+  "curry-lentilles-vertes-patate-douce": "curry-lentilles-patates-douces-coco",
+  "tarte-fine-tomates-moutarde-pesto": "tarte-fine-tomates-moutarde-herbes",
+  "blanquette-veau-traditionnelle-carottes-riz": "blanquette-veau-traditionnelle-riz-pilaf",
+  "boulettes-bolognaise-spaghetti-parmesan": "boulettes-boeuf-sauce-tomate-spaghetti"
+};
+
 
 window.GRAND_FRAIS_RAYONS = [
   {
