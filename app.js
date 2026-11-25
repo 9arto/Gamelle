@@ -1746,7 +1746,7 @@ function renderPlanning() {
             <button class="btn-change-meal text-xs text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded-lg font-medium transition-colors" data-slot="${slotIndex}">
               Changer
             </button>
-            <button class="btn-remove-meal text-xs text-slate-400 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-colors" data-slot="${slotIndex}" title="Retirer ce plat">
+            <button aria-label="Retirer ce repas" class="btn-remove-meal text-xs text-slate-400 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-colors" data-slot="${slotIndex}" title="Retirer ce plat">
               ✕
             </button>
           </div>
@@ -1771,7 +1771,7 @@ function renderPlanning() {
       card.innerHTML = `
         <div class="flex items-center justify-between">
           <span class="font-bold text-xs text-slate-800 bg-slate-100 px-2.5 py-1 rounded-lg">Repas ${slotIndex + 1}</span>
-          <button class="btn-remove-meal text-xs text-slate-400 hover:text-red-500 px-2 py-1" data-slot="${slotIndex}">✕</button>
+          <button aria-label="Retirer ce repas" class="btn-remove-meal text-xs text-slate-400 hover:text-red-500 px-2 py-1" data-slot="${slotIndex}">✕</button>
         </div>
         <button class="btn-choose-meal w-full py-3 border-2 border-dashed border-slate-200 hover:border-brand-500 rounded-xl text-slate-500 hover:text-brand-600 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all" data-slot="${slotIndex}">
           <span>+</span> Choisir une recette

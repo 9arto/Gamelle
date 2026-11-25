@@ -2,6 +2,19 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 25/11/2026 — v52 : fiabilité, courses en magasin, contenu
+- **Sauvegarde et restauration** : export/import d'un fichier validé ; « Récupérer depuis l'autre téléphone » ; un téléphone neuf demande l'état du foyer au lieu de l'écraser.
+- **Synchro lisible** : « dernière synchro il y a 2 h », bandeau hors connexion, bandeau persistant de mise à jour.
+- **Codes foyer forts** : les codes faibles sont refusés ; bouton « Changer de code » (l'autre téléphone suit seul).
+- **CSP** : scripts du site uniquement (`theme.js` remplace le script en ligne), connexions limitées à ntfy, Open Food Facts, Open-Meteo.
+- **Courses en magasin** : « Mode courses » (gros texte, grosses cases, rayons repliables, « Terminé »), glisser pour cocher / « j'ai déjà », produits courants avec quantité (« Lait ×3 ») et « vos habituels », menu « … ».
+- **Une action principale par écran** : « 7 repas » (Planning) et « Mode courses » (Courses), le reste dans « … » (`docs/hierarchie-avant-apres.png`).
+- **Icônes filaires** (onglets, rayons), photos des 3 premières cartes prioritaires, accessibilité (texte ≥ 12 px, contrastes, libellés `aria-label`).
+- **Prix réels** : total du ticket de caisse saisi → budget estimé ajusté à vos prix. **Stock dégressif** : quantités du placard décrémentées à « Cuisiné ».
+- **Contenu** : classement « gamelle » supprimé ; 39 recettes dont les saisons étaient douteuses corrigées (`CLASSEMENT_A_VERIFIER.md`) ; formats d'achat (pot de crème 20 cl, brique de lait, boîte de coco, beurre) ; 18 photos Pexels/TheMealDB remplacées par les photos Jow correspondantes.
+- **Technique** : `app.js` découpé (`groceries.js`, `sync.js`) ; test qui détecte toute classe CSS manquante (le CSS est pré-compilé). 84 tests.
+- **Non fait** : calories officielles Ciqual (la base Anses est injoignable depuis l'environnement de développement ; les valeurs restent des estimations) ; lecture automatique du ticket de caisse (OCR) ; reste ~36 photos Pexels/TheMealDB sans équivalent Jow certain ; `recipes.js` non découpé (≈ 180 Ko compressé, le chargement différé n'apporterait rien).
+
 ## 25/11/2026 — v44 : météo et notifications
 - **Météo invisible** : Open-Meteo (gratuit, sans clé) oriente le tirage des « 7 repas » (froid/pluie → plats réconfortants ; chaud → plats frais). Aucun affichage, position arrondie gardée sur le téléphone, jamais redemandée si refusée.
 - **Notifications du foyer** via ntfy.sh (sujet secret dérivé du code, sans clé) : « Julie a ajouté Lait, Avoine dans la liste de courses », regroupées, désactivables, prénom facultatif.
