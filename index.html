@@ -102,13 +102,13 @@
     <section id="tab-courses" class="tab-content space-y-4">
       
       <!-- En-tête des courses -->
-      <div class="ios-card p-4">
+      <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-4 text-white shadow-lg shadow-emerald-900/10">
         <div class="flex items-center justify-between mb-2">
           <div>
-            <h2 class="font-bold text-slate-800 text-base">Liste de courses</h2>
+            <h2 class="font-bold text-white text-lg">Liste de courses</h2>
           </div>
           <div class="flex gap-2 relative">
-            <button id="btn-groceries-more" type="button" class="more-menu-btn bg-slate-100 text-slate-600 text-lg font-bold w-10 h-10 rounded-xl active:scale-95" data-menu="groceries-more-menu" aria-label="Plus d'actions" aria-haspopup="menu" aria-expanded="false">…</button>
+            <button id="btn-groceries-more" type="button" class="more-menu-btn bg-white/20 text-white text-lg font-bold w-10 h-10 rounded-xl active:scale-95" data-menu="groceries-more-menu" aria-label="Plus d'actions" aria-haspopup="menu" aria-expanded="false">…</button>
             <div id="groceries-more-menu" role="menu" class="more-menu hidden absolute right-0 top-full mt-2 w-60 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-30 divide-y divide-slate-100">
               <button id="btn-copy-groceries" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Copier la liste (WhatsApp, Notes)</button>
               <button id="btn-clear-checked" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Décocher tous les articles</button>
@@ -119,12 +119,12 @@
         </div>
 
         <!-- Barre de progression -->
-        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-          <div id="courses-progress-bar" class="bg-brand-600 h-full w-0 transition-all duration-300"></div>
+        <div class="w-full bg-white/25 h-2 rounded-full overflow-hidden">
+          <div id="courses-progress-bar" class="bg-white h-full w-0 transition-all duration-300"></div>
         </div>
         <div class="pt-1.5 text-xs space-y-0.5">
-          <p id="courses-stats-label" class="text-slate-500 font-medium">0 / 0 article coché</p>
-          <p id="courses-budget-label" class="text-slate-400 font-medium"></p>
+          <p id="courses-stats-label" class="text-white font-semibold">0 / 0 article coché</p>
+          <p id="courses-budget-label" class="text-emerald-50 font-medium"></p>
         </div>
       </div>
 
@@ -366,6 +366,9 @@
             </div>
           </div>
 
+          <details class="rounded-2xl border border-slate-200 overflow-hidden">
+            <summary class="p-3.5 text-xs font-bold text-slate-700 cursor-pointer flex items-center justify-between">Autres façons de partager <span class="text-[12px] font-semibold text-slate-400">lien · Notes · QR</span></summary>
+            <div class="p-3 pt-0 space-y-3">
           <!-- Option 1 : Lien Magique Tout-en-un (Recettes + Articles courants + Plats conservés) -->
           <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
             <h3 class="text-xs font-bold text-slate-800 mb-1 flex items-center gap-1.5">
@@ -409,6 +412,8 @@
               <span class="text-[10px] text-slate-400 mt-2 font-medium">Scannez avec l'appareil photo de l'autre iPhone</span>
             </div></div>
           </div>
+            </div>
+          </details>
 
 
         </div>
