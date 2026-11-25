@@ -511,3 +511,14 @@ body.shop-mode .rayon-head h3 { font-size:15px; }
 body.shop-mode .btn-staple-plus, body.shop-mode .btn-delete-staple, body.shop-mode .btn-pantry { min-width:44px; min-height:44px; }
 .grocery-row { transition: transform .12s ease; touch-action: pan-y; }
 .rayon-head { min-height:44px; }
+
+/* Utilitaires absents du tailwind.css pré-compilé (contrôlés par tests/css-classes.test.js) */
+.pt-0 { padding-top: 0; }
+.space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: .25rem; }
+.text-left { text-align: left; }
+.text-\[12px\] { font-size: 12px; line-height: 1.35; }
+.w-56 { width: 14rem; }
+.w-60 { width: 15rem; }
+.shadow-xl { box-shadow: 0 20px 25px -5px rgba(0,0,0,.1), 0 8px 10px -6px rgba(0,0,0,.1); }
+.shadow-xs, .shadow-2xs { box-shadow: 0 1px 2px 0 rgba(0,0,0,.05); }
+.active\:bg-slate-100:active { background-color: #f1f5f9; }

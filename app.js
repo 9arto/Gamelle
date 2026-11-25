@@ -3060,18 +3060,18 @@ function renderGroceries() {
 }
 
 // 3. Rendu du Catalogue de Recettes (affichage progressif, photos différées)
-function recipeCardHTML(recipe) {
+function recipeCardHTML(recipe, idx = 99) {
   const isFav = state.favorites.includes(recipe.id);
   const isCustom = recipe.id.startsWith('custom-');
   return `
     <div class="ios-card p-3.5 flex gap-3 hover:border-brand-300 transition-all cursor-pointer btn-open-detail" data-id="${esc(recipe.id)}" role="button" tabindex="0">
-      <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
+      <img src="${esc(thumbImg(recipe.image))}" alt="" ${idx < 3 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
       <div class="flex-1 min-w-0 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between gap-1 flex-wrap mb-0.5">
             <div class="flex items-center gap-1.5 flex-wrap">
               <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600">${esc(recipe.tag)}</span>
-              ${isCustom ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded-md">Maison</span>` : ''}
+              ${isCustom ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md">Maison</span>` : ''}
             </div>
             <div class="flex items-center gap-1.5">
               ${recipe.isBudget ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
@@ -3118,7 +3118,7 @@ function showMoreRecipes() {
   catalogLimit = Math.min(catalogFiltered.length, catalogLimit + CATALOG_PAGE);
   const more = document.getElementById('catalog-more');
   if (more) more.remove();
-  container.insertAdjacentHTML('beforeend', catalogFiltered.slice(from, catalogLimit).map(recipeCardHTML).join(''));
+  container.insertAdjacentHTML('beforeend', catalogFiltered.slice(from, catalogLimit).map((r) => recipeCardHTML(r)).join(''));
   appendCatalogFooter(container);
 }
 
@@ -3501,10 +3501,10 @@ function renderCookingStep() {
 
   if (stepIndex === totalSteps - 1) {
     nextBtn.innerHTML = `<span>Bon appétit</span>`;
-    nextBtn.className = "flex-2 w-2/3 bg-emerald-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
+    nextBtn.className = " w-2/3 bg-emerald-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
   } else {
     nextBtn.innerHTML = `<span>Étape suivante</span> →`;
-    nextBtn.className = "flex-2 w-2/3 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
+    nextBtn.className = " w-2/3 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-2xl text-xs active:scale-95";
   }
 }
 
