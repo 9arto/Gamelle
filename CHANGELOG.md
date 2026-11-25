@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 25/11/2026 — v55 : icônes de rayons
+- Rayons : emoji (carotte, cuisse de poulet, poisson, fromage, conserve, caddie) dans une pastille colorée, clair et sombre.
+
 ## 25/11/2026 — v54 : en-tête vert et partage regroupé
 - Encadré « Liste de courses » : retour au dégradé vert du Planning. Réglages : options 1 à 3 du partage (lien, Notes, QR) regroupées dans un menu « Autres façons de partager ».
 

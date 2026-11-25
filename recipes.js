@@ -42963,14 +42963,14 @@ window.GRAND_FRAIS_RAYONS = [
   {
     "id": "fruits-legumes",
     "name": "Fruits & Légumes",
-    "icon": "🥬",
+    "icon": "🥕",
     "color": "emerald",
     "desc": "Hall d'entrée géant"
   },
   {
     "id": "boucherie",
     "name": "Boucherie & Volailles",
-    "icon": "🥩",
+    "icon": "🍗",
     "color": "rose",
     "desc": "Comptoir & barquettes"
   },

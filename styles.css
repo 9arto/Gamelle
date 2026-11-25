@@ -517,3 +517,10 @@ html:where(.dark) .app-banner.offline { background: #3a2f12; color: #fcd34d; }
 .pr-2\.5 { padding-right: .625rem; }
 .bg-white\/25 { background-color: rgba(255,255,255,.25); }
 .text-emerald-50 { color: #ecfdf5; }
+
+/* Icônes de rayon : emoji dans une pastille colorée */
+.rayon-tile { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:10px; font-size:17px; line-height:1; background:#e2e8f0; flex-shrink:0; }
+.rayon-fruits-legumes { background:#d1fae5; } .rayon-boucherie { background:#fee2e2; } .rayon-poissonnerie { background:#dbeafe; }
+.rayon-cremerie { background:#fef3c7; } .rayon-epicerie { background:#ffedd5; } .rayon-courants { background:#e2e8f0; }
+html:where(.dark) .rayon-fruits-legumes { background:#064e3b; } html:where(.dark) .rayon-boucherie { background:#7f1d1d; } html:where(.dark) .rayon-poissonnerie { background:#1e3a8a; }
+html:where(.dark) .rayon-cremerie { background:#78350f; } html:where(.dark) .rayon-epicerie { background:#7c2d12; } html:where(.dark) .rayon-courants { background:#334155; }
