@@ -15,7 +15,7 @@ Une application moderne, saine et épurée conçue sur-mesure pour **les couples
    - Détection automatique et classement intelligent de chaque ingrédient dans les 6 rayons officiels Grand Frais.
    - Détection automatique des temps de cuisson pour créer les minuteurs interactifs pas-à-pas.
    - Modification et suppression en 1 clic.
-3. **342 Meilleures Recettes Gourmandes (Inspirées des Stars de Jow)** :
+3. **392 Meilleures Recettes Gourmandes (Inspirées des Stars de Jow)** :
    - Grand catalogue équilibré et varié avec mise à l'honneur spéciale de la **volaille et du poulet** (90 recettes savoureuses : sauté, wok, rôti, curry, laqué, tandoori, tacos, etc.), sans excès de saumon.
    - Toutes notées au sommet (100k à 190k likes), 100% complètes, rapides (< 15 à 30 min) et sans fioritures.
    - Photos studio HD authentiques.
@@ -69,5 +69,7 @@ Le dossier est un site statique : aucun build nécessaire. Dans le dépôt GitHu
 - Catalogue de 300+ plats affiché progressivement, ingrédients regroupés dans la liste de courses.
 
 ## Documentation & tests
-- **[APPLICATION.md](APPLICATION.md)** : référence complète (fonctionnement, règles de la liste de courses, points à vérifier, idées d'évolution).
+- **[APPLICATION.md](APPLICATION.md)** : référence complète (but, fonctionnement, règles de la liste de courses, cohérence des recettes, points à vérifier, idées d'évolution).
+- **[CATALOGUE.md](CATALOGUE.md)** : liste des 392 recettes avec type, durée, saisons, styles et calories (généré : `npm run docs`).
+- **[CHANGELOG.md](CHANGELOG.md)** : historique des évolutions.
 - Tests automatiques : `npm test` (ou `node --test tests/`) — aucune dépendance.

@@ -183,7 +183,7 @@ test('synchro foyer : message chiffré, relu avec le bon code, illisible avec un
 // ---------------------------------------------------------------- Finir mes restes
 const api = load(RECIPES).api;
 const articleOf = (i) => api.normalizeIngredient(i).name;
-const rank = (have, extra = {}) => L.rankByLeftovers(RECIPES, have, { articleOf, limit: 50, ...extra });
+const rank = (have, extra = {}) => L.rankByLeftovers(RECIPES, have, { articleOf, limit: 1000, ...extra });
 
 test('restes : les recettes proposées utilisent bien ce qu\'on a', () => {
   const res = rank(['poulet', 'courgette']);

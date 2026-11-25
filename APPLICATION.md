@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v42**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v43**.
 
 ---
 
@@ -30,12 +30,12 @@ Principes de conception (à ne pas casser) :
 | Élément | Détail |
 |---|---|
 | Hébergement | GitHub Pages (dépôt `9arto/Gamelle`, branche `main`, racine). `.nojekyll` présent. |
-| Fichiers | `index.html` (structure + fenêtres), `app.js` (interface et état), `logic.js` (logique pure testée : saisons, styles, génération du menu, placard, budget, chiffrement), `nutrition.js` (calories/macros/allergènes + client Open Food Facts), `recipes.js` (catalogue + rayons + anciens identifiants), `styles.css` + `tailwind.css` (CSS pré-compilé, pas de CDN), `sw.js` (service worker), `manifest.json`, icônes. |
-| Données recettes | `window.DEFAULT_RECIPES` (342 recettes) et `window.RECIPE_ALIASES` (anciens identifiants → recette conservée) et `window.GRAND_FRAIS_RAYONS` (6 rayons) dans `recipes.js`. |
+| Fichiers | `index.html` (structure + fenêtres), `app.js` (interface et état), `logic.js` (logique pure testée : saisons, styles, génération du menu, placard, budget, chiffrement), `nutrition.js` (calories/macros/allergènes + client Open Food Facts), `recipes.js` (catalogue + rayons + anciens identifiants), `CATALOGUE.md` (liste complète générée), `CHANGELOG.md` (historique), `tools/gen-catalogue.js`, `styles.css` + `tailwind.css` (CSS pré-compilé, pas de CDN), `sw.js` (service worker), `manifest.json`, icônes. |
+| Données recettes | `window.DEFAULT_RECIPES` (392 recettes) et `window.RECIPE_ALIASES` (anciens identifiants → recette conservée) et `window.GRAND_FRAIS_RAYONS` (6 rayons) dans `recipes.js`. |
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v42`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v43`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -69,7 +69,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Bandeau 🔒 si des repas sont gardés.
 
 ### 3.3 Recettes (catalogue)
-- 342 plats affichés par 24 (bouton « Afficher plus » + chargement automatique au défilement).
+- 392 plats affichés par 24 (bouton « Afficher plus » + chargement automatique au défilement).
 - **Recherche** insensible à la casse/accents/ponctuation (titre, description, ingrédients).
 - **Filtres** : une ligne d'essentiels (Tous · ❤️ Favoris · ⚡ < 20 min · 🍱 Gamelle · 💰 Pas cher · types) + **« ⚙️ Plus de filtres »** (saisons, styles, 1 poêle, sans porc, sans lactose, mes recettes). Liste complète : Tous · 💰 Pas cher · 🌸 Printemps · ☀️ Été · 🍁 Automne · ❄️ Hiver · ⚡ < 20 min · 🍱 Gamelle · 🍗 Volaille · 🥩 Viande · 🐟 Poisson · 🌱 Végétarien · styles (🌮 Street food, 🇮🇹 Italien, 🥢 Asiatique, 🍛 Orient & Indien, 🌶️ Tex-Mex, 🥘 Terroir, 🥗 Frais & bowls) · 🍳 1 poêle · 🚫🐖 Sans porc · 🥛 Sans lactose · ❤️ Favoris · ⭐ Mes recettes.
 - **Tri** : **Au hasard** (par défaut, avec un bouton « Mélanger » ; l'ordre reste stable tant qu'on ne mélange pas) / Ordre du catalogue / Moins cher d'abord / Plus rapide.
@@ -138,7 +138,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Unités reconnues : g, kg, ml, cl, l, c. à soupe, c. à café, pièce(s), gousse, botte/bouquet, brin, branche, tige, tête, tranche, pavé, œuf, pincée, poignée, quartier, pot, cube, boîte, paquet, cm, portion, sachet, morceau, bouteille.
 
 ### 5.2 État du catalogue (25/11/2026)
-- **342 recettes** : 305 d'origine − 41 doublons fusionnés + **38** (lot 1) **+ 40** (lot 2, sans aucun poisson ni fruit de mer, donc pas de « terre et mer ») nouvelles « Top Jow » (priorité donnée aux recettes Jow les plus « likées » : dans chaque groupe de doublons, la version la plus proche de la recette Jow d'origine a été gardée).
+- **392 recettes** : 305 d'origine − 41 doublons fusionnés + **38** (lot 1) + **40** (lot 2) + **50** (lot 3) nouvelles « Top Jow ». Les lots 2 et 3 ne contiennent **aucun poisson ni fruit de mer** (donc pas de « terre et mer »). Liste complète, répartitions et calories : `CATALOGUE.md` (généré par `npm run docs`). (priorité donnée aux recettes Jow les plus « likées » : dans chaque groupe de doublons, la version la plus proche de la recette Jow d'origine a été gardée).
 - Répartition par saison (une recette peut compter dans 2–4 saisons) : voir le test « classement ». Chaque saison couvre au moins 25 % du catalogue.
 - Quantités des 38 nouvelles recettes recalculées pour 4 portions ; photos officielles Jow (`static.jow.fr`, 550×550).
 
@@ -187,11 +187,22 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 | `blanquette-veau-traditionnelle-carottes-riz` | `blanquette-veau-traditionnelle-riz-pilaf` |
 | `boulettes-bolognaise-spaghetti-parmesan` | `boulettes-boeuf-sauce-tomate-spaghetti` |
 
+### 5.2 bis Règles de cohérence (contrôlées par `tests/coherence.test.js`)
+Pour **toute** recette du catalogue :
+- **Le titre dit vrai** : chaque produit annoncé (poulet, riz, chèvre, ricotta, aubergine, curry, ananas…) figure dans les ingrédients.
+- **Quantités plausibles pour 4 portions** : viandes 300–1 300 g, féculents 150–800 g, pommes de terre 300–1 600 g, crème ≤ 600 ml, sauce soja / vinaigre ≤ 8 c. à soupe, fromages à pâte molle ≤ 800 g, etc.
+- Calories par portion entre 120 et 1 200 kcal ; macros cohérentes avec les calories.
+Pour les **lots récents** (1 à 3) : en plus, chaque ingrédient est **cité dans les étapes**, chaque ingrédient d'une étape existe dans la liste, et le temps annoncé couvre le plus long minuteur.
+
+**Contrôle croisé avec Jow** (lots 2 et 3, script de construction) : chaque ingrédient Jow non facultatif retrouvé exactement une fois, quantité = quantité par personne de Jow × 4 (× nombre de parts / 4 pour les tartes et quiches prévues pour 6), puis arrondie ; unités converties (kg→g, L→ml, pièces→g pour viandes et fromages au poids).
+
+**Corrections faites sur les recettes d'origine** (audit de cohérence du 25/11/2026) : 21 titres ne correspondaient pas aux ingrédients réels (ex. « Aubergines rôties façon parmigiana… sauce tomate & mozzarella » dont la liste était celle d'aubergines à la feta et à la grenade) → titre et description alignés sur les ingrédients, voir `CHANGELOG.md`. Ingrédients erronés corrigés : *Pad Thaï* (nouilles de riz et beurre de cacahuète à la place de « riz rond » et de beurre), *Gnocchi all'arrabbiata* (chorizo), *Soupe de nouilles au curry*, *Bouillon coco-crevettes*, *Boulettes de poulet thaï* (nouilles / vermicelles de riz), *Fajitas au bœuf* (bœuf émincé à la place de poulet), *Salade courgettes-jambon cru* (jambon cru), *Poulet pané mayo-wasabi* (1,8 kg de poulet → 600 g), *Risotto crevettes-chorizo* (chorizo) et deux recettes de bœuf (bœuf en double).
+
 ### 5.3 Ajouter des recettes — marche à suivre
 1. Vérifier l'absence de doublon (titre, photo, plat équivalent) — le test « nettoyage » le contrôle.
 2. Ajouter l'objet dans `DEFAULT_RECIPES` (`recipes.js`) avec un `id` nouveau.
 3. Utiliser des noms d'ingrédients clairs ; si un produit est nouveau ou ambigu, vérifier le résultat dans la liste de courses (§7.5).
-4. Calculer `seasons` / `styles` / `gamelle` avec `GamelleLogic.classifyRecipe` ; ajouter l'`id` dans `NEW_JOW_IDS` (tests) si c'est un lot à contrôler ; `npm test`.
+4. Calculer `seasons` / `styles` / `gamelle` avec `GamelleLogic.classifyRecipe` ; ajouter les `id` dans un nouveau `LOTn_IDS` de `tests/recipes.test.js` (et dans `NEW_JOW_IDS`) ; `npm run docs` pour régénérer `CATALOGUE.md` ; `npm test`.
 5. Si l'instantané des ingrédients change : relire le diff, puis `UPDATE_SNAPSHOT=1 node --test tests/`.
 6. **Incrémenter `VERSION` dans `sw.js`**.
 
@@ -261,10 +272,11 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | `tests/groceries.test.js` | unités (toutes les écritures), conversions, arrondis et grammaire ; regroupement des variantes d'un même produit ; produits non absorbés ; rayons ; additions entre repas ; poids/pièces ; **indépendance vis-à-vis de l'ordre des repas** ; doses (×portions) ; repas gardés exclus ; planning vide/recette inconnue ; quantités inconvertibles conservées ; cases cochées conservées ; anciennes recettes maison ; invariants sur **tout le catalogue** (liste valide pour chaque recette, aucune quantité perdue, pas de doublon de ligne, pas de produit en double sous deux noms). |
 | `tests/recipes.test.js` | syntaxe des fichiers ; **nettoyage** (pas de photo partagée, pas de titre quasi identique, alias valides, pas d'ingrédient en double, types valides) ; **classement** (saisons/styles/gamelle présents, 4 saisons ≥ 25 %) ; structure de chaque recette ; unicité id/titre ; lot « Top Jow » (présence, aucun doublon photo/titre, types reconnus, durées et quantités réalistes, étapes sans texte parasite, minuteurs cohérents) ; **cas précis de courses** des nouvelles recettes ; **instantané** `tests/fixtures/ingredient-mapping.json` (chaque nom d'ingrédient → article de courses : tout changement doit être voulu). |
 | `tests/logic.test.js` | saison actuelle ; classement saisons/styles/gamelle ; régimes (sans porc / lactose / 1 poêle) ; **génération proportionnelle**, plafond par type, tous les plats peuvent sortir ; filtres respectés ; plats verrouillés, « bof », cuisinés récemment, frigo ; placard / épices / base ; noms d'épices valides ; budget plausible ; **chiffrement** de la synchro. |
+| `tests/coherence.test.js` | **titres ↔ ingrédients**, **quantités plausibles**, étapes ↔ ingrédients et minuteurs (lots récents), `CATALOGUE.md` à jour. |
 | `tests/nutrition.test.js` | chaque article a une valeur ; cohérence kcal/macros ; calories par portion plausibles pour les 302 recettes ; exemple vérifié à la main ; allergènes ; client Open Food Facts (réseau simulé : fiche produit, valeur typique, erreurs). |
 | `tests/e2e.test.js` | **navigateur réel** (Playwright, ignoré s'il n'est pas installé : `npm i -D playwright`) : données d'un utilisateur existant conservées (plan, favoris, case cochée, article courant, portions, ancien identifiant redirigé), « Composer mes 7 repas » avec filtres, placard, niveau d'épices, budget, filtre de style, avis, aucune erreur console. |
 
-État au 25/11/2026 : **69 tests passent, 0 échec**.
+État au 25/11/2026 : **74 tests passent, 0 échec**.
 
 ---
 
@@ -339,4 +351,5 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | 25/11/2026 (4) | **+40 recettes Top Jow sans poisson** (342 au total) ; **suggestions à la frappe** pour les produits courants ; **épices une par une** (remplace les niveaux) ; Nutri-Score centré ; **interface épurée** (budget en pied d'en-tête, produits courants compacts, filtres secondaires repliés, rayons sans sous-titre, allergènes sur la ligne de détail) ; nems, pilons, haricots verts surgelés reconnus. 65 tests. SW v40. |
 | 25/11/2026 (5) | **Finir mes restes** (recettes déduites de ce qu'on a) ; allergènes retirés de la liste de courses ; « Budget » sur sa propre ligne ; **emojis décoratifs supprimés** (boutons, filtres, titres) et icône de placard remplacée par un petit pictogramme « colis » ; « Mes repas ». 69 tests. SW v41. |
 | 25/11/2026 (6) | Titre évolutif **« Mes N repas »** ; onglet Recettes **au hasard** + bouton Mélanger ; **vignettes Jow légères** (3× moins lourdes). SW v42. |
+| 25/11/2026 (7) | **+50 recettes Top Jow sans poisson** (392) ; **audit de cohérence** de tout le catalogue (21 titres alignés sur les ingrédients, 10 ingrédients erronés corrigés) ; tests de cohérence ; `CATALOGUE.md` et `CHANGELOG.md`. SW v43. |
 | (avant) | Anti-scintillement des fenêtres de recette, carte « Mise à jour », pastille foyer, correctifs de fusion de produits (SW v31–v36). |

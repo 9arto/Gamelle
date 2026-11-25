@@ -71,7 +71,60 @@ const LOT2_IDS = [
   "pappardelle-cremeuses-prosciutto-ricotta",
   "nouilles-sautees-courgettes-tomates-oeufs"
 ];
-const NEW_JOW_IDS = [...LOT1_IDS, ...LOT2_IDS];
+// Lot 3 (novembre 2026, 50 recettes) : sans poisson ni fruit de mer.
+const LOT3_IDS = [
+  "poulet-orange-soja-riz",
+  "poulet-grec-cereales-yaourt",
+  "poulet-poireaux-carottes-thym",
+  "poulet-italienne-tomates-sechees-olives",
+  "tagliatelles-dinde-tomates-cerises-fromage-ail",
+  "dinde-creme-champignons-puree",
+  "dinde-courgettes-curry-coco-riz",
+  "boulettes-poulet-creme-coquillettes",
+  "gnocchi-alfredo-poulet",
+  "nouilles-sautees-boeuf-brocolis",
+  "boeuf-creme-persillee-pommes-de-terre",
+  "saute-boeuf-olives-pommes-de-terre",
+  "aiguillettes-boeuf-legumes-poeles-riz",
+  "moussaka-aubergines-boeuf",
+  "classic-cheeseburger",
+  "haricots-verts-sauce-tomate-viande-hachee",
+  "steak-beurre-ail-pommes-de-terre-courgettes",
+  "polpette-italienne-polenta",
+  "chou-braise-saucisse-lardons",
+  "poelee-choux-bruxelles-lardons",
+  "pappardelle-ragout-chair-saucisse",
+  "one-pan-filet-mignon-balsamique-legumes",
+  "saute-porc-ananas-curry-riz",
+  "aubergines-braisees-porc-gingembre-riz",
+  "gratin-pates-lard-cabecou",
+  "saucisses-oignons-puree-moutarde",
+  "pates-brocolis-facon-carbonara",
+  "gnocchiflette-lardons-reblochon",
+  "pates-vodka-tomate-creme",
+  "tikka-masala-chou-fleur-riz",
+  "bourguignon-vege-champignons-polenta",
+  "pates-norma-aubergines-ricotta",
+  "lasagnes-poireaux-ricotta",
+  "curry-courgettes-petits-pois-nouilles-riz",
+  "golden-pot-chou-fleur-pois-chiches",
+  "gratin-butternut-bleu-noisettes",
+  "potimarron-roti-fourme-ambert",
+  "one-pan-gnocchi-poivrons-tomate",
+  "conchiglioni-farcis-ricotta-epinards",
+  "aubergines-roties-burrata-pignons",
+  "polenta-legumes-grilles-tomates-cerises",
+  "curry-boulettes-vege-epinards-riz",
+  "poelee-pois-chiches-epinards-oeuf-feta",
+  "haricots-verts-gratines-comte",
+  "riz-saute-pimente-oeuf-au-plat",
+  "orecchiette-ricotta-courgettes-pignons",
+  "camembert-roti-potatoes",
+  "gnocchi-poeles-choux-bruxelles-parmesan",
+  "feuilletes-saucisse-moutarde",
+  "pates-pesto-petits-pois-burrata"
+];
+const NEW_JOW_IDS = [...LOT1_IDS, ...LOT2_IDS, ...LOT3_IDS];
 const byId = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 const imageId = (r) => (String(r.image).split('/').pop() || '').replace(/\.[a-z]+$/i, '');
 
@@ -123,7 +176,7 @@ test('catalogue : structure complète de chaque recette', () => {
 // ---------------------------------------------------------------------------
 // Lot de nouvelles recettes
 test('nouvelles recettes « Top Jow » : toutes présentes, au moins 30', () => {
-  assert.ok(LOT1_IDS.length >= 30 && LOT2_IDS.length >= 40);
+  assert.ok(LOT1_IDS.length >= 30 && LOT2_IDS.length >= 40 && LOT3_IDS.length >= 50);
   for (const id of NEW_JOW_IDS) assert.ok(byId[id], `${id} manque`);
 });
 
@@ -186,7 +239,7 @@ test('nouvelles recettes : liste de courses correcte pour chacune (aucun produit
     return clean(a).split(/\s+/)[0].replace(/s$/, '') === clean(b).split(/\s+/)[0].replace(/s$/, '');
   };
   // Produits qu'on accepte de voir fusionnés sous un autre libellé (regroupement voulu par l'application)
-  const MERGE_OK = /^(pates|oignon|carotte|courgette|poivron|tomates? (cerises?|concassees)|escalopes? de|riz|semoule|creme|lait|parmesan|comte|beurre|miel|moutarde|curry|paprika|herbes|origan|bouillon|farine|gousses|pommes? de terre|patates?|petits pois|haricots? (verts|rouges)|pousses?|salade|mozzarella|ricotta|brocoli|citron|champignons|poireaux|echalotes?|ciboulette|basilic|persil|menthe|coriandre|thym|cumin|curcuma|olives|crevettes|lardons|chorizo|thon|jambon|saumon|merguez|filet mignon|filets?|cotes?|saucisses?|roquette|nems|pilons|allumettes|faux-filet|bavette|cabillaud|dos de cabillaud|pates? (brisee|feuilletee)|chevre|crottins|buche|feta|reblochon|ravio|gnocchis?|nouilles|lasagnes?|plaques|sauce|yaourts?|oeufs?|graines|huile|pois chiches|boeuf|epinards?|purée|puree|pois)/;
+  const MERGE_OK = /^(pates|oignon|carotte|courgette|poivron|tomates? (cerises?|concassees)|escalopes? de|riz|semoule|creme|lait|parmesan|comte|beurre|miel|moutarde|curry|paprika|herbes|origan|bouillon|farine|gousses|pommes? de terre|patates?|petits pois|haricots? (verts|rouges)|pousses?|salade|mozzarella|ricotta|brocoli|citron|champignons|poireaux|echalotes?|ciboulette|basilic|persil|menthe|coriandre|thym|cumin|curcuma|olives|crevettes|lardons|chorizo|thon|jambon|saumon|merguez|filet mignon|filets?|cotes?|saucisses?|roquette|nems|pilons|allumettes|maizena|steaks?|aiguillettes|b(oe|œ)uf a sauter|faux-filet|bavette|cabillaud|dos de cabillaud|pates? (brisee|feuilletee)|chevre|crottins|buche|feta|reblochon|ravio|gnocchis?|nouilles|lasagnes?|plaques|sauce|yaourts?|oeufs?|graines|huile|pois chiches|boeuf|epinards?|purée|puree|pois)/;
   for (const id of NEW_JOW_IDS) {
     const r = byId[id];
     for (const i of r.ingredients) {
@@ -340,9 +393,9 @@ test('classement : chaque recette a des saisons, des styles et un indicateur gam
   for (const x of ['street', 'italien', 'asiatique', 'orient', 'mexicain', 'terroir', 'frais']) assert.ok(styleCount[x] >= 10, `style ${x} : ${styleCount[x]}`);
 });
 
-test('lot 2 : aucun poisson ni fruit de mer (pas de « terre et mer »)', () => {
+test('lots 2 et 3 : aucun poisson ni fruit de mer (pas de « terre et mer »)', () => {
   const sea = /saumon|thon|cabillaud|crevette|poisson|colin|lieu|merlu|truite|sardine|maquereau|anchois|saint-jacques|moule|surimi|crabe|langoustine|dorade|gambas|calamar|haddock/i;
-  for (const id of LOT2_IDS) {
+  for (const id of [...LOT2_IDS, ...LOT3_IDS]) {
     const r = byId[id];
     assert.notEqual(r.type, 'poisson', id);
     assert.ok(!sea.test(r.title + ' ' + r.ingredients.map((i) => i.name).join(' ')), `${id} contient du poisson / fruits de mer`);
