@@ -457,3 +457,16 @@ html:where(.dark) nav.backdrop-blur-md {
 #recipe-detail-modal .overflow-y-auto::-webkit-scrollbar, #cooking-modal .overflow-y-auto::-webkit-scrollbar,
 #select-meal-modal .overflow-y-auto::-webkit-scrollbar, #custom-recipe-modal .overflow-y-auto::-webkit-scrollbar,
 #saved-menus-modal .overflow-y-auto::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Utilitaires ajoutés après la compilation de tailwind.css (classes utilisées par les nouvelles fonctions) */
+.max-h-\[90vh\] { max-height: 90vh; }
+.ml-1 { margin-left: 0.25rem; }
+.ml-auto { margin-left: auto; }
+.top-full { top: 100%; }
+.z-30 { z-index: 30; }
+.pb-4 { padding-bottom: 1rem; }
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.125rem; }
+.normal-case { text-transform: none; }
+.font-normal { font-weight: 400; }
+.text-rose-600 { color: #e11d48; }
+.hover\:text-emerald-600:hover { color: #059669; }

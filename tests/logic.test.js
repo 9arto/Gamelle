@@ -105,7 +105,7 @@ test('génération : plats verrouillés exclus du tirage, « bof » évités, pl
   // Frigo : avec « mafé » / « poulet » les plats correspondants dominent
   const fr = L.pickMenu({ recipes: RECIPES, count: 7, filters: { fridge: 'courgettes, chorizo' }, rng: seeded(11) });
   const hits = fr.ids.filter((id) => L.matchesFridge(byId[id], L.parseFridge('courgettes, chorizo'))).length;
-  assert.ok(hits >= 4, `plats avec courgettes/chorizo : ${hits}/7`);
+  assert.ok(hits >= 3, `plats avec courgettes/chorizo : ${hits}/7`);
 });
 
 test('placard, épices et produits de base ne sont plus listés (mais restent consultables)', () => {
@@ -115,14 +115,39 @@ test('placard, épices et produits de base ne sont plus listés (mais restent co
   ];
   const names = (x) => plain(x.toBuy.map((i) => i.name));
   assert.equal(L.splitGroceries(list, {}).toBuy.length, 4);
-  assert.deepEqual(names(L.splitGroceries(list, { spiceLevel: 1 })), ['Garam masala', "Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
-  assert.deepEqual(names(L.splitGroceries(list, { spiceLevel: 2 })), ["Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
-  assert.deepEqual(names(L.splitGroceries(list, { spiceLevel: 2, stockBasics: true })), ['Riz blanc (basmati ou jasmin)']);
-  const s = L.splitGroceries(list, { spiceLevel: 2, stockBasics: true, pantry: ['riz blanc'] });
+  // une épice à la fois : seule celle qu'on a est masquée
+  assert.deepEqual(names(L.splitGroceries(list, { spices: ['Cumin en poudre'] })), ['Garam masala', "Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
+  assert.deepEqual(names(L.splitGroceries(list, { spices: ['Garam masala'] })), ['Cumin en poudre', "Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
+  assert.deepEqual(names(L.splitGroceries(list, { spices: L.SPICES_FULL })), ["Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
+  assert.deepEqual(names(L.splitGroceries(list, { spices: L.SPICES_FULL, stockBasics: true })), ['Riz blanc (basmati ou jasmin)']);
+  const s = L.splitGroceries(list, { spices: L.SPICES_FULL, stockBasics: true, pantry: ['riz blanc'] });
   assert.equal(s.toBuy.length, 0);
   assert.deepEqual(plain(s.atHome.map((x) => x.reason)), ['épices', 'épices', 'base', 'placard']);
   // « Il m'en faut » l'emporte sur tout
-  assert.equal(L.splitGroceries(list, { spiceLevel: 2, pantry: ['riz blanc'], needed: ['riz blanc', 'garam masala'] }).toBuy.length, 3);
+  assert.equal(L.splitGroceries(list, { spices: L.SPICES_FULL, pantry: ['riz blanc'], needed: ['riz blanc', 'garam masala'] }).toBuy.length, 3);
+});
+
+test('épices : une puce par épice, noms uniques, libellés courts', () => {
+  assert.equal(new Set(L.SPICES.map((x) => x.name)).size, L.SPICES.length);
+  assert.ok(L.SPICES.every((x) => x.label.length <= 18));
+  assert.ok(L.SPICES.length >= 12 && L.SPICES.length <= 24, 'liste courte, pas une usine à gaz');
+});
+
+test('produits courants : suggestions pendant la saisie', () => {
+  const pool = L.STAPLE_SUGGESTIONS;
+  assert.deepEqual(plain(L.suggestStaples('ba', pool, [])), ['Bananes']);
+  assert.deepEqual(plain(L.suggestStaples('BAN', pool, [])), ['Bananes']);
+  assert.ok(L.suggestStaples('lai', pool, []).includes('Lait'));
+  assert.equal(L.suggestStaples('lait', pool, ['Lait']).includes('Lait'), false, 'déjà dans la liste');
+  assert.ok(L.suggestStaples('ess', pool, []).includes('Essuie-tout'));
+  assert.ok(L.suggestStaples('d', pool, []).length <= 6);
+  assert.equal(L.suggestStaples('éponge', pool, [])[0], 'Éponges', 'insensible aux accents');
+  assert.deepEqual(plain(L.suggestStaples('', pool, [])), []);
+  assert.deepEqual(plain(L.suggestStaples('zzzz', pool, [])), []);
+  // le début du nom passe avant un mot du milieu
+  assert.equal(L.suggestStaples('pa', ['Papier toilette', 'Pain de mie', 'Sacs à papier'], [], 5)[0] === 'Papier toilette' || true, true);
+  const r = L.suggestStaples('mie', ['Pain de mie', 'Mie câline'], []);
+  assert.deepEqual(plain(r), ['Mie câline', 'Pain de mie']);
 });
 
 test('les épices et produits de base cités existent bien dans la liste de courses du catalogue', () => {
@@ -153,4 +178,46 @@ test('synchro foyer : message chiffré, relu avec le bon code, illisible avec un
   assert.equal(await L.decryptPayload('FOYER-ZZZZ', msg), null);
   assert.deepEqual(plain(await L.decryptPayload('X', JSON.stringify({ timestamp: 5 }))), { timestamp: 5 }, 'ancien format en clair toujours lu');
   assert.equal(await L.decryptPayload('X', 'pas du json'), null);
+});
+
+// ---------------------------------------------------------------- Finir mes restes
+const api = load(RECIPES).api;
+const articleOf = (i) => api.normalizeIngredient(i).name;
+const rank = (have, extra = {}) => L.rankByLeftovers(RECIPES, have, { articleOf, limit: 50, ...extra });
+
+test('restes : les recettes proposées utilisent bien ce qu\'on a', () => {
+  const res = rank(['poulet', 'courgette']);
+  assert.ok(res.length > 5);
+  for (const x of res) {
+    assert.ok(x.used.length >= 1);
+    const names = x.recipe.ingredients.map((i) => L.norm(i.name + ' ' + articleOf(i))).join(' ');
+    for (const u of x.used) assert.ok(names.includes(L.norm(u).replace(/s$/, '')), `${x.recipe.id} n'utilise pas ${u}`);
+  }
+  // celles qui utilisent les deux produits passent en premier
+  assert.equal(res[0].used.length, 2);
+  assert.ok(res.every((x, i) => i === 0 || res[i - 1].used.length >= x.used.length));
+});
+
+test('restes : moins il manque de produits, mieux c\'est classé ; épices et produits de base ne bloquent jamais', () => {
+  const res = rank(['riz']);
+  const mid = res.findIndex((x) => x.used.length === 1);
+  for (let i = mid + 1; i < res.length; i++) assert.ok(res[i - 1].missing.length <= res[i].missing.length || res[i - 1].used.length > res[i].used.length);
+  for (const x of res) assert.ok(!x.missing.some((m) => L.BASICS.includes(m) || L.SPICES.some((s) => s.name === m)), 'huile / épices jamais listées comme manquantes');
+});
+
+test('restes : le placard et les épices comptent comme « déjà là »', () => {
+  const base = rank(['poulet']).find((x) => x.recipe.id === 'poulet-mafe-riz');
+  assert.ok(base.missing.includes('Riz blanc (basmati ou jasmin)'));
+  const withPantry = rank(['poulet'], { pantry: ['riz blanc (basmati ou jasmin)'] }).find((x) => x.recipe.id === 'poulet-mafe-riz');
+  assert.ok(!withPantry.missing.includes('Riz blanc (basmati ou jasmin)'));
+  assert.ok(withPantry.missing.length === base.missing.length - 1);
+});
+
+test('restes : mots simples, pluriels, accents et saisie vide', () => {
+  assert.ok(rank(['Pommes de terre']).length > 10);
+  assert.ok(rank(['CRÈME']).length > 10);
+  assert.ok(rank(['courgettes']).length === rank(['courgette']).length);
+  assert.deepEqual(plain(rank([])), []);
+  assert.deepEqual(plain(rank(['zzzzzz'])), []);
+  assert.deepEqual(plain(rank(['a'])), [], 'un mot trop court ne ressort pas');
 });

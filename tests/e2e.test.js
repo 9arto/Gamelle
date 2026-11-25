@@ -49,6 +49,9 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     assert.equal(st.staples, 1);
     assert.equal(st.portions, 6);
 
+    assert.equal(await page.textContent('#planning-title'), 'Mes 2 repas', 'titre évolutif');
+    assert.ok(await page.evaluate(() => [...document.querySelectorAll('#weekly-days-list img')].every((i) => /304x304|data:|pexels|unsplash/.test(i.src))), 'vignettes légères');
+
     // Composer les 7 repas avec filtres
     await page.click('#btn-generate-menu');
     await page.click('.gen-chip[data-group="seasons"][data-value="hiver"]');
@@ -66,15 +69,54 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     assert.equal(await page.evaluate(() => state.pantry.length), 1);
     assert.equal(await page.evaluate(() => document.querySelectorAll('.grocery-check').length), before - 1);
     await page.click('#pantry-card summary');
-    await page.click('.spice-level-btn[data-level="2"]');
-    assert.match(await page.textContent('#courses-stats-label'), /budget ≈ \d+ €/);
+    await page.click('.spice-chip >> nth=0');
+    assert.equal(await page.evaluate(() => state.spices.length), 1, 'une épice cochée');
+    await page.click('.spice-all[data-all="1"]');
+    assert.equal(await page.evaluate(() => state.spices.length === GL.SPICES.length), true);
+    assert.match(await page.textContent('#courses-budget-label'), /Budget ≈ \d+ €/);
+
+    // Produits courants : suggestions à la frappe
+    await page.fill('#staple-input', 'cer');
+    await page.waitForSelector('#staple-suggest li');
+    assert.match(await page.textContent('#staple-suggest'), /Céréales/);
+    await page.dispatchEvent('#staple-suggest li >> nth=0', 'pointerdown');
+    assert.equal(await page.inputValue('#staple-input'), 'Céréales');
 
     // Catalogue : filtres saison / style
     await page.evaluate(() => { switchTab('tab-recettes'); });
+    assert.ok(await page.isHidden('#more-filters'), 'filtres secondaires repliés');
+    await page.click('#btn-more-filters');
     await page.click('.filter-btn[data-filter="style:street"]');
+    assert.ok(await page.isHidden('#more-filters'));
+    assert.match(await page.textContent('#btn-more-filters'), /Street food/);
     const n = await page.evaluate(() => state.recipes.filter((r) => GL.recipeStyles(r).includes('street')).length);
     assert.match(await page.textContent('#recipes-count-label'), new RegExp(String(n)));
 
+    // Finir mes restes
+    await page.evaluate(() => switchTab('tab-planning'));
+    const planBefore = await page.evaluate(() => state.plan.length);
+    await page.click('#btn-open-leftovers');
+    await page.fill('#leftovers-input', 'pou');
+    await page.waitForSelector('#leftovers-suggest li');
+    await page.dispatchEvent('#leftovers-suggest li >> nth=0', 'pointerdown');
+    await page.waitForSelector('.leftover-add');
+    assert.ok(await page.evaluate(() => state.leftovers.length === 1));
+    assert.match(await page.textContent('#leftovers-results'), /Utilise : /);
+    await page.click('.leftover-add >> nth=0');
+    assert.equal(await page.evaluate(() => state.plan.length), planBefore + 1);
+    await page.click('#btn-close-leftovers');
+
+    assert.equal(await page.textContent('#planning-title'), 'Mes 8 repas');
+    // Recettes : ordre aléatoire + bouton Mélanger
+    await page.evaluate(() => switchTab('tab-recettes'));
+    const order = () => page.evaluate(() => [...document.querySelectorAll('#recipes-catalog-grid [data-recipe-id]')].map((e) => e.dataset.recipeId).slice(0, 6));
+    await page.click('.filter-btn[data-filter="all"]');
+    const ids1 = await page.evaluate(() => catalogFiltered.slice(0, 8).map((r) => r.id));
+    await page.click('#btn-reshuffle');
+    const ids2 = await page.evaluate(() => catalogFiltered.slice(0, 8).map((r) => r.id));
+    assert.notDeepEqual(ids1, ids2, 'Mélanger change l\'ordre');
+    await page.selectOption('#recipe-sort-select', 'default');
+    assert.ok(await page.isHidden('#btn-reshuffle'));
     // Avis
     await page.evaluate(() => openRecipeDetail('poulet-mafe-riz'));
     await page.click('#btn-note-like');
@@ -105,7 +147,7 @@ test('navigateur : nutrition sur la fiche recette, infos Open Food Facts et scan
     await page.evaluate(() => openRecipeDetail('spaghetti-bolognese-express'));
     const txt = await page.textContent('#detail-nutrition');
     assert.match(txt, /\d+\s*kcal/);
-    assert.match(txt, /Contient : .*gluten/);
+    assert.match(txt, /Allergènes : .*gluten/);
     await page.click('#btn-close-detail');
 
     // Courses : Nutri-Score de la liste

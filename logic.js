@@ -13,14 +13,14 @@
     { id: 'hiver', label: 'Hiver', emoji: '❄️' }
   ];
   const STYLES = [
-    { id: 'street', label: 'Street food', emoji: '🌮' },
-    { id: 'italien', label: 'Italien', emoji: '🇮🇹' },
-    { id: 'asiatique', label: 'Asiatique', emoji: '🥢' },
-    { id: 'orient', label: 'Orient & Indien', emoji: '🍛' },
-    { id: 'mexicain', label: 'Tex-Mex', emoji: '🌶️' },
-    { id: 'terroir', label: 'Terroir & tradition', emoji: '🥘' },
-    { id: 'frais', label: 'Frais & bowls', emoji: '🥗' },
-    { id: 'quotidien', label: 'Du quotidien', emoji: '🍽️' }
+    { id: 'street', label: 'Street food', emoji: '' },
+    { id: 'italien', label: 'Italien', emoji: '' },
+    { id: 'asiatique', label: 'Asiatique', emoji: '' },
+    { id: 'orient', label: 'Orient & Indien', emoji: '' },
+    { id: 'mexicain', label: 'Tex-Mex', emoji: '' },
+    { id: 'terroir', label: 'Terroir & tradition', emoji: '' },
+    { id: 'frais', label: 'Frais & bowls', emoji: '' },
+    { id: 'quotidien', label: 'Du quotidien', emoji: '' }
   ];
 
   const SEASON_RULES = {
@@ -141,7 +141,7 @@
     const weight = (r) => {
       let w = 1;
       if (notes[r.id] && notes[r.id].r === 1) w *= 2;
-      if (fridge.length && matchesFridge(r, fridge)) w *= 8;
+      if (fridge.length && matchesFridge(r, fridge)) w *= 25;
       return w;
     };
     const cap = Math.max(1, Math.ceil(count * 0.4));
@@ -163,22 +163,21 @@
   }
 
   // ---------------------------------------------------------------- Placard, épices, stock de base
-  const SPICES_BASIC = ['Paprika doux (ou fumé)', 'Cumin en poudre', 'Curcuma en poudre', 'Herbes de Provence sèches', 'Noix de muscade râpée', 'Cannelle en poudre'];
-  const SPICES_FULL = [...SPICES_BASIC, 'Pâte ou poudre de curry doux', "Mélange d'épices (Fajitas / Chili)", 'Épices mexicaines', 'Épices à couscous (ras el hanout)',
-    'Garam masala', "Piment d'Espelette", 'Piment (doux)', 'Gingembre moulu', 'Tabasco', 'Harissa (pâte)', 'Wasabi', 'Fond de veau', 'Sauce piment (Sriracha)'];
+  // Épices : une puce par épice (« j'en ai » / « il m'en manque »)
+  const SPICES = [
+    ['Paprika doux (ou fumé)', 'Paprika'], ['Cumin en poudre', 'Cumin'], ['Curcuma en poudre', 'Curcuma'], ['Herbes de Provence sèches', 'Herbes de Provence'],
+    ['Noix de muscade râpée', 'Muscade'], ['Cannelle en poudre', 'Cannelle'], ['Pâte ou poudre de curry doux', 'Curry'], ["Mélange d'épices (Fajitas / Chili)", 'Fajitas / chili'],
+    ['Épices mexicaines', 'Mexicaines'], ['Épices à couscous (ras el hanout)', 'Couscous'], ['Garam masala', 'Garam masala'], ["Piment d'Espelette", 'Espelette'],
+    ['Piment (doux)', 'Piment doux'], ['Gingembre moulu', 'Gingembre moulu'], ['Tabasco', 'Tabasco'], ['Harissa (pâte)', 'Harissa'], ['Sauce piment (Sriracha)', 'Sriracha'], ['Wasabi', 'Wasabi']
+  ].map(([name, label]) => ({ name, label }));
+  const SPICES_BASIC = SPICES.slice(0, 6).map((x) => x.name);
+  const SPICES_FULL = SPICES.map((x) => x.name);
   const BASICS = ["Huile d'olive vierge extra", 'Huile', 'Farine de blé ou fécule', 'Sucre (en poudre)', 'Vinaigre balsamique', 'Vinaigre de cidre (ou vin)',
     "Moutarde à l'ancienne ou Dijon", 'Chapelure fine (ou panko)'];
-  const SPICE_LEVELS = [
-    { id: 0, label: 'Aucune', hint: 'Toutes les épices sont listées' },
-    { id: 1, label: 'Basiques', hint: 'Paprika, cumin, curcuma, herbes de Provence, muscade, cannelle' },
-    { id: 2, label: 'Bien garni', hint: 'Toutes les épices courantes (curry, fajitas, couscous, piment…)' }
-  ];
-
   function splitGroceries(list, opts) {
-    const { pantry = [], needed = [], spiceLevel = 0, stockBasics = false } = opts || {};
+    const { pantry = [], needed = [], spices = [], stockBasics = false } = opts || {};
     const toBuy = [];
     const atHome = [];
-    const spices = spiceLevel >= 2 ? SPICES_FULL : spiceLevel === 1 ? SPICES_BASIC : [];
     for (const item of list) {
       if (needed.includes(item.id)) { toBuy.push(item); continue; }
       if (pantry.includes(item.id)) { atHome.push({ item, reason: 'placard' }); continue; }
@@ -187,6 +186,63 @@
       toBuy.push(item);
     }
     return { toBuy, atHome };
+  }
+
+
+  // ---------------------------------------------------------------- Suggestions pour « Ajouter un produit courant »
+  const STAPLE_SUGGESTIONS = ['Bananes', 'Pommes', 'Fruits de saison', 'Citrons', 'Clémentines', 'Lait', 'Yaourts', 'Kéfir', 'Beurre', 'Œufs', 'Fromage râpé', 'Jambon', 'Pain de mie', 'Pain', 'Flocons d\'avoine',
+    'Céréales', 'Café', 'Thé', 'Sucre', 'Sel', 'Poivre', 'Eau', 'Jus d\'orange', 'Compote', 'Confiture', 'Miel', 'Biscuits', 'Chocolat', 'Pâtes', 'Riz', 'Farine', 'Huile d\'olive', 'Vinaigre',
+    'Salade', 'Tomates', 'Carottes', 'Concombre', 'Avocats', 'Pommes de terre', 'Oignons', 'Ail', 'Papier toilette', 'Essuie-tout', 'Liquide vaisselle', 'Lessive', 'Sacs poubelle', 'Éponges',
+    'Savon', 'Gel douche', 'Shampooing', 'Dentifrice', 'Mouchoirs', 'Film alimentaire'];
+  // Propose jusqu'à `max` produits : ceux qui commencent par la saisie d'abord, puis ceux qui contiennent un mot qui commence par elle.
+  function suggestStaples(query, pool, existing, max) {
+    const q = norm(query).replace(/[^a-z0-9 ]/g, ' ').trim();
+    if (q.length < 1) return [];
+    const have = new Set((existing || []).map((x) => norm(x)));
+    const seen = new Set();
+    const starts = [], words = [];
+    for (const label of pool || []) {
+      const n = norm(label);
+      if (have.has(n) || seen.has(n)) continue;
+      seen.add(n);
+      const plain = n.replace(/[^a-z0-9 ]/g, ' ');
+      if (plain.startsWith(q)) starts.push(label);
+      else if (plain.split(/\s+/).some((w) => w.startsWith(q))) words.push(label);
+    }
+    return [...starts, ...words].slice(0, max || 6);
+  }
+
+
+  // ---------------------------------------------------------------- « Finir mes restes » : recettes classées selon ce qu'on a déjà
+  const stem = (w) => w.replace(/(s|x)$/, '');
+  const tokens = (t) => norm(t).replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length >= 3).map(stem);
+  // `have` : libellés saisis ("poulet", "restes de riz", "pommes de terre") ; articleOf(ingredient) → nom d'article de courses
+  // opts : { articleOf, pantry: [id d'articles], spices: [noms], stockBasics, limit }
+  function rankByLeftovers(recipes, have, opts) {
+    const { articleOf, pantry = [], spices = [], limit = 12 } = opts || {};
+    const labels = (have || []).map((h) => ({ label: h, tok: tokens(h) })).filter((x) => x.tok.length);
+    if (!labels.length) return [];
+    const minor = new Set([...BASICS, ...SPICES.map((x) => x.name)]);
+    const out = [];
+    for (const r of recipes) {
+      const used = new Set();
+      const missing = [];
+      let main = 0, covered = 0;
+      for (const ing of r.ingredients || []) {
+        const article = articleOf(ing);
+        const hay = tokens(article + ' ' + ing.name);
+        const hit = labels.find((l) => l.tok.every((t) => hay.some((h) => h === t || h.startsWith(t))));
+        if (hit) { used.add(hit.label); main++; covered++; continue; }
+        if (minor.has(article)) continue; // huile, farine, épices courantes… : jamais bloquants
+        main++;
+        if (pantry.includes(article.toLowerCase()) || spices.includes(article)) { covered++; continue; }
+        missing.push(article);
+      }
+      if (!used.size) continue;
+      out.push({ recipe: r, used: [...used], missing, covered, main });
+    }
+    out.sort((a, b) => b.used.length - a.used.length || a.missing.length - b.missing.length || (b.covered / b.main) - (a.covered / a.main) || a.recipe.timeMinutes - b.recipe.timeMinutes);
+    return out.slice(0, limit);
   }
 
   // ---------------------------------------------------------------- Budget estimé (ordre de grandeur)
@@ -241,7 +297,7 @@
     recipeSeasons, recipeStyles, recipeIsGamelle, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES_BASIC, SPICES_FULL, BASICS, SPICE_LEVELS, splitGroceries, estimateItemPrice, estimateCost,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost,
     encryptPayload, decryptPayload, cryptoAvailable
   };
 })(typeof window !== 'undefined' ? window : globalThis);

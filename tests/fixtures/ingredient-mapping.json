@@ -9,6 +9,11 @@
   "rayon": "fruits-legumes",
   "unit": "gousse"
  },
+ "Allumettes de jambon": {
+  "name": "Jambon blanc supérieur",
+  "rayon": "boucherie",
+  "unit": "tranche"
+ },
  "Amandes (effilées)": {
   "name": "Noisettes ou amandes décortiquées",
   "rayon": "fruits-legumes",
@@ -73,6 +78,11 @@
   "name": "Basilic frais",
   "rayon": "fruits-legumes",
   "unit": "botte"
+ },
+ "Bavette de bœuf": {
+  "name": "Bavette ou rumsteck de bœuf",
+  "rayon": "boucherie",
+  "unit": "g"
  },
  "Bavette ou rumsteck de bœuf": {
   "name": "Bavette ou rumsteck de bœuf",
@@ -354,6 +364,11 @@
   "rayon": "cremerie",
   "unit": "g"
  },
+ "Chèvre frais": {
+  "name": "Bûche de chèvre frais",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
  "Chili (épices)": {
   "name": "Mélange d'épices (Fajitas / Chili)",
   "rayon": "epicerie",
@@ -398,6 +413,11 @@
   "name": "Ciboulette fraîche",
   "rayon": "fruits-legumes",
   "unit": "botte"
+ },
+ "Cidre brut": {
+  "name": "Cidre brut",
+  "rayon": "epicerie",
+  "unit": "ml"
  },
  "Citron": {
   "name": "Citrons jaunes",
@@ -522,6 +542,11 @@
  "Côtes de porc": {
   "name": "Côtes de porc",
   "rayon": "boucherie",
+  "unit": "piece"
+ },
+ "Courge butternut": {
+  "name": "Courge Butternut",
+  "rayon": "fruits-legumes",
   "unit": "piece"
  },
  "Courge Butternut": {
@@ -779,6 +804,11 @@
   "rayon": "epicerie",
   "unit": "g"
  },
+ "Faux-filet de bœuf": {
+  "name": "Bavette ou rumsteck de bœuf",
+  "rayon": "boucherie",
+  "unit": "g"
+ },
  "Fenouil": {
   "name": "Fenouil",
   "rayon": "epicerie",
@@ -869,6 +899,11 @@
   "rayon": "cremerie",
   "unit": "g"
  },
+ "Fromage frais": {
+  "name": "Fromage frais",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
  "Fromage frais à tartiner": {
   "name": "Fromage frais à tartiner",
   "rayon": "cremerie",
@@ -935,6 +970,11 @@
   "unit": "cm"
  },
  "Gnocchi à poêler": {
+  "name": "Gnocchis à poêler",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Gnocchis": {
   "name": "Gnocchis à poêler",
   "rayon": "epicerie",
   "unit": "g"
@@ -1012,6 +1052,11 @@
  "Haricots verts frais": {
   "name": "Haricots verts fins frais",
   "rayon": "fruits-legumes",
+  "unit": "g"
+ },
+ "Haricots verts surgelés": {
+  "name": "Haricots verts surgelés",
+  "rayon": "epicerie",
   "unit": "g"
  },
  "Harissa (pâte)": {
@@ -1169,6 +1214,11 @@
   "rayon": "epicerie",
   "unit": "g"
  },
+ "Lentilles cuites (bocal)": {
+  "name": "Lentilles cuites (bocal)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
  "Lentilles vertes françaises": {
   "name": "Lentilles vertes françaises",
   "rayon": "epicerie",
@@ -1309,6 +1359,11 @@
   "rayon": "cremerie",
   "unit": "piece"
  },
+ "Mozzarella râpée": {
+  "name": "Mozzarella (boule ou râpée)",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
  "Mozzarella râpée ou en boule": {
   "name": "Mozzarella (boule ou râpée)",
   "rayon": "cremerie",
@@ -1318,6 +1373,11 @@
   "name": "Mozzarella (boule ou râpée)",
   "rayon": "cremerie",
   "unit": "g"
+ },
+ "Nems au porc": {
+  "name": "Nems (surgelés)",
+  "rayon": "epicerie",
+  "unit": "piece"
  },
  "Noisette": {
   "name": "Noisettes ou amandes décortiquées",
@@ -1393,6 +1453,11 @@
   "name": "Nouilles asiatiques (blé ou soba)",
   "rayon": "epicerie",
   "unit": "g"
+ },
+ "Nouilles chinoises aux œufs": {
+  "name": "Œufs frais",
+  "rayon": "cremerie",
+  "unit": "oeuf"
  },
  "Nouilles de blé asiatiques": {
   "name": "Nouilles asiatiques (blé ou soba)",
@@ -1654,7 +1719,17 @@
   "rayon": "epicerie",
   "unit": "c. à café"
  },
+ "Pâtes (farfalle)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
  "Pâtes (fusilli)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (fusillotti)": {
   "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
   "rayon": "epicerie",
   "unit": "g"
@@ -1665,6 +1740,11 @@
   "unit": "g"
  },
  "Pâtes (orecchiette)": {
+  "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Pâtes (pappardelle)": {
   "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
   "rayon": "epicerie",
   "unit": "g"
@@ -1788,6 +1868,11 @@
   "name": "Pics à brochette",
   "rayon": "epicerie",
   "unit": "piece"
+ },
+ "Pilons de poulet": {
+  "name": "Pilons de poulet",
+  "rayon": "boucherie",
+  "unit": "g"
  },
  "Piment (doux)": {
   "name": "Piment (doux)",
@@ -1974,6 +2059,11 @@
   "rayon": "boucherie",
   "unit": "piece"
  },
+ "Quinoa": {
+  "name": "Quinoa ou semoule complète",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
  "Quinoa ou semoule complète": {
   "name": "Quinoa ou semoule complète",
   "rayon": "epicerie",
@@ -2019,6 +2109,11 @@
   "rayon": "cremerie",
   "unit": "g"
  },
+ "Riz à risotto": {
+  "name": "Riz à risotto (Arborio ou Carnaroli)",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
  "Riz à risotto (Arborio ou Carnaroli)": {
   "name": "Riz à risotto (Arborio ou Carnaroli)",
   "rayon": "epicerie",
@@ -2054,12 +2149,32 @@
   "rayon": "fruits-legumes",
   "unit": "botte"
  },
+ "Romarin séché": {
+  "name": "Romarin frais",
+  "rayon": "fruits-legumes",
+  "unit": "botte"
+ },
  "Romarin séché ou frais": {
   "name": "Romarin frais",
   "rayon": "fruits-legumes",
   "unit": "botte"
  },
+ "Roquefort": {
+  "name": "Roquefort",
+  "rayon": "cremerie",
+  "unit": "g"
+ },
+ "Roquette": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
  "Salade (coeur de laitue)": {
+  "name": "Salade verte (mâche ou roquette)",
+  "rayon": "fruits-legumes",
+  "unit": "sachet"
+ },
+ "Salade (cœur de laitue)": {
   "name": "Salade verte (mâche ou roquette)",
   "rayon": "fruits-legumes",
   "unit": "sachet"
@@ -2315,6 +2430,11 @@
   "unit": "piece"
  },
  "Tomates fraîches ou concassées": {
+  "name": "Tomates concassées / Coulis",
+  "rayon": "epicerie",
+  "unit": "g"
+ },
+ "Tomates pelées": {
   "name": "Tomates concassées / Coulis",
   "rayon": "epicerie",
   "unit": "g"

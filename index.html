@@ -95,14 +95,14 @@
       <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-4 text-white shadow-lg shadow-emerald-900/10 space-y-3">
         <div class="flex justify-between items-center gap-2">
           <div>
-            <h2 class="text-lg font-bold">Mes repas au menu</h2>
+            <h2 id="planning-title" class="text-lg font-bold">Mes repas</h2>
           </div>
           <div class="flex items-center gap-2 flex-shrink-0">
             <button id="btn-planning-add-recipe" class="bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-2.5 py-2 rounded-xl backdrop-blur-sm active:scale-95 transition-all flex items-center gap-1" title="Créer ma propre recette maison">
-              <span>➕</span> Ma recette
+              Ma recette
             </button>
             <button id="btn-generate-menu" class="bg-white text-emerald-800 text-xs font-bold px-3 py-2 rounded-xl shadow hover:bg-emerald-50 active:scale-95 transition-all flex items-center gap-1.5" title="Générer ou renouveler les repas de la semaine">
-              <span>✨</span> 7 repas
+              7 repas
             </button>
           </div>
         </div>
@@ -110,12 +110,13 @@
         <!-- Raccourcis pour plats restants & menus sauvegardés -->
         <div class="pt-2 border-t border-white/20 flex items-center justify-between gap-1.5 flex-wrap text-xs">
           <div class="flex items-center gap-1.5 flex-wrap">
+            <button id="btn-open-leftovers" class="bg-white/15 hover:bg-white/25 active:scale-95 text-white font-medium text-[11px] px-2.5 py-1.5 rounded-lg transition-all" title="Recettes à partir de ce qu'il reste à la maison">Finir mes restes</button>
             <button id="btn-save-current-menu" class="bg-white/15 hover:bg-white/25 active:scale-95 text-white font-medium text-[11px] px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-all" title="Enregistrer le menu en cours">
-              <span>💾</span> Sauvegarder
+              Sauvegarder
             </button>
           </div>
           <button id="btn-open-saved-menus" class="bg-white/15 hover:bg-white/25 active:scale-95 text-white font-medium text-[11px] px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition-all">
-            <span>📂</span> Mes menus (<span id="saved-menus-count">0</span>)
+            Mes menus (<span id="saved-menus-count">0</span>)
           </button>
         </div>
       </div>
@@ -143,11 +144,10 @@
         <div class="flex items-center justify-between mb-2">
           <div>
             <h2 class="font-bold text-slate-800 text-base">Courses à Grand Frais</h2>
-            <p id="courses-stats-label" class="text-xs text-slate-500 font-medium">0 / 0 article coché</p>
           </div>
           <div class="flex gap-2">
             <button id="btn-copy-groceries" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg active:scale-95 transition-all flex items-center gap-1" title="Copier pour WhatsApp ou Notes">
-              📋 <span>Copier</span>
+              <span>Copier</span>
             </button>
             <button id="btn-clear-checked" class="bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 text-xs font-semibold px-2.5 py-1.5 rounded-lg active:scale-95 transition-all" title="Supprimer les articles cochés">
               🗑️
@@ -159,35 +159,35 @@
         <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
           <div id="courses-progress-bar" class="bg-brand-600 h-full w-0 transition-all duration-300"></div>
         </div>
+        <div class="pt-1.5 text-xs space-y-0.5">
+          <p id="courses-stats-label" class="text-slate-500 font-medium">0 / 0 article coché</p>
+          <p id="courses-budget-label" class="text-slate-400 font-medium"></p>
+        </div>
       </div>
 
       <!-- AJOUT RAPIDE D'ARTICLES COURANTS (HORS RECETTES) -->
-      <div class="ios-card p-3.5 space-y-2.5">
-        <div class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-          <span>🛒</span> Ajouter un produit courant
-        </div>
-        <form id="form-add-staple" class="flex gap-2">
-          <input type="text" id="staple-input" placeholder="Ex: Bananes, Lait, Kéfir, Yaourts, Flocons d'avoine..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 font-medium">
-          <button type="submit" class="bg-brand-600 text-white font-bold px-3 py-2 rounded-xl text-xs active:scale-95 hover:bg-brand-700">
-            + Ajouter
-          </button>
+      <div class="ios-card p-3 space-y-2">
+        <form id="form-add-staple" class="flex gap-2 relative" autocomplete="off">
+          <div class="flex-1 relative">
+            <input type="text" id="staple-input" autocomplete="off" autocapitalize="sentences" placeholder="Ajouter un produit (lait, bananes…)" aria-label="Ajouter un produit courant" aria-autocomplete="list" aria-controls="staple-suggest" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 font-medium">
+            <ul id="staple-suggest" role="listbox" class="hidden absolute left-0 right-0 top-full mt-1 z-30 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden"></ul>
+          </div>
+          <button type="submit" class="bg-brand-600 text-white font-bold px-3 py-2 rounded-xl text-xs active:scale-95 hover:bg-brand-700">+</button>
         </form>
-
-        <!-- Pastilles suggestions en 1 tap -->
-        <div class="flex flex-wrap gap-1.5 pt-1">
-          <button type="button" class="staple-quick-btn text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Bananes">🍌 + Banane</button>
-          <button type="button" class="staple-quick-btn text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Lait">🥛 + Lait</button>
-          <button type="button" class="staple-quick-btn text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Fruits de saison">🍎 + Fruits</button>
-          <button type="button" class="staple-quick-btn text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Kéfir">🥛 + Kéfir</button>
-          <button type="button" class="staple-quick-btn text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Yaourts">🥣 + Yaourt</button>
-          <button type="button" class="staple-quick-btn text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Pain de mie">🍞 + Pain de mie</button>
-          <button type="button" class="staple-quick-btn text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Flocons d'avoine">🌾 + Flocons d'avoine</button>
+        <div class="flex gap-1.5 overflow-x-auto scrollbar-none">
+          <button type="button" class="staple-quick-btn whitespace-nowrap text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Bananes">Banane</button>
+          <button type="button" class="staple-quick-btn whitespace-nowrap text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Lait">Lait</button>
+          <button type="button" class="staple-quick-btn whitespace-nowrap text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Fruits de saison">Fruits</button>
+          <button type="button" class="staple-quick-btn whitespace-nowrap text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Kéfir">Kéfir</button>
+          <button type="button" class="staple-quick-btn whitespace-nowrap text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Yaourts">Yaourt</button>
+          <button type="button" class="staple-quick-btn whitespace-nowrap text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Pain de mie">Pain de mie</button>
+          <button type="button" class="staple-quick-btn whitespace-nowrap text-[11px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-name="Flocons d'avoine">Flocons</button>
         </div>
       </div>
 
       <!-- PLACARD & RÉGLAGES DES COURSES -->
       <details id="pantry-card" class="ios-card overflow-hidden">
-        <summary class="p-3 text-xs font-bold text-slate-700 cursor-pointer flex items-center gap-2"><span>🏠</span> Placard &amp; réglages <span id="pantry-summary" class="ml-auto text-[10px] font-semibold text-slate-400"></span></summary>
+        <summary class="p-3 text-xs font-bold text-slate-700 cursor-pointer flex items-center gap-2"><svg class="w-[18px] h-[18px] text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.3 7.5L12 12.5l8.7-5"/><path d="M12 12.5V22"/></svg> Placard &amp; réglages <span id="pantry-summary" class="ml-auto text-[10px] font-semibold text-slate-400"></span></summary>
         <div id="pantry-body" class="p-3 pt-0 space-y-3 text-xs"></div>
       </details>
 
@@ -205,47 +205,61 @@
       <!-- Barre de recherche et filtre -->
       <div class="space-y-2.5">
         <div class="relative">
-          <input type="text" id="recipe-search-input" placeholder="Rechercher un plat, ingrédient (saumon, butternut...)" class="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+          <input type="text" id="recipe-search-input" placeholder="Rechercher un plat ou un ingrédient" class="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2.5 text-xs text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
           <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">🔍</span>
         </div>
 
-        <!-- Filtres catégories -->
+        <!-- Filtres : les essentiels, le reste dans « Plus de filtres » -->
         <div class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
-          <button class="filter-btn active whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-brand-600 text-white shadow-sm" data-filter="all">Tous les plats</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="budget">💰 Pas cher</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="printemps">🌸 Printemps</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="ete">☀️ Été</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="automne">🍁 Automne</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="hiver">❄️ Hiver</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="express">⚡ &lt; 20 min</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="gamelle">🍱 Gamelle</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="volaille">🍗 Volaille</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="viande">🥩 Viande</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="poisson">🐟 Poisson</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="vege">🌱 Végétarien</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:street">🌮 Street food</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:italien">🇮🇹 Italien</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:asiatique">🥢 Asiatique</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:orient">🍛 Orient &amp; Indien</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:mexicain">🌶️ Tex-Mex</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:terroir">🥘 Terroir</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:frais">🥗 Frais &amp; bowls</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="unepoele">🍳 1 poêle</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="sanspork">🚫🐖 Sans porc</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="sanslactose">🥛 Sans lactose</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="favoris">&#x2764;&#xFE0F; Favoris</button>
-          <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="maison">⭐ Mes recettes</button>
+            <button class="filter-btn active whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-brand-600 text-white shadow-sm" data-filter="all">Tous</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="favoris">&#x2764;&#xFE0F; Favoris</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="express">Moins de 20 min</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="gamelle">Gamelle</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="budget">Pas cher</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="volaille">🍗 Volaille</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="viande">🥩 Viande</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="poisson">🐟 Poisson</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="vege">🌱 Végé</button>
+            <button id="btn-more-filters" type="button" class="whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-slate-100 text-slate-700 border border-slate-200">Plus de filtres</button>
         </div>
+          <div id="more-filters" class="hidden ios-card p-3 text-xs">
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-2 mb-1">Saison</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="printemps">🌸 Printemps</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="ete">☀️ Été</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="automne">🍁 Automne</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="hiver">❄️ Hiver</button>
+            </div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-2 mb-1">Style de cuisine</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:street">Street food</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:italien">Italien</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:asiatique">Asiatique</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:orient">Orient &amp; Indien</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:mexicain">Tex-Mex</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:terroir">Terroir</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="style:frais">Frais &amp; bowls</button>
+            </div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-2 mb-1">Pratique & régime</p>
+            <div class="flex flex-wrap gap-1.5">
+              <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="unepoele">1 poêle</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="sanspork">Sans porc</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="sanslactose">Sans lactose</button>
+            <button class="filter-btn whitespace-nowrap px-3 py-1.5 rounded-full font-semibold bg-white text-slate-600 border border-slate-200" data-filter="maison">Mes recettes</button>
+            </div>
+          </div>
       </div>
 
       <!-- Barre d'outils du catalogue : Tri et ajout -->
       <div class="flex justify-between items-center px-1 gap-2 flex-wrap">
-        <span id="recipes-count-label" class="text-xs font-semibold text-slate-500">36 plats disponibles</span>
+        <span class="flex items-center gap-2"><span id="recipes-count-label" class="text-xs font-semibold text-slate-500">36 plats disponibles</span>
+        <button id="btn-reshuffle" type="button" class="text-xs font-bold text-brand-700 underline">Mélanger</button></span>
         <div class="flex items-center gap-2">
           <select id="recipe-sort-select" class="bg-white text-[11px] font-bold text-slate-700 rounded-xl px-2.5 py-1 border border-slate-200 shadow-sm outline-none">
-            <option value="default">Trier : Recommandé</option>
-            <option value="budget">💰 Moins cher d'abord</option>
-            <option value="fastest">⏱️ Plus rapide</option>
+            <option value="random">Trier : Au hasard</option>
+            <option value="default">Ordre du catalogue</option>
+            <option value="budget">Moins cher d'abord</option>
+            <option value="fastest">Plus rapide</option>
           </select>
           <button id="btn-open-add-recipe" class="text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 flex items-center gap-1.5 px-3 py-1.5 rounded-xl shadow-xs active:scale-95 transition-all">
             <span>➕</span> Ajouter une recette
@@ -309,9 +323,7 @@
 
       <div class="ios-card p-5 space-y-4">
         <div class="flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-brand-50 flex items-center justify-center text-2xl">
-            📲
-          </div>
+          <div class="w-12 h-12 rounded-2xl bg-brand-50 flex items-center justify-center text-2xl"></div>
           <div>
             <h2 class="text-base font-bold text-slate-800">Partager avec votre conjoint(e)</h2>
             <p class="text-xs text-slate-500">Pour avoir le même menu et la même liste sur vos deux iPhones</p>
@@ -348,7 +360,7 @@
               </div>
               <div class="flex justify-between items-center pt-0.5 text-[11px]">
                 <button id="btn-generate-household-code" class="text-brand-600 hover:text-brand-700 font-semibold underline">
-                  🎲 Générer un code foyer automatique
+                  Générer un code foyer automatique
                 </button>
               </div>
             </div>
@@ -370,11 +382,11 @@
                 </div>
               </div>
               <p class="text-[11px] text-emerald-800 leading-relaxed flex items-center gap-1.5">
-                <span>🟢</span> <span><strong>Synchronisation temps réel active</strong> : si elle ajoute une recette, vous la voyez immédiatement. Si vous cochez un article à Grand Frais, il se coche en direct chez elle.</span>
+                <span><strong>Synchronisation temps réel active</strong> : si elle ajoute une recette, vous la voyez immédiatement. Si vous cochez un article à Grand Frais, il se coche en direct chez elle.</span>
               </p>
               <div class="flex gap-2">
                 <button id="btn-force-sync" class="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl active:scale-95 transition-all flex items-center justify-center gap-1.5">
-                  <span>🔄</span> Forcer la synchronisation maintenant
+                  <span></span> Forcer la synchronisation maintenant
                 </button>
               </div>
             </div>
@@ -383,13 +395,13 @@
           <!-- Option 1 : Lien Magique Tout-en-un (Recettes + Articles courants + Plats conservés) -->
           <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
             <h3 class="text-xs font-bold text-slate-800 mb-1 flex items-center gap-1.5">
-              <span>🔗</span> Option 1 : Le Lien Magique Tout-en-un
+              <span></span> Option 1 : Le Lien Magique Tout-en-un
             </h3>
             <p class="text-xs text-slate-500 mb-3 leading-relaxed">
               Transfère <strong>l'intégralité</strong> de votre application : vos 7 repas, vos plats protégés et <strong>tous vos articles courants ajoutés (bananes, lait, kéfir, yaourts...)</strong>. Envoyez-le par SMS, WhatsApp ou AirDrop : votre compagne clique dessus et son app a exactement la même liste !
             </p>
             <button id="btn-share-magic-link" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-sm active:scale-95 transition-all flex items-center justify-center gap-2">
-              <span>📤</span> Envoyer le lien complet à ma compagne
+              <span></span> Envoyer le lien complet à ma compagne
             </button>
           </div>
 
@@ -420,7 +432,7 @@
             <p class="text-[10px] text-slate-400 mt-1.5 leading-relaxed">Le QR est généré par un service en ligne (qrserver.com) : il ne s'affiche qu'à votre demande.</p>
             <div id="share-qr-box" class="hidden mt-2"><div class="bg-white p-3 rounded-2xl border border-slate-200 flex flex-col items-center justify-center">
               <img id="share-qr-image" src="" alt="Code QR de partage" class="w-48 h-48 object-contain rounded-xl">
-              <span class="text-[10px] text-slate-400 mt-2 font-medium">📱 Scannez avec l'appareil photo de l'autre iPhone</span>
+              <span class="text-[10px] text-slate-400 mt-2 font-medium">Scannez avec l'appareil photo de l'autre iPhone</span>
             </div></div>
           </div>
 
@@ -490,7 +502,7 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-              <span>🥦</span> Ingrédients nécessaires
+              <span>Ingrédients nécessaires</span>
             </h3>
             <span id="detail-ingredients-count" class="text-[11px] font-medium text-slate-400">8 articles</span>
           </div>
@@ -505,16 +517,16 @@
 
         <!-- Avis & historique -->
         <div id="detail-notes-row" class="flex items-center gap-2 flex-wrap pt-2 border-t border-slate-100">
-          <button type="button" id="btn-note-like" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">👍 À refaire</button>
-          <button type="button" id="btn-note-dislike" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">👎 Bof</button>
-          <button type="button" id="btn-note-cooked" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">✅ Cuisiné</button>
+          <button type="button" id="btn-note-like" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">À refaire</button>
+          <button type="button" id="btn-note-dislike" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">Bof</button>
+          <button type="button" id="btn-note-cooked" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">Cuisiné</button>
           <span id="detail-notes-info" class="text-[10px] text-slate-400"></span>
         </div>
 
         <!-- Section Résumé des étapes -->
         <div class="space-y-2 pt-2 border-t border-slate-100">
           <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-            <span>👨‍🍳</span> Étapes de préparation
+            <span>Étapes de préparation</span>
           </h3>
           <div id="detail-steps-list" class="space-y-2 text-xs text-slate-600">
             <!-- Liste ordonnée des étapes -->
@@ -524,7 +536,7 @@
         <!-- Actions pour recette maison (modifier / supprimer) -->
         <div id="detail-custom-actions" class="hidden pt-3 border-t border-slate-200 flex items-center gap-2">
           <button id="btn-edit-custom-recipe" class="flex-1 bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs py-2.5 rounded-xl border border-amber-200 active:scale-95 transition-all flex items-center justify-center gap-1.5">
-            <span>✏️</span> Modifier cette recette
+            <span>Modifier cette recette</span>
           </button>
           <button id="btn-delete-custom-recipe" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs px-3.5 py-2.5 rounded-xl border border-red-200 active:scale-95 transition-all flex items-center justify-center gap-1" title="Supprimer la recette de mon catalogue">
             <span>🗑️ Supprimer</span>
@@ -539,7 +551,7 @@
           + Au planning
         </button>
         <button id="btn-detail-cook" class="flex-2 w-2/3 bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-2xl text-xs shadow-md shadow-brand-500/20 active:scale-95 transition-all flex items-center justify-center gap-1.5">
-          <span>👨‍🍳 Cuisiner pas-à-pas</span>
+          <span>Cuisiner pas-à-pas</span>
         </button>
       </div>
 
@@ -573,7 +585,7 @@
         <div class="flex items-center gap-2">
           <!-- Toggle pour garder l'écran allumé (WakeLock) -->
           <button id="btn-wake-lock" class="text-[11px] font-semibold text-slate-500 hover:text-brand-600 flex items-center gap-1 border border-slate-200 px-2 py-0.5 rounded-full bg-white">
-            <span>💡</span> <span id="wake-lock-label">Écran allumé</span>
+            <span id="wake-lock-label">Écran allumé</span>
           </button>
         </div>
       </div>
@@ -680,6 +692,32 @@
   </div>
 
   <!-- ============================================================ -->
+  <!-- MODAL : FINIR MES RESTES                                      -->
+  <!-- ============================================================ -->
+  <div id="leftovers-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div style="height:88vh" class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-slate-800 text-sm">Finir mes restes</h3>
+          <p class="text-xs text-slate-400">Dites ce que vous avez, je propose des recettes</p>
+        </div>
+        <button id="btn-close-leftovers" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" aria-label="Fermer">✕</button>
+      </div>
+      <div class="p-4 pb-2 space-y-2">
+        <form id="leftovers-form" class="flex gap-2" autocomplete="off">
+          <div class="flex-1 relative">
+            <input type="text" id="leftovers-input" autocomplete="off" placeholder="Poulet, courgettes, riz…" aria-label="Produit que j'ai à la maison" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 font-medium">
+            <ul id="leftovers-suggest" role="listbox" class="hidden absolute left-0 right-0 top-full mt-1 z-30 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden"></ul>
+          </div>
+          <button type="submit" class="bg-brand-600 text-white font-bold px-3 py-2 rounded-xl text-xs active:scale-95">Ajouter</button>
+        </form>
+        <div id="leftovers-chips" class="flex flex-wrap gap-1.5"></div>
+      </div>
+      <div id="leftovers-results" style="min-height:0" class="flex-1 overflow-y-auto px-4 pb-4 space-y-2.5"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
   <!-- MODAL : SCANNER UN PRODUIT (Open Food Facts)                 -->
   <!-- ============================================================ -->
   <div id="scan-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -722,7 +760,7 @@
 
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="font-bold text-slate-700 block mb-1">⏱️ Temps de prépa (min)</label>
+            <label class="font-bold text-slate-700 block mb-1">Temps de prépa (min)</label>
             <input type="number" id="custom-time" value="25" min="5" max="180" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none font-semibold">
           </div>
           <div>
@@ -730,7 +768,7 @@
             <select id="custom-type" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none font-semibold">
               <option value="volaille">🍗 Volaille</option>
               <option value="poisson">🐟 Poisson & Marée</option>
-              <option value="vege">🥦 Végétarien</option>
+              <option value="vege">Végétarien</option>
               <option value="viande">🥩 Bœuf / Porc</option>
             </select>
           </div>
@@ -778,7 +816,7 @@
 
         <div>
           <div class="flex justify-between items-center mb-1">
-            <label class="font-bold text-slate-700">🥦 Ingrédients pour 4 portions (1 par ligne) *</label>
+            <label class="font-bold text-slate-700">Ingrédients pour 4 portions (1 par ligne) *</label>
             <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-bold">Classés auto dans Grand Frais</span>
           </div>
           <p class="text-[11px] text-slate-400 mb-1 leading-snug">Écrivez simplement la quantité et le nom (ex: 500g filet de poulet, 2 poireaux, 200ml crème, 250g riz, sel et poivre)</p>
@@ -786,7 +824,7 @@
         </div>
 
         <div>
-          <label class="font-bold text-slate-700 block mb-1">👨‍🍳 Étapes de préparation (1 par ligne) *</label>
+          <label class="font-bold text-slate-700 block mb-1">Étapes de préparation (1 par ligne) *</label>
           <p class="text-[11px] text-slate-400 mb-1 leading-snug">Les temps en minutes créent automatiquement un minuteur interactif !</p>
           <textarea id="custom-steps-text" rows="4" required placeholder="1. Émincer les poireaux et couper le poulet en morceaux.&#10;2. Faire dorer le poulet 5 minutes à la poêle avec du beurre.&#10;3. Ajouter les poireaux et la crème, laisser mijoter 15 minutes à feu doux." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none focus:ring-2 focus:ring-brand-500"></textarea>
         </div>
