@@ -293,3 +293,14 @@ test('stock dégressif : la recette consomme le stock, l\'article épuisé est s
   assert.deepEqual(plain(L.parseStockInput('6')), { qty: 6, unit: 'piece' });
   assert.equal(L.parseStockInput('beaucoup'), null);
 });
+
+test('budget : moyenne par ticket et par semaine', () => {
+  const D = 86400000;
+  assert.equal(L.budgetStats([]).count, 0);
+  const one = L.budgetStats([{ t: 0, total: 50 }]);
+  assert.equal(one.avgTicket, 50); assert.equal(one.perWeek, 0, 'un seul ticket : pas de moyenne par semaine');
+  // 3 tickets de 60 € à 7 jours d'écart : 180 € sur 3 semaines = 60 €/semaine
+  const s = L.budgetStats([{ t: 0, total: 60 }, { t: 7 * D, total: 60 }, { t: 14 * D, total: 60 }]);
+  assert.equal(Math.round(s.perWeek), 60); assert.equal(s.avgTicket, 60);
+  assert.equal(L.budgetStats(Array.from({ length: 20 }, (_, i) => ({ t: i * D * 7, total: 10 + i }))).last.length, 12);
+});

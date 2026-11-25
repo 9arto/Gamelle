@@ -636,7 +636,8 @@ function loadFromLocalStorage() {
   let plan = readJSON('gamelle_plan', null);
   if (plan && !Array.isArray(plan) && typeof plan === 'object') plan = Object.values(plan);
   state.plan = Array.isArray(plan) ? sanitizePlan(plan).map(resolveAlias) : [];
-  if (state.plan.length === 0) generateBalancedWeek();
+  // Premier lancement seulement : un menu d'exemple. Un menu volontairement vidé reste vide (écran d'accueil du Planning).
+  if (state.plan.length === 0 && plan === null) generateBalancedWeek();
 
   state.savedMenus = sanitizeSavedMenus(readJSON('gamelle_saved_menus', [])).map(m => ({ ...m, plan: m.plan.map(resolveAlias) }));
   state.staples = sanitizeStaples(readJSON('gamelle_staples', []));
@@ -1013,6 +1014,23 @@ function renderAtHomeSection(container, atHome) {
     saveToLocalStorage();
     renderGroceries();
   }));
+}
+
+// Budget : courbe des derniers tickets, moyenne par ticket et par semaine
+function renderBudgetCard() {
+  const box = document.getElementById('budget-card-body');
+  if (!box) return;
+  const st = GL.budgetStats(state.trips);
+  if (!st.count) { box.innerHTML = '<p class="text-xs text-slate-500">Notez le total de vos tickets (onglet Courses, menu « … » → « Noter le ticket de caisse ») : l\'application affichera ici vos dépenses.</p>'; return; }
+  const W = 280, H = 70, P = 8, vals = st.last.map(t => t.total);
+  const max = Math.max(...vals), min = Math.min(...vals), span = Math.max(1, max - min);
+  const pts = vals.map((v, i) => [vals.length === 1 ? W / 2 : P + i * (W - 2 * P) / (vals.length - 1), H - P - ((v - min) / span) * (H - 2 * P)]);
+  box.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" class="w-full h-[70px]" role="img" aria-label="Évolution de vos derniers tickets de caisse">
+      ${pts.length > 1 ? `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
+      ${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3.2" fill="currentColor"/>`).join('')}
+    </svg>
+    <p class="text-xs text-slate-600 mt-1.5">Ticket moyen <b>${Math.round(st.avgTicket)} €</b>${st.perWeek ? ` · environ <b>${Math.round(st.perWeek)} € par semaine</b>` : ''} · dernier ticket ${Math.round(vals[vals.length - 1])} €</p>`;
 }
 
 function renderPantryCard() {
@@ -1437,7 +1455,7 @@ function setupStapleAutocomplete() {
 }
 
 // --- Filtres du catalogue : « Plus de filtres » ---
-const FILTER_LABELS = { printemps: '🌸 Printemps', ete: '☀️ Été', automne: '🍁 Automne', hiver: '❄️ Hiver', 'style:street': 'Street food', 'style:italien': 'Italien', 'style:asiatique': 'Asiatique', 'style:orient': 'Orient & Indien', 'style:mexicain': 'Tex-Mex', 'style:terroir': 'Terroir', 'style:frais': 'Frais & bowls', unepoele: '1 poêle', sanspork: 'Sans porc', sanslactose: 'Sans lactose', maison: 'Mes recettes' };
+const FILTER_LABELS = { printemps: '🌸 Printemps', ete: '☀️ Été', automne: '🍁 Automne', hiver: '❄️ Hiver', 'style:street': 'Street food', 'style:italien': 'Italien', 'style:asiatique': 'Asiatique', 'style:orient': 'Orient & Indien', 'style:mexicain': 'Tex-Mex', 'style:terroir': 'Terroir', 'style:frais': 'Frais & bowls', unepoele: '1 poêle', sanspork: 'Sans porc', sanslactose: 'Sans lactose', maison: 'Mes recettes', jamais: 'Jamais cuisinés', recent: 'Cuisinés récemment' };
 function updateMoreFiltersButton() {
   const btn = document.getElementById('btn-more-filters');
   const panel = document.getElementById('more-filters');
@@ -1703,11 +1721,32 @@ function renderPlanning() {
       <span>+</span> Ajouter un plat
     </button>
   `;
-  container.appendChild(headerDiv);
+  if (state.plan.length > 0) container.appendChild(headerDiv);
 
   headerDiv.querySelector('#btn-add-meal-slot').addEventListener('click', () => {
     addMealSlot();
   });
+
+  // Aperçu des repas : une pastille par repas (sans jours : les courses peuvent couvrir plusieurs semaines)
+  if (state.plan.length >= 2) {
+    const strip = document.createElement('div');
+    strip.className = 'meal-strip flex gap-2 overflow-x-auto scrollbar-none pb-1';
+    strip.setAttribute('aria-label', 'Aperçu des repas');
+    strip.innerHTML = state.plan.map((id, i) => {
+      const r = state.recipes.find(x => x.id === id);
+      const locked = Array.isArray(state.lockedSlots) && state.lockedSlots.includes(i);
+      const cooked = state.notes[id] && state.notes[id].cooked && (Date.now() - state.notes[id].cooked) < 3 * 86400000;
+      return `<button type="button" class="meal-dot ${locked ? 'is-locked' : ''}" data-slot="${i}" aria-label="Repas ${i + 1}${r ? ' : ' + esc(r.title) : ''}">
+        ${r ? `<img src="${esc(thumbImg(r.image))}" alt="" loading="lazy" decoding="async" class="img-soft">` : '<span>+</span>'}
+        <b>${i + 1}</b>${cooked ? '<i aria-hidden="true">✓</i>' : ''}</button>`;
+    }).join('');
+    strip.addEventListener('click', (e) => {
+      const b = e.target.closest('.meal-dot'); if (!b) return;
+      const card = document.getElementById('meal-card-' + b.dataset.slot);
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    container.appendChild(strip);
+  }
 
   // Liste des repas
   state.plan.forEach((recipeId, slotIndex) => {
@@ -1715,6 +1754,7 @@ function renderPlanning() {
     const card = document.createElement('div');
     const isLocked = Array.isArray(state.lockedSlots) && state.lockedSlots.includes(slotIndex);
 
+    card.id = 'meal-card-' + slotIndex;
     card.className = `ios-card p-3.5 flex flex-col gap-2.5 transition-all ${
       isLocked ? 'border-amber-300 bg-amber-50/25 ring-1 ring-amber-200' : ''
     }`;
@@ -1744,11 +1784,10 @@ function renderPlanning() {
         </div>
         
         <div class="flex items-center gap-3.5 cursor-pointer btn-open-detail py-0.5" data-id="${esc(recipe.id)}">
-          <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" class="img-soft w-16 h-16 rounded-2xl object-cover shadow-sm flex-shrink-0">
+          <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" class="img-soft w-24 h-24 rounded-2xl object-cover shadow-sm flex-shrink-0">
           <div class="flex-1 min-w-0">
             <h3 class="font-bold text-sm text-slate-900 leading-snug">${esc(recipe.title)}</h3>
-            <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">${esc(recipe.description)}</p>
-            <div class="flex items-center gap-2 mt-1.5 text-[11px] text-slate-600 font-medium flex-wrap">
+            <div class="flex items-center gap-2 mt-2 text-[11px] text-slate-600 font-medium flex-wrap">
               <span>⏱️ ${recipe.timeMinutes} min</span>
               <span>•</span>
               <span class="text-emerald-700 font-semibold">${esc(recipe.tag)}</span>
@@ -1775,13 +1814,17 @@ function renderPlanning() {
 
   if (state.plan.length === 0) {
     const emptyNotice = document.createElement('div');
-    emptyNotice.className = 'ios-card p-8 text-center text-slate-400 space-y-2';
+    emptyNotice.className = 'ios-card p-6 text-center space-y-3';
     emptyNotice.innerHTML = `
-      <span class="text-3xl block">🍽️</span>
-      <p class="text-xs font-semibold text-slate-600">Aucun plat dans votre menu</p>
-      <p class="text-[11px]">Cliquez sur « Générer 7 repas » ou ajoutez vos plats préférés depuis l'onglet Recettes.</p>
+      <span class="empty-badge" aria-hidden="true">🍽️</span>
+      <h3 class="font-bold text-slate-900 text-base">Qu'est-ce qu'on mange ?</h3>
+      <p class="text-xs text-slate-500 leading-relaxed">En un geste, l'application compose vos 7 repas variés (vous pouvez filtrer par saison, style ou régime) et prépare la liste de courses.</p>
+      <button type="button" id="btn-empty-compose" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm py-3.5 rounded-2xl shadow-md shadow-brand-500/20 active:scale-95 transition-all">Composer mes 7 repas</button>
+      <button type="button" id="btn-empty-browse" class="w-full text-xs font-bold text-slate-600 py-2">Ou choisir dans les recettes</button>
     `;
     container.appendChild(emptyNotice);
+    emptyNotice.querySelector('#btn-empty-compose').addEventListener('click', () => document.getElementById('btn-generate-menu').click());
+    emptyNotice.querySelector('#btn-empty-browse').addEventListener('click', () => switchTab('tab-recettes'));
   }
 
   // Écouteurs pour le planning
@@ -1841,6 +1884,8 @@ function addMealSlot(recipeId = null) {
 }
 // 2. Rendu de la Liste de Courses Grand Frais
 const collapsedRayons = new Set();
+const celebratedRayons = new Set();
+let settleId = null; // dernière ligne cochée : petite animation d'arrivée
 // Gestes sur la liste : glisser à droite = coché, à gauche = « j'ai déjà » (ou retirer un produit courant)
 function setupGrocerySwipe() {
   const c = document.getElementById('grand-frais-aisles-container');
@@ -1983,16 +2028,22 @@ function renderGroceries() {
     const leftInRayon = itemsInRayon.filter(i => isStapleRayon ? !i.checked : !state.checkedGroceries[i.id]).length;
 
     // En-tête du rayon (toucher pour replier / déplier)
+    const rayonDone = leftInRayon === 0;
+    const justDone = rayonDone && !celebratedRayons.has(rayon.id);
+    if (rayonDone) celebratedRayons.add(rayon.id); else celebratedRayons.delete(rayon.id);
     section.innerHTML = `
-      <button type="button" class="rayon-head w-full text-left p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between" data-rayon="${esc(rayon.id)}" aria-expanded="${!collapsed}">
-        <div class="flex items-center gap-2">
-          ${rayonIcon(rayon)}
-          <h3 class="font-bold text-xs text-slate-800">${rayon.name}</h3>
-        </div>
-        <span class="text-[12px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
-          ${leftInRayon}${leftInRayon !== itemsInRayon.length ? ' / ' + itemsInRayon.length : ''}
-        </span>
-      </button>
+      <div class="bg-slate-50 border-b border-slate-100 flex items-center">
+        <button type="button" class="rayon-head flex-1 min-w-0 text-left p-3 flex items-center justify-between gap-2" data-rayon="${esc(rayon.id)}" aria-expanded="${!collapsed}">
+          <div class="flex items-center gap-2 min-w-0">
+            ${rayonIcon(rayon)}
+            <h3 class="font-bold text-xs text-slate-800 truncate">${rayon.name}</h3>
+          </div>
+          ${rayonDone
+            ? `<span class="rayon-done ${justDone ? 'pop' : ''}" aria-label="Rayon terminé">✓ Terminé</span>`
+            : `<span class="text-[12px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 whitespace-nowrap">${leftInRayon} restant${leftInRayon > 1 ? 's' : ''}</span>`}
+        </button>
+        <button type="button" class="rayon-checkall text-[12px] font-bold text-brand-700 px-3 py-3 whitespace-nowrap" data-rayon="${esc(rayon.id)}">${rayonDone ? 'Décocher' : 'Tout cocher'}</button>
+      </div>
       <div class="divide-y divide-slate-100 items-list-container ${collapsed ? 'hidden' : ''}">
       </div>
     `;
@@ -2003,6 +2054,7 @@ function renderGroceries() {
       const itemRow = document.createElement('div');
       itemRow.className = 'grocery-row p-3 flex items-center justify-between gap-3 hover:bg-slate-50/50 transition-colors';
       itemRow.dataset.id = item.id;
+      if (settleId === item.id) { itemRow.classList.add('row-settle'); settleId = null; }
       itemRow.dataset.type = isStapleRayon ? 'staple' : 'recipe';
 
       const isChecked = isStapleRayon 
@@ -2058,6 +2110,7 @@ function renderGroceries() {
 
   renderAtHomeSection(container, atHome);
   renderPantryCard();
+  renderBudgetCard();
 
   // « J'en ai déjà » : mémorisé dans le placard
   container.querySelectorAll('.btn-pantry').forEach(btn => {
@@ -2085,6 +2138,7 @@ function renderGroceries() {
       } else {
         state.checkedGroceries[id] = checked;
       }
+      if (checked) settleId = id;
 
       saveToLocalStorage();
       renderGroceries();
@@ -2095,6 +2149,18 @@ function renderGroceries() {
     btn.addEventListener('click', (e) => {
       const st = state.staples.find(x => x.id === e.currentTarget.dataset.id);
       if (st) { st.qty = Math.min(99, (st.qty || 1) + 1); saveToLocalStorage(); renderGroceries(); }
+    });
+  });
+  container.querySelectorAll('.rayon-checkall').forEach(b => {
+    b.addEventListener('click', () => {
+      const id = b.dataset.rayon;
+      const items = id === 'courants' ? state.staples : currentSplit().toBuy.filter(g => g.rayon === id);
+      const isChecked = (it) => id === 'courants' ? it.checked : !!state.checkedGroceries[it.id];
+      const target = !items.every(isChecked); // tout est coché → on décoche, sinon on coche tout
+      const snapshot = takeSnapshot();
+      items.forEach(it => { if (id === 'courants') it.checked = target; else state.checkedGroceries[it.id] = target; });
+      saveToLocalStorage(); renderGroceries();
+      showToast(target ? 'Rayon coché' : 'Rayon décoché', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
     });
   });
   container.querySelectorAll('.rayon-head').forEach(h => {
@@ -2124,7 +2190,7 @@ function recipeCardHTML(recipe, idx = 99) {
   const isCustom = recipe.id.startsWith('custom-');
   return `
     <div class="ios-card p-3.5 flex gap-3 hover:border-brand-300 transition-all cursor-pointer btn-open-detail" data-id="${esc(recipe.id)}" role="button" tabindex="0">
-      <img src="${esc(thumbImg(recipe.image))}" alt="" ${idx < 3 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
+      <img src="${esc(thumbImg(recipe.image))}" alt="" ${idx < 3 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" class="img-soft w-24 h-24 rounded-2xl object-cover shadow-sm flex-shrink-0">
       <div class="flex-1 min-w-0 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between gap-1 flex-wrap mb-0.5">
@@ -2138,7 +2204,6 @@ function recipeCardHTML(recipe, idx = 99) {
             </div>
           </div>
           <h3 class="font-bold text-sm text-slate-900 mt-0.5 leading-snug">${esc(recipe.title)}</h3>
-          <p class="text-[11px] text-slate-500 line-clamp-2 mt-1 leading-relaxed">${esc(recipe.description)}</p>
         </div>
 
         <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-slate-100">
@@ -2207,6 +2272,10 @@ function renderCatalog(resetLimit = false) {
     filtered = filtered.filter(r => state.favorites.includes(r.id));
   } else if (f === 'maison') {
     filtered = filtered.filter(r => r.id.startsWith('custom-'));
+  } else if (f === 'jamais') {
+    filtered = filtered.filter(r => !(state.notes[r.id] && state.notes[r.id].cooked));
+  } else if (f === 'recent') {
+    filtered = filtered.filter(r => state.notes[r.id] && state.notes[r.id].cooked && (Date.now() - state.notes[r.id].cooked) < 30 * 86400000);
   } else if (f !== 'all') {
     filtered = filtered.filter(r => r.type === f || (f === 'vege' && r.type === 'vegetarien'));
   }
@@ -2231,6 +2300,7 @@ function renderCatalog(resetLimit = false) {
     const rank = (id) => { let h = state.shuffleSeed | 0; for (let i = 0; i < id.length; i++) h = Math.imul(h ^ id.charCodeAt(i), 2654435761); return (h ^ (h >>> 15)) >>> 0; };
     filtered.sort((a, b) => rank(a.id) - rank(b.id));
   }
+  if (f === 'recent') filtered.sort((a, b) => state.notes[b.id].cooked - state.notes[a.id].cooked); // les plus récents d'abord
   const reshuffle = document.getElementById('btn-reshuffle');
   if (reshuffle) reshuffle.classList.toggle('hidden', state.sortOption !== 'random');
 
@@ -2251,6 +2321,17 @@ function renderCatalog(resetLimit = false) {
   catalogLimit = visible;
   container.innerHTML = filtered.slice(0, visible).map(recipeCardHTML).join('');
   appendCatalogFooter(container);
+}
+
+function recentSearches() {
+  try { const l = JSON.parse(safeGetItem('gamelle_recent_searches') || '[]'); return Array.isArray(l) ? l.filter(x => typeof x === 'string').slice(0, 6) : []; } catch (e) { return []; }
+}
+function renderRecentSearches() {
+  const box = document.getElementById('recent-searches');
+  if (!box) return;
+  const list = (state.searchQuery || '').trim() ? [] : recentSearches();
+  box.classList.toggle('hidden', !list.length);
+  box.innerHTML = list.length ? '<span class="text-[12px] font-semibold text-slate-400 flex-shrink-0">Récent</span>' + list.map(q => `<button type="button" class="recent-chip whitespace-nowrap text-[12px] bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full font-medium" data-q="${esc(q)}">${esc(q)}</button>`).join('') : '';
 }
 
 // Un seul écouteur pour toute la grille (favoris, ajout au planning, fiche détaillée)
@@ -3036,8 +3117,25 @@ function setupEventListeners() {
     searchTimer = setTimeout(() => {
       state.searchQuery = value;
       renderCatalog(true);
+      renderRecentSearches();
     }, 160);
   });
+  // Recherches récentes : mémorisées quand on valide ou quitte le champ
+  const rememberSearch = () => {
+    const v = (document.getElementById('recipe-search-input').value || '').trim();
+    if (v.length < 3) return;
+    const list = [v, ...recentSearches().filter(x => x.toLowerCase() !== v.toLowerCase())].slice(0, 6);
+    safeSetItem('gamelle_recent_searches', JSON.stringify(list));
+  };
+  document.getElementById('recipe-search-input').addEventListener('blur', () => { rememberSearch(); renderRecentSearches(); });
+  document.getElementById('recipe-search-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') { rememberSearch(); e.target.blur(); } });
+  document.getElementById('recent-searches').addEventListener('pointerdown', (e) => {
+    const b = e.target.closest('.recent-chip'); if (!b) return;
+    e.preventDefault();
+    const input = document.getElementById('recipe-search-input');
+    input.value = b.dataset.q; state.searchQuery = b.dataset.q; renderCatalog(true); renderRecentSearches();
+  });
+  renderRecentSearches();
   setupCatalogEvents();
   setupQrOptIn();
 
@@ -3124,6 +3222,18 @@ function setupEventListeners() {
       releaseWakeLock();
     }
   });
+
+  // Glisser pour changer d'étape (gauche = suivante, droite = précédente ; jamais de fin de recette par un glissement)
+  const cookBody = document.getElementById('cooking-step-text').closest('.overflow-y-auto');
+  let cx = 0, cy = 0;
+  cookBody.addEventListener('touchstart', (e) => { cx = e.touches[0].clientX; cy = e.touches[0].clientY; }, { passive: true });
+  cookBody.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - cx, dy = e.changedTouches[0].clientY - cy;
+    if (Math.abs(dx) < 70 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
+    const total = state.cookingRecipe ? state.cookingRecipe.steps.length : 0;
+    if (dx < 0 && state.cookingStepIndex < total - 1) { state.cookingStepIndex++; renderCookingStep(); }
+    else if (dx > 0 && state.cookingStepIndex > 0) { state.cookingStepIndex--; renderCookingStep(); }
+  }, { passive: true });
 
   // Contrôles du minuteur (dans l'étape)
   const timerToggleBtn = document.getElementById('btn-timer-toggle');
