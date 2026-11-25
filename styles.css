@@ -515,3 +515,5 @@ html:where(.dark) .app-banner.offline { background: #3a2f12; color: #fcd34d; }
 .pl-1 { padding-left: .25rem; }
 .pl-2\.5 { padding-left: .625rem; }
 .pr-2\.5 { padding-right: .625rem; }
+.bg-white\/25 { background-color: rgba(255,255,255,.25); }
+.text-emerald-50 { color: #ecfdf5; }
