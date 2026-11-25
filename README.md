@@ -26,10 +26,10 @@ Une application moderne, saine et épurée conçue sur-mesure pour **les couples
 5. **Dose automatique x4** : Fixée d'office pour 4 portions (2 pour le soir + 2 pour la boîte du midi), ajustable de 1 à 12 parts en un clic (+ / -).
 6. **Rayons Grand Frais fidèles au magasin** :
    - 🥦 *Fruits & Légumes* (hall d'entrée)
-   - 🥩 *Boucherie & Volailles*
-   - 🐟 *Poissonnerie & Marée*
+   - 🥩 *Boucherie*
+   - 🐟 *Poissonnerie*
    - 🧀 *Fromagerie & Crèmerie*
-   - 🥫 *Épicerie d'ici et d'ailleurs*
+   - 🥫 *Épicerie*
    - 🛒 *Articles courants & Maison* (raccourcis rapides : bananes, lait, fruits de saison, kéfir, yaourts, pain de mie, flocons d'avoine)
 7. **Mode Cuisine Pas-à-Pas (Style Jow)** :
    - Instructions grand format

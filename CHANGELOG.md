@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 25/11/2026 — v59 : noms de rayons
+- Rayons renommés : « Boucherie », « Poissonnerie », « Épicerie ».
+
 ## 25/11/2026 — v58 : corrections d'affichage
 - Numéros des pastilles de repas plus coupés en haut ; compteur de rayon au format « 0/5 » (les noms de rayons ne sont plus tronqués, ils passent à la ligne si besoin).
 
