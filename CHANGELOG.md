@@ -2,6 +2,10 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 25/11/2026 — v44 : météo et notifications
+- **Météo invisible** : Open-Meteo (gratuit, sans clé) oriente le tirage des « 7 repas » (froid/pluie → plats réconfortants ; chaud → plats frais). Aucun affichage, position arrondie gardée sur le téléphone, jamais redemandée si refusée.
+- **Notifications du foyer** via ntfy.sh (sujet secret dérivé du code, sans clé) : « Julie a ajouté Lait, Avoine dans la liste de courses », regroupées, désactivables, prénom facultatif.
+
 ## 25/11/2026 — v43 : +50 recettes et audit de cohérence
 - **+50 recettes Top Jow** (392 au total), sans poisson ni fruit de mer, sans redondance avec le catalogue (photo, titre, ingrédients principaux comparés). Poulet/dinde (9), bœuf (9), porc/saucisse (11), végétariennes (21).
 - **Contrôle des ingrédients et quantités** : comparaison avec les données Jow (chaque ingrédient retrouvé, quantités par personne × 4), plausibilité par catégorie, ingrédients cités dans les étapes.

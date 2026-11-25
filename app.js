@@ -478,7 +478,10 @@ let state = {
   notes: {},           // { idRecette: { r: 1|-1|0, cooked: horodatage, t: horodatage } }
   genFilters: {},      // derniers filtres de « Composer mes 7 repas »
   off: {},             // cache Open Food Facts { article: { t, d } }
-  leftovers: []        // produits qu'on a à la maison (« Finir mes restes »)
+  leftovers: [],       // produits qu'on a à la maison (« Finir mes restes »)
+  notify: true,        // prévenir le foyer quand on ajoute un produit / un repas
+  memberName: '',      // prénom (facultatif) affiché dans les notifications
+  weatherMood: null    // météo de la semaine (jamais affichée : elle oriente seulement le tirage des repas)
 };
 
 // Catalogue : affichage progressif (24 plats à la fois)
@@ -580,6 +583,9 @@ function loadFromLocalStorage() {
   state.aisleOrder = sanitizeStringList(readJSON('gamelle_aisle_order', []), 10, 30);
   state.off = sanitizeOffCache(readJSON('gamelle_off_cache', {}));
   state.leftovers = sanitizeStringList(readJSON('gamelle_leftovers', []), 30, 60);
+  state.notify = safeGetItem('gamelle_notify') !== '0';
+  state.memberName = cleanStr(safeGetItem('gamelle_member_name') || '', 30);
+  { const w = readJSON('gamelle_weather', null); if (w && Number.isFinite(w.t) && w.w) state.weatherMood = GL.weatherMood(w.w); }
 
   // Planning (support migration objet {Lundi: ...} -> tableau [])
   let plan = readJSON('gamelle_plan', null);
@@ -713,7 +719,7 @@ function generateBalancedWeek(forceAll = false, filtersArg) {
   const need = newPlan.filter(x => x === null).length;
   const res = GL.pickMenu({
     recipes: state.recipes, count: need, filters, excludeIds: [...lockedRecipeIds],
-    favorites: state.favorites, notes: state.notes
+    favorites: state.favorites, notes: state.notes, mood: state.weatherMood
   });
   if (res.ids.length === 0 && need > 0) {
     showToast('Aucun plat ne correspond à ces filtres');
@@ -2080,9 +2086,10 @@ function setupGenerateModal() {
     if (e.target.id === 'gen-fridge') genDraft.fridge = e.target.value;
   });
   document.getElementById('btn-gen-reset').addEventListener('click', () => { genDraft = {}; renderGenerateModal(); });
-  document.getElementById('btn-gen-go').addEventListener('click', () => {
+  document.getElementById('btn-gen-go').addEventListener('click', async () => {
     state.genFilters = sanitizeGenFilters(genDraft);
     closeGenerateModal();
+    await Promise.race([ensureWeather(), new Promise(r => setTimeout(r, 4500))]);
     const snapshot = takeSnapshot();
     const hadMeals = state.plan.some(Boolean);
     generateBalancedWeek(false, state.genFilters);
@@ -2234,7 +2241,7 @@ async function lookupScannedProduct(code) {
   });
   document.getElementById('btn-scan-staple').addEventListener('click', (e) => {
     state.staples.push({ id: 'staple_' + Date.now(), name: cleanStr(e.currentTarget.dataset.name, 80), checked: false });
-    saveToLocalStorage(); renderGroceries(); showToast('Ajouté aux articles courants');
+    saveToLocalStorage(); renderGroceries(); showToast('Ajouté aux articles courants'); queueNotification({ staple: state.staples[state.staples.length - 1].name });
   });
 }
 function setupScanModal() {
@@ -2419,6 +2426,67 @@ function setupLeftoversModal() {
       addRecipeToPlan(add.dataset.id);
     }
   });
+}
+
+// ==========================================
+// MÉTÉO (Open-Meteo, sans clé) — invisible : elle oriente seulement le tirage des repas
+// ==========================================
+async function ensureWeather() {
+  try {
+    const cached = readJSON('gamelle_weather', null);
+    if (cached && Number.isFinite(cached.t) && Date.now() - cached.t < 3 * 3600000 && cached.w) { state.weatherMood = GL.weatherMood(cached.w); return; }
+    if (safeGetItem('gamelle_weather_off') === '1') return;
+    let geo = readJSON('gamelle_geo', null);
+    if (!geo) {
+      if (!navigator.geolocation) return;
+      const pos = await new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, { timeout: 4000, maximumAge: 86400000 }));
+      // position arrondie (≈ 10 km) : suffisante pour la météo, gardée uniquement sur ce téléphone
+      geo = { lat: Math.round(pos.coords.latitude * 10) / 10, lon: Math.round(pos.coords.longitude * 10) / 10 };
+      safeSetItem('gamelle_geo', JSON.stringify(geo));
+    }
+    const w = await GL.fetchWeather(geo.lat, geo.lon, (u) => fetch(u));
+    if (w) { safeSetItem('gamelle_weather', JSON.stringify({ t: Date.now(), w })); state.weatherMood = GL.weatherMood(w); }
+  } catch (e) {
+    if (e && e.code === 1) safeSetItem('gamelle_weather_off', '1'); // localisation refusée : on ne redemande jamais
+  }
+}
+
+// ==========================================
+// NOTIFICATIONS DU FOYER (ntfy.sh, sujet secret dérivé du code foyer, aucune clé)
+// ==========================================
+let notifQueue = { staples: [], meals: [] }, notifTimer = null;
+function queueNotification({ staple, meal }) {
+  if (!state.notify || !state.householdCode) return;
+  if (staple && !notifQueue.staples.includes(staple)) notifQueue.staples.push(staple);
+  if (meal) notifQueue.meals.push(meal);
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(flushNotifications, 12000); // regroupe les ajouts rapprochés en un seul message
+}
+async function flushNotifications() {
+  const q = notifQueue;
+  notifQueue = { staples: [], meals: [] };
+  const text = GL.buildNotification({ name: state.memberName, staples: q.staples, meals: q.meals });
+  if (!text || !state.notify || !state.householdCode || !GL.cryptoAvailable()) return;
+  try {
+    const topic = await GL.notifTopic(state.householdCode);
+    await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers: { Title: 'Gamelle & Panier', Tags: 'shopping_cart' }, body: text });
+  } catch (e) { /* hors ligne : tant pis, la synchro reste la référence */ }
+}
+function setupNotifySettings() {
+  const chk = document.getElementById('chk-notify');
+  const name = document.getElementById('member-name');
+  const copy = document.getElementById('btn-copy-notif-topic');
+  if (!chk) return;
+  chk.checked = state.notify;
+  name.value = state.memberName;
+  chk.addEventListener('change', () => { state.notify = chk.checked; safeSetItem('gamelle_notify', state.notify ? '1' : '0'); });
+  name.addEventListener('change', () => { state.memberName = cleanStr(name.value, 30); safeSetItem('gamelle_member_name', state.memberName); });
+  if (copy) copy.addEventListener('click', () => copyToClipboard(document.getElementById('notif-topic').textContent, 'Sujet copié'));
+}
+async function refreshNotifTopic() {
+  const el = document.getElementById('notif-topic');
+  if (!el) return;
+  el.textContent = state.householdCode && GL.cryptoAvailable() ? await GL.notifTopic(state.householdCode) : '';
 }
 
 // ==========================================
@@ -2616,6 +2684,7 @@ function renderPlanning() {
 
 function addRecipeToPlan(recipeId) {
   state.plan.push(recipeId);
+  { const r = state.recipes.find(x => x.id === recipeId); if (r) queueNotification({ meal: r.title }); }
   saveToLocalStorage();
   renderPlanning();
   renderGroceries();
@@ -3676,6 +3745,7 @@ function setupEventListeners() {
   setupStapleAutocomplete();
   setupMoreFilters();
   setupLeftoversModal();
+  setupNotifySettings();
   document.getElementById('btn-clear-menu').addEventListener('click', clearMenu);
 
   const saveMenuBtn = document.getElementById('btn-save-current-menu');
@@ -3714,6 +3784,7 @@ function setupEventListeners() {
       input.value = '';
       saveToLocalStorage();
       renderGroceries();
+      queueNotification({ staple: val });
     }
   });
 
@@ -3728,6 +3799,7 @@ function setupEventListeners() {
         });
         saveToLocalStorage();
         renderGroceries();
+        queueNotification({ staple: name });
       }
     });
   });
@@ -4334,6 +4406,7 @@ function updateSyncStatusUI() {
     if (setupBox) setupBox.classList.add('hidden');
     if (activeBox) activeBox.classList.remove('hidden');
     if (codeLabel) codeLabel.textContent = state.householdCode;
+    refreshNotifTopic();
     if (headerPill) {
       headerPill.classList.remove('hidden');
       headerPill.classList.add('flex');

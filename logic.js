@@ -127,7 +127,7 @@
   // sans doublon, jamais plus de 40 % du même type tant qu'il reste du choix.
   function pickMenu(opts) {
     const {
-      recipes, count = 7, filters = {}, excludeIds = [], favorites = [], notes = {}, now = Date.now(), rng = Math.random
+      recipes, count = 7, filters = {}, excludeIds = [], favorites = [], notes = {}, now = Date.now(), rng = Math.random, mood = null
     } = opts;
     const excluded = new Set(excludeIds);
     let pool = recipes.filter((r) => !excluded.has(r.id) && recipeMatchesFilters(r, filters, favorites));
@@ -142,6 +142,7 @@
       let w = 1;
       if (notes[r.id] && notes[r.id].r === 1) w *= 2;
       if (fridge.length && matchesFridge(r, fridge)) w *= 25;
+      w *= weatherFit(r, mood);
       return w;
     };
     const cap = Math.max(1, Math.ceil(count * 0.4));
@@ -245,6 +246,61 @@
     return out.slice(0, limit);
   }
 
+
+  // ---------------------------------------------------------------- Météo (Open-Meteo : gratuit, sans clé) → plats adaptés
+  const WET_CODES = new Set([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77, 80, 81, 82, 85, 86, 95, 96, 99]);
+  const OPEN_METEO = 'https://api.open-meteo.com/v1/forecast';
+  // Température retenue : moyenne des maximales des 3 prochains jours (le menu couvre la semaine à venir)
+  function weatherMood(w) {
+    if (!w || !Number.isFinite(w.tempMax)) return null;
+    const t = w.tempMax;
+    return { temp: t <= 9 ? 'froid' : t <= 16 ? 'frais' : t <= 23 ? 'doux' : 'chaud', wet: !!w.wet, tempMax: Math.round(t) };
+  }
+  const COMFORT = /gratin|mijot|soupe|veloute|curry|lasagne|raclette|fondue|hachis|parmentier|blanquette|bourguignon|tartiflette|cassoulet|couscous|tajine|four\b|quiche|risotto|moussaka|pot au feu|potee|chou braise|reblochon/;
+  const FRESH = /salade|poke|wrap|bowl|froid|grill|brochette|tzatziki|concombre|fraicheur|ete\b|tomates? cerises|burrata|caprese/;
+  function weatherFit(r, mood) {
+    if (!mood) return 1;
+    const t = norm(r.title + ' ' + (r.tag || ''));
+    const seasons = recipeSeasons(r);
+    const styles = recipeStyles(r);
+    const comfort = styles.includes('terroir') || (seasons.includes('hiver') && !seasons.includes('ete')) || COMFORT.test(t);
+    const fresh = styles.includes('frais') || (seasons.includes('ete') && !seasons.includes('hiver')) || FRESH.test(t);
+    let m = 1;
+    if (mood.temp === 'froid') m = comfort ? 2.5 : fresh ? 0.4 : 1;
+    else if (mood.temp === 'frais') m = comfort ? 1.6 : fresh ? 0.7 : 1;
+    else if (mood.temp === 'chaud') m = fresh ? 2.5 : comfort ? 0.35 : 1;
+    if (mood.wet && mood.temp !== 'chaud' && comfort) m *= 1.3;
+    return m;
+  }
+  async function fetchWeather(lat, lon, fetchFn) {
+    const url = `${OPEN_METEO}?latitude=${Number(lat).toFixed(2)}&longitude=${Number(lon).toFixed(2)}&current=temperature_2m,precipitation,weather_code&daily=temperature_2m_max,precipitation_sum&forecast_days=3&timezone=auto`;
+    const res = await fetchFn(url);
+    if (!res.ok) return null;
+    const j = await res.json();
+    const maxes = ((j.daily || {}).temperature_2m_max || []).filter(Number.isFinite);
+    if (!maxes.length) return null;
+    const rain = ((j.daily || {}).precipitation_sum || []).filter(Number.isFinite);
+    const wetNow = WET_CODES.has(Number((j.current || {}).weather_code));
+    return { tempMax: maxes.reduce((a, b) => a + b, 0) / maxes.length, wet: wetNow || (rain.length > 0 && rain.reduce((a, b) => a + b, 0) / rain.length >= 3) };
+  }
+
+  // ---------------------------------------------------------------- Notifications du foyer (ntfy.sh : sujet secret dérivé du code, aucune clé)
+  async function notifTopic(code) {
+    const bytes = new TextEncoder().encode('gamelle-alerte:' + String(code || '').trim().toUpperCase());
+    const hash = await crypto.subtle.digest('SHA-256', bytes);
+    return 'gamelle-alerte-' + Array.from(new Uint8Array(hash)).slice(0, 10).map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  const listText = (arr, max) => arr.length > max ? `${arr.slice(0, max).join(', ')} +${arr.length - max}` : arr.join(', ');
+  // « Julie a ajouté Lait, Avoine dans la liste de courses »
+  function buildNotification({ name, staples = [], meals = [] }) {
+    const who = (name || '').trim();
+    const verb = who ? `${who} a ajouté` : 'A ajouté';
+    const parts = [];
+    if (staples.length) parts.push(`${verb} ${listText(staples, 5)} dans la liste de courses`);
+    if (meals.length) parts.push(`${parts.length ? 'et' : verb} ${meals.length === 1 ? `« ${meals[0]} »` : `${meals.length} repas (${listText(meals, 3)})`} au menu`);
+    return parts.length ? parts.join(' ') : null;
+  }
+
   // ---------------------------------------------------------------- Budget estimé (ordre de grandeur)
   const PRICE_KG = { 'fruits-legumes': 3.2, boucherie: 12, poissonnerie: 20, cremerie: 9, epicerie: 4 };
   const PRICE_PIECE = { 'fruits-legumes': 0.7, boucherie: 2.2, poissonnerie: 3.5, cremerie: 1.2, epicerie: 1.2 };
@@ -298,6 +354,7 @@
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
     SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost,
-    encryptPayload, decryptPayload, cryptoAvailable
+    encryptPayload, decryptPayload, cryptoAvailable,
+    weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification
   };
 })(typeof window !== 'undefined' ? window : globalThis);

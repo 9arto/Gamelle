@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v43**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v44**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v43`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v44`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -47,6 +47,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 ### 3.1 Planning (« Mes repas »)
 - Titre évolutif : « Mes 3 repas » (« Mon repas » pour un seul, « Mes repas » si vide). Liste ordonnée de repas (sans notion de jour, maximum 60). Chaque repas : photo, titre, durée, tag, badge « 💰 Pas cher ».
 - **« Finir mes restes »** : on saisit ce qu'on a à la maison (suggestions à la frappe : poulet, courgettes, riz…). L'app classe les recettes qui les utilisent : d'abord celles qui utilisent le plus de vos produits, puis celles où il **manque le moins** de courses (liste « Il manque : … » ou « Rien à acheter »). Le placard et vos épices comptent comme « déjà là » ; huile, farine, vinaigres et épices courantes ne bloquent jamais. Boutons « Voir » et « Au menu ». La liste est mémorisée et synchronisée (`gamelle_leftovers`).
+- **Météo (invisible)** : en lançant « 7 repas », l'app consulte la météo de la semaine (Open-Meteo, **gratuit, sans clé API**) et oriente le tirage : par temps froid ou pluvieux, plus de plats réconfortants (gratins, mijotés, soupes) ; par temps chaud, plus de plats frais (salades, bowls, grillades). **Aucun plat n'est exclu** et **rien n'est affiché** à l'écran. La position (arrondie à ≈ 10 km) est demandée une seule fois par le téléphone et reste uniquement sur l'appareil ; si elle est refusée, l'app ne la redemande jamais et le tirage reste inchangé.
 - **« 7 repas »** ouvre **« Composer mes 7 repas »** : filtres facultatifs **Saison** (🌸 ☀️ 🍁 ❄️, bouton « saison actuelle »), **Type** (volaille, viande, poisson, végétarien), **Style** (Street food, Italien, Asiatique, Orient & Indien, Tex-Mex, Terroir, Frais & bowls, Du quotidien), **Pratique** (pas cher, < 20 min, bon en gamelle, 1 seule poêle, mes favoris), **Régime** (sans porc, sans lactose) et **« J'ai dans le frigo »** (ingrédients à utiliser en priorité). Un compteur indique combien de plats correspondent ; les filtres sont mémorisés.
   - Tirage **proportionnel à la place de chaque type dans le catalogue** (tous les plats peuvent sortir), sans doublon, jamais plus de 3 plats du même type tant qu'il y a du choix ; les plats notés « 👎 Bof » et ceux cuisinés depuis moins de 21 jours sont évités, les « 👍 À refaire » favorisés.
   - Les repas **gardés** sont conservés, seuls les autres sont renouvelés. Remet à zéro les cases cochées de la liste de courses.
@@ -87,6 +88,12 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 ### 3.4 Studio de recette maison
 - Titre, durée, type (Volaille / Poisson / Végétarien / Bœuf-Porc), saison, « pas cher », photo (URL ou pastilles prédéfinies), ingrédients (une ligne = `quantité unité nom`), étapes (une par ligne, minuteurs détectés dans le texte).
 - Le rayon de chaque ingrédient est détecté automatiquement. Modifiable / supprimable. Synchronisée avec le foyer. Identifiant `custom-…`.
+
+### 3.4 bis Notifications du foyer
+- Quand vous **ajoutez un produit courant** ou un **repas au menu**, l'autre téléphone peut être prévenu : « *Julie a ajouté Lait, Avoine dans la liste de courses* ». Les ajouts rapprochés (12 s) sont regroupés en un seul message.
+- Technique : service **ntfy.sh** (gratuit, **sans clé API**). Le sujet est **secret et dérivé du code foyer** (`gamelle-alerte-` + empreinte SHA-256, le code n'apparaît pas dedans). Sur iPhone, installer l'app gratuite **ntfy** et s'abonner à ce sujet (affiché dans Réglages → foyer, bouton Copier) ; une PWA seule ne reçoit pas de notification push de ce type.
+- Réglages → foyer : case « Prévenir l'autre téléphone… » (activée par défaut) et prénom facultatif. Les messages ne contiennent que des noms de produits ou de plats.
+- Rien n'est envoyé hors foyer connecté, ni pour les modifications reçues de l'autre téléphone.
 
 ### 3.5 Réglages
 - **Apparence** : Clair / Sombre / Système.
@@ -211,7 +218,7 @@ Pour les **lots récents** (1 à 3) : en plus, chaque ingrédient est **cité da
 ## 6. Données, synchronisation, partage
 
 ### 6.1 Clés `localStorage` (ne jamais renommer sans migration)
-`gamelle_plan`, `gamelle_portions`, `gamelle_locked_slots`, `gamelle_checked`, `gamelle_staples`, `gamelle_favorites`, `gamelle_saved_menus`, `gamelle_custom_recipes`, `gamelle_notes`, `gamelle_gen_filters`, `gamelle_pantry`, `gamelle_pantry_needed`, `gamelle_spices`, `gamelle_stock_basics`, `gamelle_aisle_order`, `gamelle_off_cache`, `gamelle_household_code`, `gamelle_last_sync`, `gamelle_device_id`, `gamelle_tab`, plus le thème.
+`gamelle_plan`, `gamelle_portions`, `gamelle_locked_slots`, `gamelle_checked`, `gamelle_staples`, `gamelle_favorites`, `gamelle_saved_menus`, `gamelle_custom_recipes`, `gamelle_notes`, `gamelle_gen_filters`, `gamelle_pantry`, `gamelle_pantry_needed`, `gamelle_spices`, `gamelle_stock_basics`, `gamelle_aisle_order`, `gamelle_off_cache`, `gamelle_notify`, `gamelle_member_name`, `gamelle_weather`, `gamelle_geo`, `gamelle_weather_off`, `gamelle_household_code`, `gamelle_last_sync`, `gamelle_device_id`, `gamelle_tab`, plus le thème.
 
 ### 6.2 Synchronisation « foyer »
 - Chaque appareil publie son état complet (portions, plan, repas gardés, articles courants, cases cochées, recettes maison, menus enregistrés, favoris, placard, niveau d'épices, ordre des rayons, avis) sur `https://ntfy.sh/gamelle_foyer_<CODE>`, **400 ms après** chaque modification, et écoute le flux en direct (SSE) + une lecture au démarrage.
@@ -257,6 +264,9 @@ Après le calcul, chaque article est classé « à acheter » ou « déjà à la
 
 ---
 
+## 7 ter. Clés API : aucune
+L'application n'utilise **aucune clé API** : Open Food Facts (nutrition), Open-Meteo (météo) et ntfy.sh (synchro, notifications) sont ouverts. Aucun secret n'est donc stocké dans le dépôt ni affiché dans l'app. Si un service à clé était ajouté un jour, elle serait saisie sur le téléphone (jamais dans le code).
+
 ## 8. Hors-ligne et mises à jour
 - Premier chargement en ligne obligatoire ; ensuite l'app fonctionne sans réseau (sauf photos non encore vues, synchro foyer, QR code).
 - Après une mise en ligne, l'appareil récupère la nouvelle version en arrière-plan ; une pastille propose de l'installer. **Penser à incrémenter `VERSION` dans `sw.js`.**
@@ -273,10 +283,11 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | `tests/recipes.test.js` | syntaxe des fichiers ; **nettoyage** (pas de photo partagée, pas de titre quasi identique, alias valides, pas d'ingrédient en double, types valides) ; **classement** (saisons/styles/gamelle présents, 4 saisons ≥ 25 %) ; structure de chaque recette ; unicité id/titre ; lot « Top Jow » (présence, aucun doublon photo/titre, types reconnus, durées et quantités réalistes, étapes sans texte parasite, minuteurs cohérents) ; **cas précis de courses** des nouvelles recettes ; **instantané** `tests/fixtures/ingredient-mapping.json` (chaque nom d'ingrédient → article de courses : tout changement doit être voulu). |
 | `tests/logic.test.js` | saison actuelle ; classement saisons/styles/gamelle ; régimes (sans porc / lactose / 1 poêle) ; **génération proportionnelle**, plafond par type, tous les plats peuvent sortir ; filtres respectés ; plats verrouillés, « bof », cuisinés récemment, frigo ; placard / épices / base ; noms d'épices valides ; budget plausible ; **chiffrement** de la synchro. |
 | `tests/coherence.test.js` | **titres ↔ ingrédients**, **quantités plausibles**, étapes ↔ ingrédients et minuteurs (lots récents), `CATALOGUE.md` à jour. |
+| `tests/logic.test.js` (suite) | météo (humeur, biais du tirage sans exclusion, client Open-Meteo simulé, **aucune clé**), notifications (texte, sujet secret). |
 | `tests/nutrition.test.js` | chaque article a une valeur ; cohérence kcal/macros ; calories par portion plausibles pour les 302 recettes ; exemple vérifié à la main ; allergènes ; client Open Food Facts (réseau simulé : fiche produit, valeur typique, erreurs). |
 | `tests/e2e.test.js` | **navigateur réel** (Playwright, ignoré s'il n'est pas installé : `npm i -D playwright`) : données d'un utilisateur existant conservées (plan, favoris, case cochée, article courant, portions, ancien identifiant redirigé), « Composer mes 7 repas » avec filtres, placard, niveau d'épices, budget, filtre de style, avis, aucune erreur console. |
 
-État au 25/11/2026 : **74 tests passent, 0 échec**.
+État au 25/11/2026 : **79 tests passent, 0 échec**.
 
 ---
 
@@ -352,4 +363,5 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | 25/11/2026 (5) | **Finir mes restes** (recettes déduites de ce qu'on a) ; allergènes retirés de la liste de courses ; « Budget » sur sa propre ligne ; **emojis décoratifs supprimés** (boutons, filtres, titres) et icône de placard remplacée par un petit pictogramme « colis » ; « Mes repas ». 69 tests. SW v41. |
 | 25/11/2026 (6) | Titre évolutif **« Mes N repas »** ; onglet Recettes **au hasard** + bouton Mélanger ; **vignettes Jow légères** (3× moins lourdes). SW v42. |
 | 25/11/2026 (7) | **+50 recettes Top Jow sans poisson** (392) ; **audit de cohérence** de tout le catalogue (21 titres alignés sur les ingrédients, 10 ingrédients erronés corrigés) ; tests de cohérence ; `CATALOGUE.md` et `CHANGELOG.md`. SW v43. |
+| 25/11/2026 (8) | **Météo invisible** pour orienter les « 7 repas » (Open-Meteo, sans clé) ; **notifications du foyer** (« Julie a ajouté Lait, Avoine… ») via ntfy, sans clé. 79 tests. SW v44. |
 | (avant) | Anti-scintillement des fenêtres de recette, carte « Mise à jour », pastille foyer, correctifs de fusion de produits (SW v31–v36). |
