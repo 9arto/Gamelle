@@ -274,11 +274,11 @@ test('navigateur : planning vide accueillant, pastilles, rayon « tout cocher »
 
     // Courses : compteur par rayon, tout cocher, rayon terminé
     await page.evaluate(() => switchTab('tab-courses'));
-    assert.match(await page.innerText('.rayon-head >> nth=0'), /restants?/);
+    assert.match(await page.innerText('.rayon-head >> nth=0'), /\b0\/\d+/);
     await page.click('.rayon-checkall >> nth=0');
     assert.match(await page.innerText('.rayon-head >> nth=0'), /Terminé/);
     await page.click('.rayon-checkall >> nth=0'); // décoche
-    assert.match(await page.innerText('.rayon-head >> nth=0'), /restants?/);
+    assert.match(await page.innerText('.rayon-head >> nth=0'), /\b0\/\d+/);
 
     // Historique : jamais cuisiné / cuisiné récemment
     const id = await page.evaluate(() => state.plan[0]);
