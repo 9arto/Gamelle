@@ -1389,7 +1389,8 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "ete",
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "mexicain"
@@ -1850,7 +1851,8 @@ window.DEFAULT_RECIPES = [
     "seasons": [
       "printemps",
       "ete",
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "asiatique",
@@ -1947,8 +1949,7 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "ete",
-      "automne",
-      "hiver"
+      "automne"
     ],
     "styles": [
       "terroir",
@@ -2235,7 +2236,8 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "quotidien"
@@ -4371,7 +4373,8 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "terroir"
@@ -6344,6 +6347,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -7705,7 +7709,9 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "ete"
+      "ete",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "italien",
@@ -7820,6 +7826,7 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "printemps",
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -10195,7 +10202,8 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "terroir"
@@ -11351,7 +11359,9 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "ete"
+      "ete",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "mexicain"
@@ -11455,7 +11465,8 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "orient",
@@ -11905,6 +11916,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -12305,6 +12317,7 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "ete",
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -17474,6 +17487,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -17578,7 +17592,8 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "hiver"
+      "printemps",
+      "ete"
     ],
     "styles": [
       "asiatique",
@@ -19010,8 +19025,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "ete",
-      "hiver"
+      "ete"
     ],
     "styles": [
       "street",
@@ -19379,6 +19393,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -20271,7 +20286,8 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "italien",
@@ -20712,6 +20728,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -20857,7 +20874,9 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "printemps",
-      "ete"
+      "ete",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "italien",
@@ -22139,6 +22158,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -22602,6 +22622,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -23363,7 +23384,9 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "ete"
+      "ete",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "terroir",
@@ -24544,7 +24567,8 @@ window.DEFAULT_RECIPES = [
     "seasons": [
       "printemps",
       "ete",
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "terroir",
@@ -25905,7 +25929,9 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "ete"
+      "ete",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "italien",
@@ -26298,6 +26324,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -27332,7 +27359,8 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "ete",
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "italien"
@@ -27579,6 +27607,7 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "ete",
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -28759,6 +28788,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -29501,7 +29531,9 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "printemps"
+      "printemps",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "terroir"
@@ -30327,7 +30359,9 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "printemps"
+      "printemps",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "italien",
@@ -31294,7 +31328,9 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "ete"
+      "ete",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "terroir"
@@ -31388,8 +31424,7 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "printemps",
-      "ete",
-      "hiver"
+      "ete"
     ],
     "styles": [
       "frais"
@@ -33253,7 +33288,9 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "ete"
+      "ete",
+      "automne",
+      "hiver"
     ],
     "styles": [
       "terroir"
@@ -33474,6 +33511,7 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "printemps",
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -36758,7 +36796,8 @@ window.DEFAULT_RECIPES = [
     ],
     "seasons": [
       "ete",
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "street",
@@ -40398,6 +40437,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
@@ -41552,7 +41592,8 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
-      "automne"
+      "automne",
+      "hiver"
     ],
     "styles": [
       "terroir"
@@ -42287,6 +42328,7 @@ window.DEFAULT_RECIPES = [
       }
     ],
     "seasons": [
+      "automne",
       "hiver"
     ],
     "styles": [
