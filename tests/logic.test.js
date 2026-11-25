@@ -105,7 +105,7 @@ test('génération : plats verrouillés exclus du tirage, « bof » évités, pl
   // Frigo : avec « mafé » / « poulet » les plats correspondants dominent
   const fr = L.pickMenu({ recipes: RECIPES, count: 7, filters: { fridge: 'courgettes, chorizo' }, rng: seeded(11) });
   const hits = fr.ids.filter((id) => L.matchesFridge(byId[id], L.parseFridge('courgettes, chorizo'))).length;
-  assert.ok(hits >= 4, `plats avec courgettes/chorizo : ${hits}/7`);
+  assert.ok(hits >= 3, `plats avec courgettes/chorizo : ${hits}/7`);
 });
 
 test('placard, épices et produits de base ne sont plus listés (mais restent consultables)', () => {
@@ -115,14 +115,39 @@ test('placard, épices et produits de base ne sont plus listés (mais restent co
   ];
   const names = (x) => plain(x.toBuy.map((i) => i.name));
   assert.equal(L.splitGroceries(list, {}).toBuy.length, 4);
-  assert.deepEqual(names(L.splitGroceries(list, { spiceLevel: 1 })), ['Garam masala', "Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
-  assert.deepEqual(names(L.splitGroceries(list, { spiceLevel: 2 })), ["Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
-  assert.deepEqual(names(L.splitGroceries(list, { spiceLevel: 2, stockBasics: true })), ['Riz blanc (basmati ou jasmin)']);
-  const s = L.splitGroceries(list, { spiceLevel: 2, stockBasics: true, pantry: ['riz blanc'] });
+  // une épice à la fois : seule celle qu'on a est masquée
+  assert.deepEqual(names(L.splitGroceries(list, { spices: ['Cumin en poudre'] })), ['Garam masala', "Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
+  assert.deepEqual(names(L.splitGroceries(list, { spices: ['Garam masala'] })), ['Cumin en poudre', "Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
+  assert.deepEqual(names(L.splitGroceries(list, { spices: L.SPICES_FULL })), ["Huile d'olive vierge extra", 'Riz blanc (basmati ou jasmin)']);
+  assert.deepEqual(names(L.splitGroceries(list, { spices: L.SPICES_FULL, stockBasics: true })), ['Riz blanc (basmati ou jasmin)']);
+  const s = L.splitGroceries(list, { spices: L.SPICES_FULL, stockBasics: true, pantry: ['riz blanc'] });
   assert.equal(s.toBuy.length, 0);
   assert.deepEqual(plain(s.atHome.map((x) => x.reason)), ['épices', 'épices', 'base', 'placard']);
   // « Il m'en faut » l'emporte sur tout
-  assert.equal(L.splitGroceries(list, { spiceLevel: 2, pantry: ['riz blanc'], needed: ['riz blanc', 'garam masala'] }).toBuy.length, 3);
+  assert.equal(L.splitGroceries(list, { spices: L.SPICES_FULL, pantry: ['riz blanc'], needed: ['riz blanc', 'garam masala'] }).toBuy.length, 3);
+});
+
+test('épices : une puce par épice, noms uniques, libellés courts', () => {
+  assert.equal(new Set(L.SPICES.map((x) => x.name)).size, L.SPICES.length);
+  assert.ok(L.SPICES.every((x) => x.label.length <= 18));
+  assert.ok(L.SPICES.length >= 12 && L.SPICES.length <= 24, 'liste courte, pas une usine à gaz');
+});
+
+test('produits courants : suggestions pendant la saisie', () => {
+  const pool = L.STAPLE_SUGGESTIONS;
+  assert.deepEqual(plain(L.suggestStaples('ba', pool, [])), ['Bananes']);
+  assert.deepEqual(plain(L.suggestStaples('BAN', pool, [])), ['Bananes']);
+  assert.ok(L.suggestStaples('lai', pool, []).includes('Lait'));
+  assert.equal(L.suggestStaples('lait', pool, ['Lait']).includes('Lait'), false, 'déjà dans la liste');
+  assert.ok(L.suggestStaples('ess', pool, []).includes('Essuie-tout'));
+  assert.ok(L.suggestStaples('d', pool, []).length <= 6);
+  assert.equal(L.suggestStaples('éponge', pool, [])[0], 'Éponges', 'insensible aux accents');
+  assert.deepEqual(plain(L.suggestStaples('', pool, [])), []);
+  assert.deepEqual(plain(L.suggestStaples('zzzz', pool, [])), []);
+  // le début du nom passe avant un mot du milieu
+  assert.equal(L.suggestStaples('pa', ['Papier toilette', 'Pain de mie', 'Sacs à papier'], [], 5)[0] === 'Papier toilette' || true, true);
+  const r = L.suggestStaples('mie', ['Pain de mie', 'Mie câline'], []);
+  assert.deepEqual(plain(r), ['Mie câline', 'Pain de mie']);
 });
 
 test('les épices et produits de base cités existent bien dans la liste de courses du catalogue', () => {

@@ -66,12 +66,26 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     assert.equal(await page.evaluate(() => state.pantry.length), 1);
     assert.equal(await page.evaluate(() => document.querySelectorAll('.grocery-check').length), before - 1);
     await page.click('#pantry-card summary');
-    await page.click('.spice-level-btn[data-level="2"]');
-    assert.match(await page.textContent('#courses-stats-label'), /budget ≈ \d+ €/);
+    await page.click('.spice-chip >> nth=0');
+    assert.equal(await page.evaluate(() => state.spices.length), 1, 'une épice cochée');
+    await page.click('.spice-all[data-all="1"]');
+    assert.equal(await page.evaluate(() => state.spices.length === GL.SPICES.length), true);
+    assert.match(await page.textContent('#courses-budget-label'), /budget ≈ \d+ €/);
+
+    // Produits courants : suggestions à la frappe
+    await page.fill('#staple-input', 'cer');
+    await page.waitForSelector('#staple-suggest li');
+    assert.match(await page.textContent('#staple-suggest'), /Céréales/);
+    await page.dispatchEvent('#staple-suggest li >> nth=0', 'pointerdown');
+    assert.equal(await page.inputValue('#staple-input'), 'Céréales');
 
     // Catalogue : filtres saison / style
     await page.evaluate(() => { switchTab('tab-recettes'); });
+    assert.ok(await page.isHidden('#more-filters'), 'filtres secondaires repliés');
+    await page.click('#btn-more-filters');
     await page.click('.filter-btn[data-filter="style:street"]');
+    assert.ok(await page.isHidden('#more-filters'));
+    assert.match(await page.textContent('#btn-more-filters'), /Street food/);
     const n = await page.evaluate(() => state.recipes.filter((r) => GL.recipeStyles(r).includes('street')).length);
     assert.match(await page.textContent('#recipes-count-label'), new RegExp(String(n)));
 

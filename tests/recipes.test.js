@@ -15,7 +15,7 @@ const SEASONS = ['automne', 'hiver', 'toutes', 'toute-saison', 'toute_saison'];
 const TYPES_AUTO_MENU = ['volaille', 'poisson', 'vege', 'vegetarien', 'viande']; // types utilisés par « Générer un menu »
 
 // Lot « Top Jow » ajouté en novembre 2026 (38 recettes) : référence pour les contrôles ciblés.
-const NEW_JOW_IDS = [
+const LOT1_IDS = [
   'poulet-mafe-riz', 'tagliatelles-crevettes-chorizo-petits-pois', 'riz-facon-grand-mere-poulet-champignons', 'quiche-chevre-epinards',
   'poulet-ail-fines-herbes-lard-pommes-de-terre', 'paella-express-chorizo-petits-pois', 'poelee-patates-douces-feta-oeuf-au-plat',
   'lasagnes-express-ratatouille-mozzarella', 'ravioli-toscane-tomates-sechees-epinards', 'pates-chorizo-ricotta-sauce-tomate',
@@ -28,6 +28,50 @@ const NEW_JOW_IDS = [
   'nouilles-riz-champignons-sesame', 'tarte-fine-pommes-de-terre-morbier', 'couscous-merguez-pois-chiches',
   'cote-porc-miel-curry-puree-patate-douce', 'poelee-pommes-de-terre-saucisse-fumee', 'rigatoni-tomates-cerises-prosciutto-burrata'
 ];
+// Lot 2 (novembre 2026, 40 recettes) : sans poisson ni fruits de mer, donc aucun « terre et mer ».
+const LOT2_IDS = [
+  "quiche-ratatouille-mozzarella",
+  "feuilletes-epinards-feta-salade",
+  "quiche-brocoli-fromage-frais-lardons",
+  "quiche-chorizo-courgette",
+  "boeuf-thai-riz-soja-gingembre",
+  "poelee-gnocchi-petits-pois-chevre-citron",
+  "fusillotti-roquefort-noix",
+  "bo-bun-nems-vermicelles",
+  "bricks-poireaux-champignons-feta",
+  "bavette-echalotes-puree-maison",
+  "tian-legumes-mozzarella",
+  "one-pot-ble-patates-douces-epinards-chevre",
+  "butternut-roti-chevre-creme-thym",
+  "curry-dinde-coco-riz-brocoli",
+  "gratin-courgettes-feta-jambon",
+  "pates-cremeuses-courge-parmesan",
+  "spaghetti-bolognaise-vege-lentilles",
+  "risotto-quinoa-carottes-parmesan",
+  "one-pot-riz-legumes-poulet",
+  "one-pan-poulet-riz-tomate",
+  "faux-filet-sauce-echalote-legumes-rotis",
+  "legumes-soleil-feta-rotis",
+  "tagliatelles-jambon-champignons-creme",
+  "one-pan-saucisses-riz-tomate",
+  "souffle-au-fromage",
+  "croquettes-brocolis-feta-salade",
+  "pates-chevre-champignons-epinards",
+  "tarte-potimarron-chevre",
+  "one-pot-curry-pommes-de-terre-pois-chiches",
+  "legumes-sautes-gingembre-cajou",
+  "patates-douces-rotis-roquefort-noix",
+  "risotto-potimarron",
+  "enchiladas-poulet-courgettes-mozzarella",
+  "risotto-tomate-parmesan",
+  "carottes-rotis-miel-cereales-feta",
+  "poulet-cidre-puree-potimarron",
+  "poulet-croustillant-parmesan-legumes-rotis",
+  "feta-rotie-gnocchi-tomates-cerises",
+  "pappardelle-cremeuses-prosciutto-ricotta",
+  "nouilles-sautees-courgettes-tomates-oeufs"
+];
+const NEW_JOW_IDS = [...LOT1_IDS, ...LOT2_IDS];
 const byId = Object.fromEntries(RECIPES.map((r) => [r.id, r]));
 const imageId = (r) => (String(r.image).split('/').pop() || '').replace(/\.[a-z]+$/i, '');
 
@@ -79,7 +123,7 @@ test('catalogue : structure complète de chaque recette', () => {
 // ---------------------------------------------------------------------------
 // Lot de nouvelles recettes
 test('nouvelles recettes « Top Jow » : toutes présentes, au moins 30', () => {
-  assert.ok(NEW_JOW_IDS.length >= 30 && NEW_JOW_IDS.length <= 40);
+  assert.ok(LOT1_IDS.length >= 30 && LOT2_IDS.length >= 40);
   for (const id of NEW_JOW_IDS) assert.ok(byId[id], `${id} manque`);
 });
 
@@ -142,7 +186,7 @@ test('nouvelles recettes : liste de courses correcte pour chacune (aucun produit
     return clean(a).split(/\s+/)[0].replace(/s$/, '') === clean(b).split(/\s+/)[0].replace(/s$/, '');
   };
   // Produits qu'on accepte de voir fusionnés sous un autre libellé (regroupement voulu par l'application)
-  const MERGE_OK = /^(pates|oignon|carotte|courgette|poivron|tomates? (cerises?|concassees)|escalopes? de|riz|semoule|creme|lait|parmesan|comte|beurre|miel|moutarde|curry|paprika|herbes|origan|bouillon|farine|gousses|pommes? de terre|patates?|petits pois|haricots? (verts|rouges)|pousses?|salade|mozzarella|ricotta|brocoli|citron|champignons|poireaux|echalotes?|ciboulette|basilic|persil|menthe|coriandre|thym|cumin|curcuma|olives|crevettes|lardons|chorizo|thon|jambon|saumon|merguez|filet mignon|filets?|cotes?|saucisses?|cabillaud|dos de cabillaud|pates? (brisee|feuilletee)|chevre|crottins|buche|feta|reblochon|ravio|gnocchis?|nouilles|lasagnes?|plaques|sauce|yaourts?|oeufs?|graines|huile|pois chiches|boeuf|epinards?|purée|puree|pois)/;
+  const MERGE_OK = /^(pates|oignon|carotte|courgette|poivron|tomates? (cerises?|concassees)|escalopes? de|riz|semoule|creme|lait|parmesan|comte|beurre|miel|moutarde|curry|paprika|herbes|origan|bouillon|farine|gousses|pommes? de terre|patates?|petits pois|haricots? (verts|rouges)|pousses?|salade|mozzarella|ricotta|brocoli|citron|champignons|poireaux|echalotes?|ciboulette|basilic|persil|menthe|coriandre|thym|cumin|curcuma|olives|crevettes|lardons|chorizo|thon|jambon|saumon|merguez|filet mignon|filets?|cotes?|saucisses?|roquette|nems|pilons|allumettes|faux-filet|bavette|cabillaud|dos de cabillaud|pates? (brisee|feuilletee)|chevre|crottins|buche|feta|reblochon|ravio|gnocchis?|nouilles|lasagnes?|plaques|sauce|yaourts?|oeufs?|graines|huile|pois chiches|boeuf|epinards?|purée|puree|pois)/;
   for (const id of NEW_JOW_IDS) {
     const r = byId[id];
     for (const i of r.ingredients) {
@@ -294,4 +338,13 @@ test('classement : chaque recette a des saisons, des styles et un indicateur gam
   }
   for (const x of seasons) assert.ok(count[x] >= RECIPES.length * 0.25, `saison ${x} sous-représentée : ${count[x]}`);
   for (const x of ['street', 'italien', 'asiatique', 'orient', 'mexicain', 'terroir', 'frais']) assert.ok(styleCount[x] >= 10, `style ${x} : ${styleCount[x]}`);
+});
+
+test('lot 2 : aucun poisson ni fruit de mer (pas de « terre et mer »)', () => {
+  const sea = /saumon|thon|cabillaud|crevette|poisson|colin|lieu|merlu|truite|sardine|maquereau|anchois|saint-jacques|moule|surimi|crabe|langoustine|dorade|gambas|calamar|haddock/i;
+  for (const id of LOT2_IDS) {
+    const r = byId[id];
+    assert.notEqual(r.type, 'poisson', id);
+    assert.ok(!sea.test(r.title + ' ' + r.ingredients.map((i) => i.name).join(' ')), `${id} contient du poisson / fruits de mer`);
+  }
 });

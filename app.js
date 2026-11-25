@@ -148,6 +148,10 @@ function sanitizeOffCache(map) {
   }
   return out;
 }
+function sanitizeSpices(list) {
+  const known = new Set(GL.SPICES_FULL);
+  return sanitizeStringList(list, 40, 80).filter(n => known.has(n));
+}
 function sanitizeGenFilters(f) {
   const out = {};
   if (!f || typeof f !== 'object') return out;
@@ -459,7 +463,7 @@ let state = {
   favorites: [], // IDs des recettes favorites
   pantry: [],          // articles « déjà à la maison » mémorisés (identifiants d'articles de courses)
   pantryNeeded: [],    // articles qu'on veut quand même acheter (prioritaire sur placard / épices / base)
-  spiceLevel: 0,       // 0 aucune · 1 basiques · 2 bien garni
+  spices: [],          // noms d'épices qu'on a à la maison
   stockBasics: false,  // ne pas lister huile, farine, sucre, vinaigre, moutarde…
   aisleOrder: [],      // ordre des rayons dans le magasin
   notes: {},           // { idRecette: { r: 1|-1|0, cooked: horodatage, t: horodatage } }
@@ -554,7 +558,14 @@ function loadFromLocalStorage() {
   state.genFilters = sanitizeGenFilters(readJSON('gamelle_gen_filters', {}));
   state.pantry = sanitizeStringList(readJSON('gamelle_pantry', []), 400, 120);
   state.pantryNeeded = sanitizeStringList(readJSON('gamelle_pantry_needed', []), 400, 120);
-  state.spiceLevel = Math.round(cleanNum(safeGetItem('gamelle_spice_level'), 0, 2, 0));
+  {
+    const saved = readJSON('gamelle_spices', null);
+    if (Array.isArray(saved)) state.spices = sanitizeSpices(saved);
+    else { // ancien réglage « niveau d'épices » → liste d'épices
+      const lvl = Math.round(cleanNum(safeGetItem('gamelle_spice_level'), 0, 2, 0));
+      state.spices = lvl >= 2 ? [...GL.SPICES_FULL] : lvl === 1 ? [...GL.SPICES_BASIC] : [];
+    }
+  }
   state.stockBasics = safeGetItem('gamelle_stock_basics') === '1';
   state.aisleOrder = sanitizeStringList(readJSON('gamelle_aisle_order', []), 10, 30);
   state.off = sanitizeOffCache(readJSON('gamelle_off_cache', {}));
@@ -582,7 +593,7 @@ function saveToLocalStorage() {
   safeSetItem('gamelle_gen_filters', JSON.stringify(state.genFilters || {}));
   safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
   safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
-  safeSetItem('gamelle_spice_level', state.spiceLevel || 0);
+  safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
   safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
   safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
   const customList = (state.recipes || []).filter(r => r.id.startsWith('custom-'));
@@ -1116,8 +1127,11 @@ const SPECIAL_PRODUCTS = [
   [/\bcotes?\s+de\s+porc\b/, "Côtes de porc", "piece", "boucherie"],
   [/\b(jambon\s+(cru|sec|de\s+parme)|prosciutto)\b/, "Jambon cru (prosciutto)", "tranche", "boucherie"],
   [/\bepinards?\s+surgeles?\b/, "Épinards surgelés", "g", "epicerie"],
+  [/\bharicots?\s+verts?\s+surgeles?\b/, "Haricots verts surgelés", "g", "epicerie"],
   // Produits dont le nom contient un autre produit (ail, ricotta, champignons, couscous, citron, tomates…)
   [/\bfromage\b.*\bail\b/, "Fromage frais ail & fines herbes", "g", "cremerie"],
+  [/\bpilons?\b/, "Pilons de poulet", "g", "boucherie"],
+  [/\bnems?\b/, "Nems (surgelés)", "piece", "epicerie"],
   [/\bkit\b.*\bfajitas?\b/, "Kit pour fajitas (galettes & épices)", "piece", "epicerie"],
   [/\b(ravioli|ravioles?|tortellini)\b/, null, "g", "cremerie"],
   [/\b(puree\s+de\s+tomates?|sauce\s+tomate|passata)\b/, "Tomates concassées / Coulis", "g", "epicerie"],
@@ -1842,7 +1856,7 @@ function computeGroceries() {
 // ==========================================
 function currentSplit() {
   return GL.splitGroceries(computeGroceries(), {
-    pantry: state.pantry, needed: state.pantryNeeded, spiceLevel: state.spiceLevel, stockBasics: state.stockBasics
+    pantry: state.pantry, needed: state.pantryNeeded, spices: state.spices, stockBasics: state.stockBasics
   });
 }
 
@@ -1890,37 +1904,30 @@ function renderPantryCard() {
   const body = document.getElementById('pantry-body');
   const summary = document.getElementById('pantry-summary');
   if (!body) return;
-  const lvl = GL.SPICE_LEVELS.find(l => l.id === state.spiceLevel) || GL.SPICE_LEVELS[0];
-  if (summary) summary.textContent = `épices : ${lvl.label.toLowerCase()} · ${state.pantry.length} en placard`;
-  const pill = (active) => 'px-2.5 py-1.5 rounded-full font-semibold border ' + (active ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-slate-600 border-slate-200');
+  if (summary) summary.textContent = `${state.spices.length} épice${state.spices.length > 1 ? 's' : ''} · ${state.pantry.length} en placard`;
+  const chip = (on) => 'px-2.5 py-1 rounded-full font-semibold border ' + (on ? 'bg-emerald-50 text-emerald-800 border-emerald-300' : 'bg-white text-slate-500 border-slate-200');
   const rayons = orderedRayons();
+  const h = 'text-[10px] font-bold uppercase tracking-wider text-slate-400';
   body.innerHTML = `
     <div class="space-y-1.5">
-      <p class="font-bold text-slate-700">🧂 Niveau d'épices à la maison</p>
-      <div class="flex gap-1.5 flex-wrap">${GL.SPICE_LEVELS.map(l => `<button type="button" class="spice-level-btn ${pill(l.id === state.spiceLevel)}" data-level="${l.id}">${l.label}</button>`).join('')}</div>
-      <p class="text-[10px] text-slate-400">${esc(lvl.hint)}. Ces épices ne sont plus listées (visibles dans « Déjà à la maison »).</p>
+      <div class="flex items-center justify-between"><p class="${h}">🧂 Mes épices</p>
+        <span class="text-[10px] text-slate-400"><button type="button" class="spice-all underline" data-all="1">tout</button> · <button type="button" class="spice-all underline" data-all="0">aucune</button></span></div>
+      <div class="flex gap-1.5 flex-wrap">${GL.SPICES.map(sp => { const on = state.spices.includes(sp.name); return `<button type="button" class="spice-chip ${chip(on)}" data-name="${esc(sp.name)}" aria-pressed="${on}">${on ? '✓ ' : ''}${esc(sp.label)}</button>`; }).join('')}</div>
+      <p class="text-[10px] text-slate-400">Une épice « ✓ » n'est plus listée dans les courses.</p>
     </div>
     <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-stock-basics" class="w-4 h-4 rounded" ${state.stockBasics ? 'checked' : ''}>
-      <span><span class="font-bold text-slate-700">Produits de base à la maison</span><span class="block text-[10px] text-slate-400">Huile, farine, sucre, vinaigres, moutarde, chapelure non listés</span></span></label>
-    <div class="space-y-1.5">
-      <p class="font-bold text-slate-700">🧭 Ordre des rayons dans mon magasin</p>
-      <div class="space-y-1">${rayons.map((r, i) => `<div class="flex items-center gap-2 bg-slate-50 rounded-lg px-2 py-1"><span>${r.icon}</span><span class="flex-1 text-slate-700">${esc(r.name)}</span>
+      <span class="text-slate-700 font-semibold">Huile, farine, sucre, vinaigres, moutarde à la maison</span></label>
+    ${state.pantry.length ? `<div class="space-y-1.5"><p class="${h}">🏠 Mon placard</p>
+      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => `<button type="button" class="pantry-remove px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200" data-id="${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))} ✕</button>`).join('')}</div></div>` : ''}
+    <div class="flex gap-1.5 flex-wrap pt-1">
+      <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">🔎 Nutri-Score de ma liste</button>
+      <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">📷 Scanner un produit</button>
+    </div>
+    <details class="pt-1"><summary class="${h} cursor-pointer">🧭 Ordre des rayons dans mon magasin</summary>
+      <div class="space-y-1 mt-1.5">${rayons.map((r, i) => `<div class="flex items-center gap-2 bg-slate-50 rounded-lg px-2 py-1"><span>${r.icon}</span><span class="flex-1 text-slate-700">${esc(r.name)}</span>
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="-1" ${i === 0 ? 'disabled' : ''} aria-label="Monter">▲</button>
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="1" ${i === rayons.length - 1 ? 'disabled' : ''} aria-label="Descendre">▼</button></div>`).join('')}</div>
-    </div>
-    <div class="space-y-1.5">
-      <p class="font-bold text-slate-700">🔎 Infos produits</p>
-      <div class="flex gap-1.5 flex-wrap">
-        <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Nutri-Score &amp; allergènes de ma liste</button>
-        <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">📷 Scanner un produit</button>
-      </div>
-      <p class="text-[10px] text-slate-400">Données Open Food Facts (gratuites, sans clé), valeurs typiques par type de produit.</p>
-    </div>
-    <div class="space-y-1.5">
-      <p class="font-bold text-slate-700">🏠 Mon placard (${state.pantry.length})</p>
-      ${state.pantry.length ? `<div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => `<button type="button" class="pantry-remove px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200" data-id="${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))} ✕</button>`).join('')}</div>`
-        : '<p class="text-[10px] text-slate-400">Appuyez sur 🏠 à côté d\'un article pour dire « j\'en ai déjà » : il ne sera plus listé.</p>'}
-    </div>`;
+    </details>`;
 }
 
 function setupPantryCard() {
@@ -1931,8 +1938,12 @@ function setupPantryCard() {
     if (!t) return;
     if (t.classList.contains('off-load')) { loadOffInfoForList(); return; }
     if (t.classList.contains('off-scan')) { openScanModal(); return; }
-    if (t.classList.contains('spice-level-btn')) {
-      state.spiceLevel = Number(t.dataset.level) || 0;
+    if (t.classList.contains('spice-chip')) {
+      const n = t.dataset.name;
+      state.spices = state.spices.includes(n) ? state.spices.filter(x => x !== n) : [...state.spices, n];
+      state.pantryNeeded = state.pantryNeeded.filter(id => id !== n.toLowerCase());
+    } else if (t.classList.contains('spice-all')) {
+      state.spices = t.dataset.all === '1' ? [...GL.SPICES_FULL] : [];
       state.pantryNeeded = [];
     } else if (t.classList.contains('aisle-move')) {
       const ids = orderedRayons().map(r => r.id);
@@ -2094,14 +2105,22 @@ function renderNutritionCard(recipe) {
 }
 
 const NUTRI_COLORS = { a: '#038141', b: '#85bb2f', c: '#fecb02', d: '#ee8100', e: '#e63e11' };
+// Pastille Nutri-Score : lettre parfaitement centrée (styles en ligne : indépendants du CSS compilé)
+function nutriBadge(grade, size, title) {
+  const fs = Math.round(size * 0.62);
+  return `<span title="${esc(title || 'Nutri-Score')}" style="display:inline-flex;align-items:center;justify-content:center;width:${size}px;height:${size}px;border-radius:50%;background:${NUTRI_COLORS[grade]};color:${grade === 'c' ? '#222' : '#fff'};font-size:${fs}px;font-weight:800;line-height:1;text-transform:uppercase;vertical-align:middle;flex:none">${grade}</span>`;
+}
 function offKey(name) { return cleanStr(String(name).toLowerCase(), 120); }
 function offBadgeHTML(name) {
   const e = state.off[offKey(name)];
   if (!e || !e.d) return '';
   const parts = [];
-  if (e.d.grade) parts.push(`<span title="Nutri-Score typique (Open Food Facts)" style="background:${NUTRI_COLORS[e.d.grade]};color:${e.d.grade === 'c' ? '#222' : '#fff'}" class="inline-flex items-center justify-center w-4 h-4 rounded-full text-[9px] font-extrabold uppercase">${e.d.grade}</span>`);
-  if (e.d.allergens && e.d.allergens.length) parts.push(`<span class="text-[10px] text-amber-700" title="Allergènes fréquents pour ce type de produit">⚠️ ${e.d.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</span>`);
+  if (e.d.grade) parts.push(nutriBadge(e.d.grade, 16, 'Nutri-Score typique (Open Food Facts)'));
   return parts.join(' ');
+}
+function offAllergenText(name) {
+  const e = state.off[offKey(name)];
+  return e && e.d && e.d.allergens && e.d.allergens.length ? `⚠️ ${e.d.allergens.map(a => GN.allergenLabel(a)).join(', ')} · ` : '';
 }
 function saveOffCache() { safeSetItem('gamelle_off_cache', JSON.stringify(state.off)); }
 
@@ -2184,7 +2203,7 @@ async function lookupScannedProduct(code) {
   catch (e) { out.innerHTML = '<p class="text-rose-600">Impossible de joindre Open Food Facts (réseau ?).</p>'; return; }
   if (!p) { out.innerHTML = '<p class="text-slate-500">Produit introuvable dans Open Food Facts.</p>'; return; }
   const match = matchGroceryForProduct(p.name);
-  const grade = p.grade ? `<span style="background:${NUTRI_COLORS[p.grade]};color:${p.grade === 'c' ? '#222' : '#fff'}" class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-extrabold uppercase">${p.grade}</span>` : '<span class="text-slate-400">Nutri-Score non disponible</span>';
+  const grade = p.grade ? nutriBadge(p.grade, 26, 'Nutri-Score') : '<span class="text-slate-400">Nutri-Score non disponible</span>';
   out.innerHTML = `
     <div class="ios-card p-3 space-y-2">
       <div><p class="font-bold text-slate-800 text-sm">${esc(p.name || 'Produit sans nom')}</p><p class="text-slate-400">${esc(p.brand)}</p></div>
@@ -2218,6 +2237,81 @@ function setupScanModal() {
     if (v.replace(/\D/g, '').length < 8) { showToast('Code-barres trop court'); return; }
     lookupScannedProduct(v);
   });
+}
+
+// --- Produits courants : suggestions pendant la saisie ---
+let staplePool = null;
+function getStaplePool() {
+  if (!staplePool) {
+    const names = new Set(GL.STAPLE_SUGGESTIONS);
+    try { state.recipes.forEach(r => (r.ingredients || []).forEach(i => names.add(normalizeIngredient(i).name.replace(/\s*\(.*?\)/g, '')))); } catch (e) { /* liste de base seulement */ }
+    (state.savedMenus || []).forEach(m => (m.staples || []).forEach(x => names.add(x.name)));
+    staplePool = [...names];
+  }
+  return staplePool;
+}
+function setupStapleAutocomplete() {
+  const input = document.getElementById('staple-input');
+  const list = document.getElementById('staple-suggest');
+  if (!input || !list) return;
+  let items = [], active = -1;
+  const close = () => { list.classList.add('hidden'); list.innerHTML = ''; items = []; active = -1; };
+  const choose = (label) => { input.value = label; close(); input.focus(); };
+  const paint = () => {
+    list.innerHTML = items.map((t, i) => `<li role="option" data-i="${i}" class="px-3 py-2 text-xs ${i === active ? 'bg-brand-50 text-brand-800 font-bold' : 'text-slate-700'}">${esc(t)}</li>`).join('');
+    list.classList.toggle('hidden', !items.length);
+  };
+  const refresh = () => {
+    const existing = state.staples.map(x => x.name);
+    items = GL.suggestStaples(input.value, getStaplePool(), existing, 5);
+    active = -1;
+    paint();
+  };
+  input.addEventListener('input', refresh);
+  input.addEventListener('keydown', (e) => {
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); active = (active + 1) % items.length; paint(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); active = (active - 1 + items.length) % items.length; paint(); }
+    else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); e.stopPropagation(); choose(items[active]); }
+    else if (e.key === 'Escape') close();
+  });
+  // pointerdown (et non click) : le choix passe avant que le champ perde le focus
+  list.addEventListener('pointerdown', (e) => {
+    const li = e.target.closest('li');
+    if (li) { e.preventDefault(); choose(items[Number(li.dataset.i)]); }
+  });
+  input.addEventListener('blur', () => setTimeout(close, 120));
+  document.getElementById('form-add-staple').addEventListener('submit', close);
+}
+
+// --- Filtres du catalogue : « Plus de filtres » ---
+const FILTER_LABELS = { printemps: '🌸 Printemps', ete: '☀️ Été', automne: '🍁 Automne', hiver: '❄️ Hiver', 'style:street': '🌮 Street food', 'style:italien': '🇮🇹 Italien', 'style:asiatique': '🥢 Asiatique', 'style:orient': '🍛 Orient & Indien', 'style:mexicain': '🌶️ Tex-Mex', 'style:terroir': '🥘 Terroir', 'style:frais': '🥗 Frais & bowls', unepoele: '🍳 1 poêle', sanspork: '🚫🐖 Sans porc', sanslactose: '🥛 Sans lactose', maison: '⭐ Mes recettes' };
+function updateMoreFiltersButton() {
+  const btn = document.getElementById('btn-more-filters');
+  const panel = document.getElementById('more-filters');
+  if (!btn || !panel) return;
+  const label = FILTER_LABELS[state.activeFilter];
+  btn.textContent = label ? `${label} ✕` : (panel.classList.contains('hidden') ? '⚙️ Plus de filtres' : '⚙️ Moins de filtres');
+  btn.classList.toggle('bg-brand-600', !!label);
+  btn.classList.toggle('text-white', !!label);
+  btn.classList.toggle('bg-slate-100', !label);
+  btn.classList.toggle('text-slate-700', !label);
+}
+function setupMoreFilters() {
+  const btn = document.getElementById('btn-more-filters');
+  const panel = document.getElementById('more-filters');
+  if (!btn || !panel) return;
+  btn.addEventListener('click', () => {
+    if (FILTER_LABELS[state.activeFilter]) { // filtre du panneau actif : le bouton le retire
+      const all = document.querySelector('.filter-btn[data-filter="all"]');
+      if (all) all.click();
+      return;
+    }
+    panel.classList.toggle('hidden');
+    updateMoreFiltersButton();
+  });
+  // choisir un filtre dans le panneau le referme
+  panel.addEventListener('click', (e) => { if (e.target.closest('.filter-btn')) { panel.classList.add('hidden'); updateMoreFiltersButton(); } });
 }
 
 // ==========================================
@@ -2449,7 +2543,8 @@ function renderGroceries() {
   const percentage = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
   document.getElementById('courses-progress-bar').style.width = `${percentage}%`;
   const cost = GL.estimateCost(groceries);
-  document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''} (${percentage}%)` + (cost > 0 ? ` · budget ≈ ${cost} €` : '');
+  document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''}`;
+  document.getElementById('courses-budget-label').textContent = cost > 0 ? `budget ≈ ${cost} €` : '';
   
   // Badge sur l'onglet inférieur
   const navBadge = document.getElementById('nav-badge-groceries');
@@ -2512,7 +2607,6 @@ function renderGroceries() {
           <span class="text-base">${rayon.icon}</span>
           <div>
             <h3 class="font-bold text-xs text-slate-800">${rayon.name}</h3>
-            <span class="text-[10px] text-slate-400">${rayon.desc}</span>
           </div>
         </div>
         <span class="text-[11px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
@@ -2549,7 +2643,7 @@ function renderGroceries() {
               ${isStapleRayon ? '' : offBadgeHTML(item.name)}
             </div>
             ${item.recipes && item.recipes.length > 0 ? `
-              <span class="text-[10px] text-slate-400 truncate block">(${esc(item.recipes.join(', '))})</span>
+              <span class="text-[10px] text-slate-400 truncate block">${isStapleRayon ? '' : esc(offAllergenText(item.name))}(${esc(item.recipes.join(', '))})</span>
             ` : ''}
           </div>
         </label>
@@ -3457,6 +3551,8 @@ function setupEventListeners() {
   setupPantryCard();
   setupNotesRow();
   setupScanModal();
+  setupStapleAutocomplete();
+  setupMoreFilters();
   document.getElementById('btn-clear-menu').addEventListener('click', clearMenu);
 
   const saveMenuBtn = document.getElementById('btn-save-current-menu');
@@ -3536,6 +3632,7 @@ function setupEventListeners() {
       e.currentTarget.classList.remove('bg-white', 'text-slate-600');
       state.activeFilter = e.currentTarget.dataset.filter;
       renderCatalog(true);
+      updateMoreFiltersButton();
     });
   });
 
@@ -4221,7 +4318,8 @@ function handleIncomingSync(payload) {
   if (Array.isArray(payload.favorites)) state.favorites = resolveAliasList(sanitizeStringList(payload.favorites));
   if (Array.isArray(payload.pantry)) state.pantry = sanitizeStringList(payload.pantry, 400, 120);
   if (Array.isArray(payload.pantryNeeded)) state.pantryNeeded = sanitizeStringList(payload.pantryNeeded, 400, 120);
-  if (payload.spiceLevel !== undefined) state.spiceLevel = Math.round(cleanNum(payload.spiceLevel, 0, 2, state.spiceLevel));
+  if (Array.isArray(payload.spices)) state.spices = sanitizeSpices(payload.spices);
+  else if (payload.spiceLevel !== undefined) { const l = Math.round(cleanNum(payload.spiceLevel, 0, 2, 0)); state.spices = l >= 2 ? [...GL.SPICES_FULL] : l === 1 ? [...GL.SPICES_BASIC] : []; }
   if (typeof payload.stockBasics === 'boolean') state.stockBasics = payload.stockBasics;
   if (Array.isArray(payload.aisleOrder)) state.aisleOrder = sanitizeStringList(payload.aisleOrder, 10, 30);
   // Avis / historique : fusion recette par recette (le plus récent gagne), rien n'est écrasé en bloc
@@ -4252,7 +4350,7 @@ function handleIncomingSync(payload) {
   safeSetItem('gamelle_notes', JSON.stringify(state.notes || {}));
   safeSetItem('gamelle_pantry', JSON.stringify(state.pantry || []));
   safeSetItem('gamelle_pantry_needed', JSON.stringify(state.pantryNeeded || []));
-  safeSetItem('gamelle_spice_level', state.spiceLevel || 0);
+  safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
   safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
   safeSetItem('gamelle_aisle_order', JSON.stringify(state.aisleOrder || []));
 
@@ -4282,7 +4380,7 @@ function broadcastSync() {
       favorites: state.favorites || [],
       pantry: state.pantry || [],
       pantryNeeded: state.pantryNeeded || [],
-      spiceLevel: state.spiceLevel || 0,
+      spices: state.spices || [],
       stockBasics: !!state.stockBasics,
       aisleOrder: state.aisleOrder || [],
       notes: state.notes || {}
