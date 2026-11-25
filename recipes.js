@@ -233,7 +233,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/d8uoJg5PtH7yqA.png",
     "ingredients": [
       {
         "name": "Gnocchis à poêler",
@@ -459,7 +459,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/wuxrtu1483564410.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/Z02sFS5LN5fxBw.png",
     "ingredients": [
       {
         "name": "Lentilles corail",
@@ -579,7 +579,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/xxrxux1503070723.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/z0WQIgHyoVWjMA.png",
     "ingredients": [
       {
         "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
@@ -690,7 +690,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/m0p0j81765568742.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/uiLZAl8L86tNKQ.png",
     "ingredients": [
       {
         "name": "Bavette ou rumsteck de bœuf",
@@ -1175,7 +1175,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/uCc8pRhLOV7XyQ.png",
     "ingredients": [
       {
         "name": "Filets de poulet frais",
@@ -1285,7 +1285,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/wqurxy1511453156.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/QEYxZMnYoJklvw.png",
     "ingredients": [
       {
         "name": "Patates douces",
@@ -1406,7 +1406,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/U50ON4PNydFnsA.png",
     "ingredients": [
       {
         "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
@@ -2753,7 +2753,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/usywpp1511189717.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/q4wEEF6zSCC0tA.png",
     "ingredients": [
       {
         "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
@@ -3051,7 +3051,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/96lt871763480970.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/qfThiyHA61HpSQ.png",
     "ingredients": [
       {
         "name": "Crevettes cuites décortiquées",
@@ -3357,7 +3357,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/8rfd4q1764112993.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/UXjpOZ7o1Ik3ng.png",
     "ingredients": [
       {
         "name": "Bœuf haché frais (pur bœuf)",
@@ -4079,7 +4079,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/b66myb1683207208.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/Yn8Ru0N7wG6nIw.png",
     "ingredients": [
       {
         "name": "Filets de poulet frais",
@@ -4183,7 +4183,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/wssvvs1511785879.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/kQ7Gv2az64GhFA.png",
     "ingredients": [
       {
         "name": "Œufs frais",
@@ -4390,7 +4390,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/884600/pexels-photo-884600.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/eAmS77DXV8U79g.png",
     "ingredients": [
       {
         "name": "Pavés de saumon frais",
@@ -5340,7 +5340,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/1550441882.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/Kn91t0cE2Z397w.png",
     "ingredients": [
       {
         "name": "Saucisses de Toulouse ou fumées",
@@ -5441,7 +5441,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/FuebuByFK0aFxg.png",
     "ingredients": [
       {
         "name": "Filets de poulet frais",
@@ -5781,7 +5781,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/vtqxtu1511784197.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/Foc0JXcPQjVppg.png",
     "ingredients": [
       {
         "name": "Bœuf à mijoter (paleron ou gîte)",
@@ -6148,7 +6148,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/4079520/pexels-photo-4079520.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/akoxg00wZVBizA.png",
     "ingredients": [
       {
         "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
@@ -7263,7 +7263,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/uwvxpv1511557015.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/0BxcSy95nRbHzQ.png",
     "ingredients": [
       {
         "name": "Cuisses de canard confites",
