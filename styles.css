@@ -554,3 +554,6 @@ html:where(.dark) .rayon-done { background:#064e3b; color:#6ee7b7; }
 .row-settle { animation: settle .28s ease-out; }
 @media (prefers-reduced-motion: reduce) { .rayon-done.pop, .row-settle { animation:none; } }
 .w-24 { width: 6rem; } .h-24 { height: 6rem; } .p-6 { padding: 1.5rem; } .h-\[70px\] { height: 70px; }
+
+/* Pastilles : de la place en haut/à gauche pour les badges (le défilement horizontal coupe ce qui dépasse) */
+.meal-strip { padding: 8px 6px 4px; }

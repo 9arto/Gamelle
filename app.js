@@ -2036,11 +2036,11 @@ function renderGroceries() {
         <button type="button" class="rayon-head flex-1 min-w-0 text-left p-3 flex items-center justify-between gap-2" data-rayon="${esc(rayon.id)}" aria-expanded="${!collapsed}">
           <div class="flex items-center gap-2 min-w-0">
             ${rayonIcon(rayon)}
-            <h3 class="font-bold text-xs text-slate-800 truncate">${rayon.name}</h3>
+            <h3 class="font-bold text-xs text-slate-800 leading-tight">${rayon.name}</h3>
           </div>
           ${rayonDone
-            ? `<span class="rayon-done ${justDone ? 'pop' : ''}" aria-label="Rayon terminé">✓ Terminé</span>`
-            : `<span class="text-[12px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 whitespace-nowrap">${leftInRayon} restant${leftInRayon > 1 ? 's' : ''}</span>`}
+            ? `<span class="rayon-done flex-shrink-0 ${justDone ? 'pop' : ''}" aria-label="Rayon terminé">✓ Terminé</span>`
+            : `<span class="text-[12px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200 whitespace-nowrap flex-shrink-0" aria-label="${itemsInRayon.length - leftInRayon} sur ${itemsInRayon.length} trouvés">${itemsInRayon.length - leftInRayon}/${itemsInRayon.length}</span>`}
         </button>
         <button type="button" class="rayon-checkall text-[12px] font-bold text-brand-700 px-3 py-3 whitespace-nowrap" data-rayon="${esc(rayon.id)}">${rayonDone ? 'Décocher' : 'Tout cocher'}</button>
       </div>

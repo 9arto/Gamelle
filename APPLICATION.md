@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v57**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v59**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v57`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v59`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -61,7 +61,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Compteur de portions en haut à droite : **−/+**, de 1 à 12 (4 par défaut) ; tout se recalcule (courses incluses).
 
 ### 3.2 Courses (« Liste de courses »)
-- Liste **simplifiée** calculée à partir des repas non « gardés » (§7) : un produit = une ligne, quantités additionnées, classés en **6 rayons** : 🥬 Fruits & Légumes, 🥩 Boucherie & Volailles, 🐟 Poissonnerie & Marée, 🧀 Fromagerie & Crèmerie, 🥫 Épicerie, 🛒 Articles courants (hors recettes).
+- Liste **simplifiée** calculée à partir des repas non « gardés » (§7) : un produit = une ligne, quantités additionnées, classés en **6 rayons** : 🥬 Fruits & Légumes, 🥩 Boucherie, 🐟 Poissonnerie, 🧀 Fromagerie & Crèmerie, 🥫 Épicerie, 🛒 Articles courants (hors recettes).
 - Chaque ligne : case à cocher, quantité, nom, et entre parenthèses la ou les recettes concernées. Les articles cochés descendent en bas de leur rayon.
 - Barre de progression « N / M articles trouvés », pastille de comptage sur l'onglet.
 - **Budget estimé** affiché sous le compteur (« ≈ 61 € ») : ordre de grandeur par rayon, **ajusté à vos vrais prix** dès 2 tickets enregistrés (menu « … » → « Noter le ticket de caisse » : coefficient = médiane ticket réel ÷ estimation, borné 0,5–2). Le dernier ticket est affiché. Pas de lecture automatique du ticket (OCR) : seul le total se saisit.
@@ -69,7 +69,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Carte **« Placard & réglages »** : **mes épices** (une puce par épice : « ✓ » = j'en ai, elle n'est plus listée ; liens « tout / aucune »), **produits de base à la maison** (huile, farine, sucre, vinaigres, moutarde, chapelure), **ordre des rayons** dans mon magasin (▲▼), liste du placard.
 - **Articles courants** : saisie avec **suggestions pendant la frappe** (produits usuels, articles du catalogue, produits de la maison comme papier toilette ou lessive ; accents ignorés ; ceux déjà dans la liste ne sont pas proposés) ; champ libre + pastilles 1 tap (Banane, Lait, Fruits, Kéfir, Yaourt, Pain de mie, Flocons d'avoine) ; supprimables un par un.
 - Le menu **« … »** contient Copier la liste (WhatsApp/Notes, `[ ]` par article), Décocher tous les articles (annulable), Noter le ticket de caisse, Placard & réglages.
-- Chaque rayon affiche « N restants » (ou « ✓ Terminé » avec une petite animation) et un bouton **« Tout cocher » / « Décocher »** (annulable). Une ligne cochée arrive en bas du rayon avec une courte animation (désactivée si le téléphone réduit les animations).
+- Chaque rayon affiche « trouvés/total » (ex. 2/5) (ou « ✓ Terminé » avec une petite animation) et un bouton **« Tout cocher » / « Décocher »** (annulable). Une ligne cochée arrive en bas du rayon avec une courte animation (désactivée si le téléphone réduit les animations).
 - Les rayons se replient d'un toucher sur leur titre (compteur « restant / total »). Le « mode courses » plein écran a été retiré (trop de défilement).
 - **Gestes** : glisser une ligne vers la droite = cocher/décocher ; vers la gauche = « j'ai déjà » (placard) ou retirer un produit courant (annulable).
 - **Produits courants avec quantité** : ajouter deux fois « Lait » donne « Lait ×2 » (bouton « + » sur la ligne) ; **« Vos habituels »** : les puces proposent les produits les plus ajoutés (sinon une base), sans ceux déjà dans la liste.

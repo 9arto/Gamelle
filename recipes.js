@@ -42969,14 +42969,14 @@ window.GRAND_FRAIS_RAYONS = [
   },
   {
     "id": "boucherie",
-    "name": "Boucherie & Volailles",
+    "name": "Boucherie",
     "icon": "🍗",
     "color": "rose",
     "desc": "Comptoir & barquettes"
   },
   {
     "id": "poissonnerie",
-    "name": "Poissonnerie & Marée",
+    "name": "Poissonnerie",
     "icon": "🐟",
     "color": "sky",
     "desc": "Banc de marée fraîche"
@@ -42990,7 +42990,7 @@ window.GRAND_FRAIS_RAYONS = [
   },
   {
     "id": "epicerie",
-    "name": "Épicerie d'ici et d'ailleurs",
+    "name": "Épicerie",
     "icon": "🥫",
     "color": "orange",
     "desc": "Riz, pâtes, épices & condiments"
