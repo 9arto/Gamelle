@@ -527,3 +527,30 @@ html:where(.dark) .rayon-cremerie { background:#78350f; } html:where(.dark) .ray
 
 /* Remplissage de la barre d'avancement : blanc sur le vert, en clair comme en sombre (bg-white est assombri en mode sombre) */
 .courses-progress-fill, html:where(.dark) .courses-progress-fill { background-color: #fff; }
+
+/* Pastilles d'icônes (Réglages) : même langage que les rayons */
+.tile-icon { width:40px; height:40px; border-radius:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.tile-violet { background:#ede9fe; color:#6d28d9; } .tile-blue { background:#dbeafe; color:#1d4ed8; }
+.tile-green { background:#d1fae5; color:#047857; } .tile-amber { background:#fef3c7; color:#b45309; } .tile-rose { background:#ffe4e6; color:#be123c; }
+html:where(.dark) .tile-violet { background:#3b1f7a; color:#c4b5fd; } html:where(.dark) .tile-blue { background:#1e3a8a; color:#bfdbfe; }
+html:where(.dark) .tile-green { background:#064e3b; color:#6ee7b7; } html:where(.dark) .tile-amber { background:#78350f; color:#fcd34d; } html:where(.dark) .tile-rose { background:#881337; color:#fda4af; }
+
+/* Aperçu des repas (pastilles) */
+.meal-dot { position:relative; flex:0 0 auto; width:46px; height:46px; border-radius:50%; background:#e2e8f0; border:2px solid transparent; padding:0; overflow:visible; }
+.meal-dot img { width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; }
+.meal-dot b { position:absolute; left:-3px; top:-3px; min-width:18px; height:18px; border-radius:9px; background:#0f172a; color:#fff; font-size:12px; line-height:18px; text-align:center; }
+.meal-dot i { position:absolute; right:-3px; bottom:-3px; width:18px; height:18px; border-radius:50%; background:#059669; color:#fff; font-size:12px; line-height:18px; font-style:normal; text-align:center; }
+.meal-dot.is-locked { border-color:#f59e0b; }
+html:where(.dark) .meal-dot b { background:#e5e5ea; color:#111; }
+.empty-badge { display:inline-flex; width:64px; height:64px; border-radius:22px; background:#d1fae5; align-items:center; justify-content:center; font-size:32px; }
+html:where(.dark) .empty-badge { background:#064e3b; }
+
+/* Rayon terminé + petites animations */
+.rayon-done { font-size:12px; font-weight:700; color:#047857; background:#d1fae5; padding:2px 10px; border-radius:999px; white-space:nowrap; }
+html:where(.dark) .rayon-done { background:#064e3b; color:#6ee7b7; }
+@keyframes pop { 0% { transform:scale(.6); opacity:0; } 60% { transform:scale(1.15); opacity:1; } 100% { transform:scale(1); } }
+@keyframes settle { from { opacity:.35; transform:translateY(-12px); } to { opacity:1; transform:none; } }
+.rayon-done.pop { animation: pop .4s ease-out; }
+.row-settle { animation: settle .28s ease-out; }
+@media (prefers-reduced-motion: reduce) { .rayon-done.pop, .row-settle { animation:none; } }
+.w-24 { width: 6rem; } .h-24 { height: 6rem; } .p-6 { padding: 1.5rem; } .h-\[70px\] { height: 70px; }

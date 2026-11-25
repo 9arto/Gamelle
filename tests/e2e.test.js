@@ -249,3 +249,58 @@ test('navigateur : quantité sur produit courant, menu « … », bandeau d\'ét
     assert.deepEqual(errors, []);
   } finally { await browser.close(); srv.close(); }
 });
+
+test('navigateur : planning vide accueillant, pastilles, rayon « tout cocher », filtres d\'historique, recherches récentes, budget', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::/.test(m.text())) errors.push(m.text()); });
+    await page.addInitScript(() => { if (!localStorage.getItem('s')) { localStorage.setItem('s', '1'); localStorage.setItem('gamelle_plan', '[]'); } });
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+
+    // Planning vide : grand bouton « Composer mes 7 repas »
+    assert.ok(await page.isVisible('#btn-empty-compose'));
+    assert.ok(!(await page.isVisible('#btn-add-meal-slot')), "pas d'en-tête « 0 repas »");
+    await page.click('#btn-empty-compose');
+    assert.ok(await page.isVisible('#gen-body'), 'ouvre « Composer mes 7 repas »');
+    await page.evaluate(() => { state.plan = state.recipes.slice(0, 4).map((r) => r.id); saveToLocalStorage(); renderAll(); document.getElementById('generate-modal').classList.add('hidden'); });
+    assert.equal(await page.locator('.meal-dot').count(), 4, 'une pastille par repas');
+    await page.click('.meal-dot >> nth=3');
+
+    // Courses : compteur par rayon, tout cocher, rayon terminé
+    await page.evaluate(() => switchTab('tab-courses'));
+    assert.match(await page.innerText('.rayon-head >> nth=0'), /restants?/);
+    await page.click('.rayon-checkall >> nth=0');
+    assert.match(await page.innerText('.rayon-head >> nth=0'), /Terminé/);
+    await page.click('.rayon-checkall >> nth=0'); // décoche
+    assert.match(await page.innerText('.rayon-head >> nth=0'), /restants?/);
+
+    // Historique : jamais cuisiné / cuisiné récemment
+    const id = await page.evaluate(() => state.plan[0]);
+    await page.evaluate((i) => setNote(i, { cooked: Date.now() }), id);
+    await page.evaluate(() => switchTab('tab-recettes'));
+    await page.evaluate(() => { state.activeFilter = 'recent'; renderCatalog(true); });
+    assert.equal(await page.evaluate(() => catalogFiltered.length), 1);
+    await page.evaluate(() => { state.activeFilter = 'jamais'; renderCatalog(true); });
+    assert.equal(await page.evaluate(() => catalogFiltered.length), (await page.evaluate(() => state.recipes.length)) - 1);
+    await page.evaluate(() => { state.activeFilter = 'all'; renderCatalog(true); });
+
+    // Recherche récente mémorisée
+    await page.fill('#recipe-search-input', 'poulet');
+    await page.press('#recipe-search-input', 'Enter');
+    await page.fill('#recipe-search-input', '');
+    await page.dispatchEvent('#recipe-search-input', 'input');
+    await page.waitForFunction(() => !document.getElementById('recent-searches').classList.contains('hidden'));
+    assert.match(await page.innerText('#recent-searches'), /poulet/);
+
+    // Budget : deux tickets → moyenne affichée
+    await page.evaluate(() => { const D = 86400000; state.trips = [{ t: Date.now() - 14 * D, total: 60, est: 50, items: 20 }, { t: Date.now() - 7 * D, total: 70, est: 55, items: 22 }, { t: Date.now(), total: 65, est: 52, items: 21 }]; saveToLocalStorage(); renderGroceries(); });
+    assert.match(await page.innerText('#budget-card-body'), /Ticket moyen 65 €.*par semaine/s);
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});

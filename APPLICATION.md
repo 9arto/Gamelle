@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v55**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v57**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v55`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v57`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -51,6 +51,8 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - **« 7 repas »** ouvre **« Composer mes 7 repas »** : filtres facultatifs **Saison** (🌸 ☀️ 🍁 ❄️, bouton « saison actuelle »), **Type** (volaille, viande, poisson, végétarien), **Style** (Street food, Italien, Asiatique, Orient & Indien, Tex-Mex, Terroir, Frais & bowls, Du quotidien), **Pratique** (pas cher, < 20 min, 1 seule poêle, mes favoris), **Régime** (sans porc, sans lactose) et **« J'ai dans le frigo »** (ingrédients à utiliser en priorité). Un compteur indique combien de plats correspondent ; les filtres sont mémorisés.
   - Tirage **proportionnel à la place de chaque type dans le catalogue** (tous les plats peuvent sortir), sans doublon, jamais plus de 3 plats du même type tant qu'il y a du choix ; les plats notés « 👎 Bof » et ceux cuisinés depuis moins de 21 jours sont évités, les « 👍 À refaire » favorisés.
   - Les repas **gardés** sont conservés, seuls les autres sont renouvelés. Remet à zéro les cases cochées de la liste de courses.
+- **Planning vide** : écran d'accueil « Qu'est-ce qu'on mange ? » avec un grand bouton « Composer mes 7 repas » (et « Ou choisir dans les recettes »). Un menu volontairement vidé reste vide ; seul le tout premier lancement génère un menu d'exemple.
+- **Aperçu des repas** : une ligne de pastilles (photo + numéro) sous le compteur ; toucher une pastille fait défiler jusqu'au repas. Ambre = repas gardé, ✓ = cuisiné ces 3 derniers jours. Volontairement **sans jours ni semaines** (les courses peuvent couvrir plusieurs semaines).
 - **« Garder / 🔓 »** sur un repas = « déjà à la maison » : le repas reste au menu mais **ses ingrédients sont exclus de la liste de courses**.
 - **« Changer »** : choisir un autre plat. **« ✕ »** retire le repas. **« + Ajouter un plat »**.
 - **Sauvegarder / Mes menus** : enregistre le menu en cours (nom, portions, plan, articles courants), 30 menus maximum ; ouverture/suppression.
@@ -67,6 +69,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Carte **« Placard & réglages »** : **mes épices** (une puce par épice : « ✓ » = j'en ai, elle n'est plus listée ; liens « tout / aucune »), **produits de base à la maison** (huile, farine, sucre, vinaigres, moutarde, chapelure), **ordre des rayons** dans mon magasin (▲▼), liste du placard.
 - **Articles courants** : saisie avec **suggestions pendant la frappe** (produits usuels, articles du catalogue, produits de la maison comme papier toilette ou lessive ; accents ignorés ; ceux déjà dans la liste ne sont pas proposés) ; champ libre + pastilles 1 tap (Banane, Lait, Fruits, Kéfir, Yaourt, Pain de mie, Flocons d'avoine) ; supprimables un par un.
 - Le menu **« … »** contient Copier la liste (WhatsApp/Notes, `[ ]` par article), Décocher tous les articles (annulable), Noter le ticket de caisse, Placard & réglages.
+- Chaque rayon affiche « N restants » (ou « ✓ Terminé » avec une petite animation) et un bouton **« Tout cocher » / « Décocher »** (annulable). Une ligne cochée arrive en bas du rayon avec une courte animation (désactivée si le téléphone réduit les animations).
 - Les rayons se replient d'un toucher sur leur titre (compteur « restant / total »). Le « mode courses » plein écran a été retiré (trop de défilement).
 - **Gestes** : glisser une ligne vers la droite = cocher/décocher ; vers la gauche = « j'ai déjà » (placard) ou retirer un produit courant (annulable).
 - **Produits courants avec quantité** : ajouter deux fois « Lait » donne « Lait ×2 » (bouton « + » sur la ligne) ; **« Vos habituels »** : les puces proposent les produits les plus ajoutés (sinon une base), sans ceux déjà dans la liste.
@@ -78,10 +81,11 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - 392 plats affichés par 24 (bouton « Afficher plus » + chargement automatique au défilement).
 - **Recherche** insensible à la casse/accents/ponctuation (titre, description, ingrédients).
 - **Filtres** : une ligne d'essentiels (Tous · ❤️ Favoris · ⚡ < 20 min · 💰 Pas cher · types) + **« ⚙️ Plus de filtres »** (saisons, styles, 1 poêle, sans porc, sans lactose, mes recettes). Liste complète : Tous · 💰 Pas cher · 🌸 Printemps · ☀️ Été · 🍁 Automne · ❄️ Hiver · ⚡ < 20 min · 🍗 Volaille · 🥩 Viande · 🐟 Poisson · 🌱 Végétarien · styles (🌮 Street food, 🇮🇹 Italien, 🥢 Asiatique, 🍛 Orient & Indien, 🌶️ Tex-Mex, 🥘 Terroir, 🥗 Frais & bowls) · 🍳 1 poêle · 🚫🐖 Sans porc · 🥛 Sans lactose · ❤️ Favoris · ⭐ Mes recettes.
+- **Historique** : filtres **« Jamais cuisinés »** et **« Cuisinés récemment »** (30 jours, du plus récent au plus ancien) dans « Plus de filtres » ; **recherches récentes** mémorisées (6) sous la barre de recherche (`gamelle_recent_searches`, local à l'appareil).
 - **Tri** : **Au hasard** (par défaut, avec un bouton « Mélanger » ; l'ordre reste stable tant qu'on ne mélange pas) / Ordre du catalogue / Moins cher d'abord / Plus rapide.
 - **Photos** : les listes utilisent la vignette Jow 304×304 (≈ 140 Ko) ; la fiche recette affiche la grande photo 550×550 (≈ 430 Ko).
 - **Fiche recette** : photo, durée, saison, tag, portions ajustables (propres à la fiche), ingrédients (quantités converties), étapes, bouton ❤️ (favori), **avis** (👍 À refaire / 👎 Bof / ✅ Cuisiné — « cuisiné » est aussi coché automatiquement à la fin du mode cuisine), « Ajouter au menu », « Cuisiner ». Recette maison : boutons modifier / supprimer.
-- **Mode cuisine pas à pas** : une étape par écran, ingrédients de l'étape, **minuteur** (alerte sonore, un minuteur par étape), **écran maintenu allumé** (Wake Lock).
+- **Mode cuisine pas à pas** (texte de l'étape agrandi, minuteur en gros, **glisser à gauche/droite** pour changer d'étape — jamais pour terminer la recette ; tous les minuteurs en cours restent affichés en haut) : une étape par écran, ingrédients de l'étape, **minuteur** (alerte sonore, un minuteur par étape), **écran maintenu allumé** (Wake Lock).
 
 ### 3.3 bis Nutrition & Open Food Facts
 - **Allergènes** : affichés **uniquement sur les fiches recettes** (jamais dans la liste de courses). Seule la pastille Nutri-Score apparaît sur les articles.
@@ -101,7 +105,8 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Rien n'est envoyé hors foyer connecté, ni pour les modifications reçues de l'autre téléphone.
 
 ### 3.5 Réglages
-- **Apparence** : Clair / Sombre / Système.
+- **Apparence** : Clair / Sombre / Système. Icônes des rubriques en pastilles colorées (comme les rayons).
+- **Budget courses** : courbe de vos derniers tickets, ticket moyen et dépense **par semaine** (période = du premier au dernier ticket, plus un intervalle ; affichée dès 2 tickets espacés d'au moins 5 jours).
 - **Mise à jour** : version installée, bouton vérifier/installer.
 - **Synchronisation en direct (foyer)** : saisir un code ou « Générer un code sécurisé » ; voyant « En direct » ; copier le code ; se déconnecter ; forcer la synchro.
 - **Partage** : lien magique (menu + courses + code foyer), texte de courses pour WhatsApp, QR code **à la demande uniquement** (il passe par un service externe).
@@ -298,7 +303,7 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 
 | `tests/css-classes.test.js` | **toute classe utilitaire** (type Tailwind) utilisée dans `index.html`, `app.js`, `groceries.js`, `sync.js` existe dans `tailwind.css` ou `styles.css` (le CSS est pré-compilé : une classe absente casse la mise en page sans erreur). |
 
-État au 25/11/2026 : **84 tests passent, 0 échec**.
+État au 25/11/2026 : **86 tests passent, 0 échec**.
 
 ---
 

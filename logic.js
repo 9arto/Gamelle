@@ -320,6 +320,19 @@
     return Math.max(0.3, q * (PRICE_PIECE[item.rayon] || 1));
   }
   function estimateCost(items) { return Math.round(items.reduce((s, i) => s + estimateItemPrice(i), 0)); }
+  // Dépenses : moyenne par ticket et par semaine (la période couvre un intervalle de plus que le premier-dernier ticket)
+  function budgetStats(trips) {
+    const t = (trips || []).filter((x) => x && x.total > 0 && Number.isFinite(x.t)).sort((a, b) => a.t - b.t);
+    if (!t.length) return { count: 0, avgTicket: 0, perWeek: 0, last: [] };
+    const sum = t.reduce((s, x) => s + x.total, 0);
+    let perWeek = 0;
+    if (t.length >= 2) {
+      const span = t[t.length - 1].t - t[0].t;
+      const weeks = (span + span / (t.length - 1)) / (7 * 86400000);
+      if (span >= 5 * 86400000 && weeks > 0) perWeek = sum / weeks;
+    }
+    return { count: t.length, avgTicket: sum / t.length, perWeek, last: t.slice(-12) };
+  }
   // Stock dégressif : retire ce qu'une recette consomme ; renvoie les articles épuisés (à racheter)
   function consumeStock(stock, used) {
     const out = {}; Object.keys(stock || {}).forEach((k) => { out[k] = { ...stock[k] }; });
@@ -391,7 +404,7 @@
     recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, priceFactor, consumeStock, parseStockInput,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, priceFactor, budgetStats, consumeStock, parseStockInput,
     encryptPayload, decryptPayload, cryptoAvailable,
     weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
   };

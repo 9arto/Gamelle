@@ -2,6 +2,14 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 25/11/2026 — v57 : ergonomie et visuel
+- **Planning vide** accueillant (« Composer mes 7 repas ») ; **aperçu des repas** en pastilles (sans jours ni semaines).
+- **Courses** : « N restants » et « Tout cocher » par rayon, « ✓ Terminé », petites animations.
+- **Recettes** : filtres « Jamais cuisinés » / « Cuisinés récemment », recherches récentes ; cartes plus aérées (photo plus grande, moins de texte), idem dans le Planning.
+- **Mode cuisine** : texte plus grand, glisser pour changer d'étape.
+- **Réglages** : icônes en pastilles colorées ; carte **Budget courses** (courbe des tickets, moyenne par ticket et par semaine).
+- Le menu vidé volontairement ne se régénère plus au redémarrage (seul le premier lancement crée un menu d'exemple).
+
 ## 25/11/2026 — v55 : icônes de rayons
 - Rayons : emoji (carotte, cuisse de poulet, poisson, fromage, conserve, caddie) dans une pastille colorée, clair et sombre.
 
