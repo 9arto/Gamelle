@@ -37,6 +37,12 @@ const IMG_PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent(
   "<path d='M54 118H146C146 146 124 164 100 164C76 164 54 146 54 118Z'/></g></svg>"
 );
 
+// Vignettes de liste : version légère (≈ 140 Ko au lieu de ≈ 430 Ko) pour les photos Jow ; la fiche garde la grande photo
+function thumbImg(url) {
+  const u = safeImg(url);
+  return u.replace('static.jow.fr/550x550/', 'static.jow.fr/304x304/');
+}
+
 function safeImg(url) {
   const u = String(url || '').trim();
   return /^https?:\/\//i.test(u) ? u : IMG_PLACEHOLDER;
@@ -448,7 +454,8 @@ let state = {
   staples: [], // Produits courants hors-recettes [ { id, name, checked } ]
   checkedGroceries: {}, // { 'item-key': true/false }
   activeFilter: 'all',
-  sortOption: 'default',
+  sortOption: 'random',
+  shuffleSeed: Math.floor(Math.random() * 1e9),
   searchQuery: '',
   selectingSlot: null,
   activeDetailRecipeId: null,
@@ -2343,7 +2350,7 @@ function renderLeftovers() {
       ? '<span class="text-emerald-700 font-bold">Rien à acheter</span>'
       : `<span class="text-slate-500">Il manque : ${esc(missing.slice(0, 3).map(m => m.replace(/\s*\(.*?\)/g, '')).join(', '))}${missing.length > 3 ? ` +${missing.length - 3}` : ''}</span>`;
     return `<div class="ios-card p-2.5 flex gap-3 items-center" data-id="${esc(r.id)}">
-      <img src="${esc(safeImg(r.image))}" alt="" loading="lazy" onerror="imgFallback(this)" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100">
+      <img src="${esc(thumbImg(r.image))}" alt="" loading="lazy" onerror="imgFallback(this)" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 bg-slate-100">
       <div class="flex-1 min-w-0 space-y-0.5">
         <p class="font-bold text-xs text-slate-800 leading-snug">${esc(r.title)}</p>
         <p class="text-[11px] text-slate-600">Utilise : ${esc(used.join(', '))}</p>
@@ -2412,7 +2419,15 @@ function setupLeftoversModal() {
 }
 
 // ==========================================
+// Titre évolutif : « Mes 3 repas »
+function updatePlanningTitle() {
+  const n = state.plan.filter(Boolean).length;
+  const t = document.getElementById('planning-title');
+  if (t) t.textContent = n === 0 ? 'Mes repas' : (n === 1 ? 'Mon repas' : `Mes ${n} repas`);
+}
+
 function renderAll() {
+  updatePlanningTitle();
   document.getElementById('current-portions-badge').textContent = `${state.portions} part${state.portions > 1 ? 's' : ''}`;
 
   // Mettre à jour le sous-titre de la bannière planning si présent
@@ -2457,6 +2472,7 @@ function renderAll() {
 
 // 1. Rendu du Planning (liste de plats sans limitation de nombre ni de jours fixes)
 function renderPlanning() {
+  updatePlanningTitle();
   const container = document.getElementById('weekly-days-list');
   if (!container) return;
   container.innerHTML = '';
@@ -2523,7 +2539,7 @@ function renderPlanning() {
         </div>
         
         <div class="flex items-center gap-3.5 cursor-pointer btn-open-detail py-0.5" data-id="${esc(recipe.id)}">
-          <img src="${esc(safeImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-16 h-16 rounded-2xl object-cover shadow-sm flex-shrink-0">
+          <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-16 h-16 rounded-2xl object-cover shadow-sm flex-shrink-0">
           <div class="flex-1 min-w-0">
             <h3 class="font-bold text-sm text-slate-900 leading-snug">${esc(recipe.title)}</h3>
             <p class="text-[11px] text-slate-500 line-clamp-1 mt-0.5">${esc(recipe.description)}</p>
@@ -2821,7 +2837,7 @@ function recipeCardHTML(recipe) {
   const isCustom = recipe.id.startsWith('custom-');
   return `
     <div class="ios-card p-3.5 flex gap-3 hover:border-brand-300 transition-all cursor-pointer btn-open-detail" data-id="${esc(recipe.id)}" role="button" tabindex="0">
-      <img src="${esc(safeImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
+      <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-20 h-20 rounded-2xl object-cover shadow-sm flex-shrink-0">
       <div class="flex-1 min-w-0 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between gap-1 flex-wrap mb-0.5">
@@ -2925,7 +2941,13 @@ function renderCatalog(resetLimit = false) {
     filtered.sort((a, b) => (b.isBudget ? 1 : 0) - (a.isBudget ? 1 : 0));
   } else if (state.sortOption === 'fastest') {
     filtered.sort((a, b) => a.timeMinutes - b.timeMinutes);
+  } else if (state.sortOption === 'random') {
+    // ordre aléatoire stable tant qu'on ne clique pas sur « Mélanger » (la pagination ne saute pas)
+    const rank = (id) => { let h = state.shuffleSeed | 0; for (let i = 0; i < id.length; i++) h = Math.imul(h ^ id.charCodeAt(i), 2654435761); return (h ^ (h >>> 15)) >>> 0; };
+    filtered.sort((a, b) => rank(a.id) - rank(b.id));
   }
+  const reshuffle = document.getElementById('btn-reshuffle');
+  if (reshuffle) reshuffle.classList.toggle('hidden', state.sortOption !== 'random');
 
   catalogFiltered = filtered;
   document.getElementById('recipes-count-label').textContent = `${filtered.length} plat${filtered.length > 1 ? 's' : ''} disponible${filtered.length > 1 ? 's' : ''}`;
@@ -3142,7 +3164,7 @@ function openSelectMealModal(day) {
     item.className = 'ios-card p-2.5 flex items-center justify-between gap-3 cursor-pointer hover:border-brand-500 transition-all';
     item.innerHTML = `
       <div class="flex items-center gap-2.5 min-w-0">
-        <img src="${esc(safeImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-12 h-12 rounded-xl object-cover flex-shrink-0">
+        <img src="${esc(thumbImg(recipe.image))}" alt="" loading="lazy" decoding="async" onerror="imgFallback(this)" class="img-soft w-12 h-12 rounded-xl object-cover flex-shrink-0">
         <div class="min-w-0">
           <h4 class="font-bold text-xs text-slate-800 truncate">${esc(recipe.title)}</h4>
           <span class="text-[11px] text-slate-400">⏱️ ${esc(recipe.timeMinutes)} min • ${esc(recipe.tag)}</span>
@@ -3737,6 +3759,9 @@ function setupEventListeners() {
   // Tri du catalogue
   const sortSelect = document.getElementById('recipe-sort-select');
   if (sortSelect) {
+    sortSelect.value = state.sortOption;
+    const reshuffleBtn = document.getElementById('btn-reshuffle');
+    if (reshuffleBtn) reshuffleBtn.addEventListener('click', () => { state.shuffleSeed = Math.floor(Math.random() * 1e9); renderCatalog(true); window.scrollTo({ top: 0, behavior: 'smooth' }); });
     sortSelect.addEventListener('change', (e) => {
       state.sortOption = e.target.value;
       renderCatalog(true);

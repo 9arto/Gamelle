@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v41**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v42**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v41`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v42`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -45,7 +45,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 ## 3. Fonctionnement écran par écran
 
 ### 3.1 Planning (« Mes repas »)
-- Liste ordonnée de repas (sans notion de jour, maximum 60). Chaque repas : photo, titre, durée, tag, badge « 💰 Pas cher ».
+- Titre évolutif : « Mes 3 repas » (« Mon repas » pour un seul, « Mes repas » si vide). Liste ordonnée de repas (sans notion de jour, maximum 60). Chaque repas : photo, titre, durée, tag, badge « 💰 Pas cher ».
 - **« Finir mes restes »** : on saisit ce qu'on a à la maison (suggestions à la frappe : poulet, courgettes, riz…). L'app classe les recettes qui les utilisent : d'abord celles qui utilisent le plus de vos produits, puis celles où il **manque le moins** de courses (liste « Il manque : … » ou « Rien à acheter »). Le placard et vos épices comptent comme « déjà là » ; huile, farine, vinaigres et épices courantes ne bloquent jamais. Boutons « Voir » et « Au menu ». La liste est mémorisée et synchronisée (`gamelle_leftovers`).
 - **« 7 repas »** ouvre **« Composer mes 7 repas »** : filtres facultatifs **Saison** (🌸 ☀️ 🍁 ❄️, bouton « saison actuelle »), **Type** (volaille, viande, poisson, végétarien), **Style** (Street food, Italien, Asiatique, Orient & Indien, Tex-Mex, Terroir, Frais & bowls, Du quotidien), **Pratique** (pas cher, < 20 min, bon en gamelle, 1 seule poêle, mes favoris), **Régime** (sans porc, sans lactose) et **« J'ai dans le frigo »** (ingrédients à utiliser en priorité). Un compteur indique combien de plats correspondent ; les filtres sont mémorisés.
   - Tirage **proportionnel à la place de chaque type dans le catalogue** (tous les plats peuvent sortir), sans doublon, jamais plus de 3 plats du même type tant qu'il y a du choix ; les plats notés « 👎 Bof » et ceux cuisinés depuis moins de 21 jours sont évités, les « 👍 À refaire » favorisés.
@@ -72,7 +72,8 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - 342 plats affichés par 24 (bouton « Afficher plus » + chargement automatique au défilement).
 - **Recherche** insensible à la casse/accents/ponctuation (titre, description, ingrédients).
 - **Filtres** : une ligne d'essentiels (Tous · ❤️ Favoris · ⚡ < 20 min · 🍱 Gamelle · 💰 Pas cher · types) + **« ⚙️ Plus de filtres »** (saisons, styles, 1 poêle, sans porc, sans lactose, mes recettes). Liste complète : Tous · 💰 Pas cher · 🌸 Printemps · ☀️ Été · 🍁 Automne · ❄️ Hiver · ⚡ < 20 min · 🍱 Gamelle · 🍗 Volaille · 🥩 Viande · 🐟 Poisson · 🌱 Végétarien · styles (🌮 Street food, 🇮🇹 Italien, 🥢 Asiatique, 🍛 Orient & Indien, 🌶️ Tex-Mex, 🥘 Terroir, 🥗 Frais & bowls) · 🍳 1 poêle · 🚫🐖 Sans porc · 🥛 Sans lactose · ❤️ Favoris · ⭐ Mes recettes.
-- **Tri** : Recommandé / Moins cher d'abord / Plus rapide.
+- **Tri** : **Au hasard** (par défaut, avec un bouton « Mélanger » ; l'ordre reste stable tant qu'on ne mélange pas) / Ordre du catalogue / Moins cher d'abord / Plus rapide.
+- **Photos** : les listes utilisent la vignette Jow 304×304 (≈ 140 Ko) ; la fiche recette affiche la grande photo 550×550 (≈ 430 Ko).
 - **Fiche recette** : photo, durée, saison, tag, portions ajustables (propres à la fiche), ingrédients (quantités converties), étapes, bouton ❤️ (favori), **avis** (👍 À refaire / 👎 Bof / ✅ Cuisiné — « cuisiné » est aussi coché automatiquement à la fin du mode cuisine), « Ajouter au menu », « Cuisiner ». Recette maison : boutons modifier / supprimer.
 - **Mode cuisine pas à pas** : une étape par écran, ingrédients de l'étape, **minuteur** (alerte sonore, un minuteur par étape), **écran maintenu allumé** (Wake Lock).
 
@@ -337,4 +338,5 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | 25/11/2026 (3) | **Nutrition** (kcal/macros/allergènes par portion), **Open Food Facts** (Nutri-Score sur les courses, scan de code-barres, sans clé API) ; `nutrition.js` ; 61 tests. SW v39. |
 | 25/11/2026 (4) | **+40 recettes Top Jow sans poisson** (342 au total) ; **suggestions à la frappe** pour les produits courants ; **épices une par une** (remplace les niveaux) ; Nutri-Score centré ; **interface épurée** (budget en pied d'en-tête, produits courants compacts, filtres secondaires repliés, rayons sans sous-titre, allergènes sur la ligne de détail) ; nems, pilons, haricots verts surgelés reconnus. 65 tests. SW v40. |
 | 25/11/2026 (5) | **Finir mes restes** (recettes déduites de ce qu'on a) ; allergènes retirés de la liste de courses ; « Budget » sur sa propre ligne ; **emojis décoratifs supprimés** (boutons, filtres, titres) et icône de placard remplacée par un petit pictogramme « colis » ; « Mes repas ». 69 tests. SW v41. |
+| 25/11/2026 (6) | Titre évolutif **« Mes N repas »** ; onglet Recettes **au hasard** + bouton Mélanger ; **vignettes Jow légères** (3× moins lourdes). SW v42. |
 | (avant) | Anti-scintillement des fenêtres de recette, carte « Mise à jour », pastille foyer, correctifs de fusion de produits (SW v31–v36). |

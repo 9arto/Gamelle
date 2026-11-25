@@ -49,6 +49,9 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     assert.equal(st.staples, 1);
     assert.equal(st.portions, 6);
 
+    assert.equal(await page.textContent('#planning-title'), 'Mes 2 repas', 'titre évolutif');
+    assert.ok(await page.evaluate(() => [...document.querySelectorAll('#weekly-days-list img')].every((i) => /304x304|data:|pexels|unsplash/.test(i.src))), 'vignettes légères');
+
     // Composer les 7 repas avec filtres
     await page.click('#btn-generate-menu');
     await page.click('.gen-chip[data-group="seasons"][data-value="hiver"]');
@@ -103,6 +106,17 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     assert.equal(await page.evaluate(() => state.plan.length), planBefore + 1);
     await page.click('#btn-close-leftovers');
 
+    assert.equal(await page.textContent('#planning-title'), 'Mes 8 repas');
+    // Recettes : ordre aléatoire + bouton Mélanger
+    await page.evaluate(() => switchTab('tab-recettes'));
+    const order = () => page.evaluate(() => [...document.querySelectorAll('#recipes-catalog-grid [data-recipe-id]')].map((e) => e.dataset.recipeId).slice(0, 6));
+    await page.click('.filter-btn[data-filter="all"]');
+    const ids1 = await page.evaluate(() => catalogFiltered.slice(0, 8).map((r) => r.id));
+    await page.click('#btn-reshuffle');
+    const ids2 = await page.evaluate(() => catalogFiltered.slice(0, 8).map((r) => r.id));
+    assert.notDeepEqual(ids1, ids2, 'Mélanger change l\'ordre');
+    await page.selectOption('#recipe-sort-select', 'default');
+    assert.ok(await page.isHidden('#btn-reshuffle'));
     // Avis
     await page.evaluate(() => openRecipeDetail('poulet-mafe-riz'));
     await page.click('#btn-note-like');
