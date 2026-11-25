@@ -17,7 +17,7 @@ function load(recipes) {
   vm.createContext(ctx);
   // const/let au niveau script ne sont pas visibles via ctx : on les exporte explicitement
   vm.runInContext(block + `
-    ;this.api = { canonicalUnit, convertQuantity, formatQuantityAndUnit, normalizeIngredient, computeGroceries, UNIT_WEIGHTS, COUNT_UNITS, SPECIAL_PRODUCTS };`, ctx);
+    ;this.api = { canonicalUnit, convertQuantity, ingredientGrams, formatQuantityAndUnit, normalizeIngredient, computeGroceries, UNIT_WEIGHTS, COUNT_UNITS, SPECIAL_PRODUCTS };`, ctx);
   return ctx;
 }
 

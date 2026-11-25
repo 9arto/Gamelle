@@ -85,3 +85,45 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     assert.deepEqual(errors, []);
   } finally { await browser.close(); srv.close(); }
 });
+
+test('navigateur : nutrition sur la fiche recette, infos Open Food Facts et scan (réseau simulé)', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::|ERR_/.test(m.text())) errors.push(m.text()); });
+    await page.route('**/search.openfoodfacts.org/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ hits: [
+      { code: '1', product_name: 'x', nutriscore_grade: 'b', nova_group: 3, allergens_tags: ['en:milk'] }, { code: '2', product_name: 'y', nutriscore_grade: 'b', nova_group: 3, allergens_tags: ['en:milk'] }] }) }));
+    await page.route('**/world.openfoodfacts.org/api/v2/product/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ status: 1, product: { product_name: 'Pâtes penne', brands: 'Marque', nutriscore_grade: 'a', nova_group: 3, allergens_tags: ['en:gluten'], nutriments: { 'energy-kcal_100g': 350 } } }) }));
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+
+    // Fiche recette : calories, macros, allergènes
+    await page.evaluate(() => openRecipeDetail('spaghetti-bolognese-express'));
+    const txt = await page.textContent('#detail-nutrition');
+    assert.match(txt, /\d+\s*kcal/);
+    assert.match(txt, /Contient : .*gluten/);
+    await page.click('#btn-close-detail');
+
+    // Courses : Nutri-Score de la liste
+    await page.evaluate(() => { state.plan = ['spaghetti-bolognese-express', 'poulet-mafe-riz']; saveToLocalStorage(); switchTab('tab-courses'); });
+    await page.click('#pantry-card summary');
+    await page.click('.off-load');
+    await page.waitForFunction(() => Object.keys(state.off).length > 0);
+    await page.waitForFunction(() => document.querySelectorAll('#grand-frais-aisles-container [title^="Nutri-Score"]').length > 0);
+
+    // Scan : saisie manuelle du code-barres
+    await page.click('.off-scan');
+    await page.fill('#scan-code', '3017620422003');
+    await page.click('#scan-form button[type="submit"]');
+    await page.waitForSelector('#btn-scan-staple');
+    assert.match(await page.textContent('#scan-result'), /Pâtes penne/);
+    assert.match(await page.textContent('#scan-result'), /gluten/);
+    await page.click('#btn-scan-staple');
+    assert.ok(await page.evaluate(() => state.staples.some((s) => s.name === 'Pâtes penne')));
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});

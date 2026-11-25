@@ -500,6 +500,9 @@
           </div>
         </div>
 
+        <!-- Nutrition estimée & allergènes -->
+        <div id="detail-nutrition" class="space-y-1.5 pt-2 border-t border-slate-100"></div>
+
         <!-- Avis & historique -->
         <div id="detail-notes-row" class="flex items-center gap-2 flex-wrap pt-2 border-t border-slate-100">
           <button type="button" id="btn-note-like" class="px-2.5 py-1.5 rounded-xl text-[11px] font-bold border border-slate-200 bg-white text-slate-600 active:scale-95">👍 À refaire</button>
@@ -677,6 +680,30 @@
   </div>
 
   <!-- ============================================================ -->
+  <!-- MODAL : SCANNER UN PRODUIT (Open Food Facts)                 -->
+  <!-- ============================================================ -->
+  <div id="scan-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md max-h-[90vh] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-slate-800 text-sm">Scanner un produit</h3>
+          <p class="text-xs text-slate-400">Données Open Food Facts</p>
+        </div>
+        <button id="btn-close-scan" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" aria-label="Fermer">✕</button>
+      </div>
+      <div class="flex-1 overflow-y-auto p-4 space-y-3 text-xs">
+        <video id="scan-video" class="hidden w-full rounded-2xl bg-slate-900" playsinline muted></video>
+        <p id="scan-camera-note" class="text-[11px] text-slate-400"></p>
+        <form id="scan-form" class="flex gap-2">
+          <input type="text" id="scan-code" inputmode="numeric" autocomplete="off" placeholder="Code-barres (ex : 3017620422003)" class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-xs" aria-label="Code-barres">
+          <button type="submit" class="px-3 py-2 rounded-xl text-xs font-bold bg-brand-600 text-white active:scale-95">Chercher</button>
+        </form>
+        <div id="scan-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
   <!-- MODAL 3 : CRÉER MA PROPRE RECETTE                           -->
   <!-- ============================================================ -->
   <div id="custom-recipe-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -830,6 +857,7 @@
   <!-- Scripts de l'application -->
   <script src="recipes.js"></script>
   <script src="logic.js"></script>
+  <script src="nutrition.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

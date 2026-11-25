@@ -131,6 +131,23 @@ function sanitizeNotes(map) {
   }
   return out;
 }
+const OFF_TTL = 30 * 86400000;
+function sanitizeOffCache(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 400).forEach(k => {
+      const v = map[k];
+      if (!v || typeof v !== 'object' || !Number.isFinite(v.t) || Date.now() - v.t > OFF_TTL) return;
+      const d = v.d && typeof v.d === 'object' ? v.d : null;
+      out[cleanStr(k, 120)] = { t: v.t, d: d ? {
+        grade: /^[a-e]$/.test(d.grade) ? d.grade : null,
+        nova: [1, 2, 3, 4].includes(d.nova) ? d.nova : null,
+        allergens: sanitizeStringList(d.allergens, 14, 30)
+      } : null };
+    });
+  }
+  return out;
+}
 function sanitizeGenFilters(f) {
   const out = {};
   if (!f || typeof f !== 'object') return out;
@@ -330,7 +347,7 @@ function promptDialog(opts) {
 }
 
 // --- Blocage du défilement derrière les fenêtres ouvertes ---
-const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal'];
+const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal', 'scan-modal'];
 function updateScrollLock() {
   const anyOpen = MODAL_IDS.some(id => {
     const el = document.getElementById(id);
@@ -345,7 +362,8 @@ function initModalBehaviour() {
     'saved-menus-modal': 'btn-close-saved-menus',
     'cooking-modal': 'btn-close-cooking',
     'recipe-detail-modal': 'btn-close-detail',
-    'generate-modal': 'btn-close-generate'
+    'generate-modal': 'btn-close-generate',
+    'scan-modal': 'btn-close-scan'
   };
   // Les fenêtres où un appui involontaire sur le fond ne fait rien perdre se ferment en touchant le fond
   const closeOnBackdrop = ['recipe-detail-modal', 'select-meal-modal', 'saved-menus-modal'];
@@ -402,6 +420,7 @@ function restoreSnapshot(snapshot) {
 const DEFAULT_RECIPES = window.DEFAULT_RECIPES || [];
 const RECIPE_ALIASES = window.RECIPE_ALIASES || {};
 const GL = window.GamelleLogic;
+const GN = window.GamelleNutrition;
 // Recettes fusionnées (doublons) : un ancien identifiant pointe vers la recette conservée
 function resolveAlias(id) { return (typeof id === 'string' && RECIPE_ALIASES[id]) || id; }
 function resolveAliasList(ids) {
@@ -444,7 +463,8 @@ let state = {
   stockBasics: false,  // ne pas lister huile, farine, sucre, vinaigre, moutarde…
   aisleOrder: [],      // ordre des rayons dans le magasin
   notes: {},           // { idRecette: { r: 1|-1|0, cooked: horodatage, t: horodatage } }
-  genFilters: {}       // derniers filtres de « Composer mes 7 repas »
+  genFilters: {},      // derniers filtres de « Composer mes 7 repas »
+  off: {}              // cache Open Food Facts { article: { t, d } }
 };
 
 // Catalogue : affichage progressif (24 plats à la fois)
@@ -537,6 +557,7 @@ function loadFromLocalStorage() {
   state.spiceLevel = Math.round(cleanNum(safeGetItem('gamelle_spice_level'), 0, 2, 0));
   state.stockBasics = safeGetItem('gamelle_stock_basics') === '1';
   state.aisleOrder = sanitizeStringList(readJSON('gamelle_aisle_order', []), 10, 30);
+  state.off = sanitizeOffCache(readJSON('gamelle_off_cache', {}));
 
   // Planning (support migration objet {Lundi: ...} -> tableau [])
   let plan = readJSON('gamelle_plan', null);
@@ -1692,6 +1713,12 @@ function normalizeIngredient(ing) {
   return { name, quantity, unit, rayon };
 }
 
+// Poids (g) d'un ingrédient de recette, pour le calcul nutritionnel (null si impossible à convertir)
+function ingredientGrams(ing) {
+  const norm = normalizeIngredient(ing);
+  return convertQuantity(Number(ing.quantity) || 0, canonicalUnit(ing.unit), 'g', norm.name);
+}
+
 // Choix déterministe de l'unité d'affichage d'un article : le résultat ne dépend plus de l'ordre
 // des repas dans le planning (avant : « 280 g » ou « 3 sachets » selon le repas lu en premier).
 // Priorité : grammes / ml (toujours convertibles), puis cuillères, pincée, puis unités comptables.
@@ -1882,6 +1909,14 @@ function renderPantryCard() {
         <button type="button" class="aisle-move px-1.5 text-slate-500" data-id="${r.id}" data-dir="1" ${i === rayons.length - 1 ? 'disabled' : ''} aria-label="Descendre">▼</button></div>`).join('')}</div>
     </div>
     <div class="space-y-1.5">
+      <p class="font-bold text-slate-700">🔎 Infos produits</p>
+      <div class="flex gap-1.5 flex-wrap">
+        <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Nutri-Score &amp; allergènes de ma liste</button>
+        <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">📷 Scanner un produit</button>
+      </div>
+      <p class="text-[10px] text-slate-400">Données Open Food Facts (gratuites, sans clé), valeurs typiques par type de produit.</p>
+    </div>
+    <div class="space-y-1.5">
       <p class="font-bold text-slate-700">🏠 Mon placard (${state.pantry.length})</p>
       ${state.pantry.length ? `<div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => `<button type="button" class="pantry-remove px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200" data-id="${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))} ✕</button>`).join('')}</div>`
         : '<p class="text-[10px] text-slate-400">Appuyez sur 🏠 à côté d\'un article pour dire « j\'en ai déjà » : il ne sera plus listé.</p>'}
@@ -1894,6 +1929,8 @@ function setupPantryCard() {
   body.addEventListener('click', (e) => {
     const t = e.target.closest('button');
     if (!t) return;
+    if (t.classList.contains('off-load')) { loadOffInfoForList(); return; }
+    if (t.classList.contains('off-scan')) { openScanModal(); return; }
     if (t.classList.contains('spice-level-btn')) {
       state.spiceLevel = Number(t.dataset.level) || 0;
       state.pantryNeeded = [];
@@ -2026,6 +2063,160 @@ function setupGenerateModal() {
     if (hadMeals && takeSnapshot() !== snapshot) {
       showToast('Nouveau menu généré', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
     }
+  });
+}
+
+// ==========================================
+// NUTRITION & OPEN FOOD FACTS
+// ==========================================
+function nutritionOf(recipe) {
+  const nameOf = (ing) => normalizeIngredient(ing).name;
+  return {
+    ...GN.recipeNutrition(recipe, ingredientGrams, nameOf),
+    allergens: GN.recipeAllergens(recipe, nameOf)
+  };
+}
+function renderNutritionCard(recipe) {
+  const box = document.getElementById('detail-nutrition');
+  if (!box) return;
+  const n = nutritionOf(recipe);
+  if (n.coverage < 0.7) { box.innerHTML = ''; return; }
+  const p = n.perPortion;
+  const chip = (label, v, unit) => `<span class="px-2 py-1 rounded-lg bg-slate-50 border border-slate-100 text-slate-600"><b class="text-slate-800">${v}</b> ${unit} ${label}</span>`;
+  box.innerHTML = `
+    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5"><span>🔥</span> Nutrition estimée <span class="font-normal normal-case text-slate-400">par portion</span></h3>
+    <div class="flex flex-wrap gap-1.5 text-[11px]">
+      <span class="px-2 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900"><b>${p.kcal}</b> kcal</span>
+      ${chip('protéines', p.protein, 'g')}${chip('glucides', p.carbs, 'g')}${chip('lipides', p.fat, 'g')}
+    </div>
+    ${n.allergens.length ? `<p class="text-[11px] text-slate-600">⚠️ Contient : ${n.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</p>` : '<p class="text-[11px] text-slate-400">Aucun allergène majeur repéré.</p>'}
+    <p class="text-[10px] text-slate-400">Estimation à partir de valeurs moyennes par ingrédient (type Ciqual / Open Food Facts) : à titre indicatif.</p>`;
+}
+
+const NUTRI_COLORS = { a: '#038141', b: '#85bb2f', c: '#fecb02', d: '#ee8100', e: '#e63e11' };
+function offKey(name) { return cleanStr(String(name).toLowerCase(), 120); }
+function offBadgeHTML(name) {
+  const e = state.off[offKey(name)];
+  if (!e || !e.d) return '';
+  const parts = [];
+  if (e.d.grade) parts.push(`<span title="Nutri-Score typique (Open Food Facts)" style="background:${NUTRI_COLORS[e.d.grade]};color:${e.d.grade === 'c' ? '#222' : '#fff'}" class="inline-flex items-center justify-center w-4 h-4 rounded-full text-[9px] font-extrabold uppercase">${e.d.grade}</span>`);
+  if (e.d.allergens && e.d.allergens.length) parts.push(`<span class="text-[10px] text-amber-700" title="Allergènes fréquents pour ce type de produit">⚠️ ${e.d.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</span>`);
+  return parts.join(' ');
+}
+function saveOffCache() { safeSetItem('gamelle_off_cache', JSON.stringify(state.off)); }
+
+let offLoading = false;
+async function loadOffInfoForList() {
+  if (offLoading) return;
+  const items = currentSplit().toBuy.filter(i => (i.rayon === 'epicerie' || i.rayon === 'cremerie'));
+  const todo = items.filter(i => { const e = state.off[offKey(i.name)]; return !e || Date.now() - e.t > OFF_TTL; }).slice(0, 40);
+  if (!todo.length) { showToast('Infos produits déjà à jour'); renderGroceries(); return; }
+  offLoading = true;
+  showToast(`Open Food Facts : ${todo.length} produit${todo.length > 1 ? 's' : ''}…`, { duration: 4000 });
+  let ok = 0, queue = [...todo];
+  const worker = async () => {
+    while (queue.length) {
+      const it = queue.shift();
+      try {
+        const d = await GN.offTypical(it.name, (u) => fetch(u));
+        state.off[offKey(it.name)] = { t: Date.now(), d };
+        if (d) ok++;
+      } catch (e) { /* réseau indisponible : on réessaiera plus tard */ }
+    }
+  };
+  await Promise.all([worker(), worker(), worker()]);
+  offLoading = false;
+  saveOffCache();
+  renderGroceries();
+  showToast(ok ? `Infos trouvées pour ${ok} produit${ok > 1 ? 's' : ''}` : 'Aucune info trouvée (réseau ?)');
+}
+
+// --- Scanner de code-barres ---
+let scanStream = null, scanTimer = null;
+function stopScan() {
+  clearInterval(scanTimer); scanTimer = null;
+  if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
+  const v = document.getElementById('scan-video');
+  if (v) { v.srcObject = null; v.classList.add('hidden'); }
+}
+async function openScanModal() {
+  const modal = document.getElementById('scan-modal');
+  modal.classList.remove('hidden');
+  document.getElementById('scan-result').innerHTML = '';
+  const note = document.getElementById('scan-camera-note');
+  note.textContent = '';
+  if ('BarcodeDetector' in window && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    try {
+      const detector = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e'] });
+      scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      const v = document.getElementById('scan-video');
+      v.srcObject = scanStream; v.classList.remove('hidden'); await v.play();
+      scanTimer = setInterval(async () => {
+        try {
+          const codes = await detector.detect(v);
+          if (codes.length) { stopScan(); document.getElementById('scan-code').value = codes[0].rawValue; lookupScannedProduct(codes[0].rawValue); }
+        } catch (e) { /* image pas prête */ }
+      }, 400);
+      note.textContent = 'Visez le code-barres, ou saisissez-le ci-dessous.';
+      return;
+    } catch (e) { stopScan(); }
+  }
+  note.textContent = 'Scan par caméra indisponible sur cet appareil : saisissez le numéro sous le code-barres.';
+}
+function closeScanModal() { stopScan(); document.getElementById('scan-modal').classList.add('hidden'); }
+
+function matchGroceryForProduct(name) {
+  const stop = new Set(['frais', 'fraiche', 'bio', 'nature', 'extra', 'fin', 'fins', 'pour', 'avec', 'sans', 'doux', 'tradition']);
+  const tok = (t) => GN.norm(t).replace(/[^a-z ]/g, ' ').split(/\s+/).filter(w => w.length > 3 && !stop.has(w)).map(w => w.replace(/s$/, ''));
+  const words = new Set(tok(name));
+  let best = null, bestScore = 0;
+  computeGroceries().forEach(g => {
+    const score = tok(g.name).filter(w => words.has(w)).length;
+    if (score > bestScore) { best = g; bestScore = score; }
+  });
+  return best;
+}
+async function lookupScannedProduct(code) {
+  const out = document.getElementById('scan-result');
+  out.innerHTML = '<p class="text-slate-400">Recherche…</p>';
+  let p = null;
+  try { p = await GN.offProduct(code, (u) => fetch(u)); }
+  catch (e) { out.innerHTML = '<p class="text-rose-600">Impossible de joindre Open Food Facts (réseau ?).</p>'; return; }
+  if (!p) { out.innerHTML = '<p class="text-slate-500">Produit introuvable dans Open Food Facts.</p>'; return; }
+  const match = matchGroceryForProduct(p.name);
+  const grade = p.grade ? `<span style="background:${NUTRI_COLORS[p.grade]};color:${p.grade === 'c' ? '#222' : '#fff'}" class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-extrabold uppercase">${p.grade}</span>` : '<span class="text-slate-400">Nutri-Score non disponible</span>';
+  out.innerHTML = `
+    <div class="ios-card p-3 space-y-2">
+      <div><p class="font-bold text-slate-800 text-sm">${esc(p.name || 'Produit sans nom')}</p><p class="text-slate-400">${esc(p.brand)}</p></div>
+      <div class="flex items-center gap-2 flex-wrap">${grade}${p.nova ? `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold">NOVA ${p.nova}</span>` : ''}</div>
+      <p class="text-slate-600">${p.kcal != null ? `<b>${p.kcal}</b> kcal` : ''}${p.protein != null ? ` · ${p.protein} g protéines` : ''}${p.carbs != null ? ` · ${p.carbs} g glucides` : ''}${p.fat != null ? ` · ${p.fat} g lipides` : ''} <span class="text-slate-400">pour 100 g</span></p>
+      ${p.allergens.length ? `<p class="text-amber-700">⚠️ Contient : ${p.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</p>` : ''}
+      <div class="flex gap-2 flex-wrap pt-1">
+        ${match ? `<button type="button" id="btn-scan-pantry" data-id="${esc(match.id)}" class="px-2.5 py-1.5 rounded-xl font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">🏠 « ${esc(match.name)} » au placard</button>` : ''}
+        <button type="button" id="btn-scan-staple" data-name="${esc(p.name)}" class="px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 border border-slate-200">🛒 Ajouter aux articles courants</button>
+      </div>
+    </div>`;
+  const bp = document.getElementById('btn-scan-pantry');
+  if (bp) bp.addEventListener('click', () => {
+    if (!state.pantry.includes(bp.dataset.id)) state.pantry.push(bp.dataset.id);
+    state.pantryNeeded = state.pantryNeeded.filter(x => x !== bp.dataset.id);
+    saveToLocalStorage(); renderGroceries(); showToast('Ajouté au placard');
+  });
+  document.getElementById('btn-scan-staple').addEventListener('click', (e) => {
+    state.staples.push({ id: 'staple_' + Date.now(), name: cleanStr(e.currentTarget.dataset.name, 80), checked: false });
+    saveToLocalStorage(); renderGroceries(); showToast('Ajouté aux articles courants');
+  });
+}
+function setupScanModal() {
+  const modal = document.getElementById('scan-modal');
+  if (!modal) return;
+  document.getElementById('btn-close-scan').addEventListener('click', closeScanModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeScanModal(); });
+  document.getElementById('scan-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = document.getElementById('scan-code').value;
+    if (v.replace(/\D/g, '').length < 8) { showToast('Code-barres trop court'); return; }
+    lookupScannedProduct(v);
   });
 }
 
@@ -2355,6 +2546,7 @@ function renderGroceries() {
             <div class="flex items-baseline gap-1.5 flex-wrap">
               ${qtyStr ? `<span class="font-bold text-xs text-brand-700">${qtyStr}</span>` : ''}
               <span class="text-xs text-slate-800 font-medium">${esc(item.name)}</span>
+              ${isStapleRayon ? '' : offBadgeHTML(item.name)}
             </div>
             ${item.recipes && item.recipes.length > 0 ? `
               <span class="text-[10px] text-slate-400 truncate block">(${esc(item.recipes.join(', '))})</span>
@@ -2658,6 +2850,7 @@ function openRecipeDetail(recipeId) {
       : GL.SEASONS.filter(x => seasons.includes(x.id)).map(x => `${x.emoji} ${x.label}`).join(' · ');
   }
   renderNotesRow();
+  renderNutritionCard(recipe);
   
   const budgetBadge = document.getElementById('detail-recipe-budget');
   if (recipe.isBudget) {
@@ -3263,6 +3456,7 @@ function setupEventListeners() {
   setupGenerateModal();
   setupPantryCard();
   setupNotesRow();
+  setupScanModal();
   document.getElementById('btn-clear-menu').addEventListener('click', clearMenu);
 
   const saveMenuBtn = document.getElementById('btn-save-current-menu');

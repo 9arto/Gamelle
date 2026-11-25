@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v38**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v39**.
 
 ---
 
@@ -30,12 +30,12 @@ Principes de conception (à ne pas casser) :
 | Élément | Détail |
 |---|---|
 | Hébergement | GitHub Pages (dépôt `9arto/Gamelle`, branche `main`, racine). `.nojekyll` présent. |
-| Fichiers | `index.html` (structure + fenêtres), `app.js` (interface et état), `logic.js` (logique pure testée : saisons, styles, génération du menu, placard, budget, chiffrement), `recipes.js` (catalogue + rayons + anciens identifiants), `styles.css` + `tailwind.css` (CSS pré-compilé, pas de CDN), `sw.js` (service worker), `manifest.json`, icônes. |
+| Fichiers | `index.html` (structure + fenêtres), `app.js` (interface et état), `logic.js` (logique pure testée : saisons, styles, génération du menu, placard, budget, chiffrement), `nutrition.js` (calories/macros/allergènes + client Open Food Facts), `recipes.js` (catalogue + rayons + anciens identifiants), `styles.css` + `tailwind.css` (CSS pré-compilé, pas de CDN), `sw.js` (service worker), `manifest.json`, icônes. |
 | Données recettes | `window.DEFAULT_RECIPES` (302 recettes) et `window.RECIPE_ALIASES` (anciens identifiants → recette conservée) et `window.GRAND_FRAIS_RAYONS` (6 rayons) dans `recipes.js`. |
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v38`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v39`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -74,6 +74,12 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - **Tri** : Recommandé / Moins cher d'abord / Plus rapide.
 - **Fiche recette** : photo, durée, saison, tag, portions ajustables (propres à la fiche), ingrédients (quantités converties), étapes, bouton ❤️ (favori), **avis** (👍 À refaire / 👎 Bof / ✅ Cuisiné — « cuisiné » est aussi coché automatiquement à la fin du mode cuisine), « Ajouter au menu », « Cuisiner ». Recette maison : boutons modifier / supprimer.
 - **Mode cuisine pas à pas** : une étape par écran, ingrédients de l'étape, **minuteur** (alerte sonore, un minuteur par étape), **écran maintenu allumé** (Wake Lock).
+
+### 3.3 bis Nutrition & Open Food Facts
+- **Fiche recette** : bloc « Nutrition estimée par portion » (kcal, protéines, glucides, lipides) et **allergènes** (gluten, lait, œufs, poisson, crustacés, soja, sésame, fruits à coque…). Calcul : poids de chaque ingrédient (mêmes conversions que les courses) × valeur moyenne par article (table `RULES` de `nutrition.js`, valeurs de type Ciqual arrondies). Affiché seulement si ≥ 70 % des ingrédients sont couverts ; l'huile de cuisson n'est comptée que partiellement (15 g/portion max). **Estimation indicative.**
+- **Courses → carte « Placard & réglages » → « Nutri-Score & allergènes de ma liste »** : interroge **Open Food Facts** (API publique, **aucune clé nécessaire**) pour les articles d'épicerie et de crèmerie (40 max) et affiche une pastille Nutri-Score A–E (note la plus fréquente parmi 10 produits du même type) ; mémorisé 30 jours sur le téléphone.
+- **« 📷 Scanner un produit »** : lecture du code-barres par la caméra (là où le navigateur gère `BarcodeDetector`) ou saisie du numéro ; affiche nom, marque, Nutri-Score, NOVA, kcal/macros pour 100 g, allergènes ; boutons « mettre l'article correspondant au placard » ou « ajouter aux articles courants ». Sur iPhone, la caméra n'est pas toujours disponible : la saisie manuelle fonctionne partout.
+- Réseau : pas de réseau = fonction simplement indisponible (le reste de l'app n'est pas affecté). Aucune donnée personnelle n'est envoyée (seulement le nom du type de produit ou le code-barres).
 
 ### 3.4 Studio de recette maison
 - Titre, durée, type (Volaille / Poisson / Végétarien / Bœuf-Porc), saison, « pas cher », photo (URL ou pastilles prédéfinies), ingrédients (une ligne = `quantité unité nom`), étapes (une par ligne, minuteurs détectés dans le texte).
@@ -191,7 +197,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 ## 6. Données, synchronisation, partage
 
 ### 6.1 Clés `localStorage` (ne jamais renommer sans migration)
-`gamelle_plan`, `gamelle_portions`, `gamelle_locked_slots`, `gamelle_checked`, `gamelle_staples`, `gamelle_favorites`, `gamelle_saved_menus`, `gamelle_custom_recipes`, `gamelle_notes`, `gamelle_gen_filters`, `gamelle_pantry`, `gamelle_pantry_needed`, `gamelle_spice_level`, `gamelle_stock_basics`, `gamelle_aisle_order`, `gamelle_household_code`, `gamelle_last_sync`, `gamelle_device_id`, `gamelle_tab`, plus le thème.
+`gamelle_plan`, `gamelle_portions`, `gamelle_locked_slots`, `gamelle_checked`, `gamelle_staples`, `gamelle_favorites`, `gamelle_saved_menus`, `gamelle_custom_recipes`, `gamelle_notes`, `gamelle_gen_filters`, `gamelle_pantry`, `gamelle_pantry_needed`, `gamelle_spice_level`, `gamelle_stock_basics`, `gamelle_aisle_order`, `gamelle_off_cache`, `gamelle_household_code`, `gamelle_last_sync`, `gamelle_device_id`, `gamelle_tab`, plus le thème.
 
 ### 6.2 Synchronisation « foyer »
 - Chaque appareil publie son état complet (portions, plan, repas gardés, articles courants, cases cochées, recettes maison, menus enregistrés, favoris, placard, niveau d'épices, ordre des rayons, avis) sur `https://ntfy.sh/gamelle_foyer_<CODE>`, **400 ms après** chaque modification, et écoute le flux en direct (SSE) + une lecture au démarrage.
@@ -252,9 +258,10 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | `tests/groceries.test.js` | unités (toutes les écritures), conversions, arrondis et grammaire ; regroupement des variantes d'un même produit ; produits non absorbés ; rayons ; additions entre repas ; poids/pièces ; **indépendance vis-à-vis de l'ordre des repas** ; doses (×portions) ; repas gardés exclus ; planning vide/recette inconnue ; quantités inconvertibles conservées ; cases cochées conservées ; anciennes recettes maison ; invariants sur **tout le catalogue** (liste valide pour chaque recette, aucune quantité perdue, pas de doublon de ligne, pas de produit en double sous deux noms). |
 | `tests/recipes.test.js` | syntaxe des fichiers ; **nettoyage** (pas de photo partagée, pas de titre quasi identique, alias valides, pas d'ingrédient en double, types valides) ; **classement** (saisons/styles/gamelle présents, 4 saisons ≥ 25 %) ; structure de chaque recette ; unicité id/titre ; lot « Top Jow » (présence, aucun doublon photo/titre, types reconnus, durées et quantités réalistes, étapes sans texte parasite, minuteurs cohérents) ; **cas précis de courses** des nouvelles recettes ; **instantané** `tests/fixtures/ingredient-mapping.json` (chaque nom d'ingrédient → article de courses : tout changement doit être voulu). |
 | `tests/logic.test.js` | saison actuelle ; classement saisons/styles/gamelle ; régimes (sans porc / lactose / 1 poêle) ; **génération proportionnelle**, plafond par type, tous les plats peuvent sortir ; filtres respectés ; plats verrouillés, « bof », cuisinés récemment, frigo ; placard / épices / base ; noms d'épices valides ; budget plausible ; **chiffrement** de la synchro. |
+| `tests/nutrition.test.js` | chaque article a une valeur ; cohérence kcal/macros ; calories par portion plausibles pour les 302 recettes ; exemple vérifié à la main ; allergènes ; client Open Food Facts (réseau simulé : fiche produit, valeur typique, erreurs). |
 | `tests/e2e.test.js` | **navigateur réel** (Playwright, ignoré s'il n'est pas installé : `npm i -D playwright`) : données d'un utilisateur existant conservées (plan, favoris, case cochée, article courant, portions, ancien identifiant redirigé), « Composer mes 7 repas » avec filtres, placard, niveau d'épices, budget, filtre de style, avis, aucune erreur console. |
 
-État au 25/11/2026 : **52 tests passent, 0 échec**.
+État au 25/11/2026 : **61 tests passent, 0 échec**.
 
 ---
 
@@ -266,7 +273,8 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 4. **Budget estimé** : ordre de grandeur par rayon, pas un vrai prix.
 5. **Classement saisons/styles** : automatique (mots-clés) ; quelques plats peuvent être mal rangés — corriger `seasons` / `styles` à la main dans `recipes.js` (les tests restent valables).
 6. **Synchro** : « le dernier écrit gagne » (sauf avis) ; deux appareils non mis à jour ne comprennent pas les messages chiffrés.
-7. **Import de recette par lien (Jow, Marmiton…)** : impossible depuis un navigateur sans serveur intermédiaire (blocage CORS) ; le studio de recette maison accepte le copier-coller des ingrédients.
+7. **Open Food Facts** : base collaborative, parfois incomplète ; elle décrit des produits, pas des plats (les infos d'un plat sont donc calculées). Pas de clé API : si un service payant (Edamam, Spoonacular…) était ajouté un jour, la clé serait saisie dans les Réglages et stockée sur le téléphone, jamais dans le dépôt.
+8. **Import de recette par lien (Jow, Marmiton…)** : impossible depuis un navigateur sans serveur intermédiaire (blocage CORS) ; le studio de recette maison accepte le copier-coller des ingrédients.
 
 ---
 
@@ -292,6 +300,7 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 - [ ] « Composer mes 7 repas » : filtres saison/style/régime/frigo, compteur, résultat conforme.
 - [ ] Placard : 🏠 sur un article, « Déjà à la maison », « Il m'en faut », niveau d'épices, ordre des rayons.
 - [ ] Avis : 👍/👎/✅ sur une fiche ; synchro des avis entre les deux téléphones.
+- [ ] Fiche recette : bloc nutrition et allergènes cohérents ; Courses : « Nutri-Score & allergènes » (réseau) ; scan d'un produit (saisie du code si pas de caméra).
 - [ ] Foyer après mise à jour des **deux** téléphones (messages chiffrés).
 
 ---
@@ -307,6 +316,8 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 ## 13. Idées d'évolution
 **Réalisées le 25/11/2026** : nettoyage du catalogue ; placard (par article) ; stock de base optionnel ; niveau d'épices ; ordre des rayons ; étiquette et filtre « gamelle » ; budget estimé ; filtres (sans porc, sans lactose, 1 poêle, frigo) ; avis et historique ; chiffrement de la synchro ; tests de bout en bout. *(Planning avec jours : refusé par le propriétaire.)*
 
+**Réalisées ensuite** : nutrition estimée et allergènes sur les fiches ; Nutri-Score Open Food Facts sur les courses ; scan de code-barres.
+
 **Reste à étudier**
 1. Fusion complète de la synchro (au-delà des avis) pour deux modifications simultanées.
 2. Import d'une recette par lien (nécessite un petit serveur relais).
@@ -321,4 +332,5 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 |---|---|
 | 25/11/2026 | **Liste de courses simplifiée fiabilisée** : résultat indépendant de l'ordre des repas ; produits qui disparaissaient ou fusionnaient à tort corrigés (fromage ail & fines herbes, ravioli, thon au citron, épices à couscous, sauce/purée de tomates, côtes de porc, jambon cru, épinards surgelés, kit fajitas, oranges à jus, tomates « fraîches ou concassées », lentilles « vertes ou corail », bœuf émincé, citron en quartiers, laitue, yaourt en cuillères) ; cases cochées conservées ; suite de **33 tests** + instantané du regroupement. **+38 recettes Top Jow** (343 au total). SW v37. Ce document. |
 | 25/11/2026 (2) | **Catalogue nettoyé** (41 doublons fusionnés, 3 recettes corrigées, types unifiés, photos distinctes) ; **saisons ×4, styles, gamelle** sur toutes les recettes ; **« Composer mes 7 repas »** (filtres, frigo, tirage proportionnel) ; **placard, épices, produits de base, ordre des rayons** ; **budget estimé** ; **avis & historique** ; **synchro chiffrée** ; `logic.js` ; 52 tests dont navigateur réel. SW v38. |
+| 25/11/2026 (3) | **Nutrition** (kcal/macros/allergènes par portion), **Open Food Facts** (Nutri-Score sur les courses, scan de code-barres, sans clé API) ; `nutrition.js` ; 61 tests. SW v39. |
 | (avant) | Anti-scintillement des fenêtres de recette, carte « Mise à jour », pastille foyer, correctifs de fusion de produits (SW v31–v36). |
