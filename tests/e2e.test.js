@@ -183,7 +183,7 @@ test('navigateur : météo invisible (localisation simulée) et notification du 
     page.on('pageerror', (e) => errors.push(e.message));
     const posts = [];
     await page.route('**/api.open-meteo.com/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ current: { weather_code: 3 }, daily: { temperature_2m_max: [4, 5, 3], precipitation_sum: [0, 0, 0] } }) }));
-    await page.route('**/ntfy.sh/**', (r) => { if (r.request().method() === 'POST') posts.push({ url: r.request().url(), body: r.request().postData(), title: r.request().headers().title }); r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{}' }); });
+    await page.route('**/ntfy.sh/**', (r) => { if (r.request().method() === 'POST' && /gamelle-alerte-/.test(r.request().url())) posts.push({ url: r.request().url(), body: r.request().postData(), title: r.request().headers().title }); r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{}' }); });
     await page.addInitScript(() => { if (!localStorage.getItem('s')) { localStorage.setItem('s', '1'); localStorage.setItem('gamelle_household_code', 'FOYER-TEST-AAAA-BBBB'); localStorage.setItem('gamelle_member_name', 'Julie'); } });
     await page.goto(url);
     await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);

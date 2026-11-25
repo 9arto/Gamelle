@@ -275,3 +275,10 @@ test('notifications : texte du message et sujet secret', async () => {
   assert.match(t1, /^gamelle-alerte-[0-9a-f]{20}$/);
   assert.ok(!t1.includes('AAAA') && !t1.toLowerCase().includes('aaaa-bbbb'), 'le code n\'apparaît pas dans le sujet');
 });
+
+test('prix réels : le coefficient suit les tickets (médiane, borné, neutre sans historique)', () => {
+  assert.equal(L.priceFactor([]), 1);
+  assert.equal(L.priceFactor([{ total: 60, est: 40 }]), 1, 'un seul ticket ne suffit pas');
+  assert.equal(L.priceFactor([{ total: 60, est: 40 }, { total: 66, est: 44 }, { total: 150, est: 50 }]), 1.5);
+  assert.equal(L.priceFactor([{ total: 1, est: 100 }, { total: 1, est: 100 }]), 0.5, 'borné');
+});

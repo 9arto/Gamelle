@@ -320,6 +320,13 @@
     return Math.max(0.3, q * (PRICE_PIECE[item.rayon] || 1));
   }
   function estimateCost(items) { return Math.round(items.reduce((s, i) => s + estimateItemPrice(i), 0)); }
+  // Coefficient « vos vrais prix » : médiane (ticket réel / estimation) des derniers tickets, borné pour rester prudent
+  function priceFactor(trips) {
+    const r = (trips || []).filter((t) => t && t.est > 0 && t.total > 0).slice(-5).map((t) => t.total / t.est).sort((a, b) => a - b);
+    if (r.length < 2) return 1; // pas assez d'historique : estimation brute
+    const mid = r.length % 2 ? r[(r.length - 1) / 2] : (r[r.length / 2 - 1] + r[r.length / 2]) / 2;
+    return Math.max(0.5, Math.min(2, mid));
+  }
 
 
   // ---------------------------------------------------------------- Chiffrement de la synchro foyer (AES-GCM, clé dérivée du code foyer)
@@ -359,7 +366,7 @@
     recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, priceFactor,
     encryptPayload, decryptPayload, cryptoAvailable,
     weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
   };

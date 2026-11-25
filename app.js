@@ -2862,9 +2862,11 @@ function renderGroceries() {
   // Mise à jour de la barre de progression
   const percentage = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
   document.getElementById('courses-progress-bar').style.width = `${percentage}%`;
-  const cost = GL.estimateCost(groceries);
+  const factor = GL.priceFactor(state.trips);
+  const cost = Math.round(GL.estimateCost(groceries) * factor);
+  const lastTrip = (state.trips || [])[state.trips.length - 1];
   document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''}`;
-  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €` : '';
+  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €${factor !== 1 ? ' (selon vos tickets)' : ''}${lastTrip ? ` · dernier ticket ${Math.round(lastTrip.total)} €` : ''}` : (lastTrip ? `Dernier ticket ${Math.round(lastTrip.total)} €` : '');
   
   // Badge sur l'onglet inférieur
   const navBadge = document.getElementById('nav-badge-groceries');
@@ -3927,6 +3929,17 @@ function setupEventListeners() {
   document.addEventListener('click', () => {
     document.querySelectorAll('.more-menu').forEach(m => m.classList.add('hidden'));
     document.querySelectorAll('.more-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+  });
+  document.getElementById('btn-record-ticket').addEventListener('click', async () => {
+    const v = await promptDialog({ title: 'Ticket de caisse', message: 'Total payé (en €) : il sert à ajuster le budget estimé à vos vrais prix.', placeholder: 'ex. 63,40', confirmLabel: 'Enregistrer' });
+    if (v === null || v === false) return;
+    const total = parseFloat(String(v).replace(',', '.').replace(/[^\d.]/g, ''));
+    if (!Number.isFinite(total) || total <= 0 || total > 5000) { showToast('Montant non reconnu'); return; }
+    const split = currentSplit();
+    state.trips.push({ t: Date.now(), total: Math.round(total * 100) / 100, est: GL.estimateCost(split.toBuy), items: split.toBuy.length });
+    state.trips = state.trips.slice(-30);
+    saveToLocalStorage(); renderGroceries();
+    showToast(`Ticket de ${total.toFixed(2).replace('.', ',')} € enregistré`);
   });
   document.getElementById('btn-open-pantry').addEventListener('click', () => {
     const d = document.getElementById('pantry-card'); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' });
