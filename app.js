@@ -1143,6 +1143,9 @@ const SPECIAL_PRODUCTS = [
   // Produits dont le nom contient un autre produit (ail, ricotta, champignons, couscous, citron, tomates…)
   [/\bfromage\b.*\bail\b/, "Fromage frais ail & fines herbes", "g", "cremerie"],
   [/\bpilons?\b/, "Pilons de poulet", "g", "boucherie"],
+  [/\bboisson\s+(amande|avoine|soja|coco)\b/, null, "ml", "epicerie"],
+  [/\bchair\s+a\s+saucisse\b/, "Chair à saucisse", "g", "boucherie"],
+  [/\bharicots?\s+verts?\b.*\b(conserve|bocal|boite)\b/, "Haricots verts en conserve", "g", "epicerie"],
   [/\bnems?\b/, "Nems (surgelés)", "piece", "epicerie"],
   [/\bkit\b.*\bfajitas?\b/, "Kit pour fajitas (galettes & épices)", "piece", "epicerie"],
   [/\b(ravioli|ravioles?|tortellini)\b/, null, "g", "cremerie"],
@@ -1530,7 +1533,7 @@ function normalizeIngredient(ing) {
     name = "Bœuf haché frais (pur bœuf)";
     unit = "g";
     rayon = "boucherie";
-  } else if (/\b(bavette|rumsteck|hampe|onglet|faux-filet)\b/.test(raw) || (/\bboeuf\b/.test(raw) && /\b(saute|piece|lamelles?|poeler|emince)\b/.test(raw))) {
+  } else if (/\b(bavette|rumsteck|hampe|onglet|faux-filet|entrecote)\b/.test(raw) || /\b(aiguillettes?|steaks?|pieces?)\s+(de\s+)?boeuf\b|\bboeuf\s+a\s+(sauter|fondue)\b/.test(raw) || (/\bboeuf\b/.test(raw) && /\b(saute|piece|lamelles?|poeler|emince)\b/.test(raw))) {
     name = "Bavette ou rumsteck de bœuf";
     unit = "g";
     rayon = "boucherie";
