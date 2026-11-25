@@ -96,6 +96,7 @@ test('navigateur : parcours complet sans erreur et sans perte des données utili
     // Finir mes restes
     await page.evaluate(() => switchTab('tab-planning'));
     const planBefore = await page.evaluate(() => state.plan.length);
+    await page.click('[data-menu="planning-more-menu"]');
     await page.click('#btn-open-leftovers');
     await page.fill('#leftovers-input', 'pou');
     await page.waitForSelector('#leftovers-suggest li');
@@ -207,6 +208,53 @@ test('navigateur : météo invisible (localisation simulée) et notification du 
     // désactivable
     await page.evaluate(() => { state.notify = false; queueNotification({ staple: 'Beurre' }); return flushNotifications(); });
     assert.equal(posts.length, 1);
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});
+
+test('navigateur : mode courses, quantité sur produit courant, menu « … », bandeau d\'état, aucune erreur CSP', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::/.test(m.text())) errors.push(m.text()); });
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+
+    // Planning : un seul bouton principal visible, le reste dans « … »
+    assert.ok(await page.isVisible('#btn-generate-menu'));
+    assert.ok(!(await page.isVisible('#btn-open-leftovers')), 'actions secondaires rangées');
+    await page.click('[data-menu="planning-more-menu"]');
+    assert.ok(await page.isVisible('#btn-open-leftovers'));
+    await page.click('body', { position: { x: 5, y: 400 } });
+    assert.ok(!(await page.isVisible('#btn-open-leftovers')), 'le menu se ferme');
+
+    // Produits courants : même nom = quantité
+    await page.evaluate(() => switchTab('tab-courses'));
+    for (let i = 0; i < 3; i++) { await page.fill('#staple-input', 'Lait'); await page.press('#staple-input', 'Escape'); await page.click('#form-add-staple button[type="submit"]'); }
+    assert.deepEqual(await page.evaluate(() => state.staples.map((s) => [s.name, s.qty])), [['Lait', 3]]);
+    assert.ok((await page.innerText('#grand-frais-aisles-container')).includes('×3'));
+    assert.equal(await page.evaluate(() => state.stapleHistory.Lait.n), 3, 'habituels mémorisés');
+    assert.ok(!(await page.innerText('#staple-habituals')).includes('Lait'), 'déjà dans la liste : pas proposé');
+
+    // Mode courses
+    await page.click('#btn-shop-mode');
+    assert.ok(await page.evaluate(() => document.body.classList.contains('shop-mode')));
+    assert.ok(!(await page.isVisible('#staple-input')), 'saisie masquée en mode courses');
+    await page.click('.grocery-check[data-type="staple"]');
+    await page.click('#btn-shop-mode'); // « Terminé »
+    assert.equal(await page.evaluate(() => state.staples.length), 0, 'les articles cochés sont rangés');
+    assert.ok(!(await page.evaluate(() => document.body.classList.contains('shop-mode'))));
+
+    // Hors ligne : bandeau explicite
+    await ctx.setOffline(true);
+    await page.evaluate(() => window.dispatchEvent(new Event('offline')));
+    await page.waitForFunction(() => !document.getElementById('banner-status').classList.contains('hidden'));
+    await ctx.setOffline(false);
     assert.deepEqual(errors, []);
   } finally { await browser.close(); srv.close(); }
 });

@@ -494,3 +494,20 @@ html:where(.dark) img[loading="lazy"]:not(.img-loaded) { background: linear-grad
 .app-banner.update { background: #059669; color: #fff; }
 .app-banner.offline { background: #fef3c7; color: #78350f; }
 html:where(.dark) .app-banner.offline { background: #3a2f12; color: #fcd34d; }
+
+/* Menu « … » */
+.more-menu .more-item { display:block; min-height:44px; }
+.more-menu .more-item:hover { background:#f1f5f9; }
+
+/* Mode courses : sobre, gros texte, grosses cases */
+body.shop-mode #staple-card,
+body.shop-mode #pantry-card,
+body.shop-mode #courses-budget-label { display:none; }
+body.shop-mode .grocery-row { padding:18px 14px; }
+body.shop-mode .grocery-row .text-xs { font-size:18px; line-height:1.3; }
+body.shop-mode .grocery-row .text-\[10px\] { font-size:13px; }
+body.shop-mode .grocery-check { width:30px; height:30px; flex-shrink:0; }
+body.shop-mode .rayon-head h3 { font-size:15px; }
+body.shop-mode .btn-staple-plus, body.shop-mode .btn-delete-staple, body.shop-mode .btn-pantry { min-width:44px; min-height:44px; }
+.grocery-row { transition: transform .12s ease; touch-action: pan-y; }
+.rayon-head { min-height:44px; }

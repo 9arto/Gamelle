@@ -518,6 +518,7 @@ let state = {
   memberName: '',      // prénom (facultatif) affiché dans les notifications
   weatherMood: null,   // météo de la semaine (jamais affichée : elle oriente seulement le tirage des repas)
   pantryStock: {},     // quantités en stock au placard { articleId: { qty, unit } } (facultatif)
+  shopMode: false,
   stapleHistory: {},   // produits courants ajoutés { nom: { n, last } } → « vos habituels »
   trips: [],           // dernières courses { t, total, est, items } → budget réaliste
   sync: { lastOk: 0, pending: false, fail: false }
@@ -624,6 +625,7 @@ function loadFromLocalStorage() {
   state.leftovers = sanitizeStringList(readJSON('gamelle_leftovers', []), 30, 60);
   state.pantryStock = sanitizeStock(readJSON('gamelle_pantry_stock', {}));
   state.stapleHistory = sanitizeStapleHistory(readJSON('gamelle_staple_history', {}));
+  state.shopMode = safeGetItem('gamelle_shop_mode') === '1';
   state.trips = sanitizeTrips(readJSON('gamelle_trips', []));
   state.sync.lastOk = parseInt(safeGetItem('gamelle_sync_ok') || '0', 10) || 0;
   state.notify = safeGetItem('gamelle_notify') !== '0';
@@ -2774,6 +2776,71 @@ function addMealSlot(recipeId = null) {
   }
 }
 // 2. Rendu de la Liste de Courses Grand Frais
+const collapsedRayons = new Set();
+function applyShopMode() {
+  const on = state.shopMode === true;
+  document.body.classList.toggle('shop-mode', on);
+  const b = document.getElementById('btn-shop-mode');
+  if (b) { b.textContent = on ? 'Terminé' : 'Mode courses'; b.setAttribute('aria-pressed', on); }
+}
+// Gestes sur la liste : glisser à droite = coché, à gauche = « j'ai déjà » (ou retirer un produit courant)
+function setupGrocerySwipe() {
+  const c = document.getElementById('grand-frais-aisles-container');
+  let sx = 0, sy = 0, row = null, dx = 0;
+  c.addEventListener('touchstart', (e) => {
+    row = e.target.closest('.grocery-row'); if (!row || e.touches.length !== 1) { row = null; return; }
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY; dx = 0;
+  }, { passive: true });
+  c.addEventListener('touchmove', (e) => {
+    if (!row) return;
+    const mx = e.touches[0].clientX - sx, my = e.touches[0].clientY - sy;
+    if (Math.abs(my) > Math.abs(mx)) { row.style.transform = ''; row = null; return; }
+    dx = mx; row.style.transform = `translateX(${Math.max(-90, Math.min(90, dx))}px)`;
+  }, { passive: true });
+  c.addEventListener('touchend', () => {
+    if (!row) return;
+    const r = row, d = dx; row = null; r.style.transform = '';
+    if (Math.abs(d) < 70) return;
+    const id = r.dataset.id, type = r.dataset.type;
+    if (d > 0) {
+      if (type === 'staple') { const it = state.staples.find(x => x.id === id); if (it) it.checked = !it.checked; }
+      else state.checkedGroceries[id] = !state.checkedGroceries[id];
+      saveToLocalStorage(); renderGroceries();
+    } else {
+      const snapshot = takeSnapshot();
+      if (type === 'staple') state.staples = state.staples.filter(x => x.id !== id);
+      else { if (!state.pantry.includes(id)) state.pantry.push(id); state.pantryNeeded = state.pantryNeeded.filter(x => x !== id); }
+      saveToLocalStorage(); renderGroceries();
+      showToast(type === 'staple' ? 'Produit retiré' : 'Ajouté au placard', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
+    }
+  });
+}
+
+// Ajout d'un produit courant : s'il existe déjà, la quantité augmente (« Lait ×3 »)
+function addStaple(name) {
+  const val = cleanStr(name, 80);
+  if (!val) return;
+  const same = state.staples.find(x => x.name.toLowerCase() === val.toLowerCase());
+  if (same) { same.qty = Math.min(99, (same.qty || 1) + 1); same.checked = false; }
+  else state.staples.push({ id: 'staple_' + Date.now() + '_' + Math.floor(Math.random() * 1000), name: val, checked: false, qty: 1 });
+  const h = state.stapleHistory[val] || { n: 0, last: 0 };
+  state.stapleHistory[val] = { n: h.n + 1, last: Date.now() };
+  saveToLocalStorage();
+  renderGroceries();
+  renderHabituals();
+  queueNotification({ staple: val });
+}
+// « Vos habituels » : les produits les plus ajoutés (sinon une base), sans ceux déjà dans la liste
+function renderHabituals() {
+  const box = document.getElementById('staple-habituals');
+  if (!box) return;
+  const inList = new Set(state.staples.map(x => x.name.toLowerCase()));
+  const fav = Object.entries(state.stapleHistory || {}).sort((a, b) => b[1].n - a[1].n || b[1].last - a[1].last).map(e => e[0]);
+  const base = ['Bananes', 'Lait', 'Fruits de saison', 'Kéfir', 'Yaourts', 'Pain de mie', "Flocons d'avoine"];
+  const names = [...new Set([...fav, ...base])].filter(n => !inList.has(n.toLowerCase())).slice(0, 8);
+  box.innerHTML = names.map(n => `<button type="button" class="staple-quick-btn whitespace-nowrap text-[12px] bg-slate-100 text-slate-700 px-3 py-1.5 rounded-full font-medium" data-name="${esc(n)}">${esc(n)}</button>`).join('');
+}
+
 function renderGroceries() {
   const container = document.getElementById('grand-frais-aisles-container');
   container.innerHTML = '';
@@ -2852,21 +2919,21 @@ function renderGroceries() {
 
     const section = document.createElement('div');
     section.className = 'ios-card overflow-hidden';
+    const collapsed = collapsedRayons.has(rayon.id);
+    const leftInRayon = itemsInRayon.filter(i => isStapleRayon ? !i.checked : !state.checkedGroceries[i.id]).length;
 
-    // En-tête du rayon
+    // En-tête du rayon (toucher pour replier / déplier)
     section.innerHTML = `
-      <div class="p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+      <button type="button" class="rayon-head w-full text-left p-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between" data-rayon="${esc(rayon.id)}" aria-expanded="${!collapsed}">
         <div class="flex items-center gap-2">
           <span class="text-base">${rayon.icon}</span>
-          <div>
-            <h3 class="font-bold text-xs text-slate-800">${rayon.name}</h3>
-          </div>
+          <h3 class="font-bold text-xs text-slate-800">${rayon.name}</h3>
         </div>
-        <span class="text-[11px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
-          ${itemsInRayon.length}
+        <span class="text-[12px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
+          ${leftInRayon}${leftInRayon !== itemsInRayon.length ? ' / ' + itemsInRayon.length : ''}
         </span>
-      </div>
-      <div class="divide-y divide-slate-100 items-list-container">
+      </button>
+      <div class="divide-y divide-slate-100 items-list-container ${collapsed ? 'hidden' : ''}">
       </div>
     `;
 
@@ -2874,7 +2941,9 @@ function renderGroceries() {
 
     itemsInRayon.forEach(item => {
       const itemRow = document.createElement('div');
-      itemRow.className = 'p-3 flex items-center justify-between gap-3 hover:bg-slate-50/50 transition-colors';
+      itemRow.className = 'grocery-row p-3 flex items-center justify-between gap-3 hover:bg-slate-50/50 transition-colors';
+      itemRow.dataset.id = item.id;
+      itemRow.dataset.type = isStapleRayon ? 'staple' : 'recipe';
 
       const isChecked = isStapleRayon 
         ? item.checked 
@@ -2893,6 +2962,7 @@ function renderGroceries() {
             <div class="flex items-baseline gap-1.5 flex-wrap">
               ${qtyStr ? `<span class="font-bold text-xs text-brand-700">${qtyStr}</span>` : ''}
               <span class="text-xs text-slate-800 font-medium">${esc(item.name)}</span>
+              ${isStapleRayon && (item.qty || 1) > 1 ? `<span class="font-bold text-xs text-brand-700">×${item.qty}</span>` : ''}
               ${isStapleRayon ? '' : offBadgeHTML(item.name)}
             </div>
             ${item.recipes && item.recipes.length > 0 ? `
@@ -2901,7 +2971,10 @@ function renderGroceries() {
           </div>
         </label>
         ${isStapleRayon ? `
-          <button class="btn-delete-staple text-slate-300 hover:text-red-500 text-xs px-1" data-id="${esc(item.id)}" aria-label="Retirer ${esc(item.name)}">✕</button>
+          <span class="flex items-center gap-1 flex-shrink-0">
+            <button class="btn-staple-plus text-slate-500 text-sm font-bold w-7 h-7 rounded-lg bg-slate-100" data-id="${esc(item.id)}" aria-label="Une unité de plus : ${esc(item.name)}">+</button>
+            <button class="btn-delete-staple text-slate-400 hover:text-red-500 text-xs w-7 h-7" data-id="${esc(item.id)}" aria-label="Retirer ${esc(item.name)}">✕</button>
+          </span>
         ` : `
           <button class="btn-pantry text-slate-300 hover:text-emerald-600 text-xs px-1" data-id="${esc(item.id)}" title="J'en ai déjà (placard)" aria-label="J'ai déjà ${esc(item.name)}">${ICONS.box}</button>
         `}
@@ -2957,6 +3030,21 @@ function renderGroceries() {
       renderGroceries();
     });
   });
+
+  container.querySelectorAll('.btn-staple-plus').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const st = state.staples.find(x => x.id === e.currentTarget.dataset.id);
+      if (st) { st.qty = Math.min(99, (st.qty || 1) + 1); saveToLocalStorage(); renderGroceries(); }
+    });
+  });
+  container.querySelectorAll('.rayon-head').forEach(h => {
+    h.addEventListener('click', () => {
+      const id = h.dataset.rayon;
+      if (collapsedRayons.has(id)) collapsedRayons.delete(id); else collapsedRayons.add(id);
+      renderGroceries();
+    });
+  });
+  applyShopMode();
 
   // Suppression des produits courants individuels
   container.querySelectorAll('.btn-delete-staple').forEach(btn => {
@@ -3825,6 +3913,25 @@ function setupEventListeners() {
   const closeSavedBtn = document.getElementById('btn-close-saved-menus');
   if (closeSavedBtn) closeSavedBtn.addEventListener('click', closeSavedMenusModal);
 
+  // Menus « … » : un seul bouton principal par écran, le reste est rangé dedans
+  document.querySelectorAll('.more-menu-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const menu = document.getElementById(btn.dataset.menu);
+      const open = menu.classList.contains('hidden');
+      document.querySelectorAll('.more-menu').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.more-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      if (open) { menu.classList.remove('hidden'); btn.setAttribute('aria-expanded', 'true'); }
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.more-menu').forEach(m => m.classList.add('hidden'));
+    document.querySelectorAll('.more-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+  });
+  document.getElementById('btn-open-pantry').addEventListener('click', () => {
+    const d = document.getElementById('pantry-card'); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
   // Copier & Vider les courses
   document.getElementById('btn-copy-groceries').addEventListener('click', copyFormattedText);
   document.getElementById('btn-clear-checked').addEventListener('click', () => {
@@ -3842,34 +3949,32 @@ function setupEventListeners() {
   document.getElementById('form-add-staple').addEventListener('submit', (e) => {
     e.preventDefault();
     const input = document.getElementById('staple-input');
-    const val = input.value.trim();
-    if (val) {
-      state.staples.push({
-        id: 'staple_' + Date.now(),
-        name: val,
-        checked: false
-      });
-      input.value = '';
-      saveToLocalStorage();
-      renderGroceries();
-      queueNotification({ staple: val });
-    }
+    if (input.value.trim()) { addStaple(input.value); input.value = ''; }
   });
+  document.getElementById('staple-habituals').addEventListener('click', (e) => {
+    const b = e.target.closest('.staple-quick-btn');
+    if (b) addStaple(b.dataset.name);
+  });
+  renderHabituals();
+  setupGrocerySwipe();
 
-  document.querySelectorAll('.staple-quick-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const name = e.currentTarget.dataset.name;
-      if (!state.staples.some(s => s.name.toLowerCase() === name.toLowerCase())) {
-        state.staples.push({
-          id: 'staple_' + Date.now(),
-          name: name,
-          checked: false
-        });
-        saveToLocalStorage();
-        renderGroceries();
-        queueNotification({ staple: name });
+  // Mode courses : écran sobre (gros texte, pas de saisie), « Terminé » range les articles cochés
+  document.getElementById('btn-shop-mode').addEventListener('click', () => {
+    if (state.shopMode) {
+      const anyChecked = Object.values(state.checkedGroceries).some(Boolean) || state.staples.some(s => s.checked);
+      state.shopMode = false;
+      safeSetItem('gamelle_shop_mode', '0');
+      applyShopMode();
+      if (anyChecked) {
+        const snapshot = takeSnapshot();
+        state.checkedGroceries = {};
+        state.staples = state.staples.filter(x => !x.checked);
+        saveToLocalStorage(); renderGroceries();
+        showToast('Courses terminées : articles cochés rangés', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
       }
-    });
+    } else {
+      state.shopMode = true; safeSetItem('gamelle_shop_mode', '1'); applyShopMode();
+    }
   });
 
   // Recherche & Filtres dans le catalogue
