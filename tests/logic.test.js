@@ -341,3 +341,32 @@ test('prix de référence : tous les articles courants ont un prix réaliste, au
   assert.equal(L.refPrice({ name: 'Filets de poulet frais', baseUnit: 'piece', quantity: 2 }), null, 'unité incompatible : pas de devinette');
   assert.equal(L.refPrice({ name: 'Inconnu', baseUnit: 'g', quantity: 100 }), null);
 });
+
+test('menu selon un budget : remplace les plats chers, reste varié et respecte le plafond quand c\'est possible', () => {
+  const recipes = Array.from({ length: 60 }, (_, i) => ({ id: 'r' + i, title: 't' + i, type: ['vege', 'viande', 'volaille', 'poisson'][i % 4], ingredients: [], cost: 6 + (i % 12) * 2 })); // 6 à 28 €
+  const costOf = (r) => r.cost;
+  let seed = 7; const rng = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  for (let k = 0; k < 20; k++) {
+    const r = L.pickMenu({ recipes, count: 7, rng, budget: 60, costOf });
+    assert.equal(r.ids.length, 7); assert.equal(new Set(r.ids).size, 7, 'sans doublon');
+    assert.ok(r.cost <= 60 && r.withinBudget === true, `coût ${r.cost}`);
+  }
+  const impossible = L.pickMenu({ recipes, count: 7, rng, budget: 20, costOf });
+  assert.equal(impossible.withinBudget, false, '7 repas à 20 € : impossible, on le dit');
+  assert.ok(impossible.cost <= 7 * 12, 'mais on a pris les moins chers');
+  const withLocked = L.pickMenu({ recipes, count: 5, rng, budget: 60, costOf, fixedCost: 20 });
+  assert.ok(withLocked.cost <= 40, 'les repas gardés comptent dans le budget');
+  assert.equal(L.pickMenu({ recipes, count: 7, rng }).cost, null, 'sans budget : pas de calcul');
+});
+
+test('équilibre de la semaine et dates limites', () => {
+  const s = L.weekSummary([{ kcal: 600, protein: 35, veg: 250, type: 'volaille' }, { kcal: 500, protein: 12, veg: 60, type: 'vegetarien' }, { kcal: 700, protein: 30, veg: 150, type: 'vege' }]);
+  assert.equal(s.count, 3); assert.equal(s.kcal, 600); assert.equal(s.protein, 26); assert.equal(s.veg, 153);
+  assert.equal(s.lowVeg, 1); assert.equal(s.lowProtein, 1); assert.equal(s.types.vege, 2, 'végétarien = vege');
+  assert.equal(L.weekSummary([]).count, 0);
+  assert.equal(L.shelfDays('Filets de poulet frais', 'boucherie'), 3);
+  assert.equal(L.shelfDays('Yaourts (nature ou aux fruits)', 'cremerie'), 15);
+  assert.equal(L.shelfDays('Pommes de terre fraîches', 'fruits-legumes'), 21);
+  assert.equal(L.shelfDays('Riz blanc', 'epicerie'), 120);
+  assert.equal(L.shelfDays('Pavés de saumon frais', 'poissonnerie'), 2);
+});

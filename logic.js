@@ -156,7 +156,27 @@
       typeCount[chosen.type] = (typeCount[chosen.type] || 0) + 1;
       rest = rest.filter((r) => r.id !== chosen.id);
     }
-    return { ids: picked, matching: total };
+    // Budget : on remplace les plats les plus chers par des alternatives moins chères (tirage au hasard parmi les moins chères)
+    let cost = null, withinBudget = null;
+    if (opts.budget > 0 && typeof opts.costOf === 'function') {
+      const costOf = opts.costOf;
+      const limit = opts.budget - (opts.fixedCost || 0);
+      const byId = Object.fromEntries(pool.map((r) => [r.id, r]));
+      const sum = () => picked.reduce((s, id) => s + costOf(byId[id]), 0);
+      let guard = 0;
+      while (sum() > limit && guard++ < 80) {
+        const dearest = picked.reduce((a, b) => (costOf(byId[a]) >= costOf(byId[b]) ? a : b));
+        const dc = costOf(byId[dearest]);
+        const cheaper = pool.filter((r) => !picked.includes(r.id) && costOf(r) < dc - 0.05).sort((a, b) => costOf(a) - costOf(b));
+        if (!cheaper.length) break;
+        const top = cheaper.slice(0, Math.max(3, Math.ceil(cheaper.length * 0.35))); // les moins chers, mais pas toujours les mêmes
+        const rep = top[Math.floor(rng() * top.length)];
+        picked[picked.indexOf(dearest)] = rep.id;
+      }
+      cost = Math.round(sum() * 100) / 100;
+      withinBudget = cost <= limit + 1e-9;
+    }
+    return { ids: picked, matching: total, cost, withinBudget };
   }
 
   // ---------------------------------------------------------------- Placard, épices, stock de base
@@ -400,6 +420,39 @@
     return Math.max(0.2, q * (PRICE_PIECE[item.rayon] || 1));
   }
   function estimateCost(items) { return Math.round(items.reduce((s, i) => s + estimateItemPrice(i), 0)); }
+  // ---------------------------------------------------------------- Équilibre de la semaine (par repas, pour une portion)
+  // meals : [{ kcal, protein, veg, type }] (veg = grammes de fruits/légumes par portion)
+  const NUTRI_TARGET = { protein: 25, veg: 200 }; // repères par repas (dîner) : 25 g de protéines, 200 g de légumes
+  function weekSummary(meals) {
+    const n = meals.length;
+    if (!n) return { count: 0 };
+    const avg = (k) => Math.round(meals.reduce((s, m) => s + (m[k] || 0), 0) / n);
+    const types = {};
+    meals.forEach((m) => { const t = m.type === 'vegetarien' ? 'vege' : m.type; types[t] = (types[t] || 0) + 1; });
+    return {
+      count: n, kcal: avg('kcal'), protein: avg('protein'), veg: avg('veg'), types,
+      lowVeg: meals.filter((m) => m.veg < 100).length, lowProtein: meals.filter((m) => m.protein < 15).length,
+      target: NUTRI_TARGET
+    };
+  }
+
+  // ---------------------------------------------------------------- Dates limites (reste à consommer)
+  function shelfDays(name, rayon) {
+    const n = norm(name);
+    if (/herbe|coriandre|persil|basilic|ciboulette|menthe|aneth|salade|mache|roquette|epinard|champignon|framboise|fraise|myrtille/.test(n)) return 4;
+    if (/pomme de terre|oignon|ail\b|echalote|carotte|courge|potimarron|butternut|patate|citron|orange|pomme|clementine|banane/.test(n)) return /banane|clementine/.test(n) ? 6 : 21;
+    if (/poisson|saumon|cabillaud|crevette|thon frais|saint.?jacques/.test(n)) return 2;
+    if (/poulet|boeuf|porc|dinde|veau|agneau|canard|steak|hache|saucisse|merguez|chipolata|cordon|escalope|filet|pilon|cuisse|bavette/.test(n)) return 3;
+    if (/lardon|jambon|chorizo|bacon/.test(n)) return 6;
+    if (/yaourt|kefir/.test(n)) return 15;
+    if (/oeuf/.test(n)) return 25;
+    if (/lait|creme/.test(n)) return 7;
+    if (/fromage|comte|emmental|parmesan|cheddar|feta|mozzarella|brie|camembert|chevre|ricotta|burrata|reblochon/.test(n)) return /ricotta|burrata|mozzarella|chevre frais|feta/.test(n) ? 7 : 14;
+    if (/beurre/.test(n)) return 30;
+    if (/pain|brioche|wrap|tortilla|bun/.test(n)) return 5;
+    return { 'fruits-legumes': 6, boucherie: 3, poissonnerie: 2, cremerie: 10, epicerie: 120 }[rayon] || 14;
+  }
+
   // Dépenses : moyenne par ticket et par semaine (la période couvre un intervalle de plus que le premier-dernier ticket)
   function budgetStats(trips) {
     const t = (trips || []).filter((x) => x && x.total > 0 && Number.isFinite(x.t)).sort((a, b) => a.t - b.t);
@@ -445,7 +498,7 @@
       const lp = learned ? learned(i) : null;
       if (lp != null) { total += lp; real++; } else total += estimateItemPrice(i) * (factor || 1);
     });
-    return { cost: Math.round(total), real, count: (items || []).length };
+    return { cost: Math.round(total), total, real, count: (items || []).length };
   }
   // Coefficient « vos vrais prix » : médiane (ticket réel / estimation) des derniers tickets, borné pour rester prudent
   function priceFactor(trips) {
@@ -494,7 +547,7 @@
     recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, refPrice, REF_PRICES, estimateCost, estimateBudget, priceFactor, budgetStats, consumeStock, parseStockInput,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, refPrice, REF_PRICES, estimateCost, estimateBudget, priceFactor, budgetStats, weekSummary, shelfDays, consumeStock, parseStockInput,
     encryptPayload, decryptPayload, cryptoAvailable,
     weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
   };

@@ -147,6 +147,12 @@ function getArticleIndex() {
   }
   return articleIndex;
 }
+// « BANANE », « POMME POIRE SSA 4X » → « banane », « pomme poire ssa » (sans tailles ni quantités)
+const NON_FOOD = /\b(sac|savon|lessive|papier|eponge|pile|ampoule|film|gel douche|shampo|dentifrice|couche|essuie|liquide vaisselle)\b/;
+function customProductName(label) {
+  const n = GN.norm(label).replace(/\b\d+\s?x\s?\d*\s?(g|kg|ml|cl|l)?\b/g, ' ').replace(/\b\d+\s?(g|kg|ml|cl|l)\b/g, ' ').replace(/[^a-z' ]/g, ' ').replace(/\s+/g, ' ').trim();
+  return n.length >= 3 ? n : null;
+}
 const articleId = (name) => String(name).toLowerCase().replace(/\s+/g, ' ').trim();
 
 // ---------------------------------------------------------------------------
@@ -221,7 +227,10 @@ function reviewTicketText(text) {
   const names = Object.keys(idx);
   const lines = parsed.lines.map((l) => {
     const article = GR.matchArticle(l.label, names, (i) => normalizeIngredient(i));
-    return { ...l, article, rayon: (article ? idx[article] : null) || l.section || null, use: !!article };
+    // produit sans équivalent dans les recettes (banane, jus…) : gardé sous son nom de caisse, pour le prix et le placard
+    const custom = article ? null : customProductName(l.label);
+    const food = !NON_FOOD.test(GN.norm(l.label)) && l.section !== 'autres';
+    return { ...l, article, custom, rayon: (article ? idx[article] : null) || l.section || null, use: food && !!(article || custom) };
   });
   ticketDraft = { text, parsed, lines, total: parsed.total };
   renderTicketReview();
@@ -240,12 +249,12 @@ function renderTicketReview() {
       ${mismatch ? `<p class="text-amber-700 mt-1">La somme des lignes lues (${money(sum)} €) diffère du total : certaines lignes ont pu être mal lues.</p>` : ''}
     </div>
     ${d.lines.length ? `<div>
-      <p class="font-bold text-slate-700 mb-1">${d.lines.length} ligne${d.lines.length > 1 ? 's' : ''} lue${d.lines.length > 1 ? 's' : ''} — cochez celles dont le prix doit être retenu</p>
+      <p class="font-bold text-slate-700 mb-1">${d.lines.length} ligne${d.lines.length > 1 ? 's' : ''} lue${d.lines.length > 1 ? 's' : ''} — les lignes cochées entrent au placard (avec une date limite) et leur prix est retenu</p>
       <div class="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden">
-        ${d.lines.map((l, i) => `<label class="flex items-center gap-2.5 p-2.5 ${l.article ? '' : 'opacity-60'}">
-          <input type="checkbox" class="ticket-line w-5 h-5 rounded flex-shrink-0" data-i="${i}" ${l.use ? 'checked' : ''} ${l.article ? '' : 'disabled'}>
+        ${d.lines.map((l, i) => `<label class="flex items-center gap-2.5 p-2.5 ${l.use ? '' : 'opacity-60'}">
+          <input type="checkbox" class="ticket-line w-5 h-5 rounded flex-shrink-0" data-i="${i}" ${l.use ? 'checked' : ''}>
           <span class="flex-1 min-w-0"><span class="block truncate font-semibold text-slate-800">${esc(l.label)}</span>
-            <span class="block text-[12px] text-slate-500">${l.article ? '→ ' + esc(l.article) : 'non reconnu (compté dans le total seulement)'}${l.perKg ? ' · ' + money(l.perKg) + ' €/kg' : (l.kg ? ' · ' + String(l.kg).replace('.', ',') + ' kg' : '')}${l.qty > 1 ? ' · ×' + l.qty : ''}</span></span>
+            <span class="block text-[12px] text-slate-500">${l.article ? '→ ' + esc(l.article) : (l.custom ? 'produit : ' + esc(l.custom) : 'non alimentaire')}${l.perKg ? ' · ' + money(l.perKg) + ' €/kg' : (l.kg ? ' · ' + String(l.kg).replace('.', ',') + ' kg' : '')}${l.qty > 1 ? ' · ×' + l.qty : ''}</span></span>
           <span class="font-bold text-slate-800 whitespace-nowrap">${money(l.price)} €</span></label>`).join('')}
       </div></div>` : '<p class="text-slate-500">Aucune ligne d\'article reconnue : seul le total sera enregistré.</p>'}
     <details><summary class="text-[12px] text-slate-400 cursor-pointer">Texte lu sur la photo</summary><pre class="whitespace-pre-wrap text-[12px] text-slate-500 mt-1 max-h-40 overflow-y-auto">${esc(d.text)}</pre></details>
@@ -263,25 +272,31 @@ function saveTicket() {
   const d = ticketDraft;
   const total = parseFloat(String(document.getElementById('ticket-total').value).replace(',', '.').replace(/[^\d.]/g, ''));
   if (!Number.isFinite(total) || total <= 0 || total > 5000) { showToast('Total non reconnu'); return; }
-  const used = d.lines.filter(l => l.use && l.article);
+  const used = d.lines.filter(l => l.use && (l.article || l.custom));
+  const matched = used.filter(l => l.article);
   const now = Date.now();
   // Étalonnage : estimation de CES lignes (et non de la liste du moment) comparée à leur prix réel
   let est = 0, cal = 0;
-  used.forEach(l => {
+  matched.forEach(l => {
     const grams = l.kg ? l.kg * 1000 : (l.pack ? l.pack * l.qty : 0);
     est += GL.estimateItemPrice({ name: l.article, rayon: l.rayon, quantity: grams || l.qty, baseUnit: grams ? 'g' : 'piece' });
     cal += l.price;
   });
   const trip = { t: now, total: Math.round(total * 100) / 100, est: Math.round(est * 100) / 100, items: d.lines.length, r: Object.keys(d.parsed.sections || {}).length ? d.parsed.sections : GR.rayonTotals(d.lines.map(l => ({ rayon: l.rayon, price: l.price }))) };
-  if (used.length >= 3 && est > 0) trip.cal = Math.round(cal * 100) / 100; // assez de lignes : le coefficient s'appuie sur elles
+  if (matched.length >= 3 && est > 0) trip.cal = Math.round(cal * 100) / 100; // assez de lignes : le coefficient s'appuie sur elles
   else trip.est = GL.estimateCost(currentSplit().toBuy);
   state.trips.push(trip);
   state.trips = state.trips.slice(-30);
-  state.priceBook = GR.updatePriceBook(state.priceBook, used.map(l => ({ id: articleId(l.article), price: l.price, kg: l.kg, perKg: l.perKg, pack: l.pack, qty: l.qty })), now);
+  const nameOf = (l) => l.article || l.custom;
+  state.priceBook = GR.updatePriceBook(state.priceBook, used.map(l => ({ id: articleId(nameOf(l)), price: l.price, kg: l.kg, perKg: l.perKg, pack: l.pack, qty: l.qty })), now);
+  // Reste à consommer : les achats entrent au placard avec une date limite (d'après la date du ticket)
+  const stocked = addPurchasesToPantry(used.map(l => ({ name: nameOf(l), rayon: l.rayon, kg: l.kg, pack: l.pack, qty: l.qty })), ticketDateToTs(d.parsed.date));
+  bumpCosts();
   saveToLocalStorage();
   renderGroceries();
+  renderPlanning();
   closeTicketModal();
-  showToast(`Ticket de ${String(trip.total.toFixed(2)).replace('.', ',')} € enregistré${used.length ? ` · ${used.length} prix retenu${used.length > 1 ? 's' : ''}` : ''}`);
+  showToast(`Ticket de ${String(trip.total.toFixed(2)).replace('.', ',')} € enregistré${used.length ? ` · ${used.length} produit${used.length > 1 ? 's' : ''} au placard avec date limite` : ''}`);
 }
 
 function setupTicketModal() {

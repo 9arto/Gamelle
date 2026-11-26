@@ -83,10 +83,14 @@
         </div>
       </div>
 
+      <div id="expiry-banner" class="hidden"></div>
+
       <!-- Liste des plats au menu -->
       <div id="weekly-days-list" class="space-y-3">
         <!-- Rempli dynamiquement en JS -->
       </div>
+
+      <div id="week-balance" class="hidden"></div>
 
       <!-- Bouton réinitialiser -->
       <div class="text-center pt-2">
@@ -139,6 +143,10 @@
           <button type="submit" aria-label="Ajouter à la liste" class="bg-brand-600 text-white font-bold px-3 py-2 rounded-xl text-xs active:scale-95 hover:bg-brand-700">+</button>
         </form>
         <div id="staple-habituals" class="flex gap-1.5 overflow-x-auto scrollbar-none" aria-label="Vos habituels"></div>
+        <div class="flex gap-2">
+          <button type="button" id="btn-add-pack" class="flex-1 text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 rounded-xl py-2.5 active:scale-95"></button>
+          <button type="button" id="btn-edit-pack" class="px-3 text-xs font-bold text-slate-600 bg-slate-100 rounded-xl active:scale-95" aria-label="Modifier mon pack de la semaine">Modifier</button>
+        </div>
       </div>
 
       <!-- PLACARD & RÉGLAGES DES COURSES -->
@@ -261,6 +269,7 @@
             Système
           </button>
         </div>
+        <label class="flex items-center justify-between gap-3 pt-1 cursor-pointer"><span class="text-xs font-semibold text-slate-700">Sons et vibrations <span class="font-normal text-slate-400">(rayon terminé)</span></span><input type="checkbox" id="chk-feedback" class="w-5 h-5 rounded" checked></label>
       </div>
 
       <!-- Mise à jour de l'application -->
@@ -484,6 +493,7 @@
         <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex items-center justify-between">
           <div class="text-xs font-semibold text-slate-700">
             <span>⏱️ Préparation : <strong id="detail-recipe-time" class="text-slate-900">25 min</strong></span>
+            <span id="detail-recipe-cost" class="block text-slate-500 mt-0.5"></span>
           </div>
           <div class="flex items-center gap-1.5">
             <span class="text-xs text-slate-500 font-medium">Pour</span>
@@ -759,6 +769,27 @@
   </div>
 
   <!-- ============================================================ -->
+  <!-- MODAL : PACK DE LA SEMAINE                                   -->
+  <!-- ============================================================ -->
+  <div id="pack-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md max-h-[90vh] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div><h3 class="font-bold text-slate-800 text-sm">Mon pack de la semaine</h3><p class="text-xs text-slate-400">Ce que vous achetez chaque semaine, en un geste</p></div>
+        <button id="btn-close-pack" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" aria-label="Fermer">✕</button>
+      </div>
+      <div id="pack-body" class="flex-1 overflow-y-auto p-4 space-y-2 text-xs"></div>
+      <div class="p-4 border-t border-slate-100"><button type="button" id="btn-pack-save" class="w-full bg-brand-600 text-white font-bold py-3 rounded-2xl text-sm active:scale-95">Enregistrer le pack</button></div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : ACCUEIL EN 3 ÉTAPES (premier lancement)              -->
+  <!-- ============================================================ -->
+  <div id="onboarding-modal" class="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4" role="dialog" aria-modal="true" aria-label="Bienvenue">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl p-6"><div id="onboarding-body"></div></div>
+  </div>
+
+  <!-- ============================================================ -->
   <!-- MODAL 3 : CRÉER MA PROPRE RECETTE                           -->
   <!-- ============================================================ -->
   <div id="custom-recipe-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
@@ -917,6 +948,7 @@
   <script src="groceries.js"></script>
   <script src="sync.js"></script>
   <script src="ticket.js"></script>
+  <script src="extras.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -55,7 +55,7 @@
   // « CHEDDAR RAPE 140G », « POMME SSA 4X100G », « FROMAGE GREC 180G » → poids/volume du paquet en g (ou ml)
   function packSize(label) {
     const n = norm(label);
-    const m = n.match(/(?:(\d{1,2})\s?x\s?)?(\d{2,4}(?:[.,]\d)?)\s?(kg|g|ml|cl|l)\b/);
+    const m = n.match(/(?:(\d{1,2})\s?x\s?)?(\d{2,4}(?:[.,]\d)?)\s?(kg|g|ml|cl|l)\b/) || n.match(/()(\d(?:[.,]\d)?)\s?(kg|l)\b/); // « 1 L », « 1,5 kg »
     if (!m) return null;
     const v = parseFloat(m[2].replace(',', '.')) * ({ kg: 1000, g: 1, l: 1000, cl: 10, ml: 1 }[m[3]]);
     return Math.round(v * (m[1] ? parseInt(m[1], 10) : 1));
@@ -224,6 +224,38 @@
     return null;
   }
 
+  // ---- prix des produits courants (« Bananes ×7 ») d'après le carnet de prix
+  const PIECE_G = { banane: 150, pomme: 180, poire: 180, orange: 200, clementine: 80, kiwi: 80, citron: 100, avocat: 200, yaourt: 125, oeuf: 60, tomate: 150, carotte: 120, concombre: 300, peche: 150, abricot: 50 };
+  function singular(w) { return w.replace(/(s|x)$/, ''); }
+  // Clé du carnet de prix qui correspond à un nom (mêmes mots, pluriel ignoré) : la plus proche d'abord
+  function findPriceKey(name, book) {
+    const want = tokens(name).map(singular);
+    if (!want.length) return null;
+    let best = null, bestScore = 0;
+    Object.keys(book || {}).forEach((k) => {
+      const have = tokens(k).map(singular);
+      const common = want.filter((w) => have.includes(w)).length;
+      if (!common) return;
+      const score = common / Math.max(want.length, have.length) + common;
+      if (score > bestScore) { best = k; bestScore = score; }
+    });
+    return best;
+  }
+  // Prix réel d'un produit courant (quantité × prix appris) ; null s'il n'a jamais été vu sur un ticket
+  function staplePrice(staple, book) {
+    const key = findPriceKey(staple.name, book);
+    if (!key) return null;
+    const e = book[key], qty = Math.max(1, Number(staple.qty) || 1);
+    if (e.u) return Math.round(qty * e.u * 100) / 100;
+    if (e.kg) {
+      const pack = packSize(staple.name);
+      const word = tokens(staple.name).map(singular).find((w) => PIECE_G[w]);
+      const grams = pack || (word ? PIECE_G[word] : 150);
+      return Math.round(qty * (grams / 1000) * e.kg * 100) / 100;
+    }
+    return null;
+  }
+
   // Totaux par rayon d'un ticket : { rayon: € } (les lignes non reconnues vont dans « autres »)
   function rayonTotals(matched) {
     const r = {};
@@ -231,5 +263,5 @@
     return r;
   }
 
-  root.GamelleReceipt = { parseReceipt, packSize, matchArticle, updatePriceBook, learnedPrice, rayonTotals, amounts };
+  root.GamelleReceipt = { parseReceipt, packSize, findPriceKey, staplePrice, matchArticle, updatePriceBook, learnedPrice, rayonTotals, amounts };
 })(typeof window !== 'undefined' ? window : globalThis);

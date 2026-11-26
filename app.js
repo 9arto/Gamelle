@@ -188,6 +188,22 @@ function sanitizeStapleHistory(map) {
   }
   return out;
 }
+function sanitizeExpiry(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 400).forEach(k => { const t = map[k]; if (Number.isFinite(t) && t > 946684800000 && t < 4102444800000) out[cleanStr(k, 120)] = t; });
+  }
+  return out;
+}
+function sanitizePack(list) {
+  if (!Array.isArray(list)) return [];
+  return list.slice(0, 40).map(p => {
+    if (typeof p === 'string') p = { name: p };
+    if (!p || typeof p !== 'object') return null;
+    const name = cleanStr(p.name, 60);
+    return name ? { name, qty: Math.round(cleanNum(p.qty, 1, 99, 1)) } : null;
+  }).filter(Boolean);
+}
 function sanitizePriceBook(map) {
   const out = {};
   if (map && typeof map === 'object' && !Array.isArray(map)) {
@@ -221,6 +237,8 @@ function sanitizeGenFilters(f) {
   if (!f || typeof f !== 'object') return out;
   ['seasons', 'types', 'styles'].forEach(k => { if (Array.isArray(f[k])) out[k] = sanitizeStringList(f[k], 12, 30); });
   ['budget', 'express', 'onePan', 'favoritesOnly', 'noPork', 'noLactose'].forEach(k => { if (f[k] === true) out[k] = true; });
+  const bm = cleanNum(f.budgetMax, 10, 2000, NaN);
+  if (Number.isFinite(bm)) out.budgetMax = Math.round(bm);
   if (typeof f.fridge === 'string') out.fridge = cleanStr(f.fridge, 120);
   return out;
 }
@@ -415,7 +433,7 @@ function promptDialog(opts) {
 }
 
 // --- Blocage du défilement derrière les fenêtres ouvertes ---
-const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal', 'scan-modal', 'leftovers-modal', 'ticket-modal'];
+const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal', 'scan-modal', 'leftovers-modal', 'ticket-modal', 'pack-modal', 'onboarding-modal'];
 function updateScrollLock() {
   const anyOpen = MODAL_IDS.some(id => {
     const el = document.getElementById(id);
@@ -433,6 +451,7 @@ function initModalBehaviour() {
     'generate-modal': 'btn-close-generate',
     'scan-modal': 'btn-close-scan',
     'ticket-modal': 'btn-close-ticket',
+    'pack-modal': 'btn-close-pack',
     'leftovers-modal': 'btn-close-leftovers'
   };
   // Les fenêtres où un appui involontaire sur le fond ne fait rien perdre se ferment en touchant le fond
@@ -545,6 +564,9 @@ let state = {
   stapleHistory: {},   // produits courants ajoutés { nom: { n, last } } → « vos habituels »
   trips: [],           // dernières courses { t, total, est, items, r } → budget réaliste et stats par rayon
   priceBook: {},       // prix réels appris sur les tickets { article: { kg, u, n, t } }
+  pantryExpiry: {},    // dates limites des articles du placard { article: timestamp }
+  weeklyPack: [],      // « pack de la semaine » : produits achetés chaque semaine [{ name, qty }]
+  feedback: true,      // petit son / vibration quand un rayon est terminé
   sync: { lastOk: 0, pending: false, fail: false }
 };
 
@@ -576,7 +598,7 @@ function renderThemeControl() {
 }
 
 function init() {
-  
+  const firstLaunch = safeGetItem('gamelle_plan') === null && !safeGetItem('gamelle_household_code'); // tout premier lancement
   // Persister deviceId pour distinguer nos propres messages de ceux du conjoint
   if (!safeGetItem('gamelle_device_id')) {
     safeSetItem('gamelle_device_id', state.deviceId);
@@ -585,6 +607,11 @@ function init() {
   loadFromLocalStorage();
   checkUrlParamsForSharing();
   setupEventListeners();
+  setupPackModal();
+  setupOnboarding();
+  const fb = document.getElementById('chk-feedback');
+  if (fb) { fb.checked = state.feedback !== false; fb.addEventListener('change', () => { state.feedback = fb.checked; safeSetItem('gamelle_feedback', fb.checked ? '1' : '0'); if (fb.checked) tickFeedback(); }); }
+  purgeOldPantry();
   renderAll();
   renderThemeControl();
   initModalBehaviour();
@@ -605,6 +632,8 @@ function init() {
   });
 
   applyPendingShare();
+  scheduleRecipeCosts();
+  maybeShowOnboarding(firstLaunch);
 }
 
 // Dernier onglet ouvert : on y revient à la réouverture de l'app
@@ -651,6 +680,9 @@ function loadFromLocalStorage() {
   state.stapleHistory = sanitizeStapleHistory(readJSON('gamelle_staple_history', {}));
   state.trips = sanitizeTrips(readJSON('gamelle_trips', []));
   state.priceBook = sanitizePriceBook(readJSON('gamelle_price_book', {}));
+  state.pantryExpiry = sanitizeExpiry(readJSON('gamelle_pantry_expiry', {}));
+  state.weeklyPack = sanitizePack(readJSON('gamelle_weekly_pack', []));
+  state.feedback = safeGetItem('gamelle_feedback') !== '0';
   state.sync.lastOk = parseInt(safeGetItem('gamelle_sync_ok') || '0', 10) || 0;
   state.notify = safeGetItem('gamelle_notify') !== '0';
   state.memberName = cleanStr(safeGetItem('gamelle_member_name') || '', 30);
@@ -685,6 +717,8 @@ function persistLocal() {
   safeSetItem('gamelle_staple_history', JSON.stringify(state.stapleHistory || {}));
   safeSetItem('gamelle_trips', JSON.stringify(state.trips || []));
   safeSetItem('gamelle_price_book', JSON.stringify(state.priceBook || {}));
+  safeSetItem('gamelle_pantry_expiry', JSON.stringify(state.pantryExpiry || {}));
+  safeSetItem('gamelle_weekly_pack', JSON.stringify(state.weeklyPack || []));
   safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
   safeSetItem('gamelle_leftovers', JSON.stringify(state.leftovers || []));
   safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
@@ -798,10 +832,19 @@ function generateBalancedWeek(forceAll = false, filtersArg) {
 
   // Tirage proportionnel à la place de chaque type de plat dans le catalogue (filtré), sans doublon
   const need = newPlan.filter(x => x === null).length;
-  const res = GL.pickMenu({
+  const pickOpts = {
     recipes: state.recipes, count: need, filters, excludeIds: [...lockedRecipeIds],
     favorites: state.favorites, notes: state.notes, mood: state.weatherMood
-  });
+  };
+  const budgetMax = Number(filters.budgetMax) || 0;
+  if (budgetMax > 0) { // « 7 repas à moins de X € » : on remplace les plats les plus chers
+    pickOpts.budget = budgetMax; pickOpts.costOf = recipeMealCost;
+    pickOpts.fixedCost = [...lockedRecipeIds].reduce((sum, id) => { const r = state.recipes.find(x => x.id === id); return sum + (r ? recipeMealCost(r) : 0); }, 0);
+  }
+  const res = GL.pickMenu(pickOpts);
+  state._budgetMsg = budgetMax > 0 && res.cost != null
+    ? (res.withinBudget ? `Menu à ≈ ${euro(res.cost + (pickOpts.fixedCost || 0))} (budget ${euro(budgetMax)})` : `Impossible sous ${euro(budgetMax)} avec ces filtres : ≈ ${euro(res.cost + (pickOpts.fixedCost || 0))} (les moins chers choisis)`)
+    : null;
   if (res.ids.length === 0 && need > 0) {
     showToast('Aucun plat ne correspond à ces filtres');
     return;
@@ -1035,6 +1078,7 @@ function renderAtHomeSection(container, atHome) {
   det.querySelectorAll('.btn-need').forEach(btn => btn.addEventListener('click', (e) => {
     const id = e.currentTarget.dataset.id;
     state.pantry = state.pantry.filter(x => x !== id);
+    delete state.pantryExpiry[id];
     if (!state.pantryNeeded.includes(id)) state.pantryNeeded.push(id);
     saveToLocalStorage();
     renderGroceries();
@@ -1113,7 +1157,7 @@ function renderPantryCard() {
     <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-stock-basics" class="w-4 h-4 rounded" ${state.stockBasics ? 'checked' : ''}>
       <span class="text-slate-700 font-semibold">Huile, farine, sucre, vinaigres, moutarde à la maison</span></label>
     ${state.pantry.length ? `<div class="space-y-1.5"><p class="${h}">Mon placard</p>
-      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => { const st = state.pantryStock[id]; const q = st ? ' · ' + formatQuantityAndUnit(st.qty, st.unit) : ''; return `<span class="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800"><button type="button" class="pantry-qty pl-2.5 pr-1 py-1" data-id="${esc(id)}" aria-label="Quantité en stock : ${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))}${esc(q)} ✎</button><button type="button" class="pantry-remove pr-2.5 pl-1 py-1" data-id="${esc(id)}" aria-label="Retirer ${esc(id)} du placard">✕</button></span>`; }).join('')}</div></div>` : ''}
+      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => { const st = state.pantryStock[id]; const q = st ? ' · ' + formatQuantityAndUnit(st.qty, st.unit) : ''; const ex = state.pantryExpiry[id]; const late = ex && ex <= Date.now() + 2 * 86400000; return `<span class="inline-flex items-center rounded-full border ${late ? 'bg-amber-50 border-amber-300 text-amber-900' : 'bg-emerald-50 border-emerald-200 text-emerald-800'}"><button type="button" class="pantry-qty pl-2.5 pr-1 py-1" data-id="${esc(id)}" aria-label="Quantité en stock : ${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))}${esc(q)} ✎</button>${ex ? `<button type="button" class="pantry-date px-1 py-1 text-[12px] font-semibold" data-id="${esc(id)}" aria-label="Date limite de ${esc(id)}">avant ${esc(dayLabel(ex))}</button>` : ''}<button type="button" class="pantry-remove pr-2.5 pl-1 py-1" data-id="${esc(id)}" aria-label="Retirer ${esc(id)} du placard">✕</button></span>`; }).join('')}</div></div>` : ''}
     <div class="flex gap-1.5 flex-wrap pt-1">
       <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Nutri-Score de ma liste</button>
       <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Scanner un produit</button>
@@ -1131,6 +1175,7 @@ function setupPantryCard() {
   body.addEventListener('click', (e) => {
     const t = e.target.closest('button');
     if (!t) return;
+    if (t.classList.contains('pantry-date')) { editExpiry(t.dataset.id); return; }
     if (t.classList.contains('pantry-qty')) {
       const id = t.dataset.id;
       promptDialog({ title: 'Quantité en stock', message: `Combien de « ${id} » avez-vous ? (ex. 800 g, 1,5 L, 6). Elle diminue quand vous cuisinez une recette. Vide = ne pas suivre.`, value: state.pantryStock[id] ? formatQuantityAndUnit(state.pantryStock[id].qty, state.pantryStock[id].unit) : '' }).then(v => {
@@ -1140,6 +1185,7 @@ function setupPantryCard() {
         else if (parsed) state.pantryStock[id] = parsed;
         else { showToast('Quantité non reconnue'); return; }
         saveToLocalStorage(); renderGroceries();
+        if (!state.pantryExpiry[id]) editExpiry(id);
       });
       return;
     }
@@ -1159,6 +1205,7 @@ function setupPantryCard() {
       [ids[i], ids[j]] = [ids[j], ids[i]];
       state.aisleOrder = ids;
     } else if (t.classList.contains('pantry-remove')) {
+      delete state.pantryExpiry[t.dataset.id];
       state.pantry = state.pantry.filter(x => x !== t.dataset.id);
     } else return;
     saveToLocalStorage();
@@ -1216,6 +1263,7 @@ function consumeStockForRecipe(recipe) {
   state.pantryStock = r.stock;
   r.depleted.forEach(id => {
     state.pantry = state.pantry.filter(x => x !== id);
+    delete state.pantryExpiry[id];
     if (!state.pantryNeeded.includes(id)) state.pantryNeeded.push(id);
   });
   saveToLocalStorage(); renderGroceries();
@@ -1260,6 +1308,8 @@ function renderGenerateModal() {
       <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', 'Pas cher')}${genFlagHTML('express', 'Moins de 20 min')}${genFlagHTML('onePan', '1 seule poêle')}${genFlagHTML('favoritesOnly', 'Mes favoris')}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Régime</p>
       <div class="flex gap-1.5 flex-wrap">${genFlagHTML('noPork', 'Sans porc')}${genFlagHTML('noLactose', 'Sans lactose')}</div></div>
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">Budget des repas <span class="font-normal text-slate-400">(facultatif)</span></p>
+      <div class="flex items-center gap-2"><input type="text" inputmode="numeric" id="gen-budget" class="w-24 border border-slate-200 rounded-xl px-3 py-2 text-xs" placeholder="ex. 60" value="${d.budgetMax ? esc(String(d.budgetMax)) : ''}" aria-label="Budget maximum en euros"><span class="text-slate-500">€ au maximum pour l'ensemble (pour ${state.portions} portion${state.portions > 1 ? 's' : ''})</span></div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">J'ai dans le frigo <span class="font-normal text-slate-400">(à utiliser en priorité)</span></p>
       <input type="text" id="gen-fridge" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs" placeholder="Ex : poulet, courgettes, champignons" value="${esc(d.fridge || '')}"></div>`;
   updateGenMatch();
@@ -1298,6 +1348,7 @@ function setupGenerateModal() {
   });
   document.getElementById('gen-body').addEventListener('input', (e) => {
     if (e.target.id === 'gen-fridge') genDraft.fridge = e.target.value;
+    if (e.target.id === 'gen-budget') { const v = parseInt(e.target.value.replace(/\D/g, ''), 10); if (Number.isFinite(v) && v > 0) genDraft.budgetMax = v; else delete genDraft.budgetMax; }
   });
   document.getElementById('btn-gen-reset').addEventListener('click', () => { genDraft = {}; renderGenerateModal(); });
   document.getElementById('btn-gen-go').addEventListener('click', async () => {
@@ -1308,7 +1359,7 @@ function setupGenerateModal() {
     const hadMeals = state.plan.some(Boolean);
     generateBalancedWeek(false, state.genFilters);
     if (hadMeals && takeSnapshot() !== snapshot) {
-      showToast('Nouveau menu généré', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
+      showToast(state._budgetMsg || 'Nouveau menu généré', { action: 'Annuler', duration: state._budgetMsg ? 8000 : undefined, onAction: () => restoreSnapshot(snapshot) });
     }
   });
 }
@@ -1815,8 +1866,16 @@ function renderAll() {
 }
 
 // 1. Rendu du Planning (liste de plats sans limitation de nombre ni de jours fixes)
+// « · ≈ 54 € » : coût estimé des repas du menu (quand les prix sont calculés)
+function planCostLabel() {
+  let total = 0, n = 0;
+  state.plan.forEach(id => { const r = state.recipes.find(x => x.id === id); if (r && costCache[r.id] != null) { total += recipeMealCost(r); n++; } });
+  return n && n === state.plan.filter(Boolean).length ? ` · ≈ ${euro(total)}` : '';
+}
 function renderPlanning() {
   updatePlanningTitle();
+  renderExpiryBanner();
+  renderWeekBalance();
   const container = document.getElementById('weekly-days-list');
   if (!container) return;
   container.innerHTML = '';
@@ -1836,7 +1895,7 @@ function renderPlanning() {
   headerDiv.className = 'flex items-center justify-between px-1 pb-1 flex-wrap gap-2';
   headerDiv.innerHTML = `
     <div class="flex items-center gap-2 flex-wrap">
-      <span class="text-xs font-bold text-slate-700">${state.plan.length} repas sélectionné${state.plan.length > 1 ? 's' : ''}</span>
+      <span class="text-xs font-bold text-slate-700">${state.plan.length} repas sélectionné${state.plan.length > 1 ? 's' : ''}${planCostLabel()}</span>
     </div>
     <button id="btn-add-meal-slot" class="text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl flex items-center gap-1 active:scale-95 transition-all">
       <span>+</span> Ajouter un plat
@@ -1910,6 +1969,7 @@ function renderPlanning() {
             <h3 class="font-bold text-sm text-slate-900 leading-snug">${esc(recipe.title)}</h3>
             <div class="flex items-center gap-2 mt-2 text-[11px] text-slate-600 font-medium flex-wrap">
               <span>⏱️ ${recipe.timeMinutes} min</span>
+              ${costCache[recipe.id] != null ? `<span>•</span><span>≈ ${euro(recipeMealCost(recipe))}</span>` : ''}
               <span>•</span>
               <span class="text-emerald-700 font-semibold">${esc(recipe.tag)}</span>
               ${recipe.isBudget ? `<span class="text-amber-700 font-semibold bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
@@ -2041,18 +2101,19 @@ function setupGrocerySwipe() {
 }
 
 // Ajout d'un produit courant : s'il existe déjà, la quantité augmente (« Lait ×3 »)
-function addStaple(name) {
+function addStaple(name, qty = 1, silent = false) {
   const val = cleanStr(name, 80);
   if (!val) return;
   const same = state.staples.find(x => x.name.toLowerCase() === val.toLowerCase());
-  if (same) { same.qty = Math.min(99, (same.qty || 1) + 1); same.checked = false; }
-  else state.staples.push({ id: 'staple_' + Date.now() + '_' + Math.floor(Math.random() * 1000), name: val, checked: false, qty: 1 });
+  if (same) { same.qty = Math.min(99, (same.qty || 1) + qty); same.checked = false; }
+  else state.staples.push({ id: 'staple_' + Date.now() + '_' + Math.floor(Math.random() * 1000), name: val, checked: false, qty: Math.max(1, qty) });
   const h = state.stapleHistory[val] || { n: 0, last: 0 };
   state.stapleHistory[val] = { n: h.n + 1, last: Date.now() };
+  queueNotification({ staple: val });
+  if (silent) return;
   saveToLocalStorage();
   renderGroceries();
   renderHabituals();
-  queueNotification({ staple: val });
 }
 // « Vos habituels » : les produits les plus ajoutés (sinon une base), sans ceux déjà dans la liste
 function renderHabituals() {
@@ -2088,10 +2149,11 @@ function renderGroceries() {
   document.getElementById('courses-progress-bar').style.width = `${percentage}%`;
   const factor = GL.priceFactor(state.trips);
   const budget = GL.estimateBudget(groceries, factor, (i) => GR.learnedPrice(i, state.priceBook));
-  const cost = budget.cost;
+  const stp = staplesCost();   // produits courants déjà vus sur un ticket : leur vrai prix s'ajoute au panier
+  const cost = Math.round(budget.total + stp.total);
   const lastTrip = (state.trips || [])[state.trips.length - 1];
   document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''}`;
-  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €${budget.real ? ` (${budget.real} article${budget.real > 1 ? 's' : ''} à vos prix réels)` : (factor !== 1 ? ' (selon vos tickets)' : '')}${lastTrip ? ` · dernier ticket ${Math.round(lastTrip.total)} €` : ''}` : (lastTrip ? `Dernier ticket ${Math.round(lastTrip.total)} €` : '');
+  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €${budget.real + stp.n ? ` (${budget.real + stp.n} article${budget.real + stp.n > 1 ? 's' : ''} à vos prix réels${stp.n ? `, dont ${euro(stp.total)} de produits courants` : ''})` : (factor !== 1 ? ' (selon vos tickets)' : '')}${lastTrip ? ` · dernier ticket ${Math.round(lastTrip.total)} €` : ''}` : (lastTrip ? `Dernier ticket ${Math.round(lastTrip.total)} €` : '');
   
   // Badge sur l'onglet inférieur
   const navBadge = document.getElementById('nav-badge-groceries');
@@ -2152,6 +2214,7 @@ function renderGroceries() {
     // En-tête du rayon (toucher pour replier / déplier)
     const rayonDone = leftInRayon === 0;
     const justDone = rayonDone && !celebratedRayons.has(rayon.id);
+    if (justDone && settleId !== null) setTimeout(tickFeedback, 0); // seulement quand c'est vous qui venez de cocher
     if (rayonDone) celebratedRayons.add(rayon.id); else celebratedRayons.delete(rayon.id);
     section.innerHTML = `
       <div class="bg-slate-50 border-b border-slate-100 flex items-center">
@@ -2197,6 +2260,7 @@ function renderGroceries() {
               ${qtyStr ? `<span class="font-bold text-xs text-brand-700">${qtyStr}</span>` : ''}
               <span class="text-xs text-slate-800 font-medium">${esc(item.name)}</span>
               ${isStapleRayon && (item.qty || 1) > 1 ? `<span class="font-bold text-xs text-brand-700">×${item.qty}</span>` : ''}
+              ${isStapleRayon && GR.staplePrice(item, state.priceBook) != null ? `<span class="text-[12px] text-slate-400">≈ ${euro(GR.staplePrice(item, state.priceBook))}</span>` : ''}
               ${isStapleRayon ? '' : offBadgeHTML(item.name)}
             </div>
             ${item.recipes && item.recipes.length > 0 ? `
@@ -2322,6 +2386,7 @@ function recipeCardHTML(recipe, idx = 99) {
             </div>
             <div class="flex items-center gap-1.5">
               ${recipe.isBudget ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
+              ${costCache[recipe.id] != null ? `<span class="text-[11px] text-slate-500 font-medium">≈ ${money(recipePP(recipe))} €/portion</span>` : ''}
               <span class="text-[11px] text-slate-500 font-medium">⏱️ ${esc(recipe.timeMinutes)} min</span>
             </div>
           </div>
@@ -2414,7 +2479,7 @@ function renderCatalog(resetLimit = false) {
 
   // Tri
   if (state.sortOption === 'budget') {
-    filtered.sort((a, b) => (b.isBudget ? 1 : 0) - (a.isBudget ? 1 : 0));
+    filtered.sort((a, b) => (costCache[a.id] != null && costCache[b.id] != null) ? (recipePP(a) - recipePP(b)) : (b.isBudget ? 1 : 0) - (a.isBudget ? 1 : 0));
   } else if (state.sortOption === 'fastest') {
     filtered.sort((a, b) => a.timeMinutes - b.timeMinutes);
   } else if (state.sortOption === 'random') {
@@ -2553,6 +2618,8 @@ function openRecipeDetail(recipeId) {
   renderNotesRow();
   renderNutritionCard(recipe);
   
+  const costEl = document.getElementById('detail-recipe-cost');
+  if (costEl) costEl.textContent = costCache[recipe.id] != null ? `≈ ${euro(recipeMealCost(recipe))} (${money(recipePP(recipe))} € / portion)` : '';
   const budgetBadge = document.getElementById('detail-recipe-budget');
   if (recipe.isBudget) {
     budgetBadge.classList.remove('hidden');

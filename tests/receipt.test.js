@@ -136,3 +136,13 @@ test('prix réels : le prix au kilo imprimé ou le poids du paquet alimente le c
   assert.equal(book['poivrons (rouges ou tricolores)'].kg, 5.59, 'jaune 4,99 puis rouge 5,99 (lissage 40/60)');
   assert.equal(R.packSize('POMME SSA 4X100G'), 400);
 });
+
+test('produits courants : prix réel d\'après le carnet (bananes, kéfir, yaourts)', () => {
+  const book = { banane: { kg: 0.99, n: 2, t: 1 }, 'yaourt nature': { u: 0.2, n: 1, t: 1 }, 'kéfir': { kg: 2.4, n: 1, t: 1 } };
+  assert.equal(R.staplePrice({ name: 'Bananes', qty: 7 }, book), 1.04, '7 × 150 g × 0,99 €/kg');
+  assert.equal(R.staplePrice({ name: 'Yaourts', qty: 2 }, book), 0.4, 'pluriel ignoré : 2 × 0,20 €');
+  assert.equal(R.staplePrice({ name: 'Yaourt nature 8x125g', qty: 1 }, book), 0.2);
+  assert.equal(R.staplePrice({ name: 'Kéfir 1 L', qty: 1 }, book), 2.4, '1 L × 2,40 €/L');
+  assert.equal(R.staplePrice({ name: 'Pain de mie', qty: 1 }, book), null);
+  assert.equal(R.findPriceKey('banane', book), 'banane');
+});

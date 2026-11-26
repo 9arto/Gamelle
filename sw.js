@@ -1,11 +1,11 @@
 // Service worker Gamelle & Panier : fonctionne hors-ligne (magasin, sous-sol…)
-const VERSION = 'v63';
+const VERSION = 'v64';
 const APP_CACHE = `gamelle-app-${VERSION}`;
 const IMG_CACHE = 'gamelle-images-v1';
 const IMG_MAX = 250;
 const VENDOR_CACHE = 'gamelle-vendor-v1'; // lecteurs de codes-barres / tickets : gros fichiers, conservés d'une version à l'autre
 const ASSETS = [
-  './', './index.html', './styles.css', './tailwind.css', './app.js', './recipes.js', './logic.js', './nutrition.js', './theme.js', './groceries.js', './sync.js', './receipt.js', './ticket.js',
+  './', './index.html', './styles.css', './tailwind.css', './app.js', './recipes.js', './logic.js', './nutrition.js', './theme.js', './groceries.js', './sync.js', './receipt.js', './ticket.js', './extras.js',
   './manifest.json', './logo.svg', './icon-192.png', './icon-512.png', './apple-touch-icon.png'
 ];
 

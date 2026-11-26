@@ -2,6 +2,14 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 26/11/2026 — v64 : budget, restes, équilibre, accueil
+- **Prix par repas** et « Pas cher » réel (≤ 2,20 € la portion) ; **menu sous budget** (« 7 repas à moins de 60 € ») dans « Composer mes 7 repas ».
+- **Reste à consommer** : un ticket enregistré remplit le placard (quantités + dates limites) ; bandeau « À finir bientôt » avec accès aux recettes pour finir ; date modifiable.
+- **Pack de la semaine** (ajout en un geste) ; **prix réels des produits courants** (bananes…) intégrés au budget du panier.
+- **Équilibre de la semaine** : protéines, légumes et fruits, calories, répartition des types de repas.
+- **Retour sonore/vibration** quand un rayon est terminé (réglable) ; **transitions** entre onglets et fondu des photos ; **accueil en 3 étapes** au premier lancement (foyer, épices, régimes).
+- 106 tests.
+
 ## 26/11/2026 — v63 : prix réalistes d'après un vrai ticket
 - **Prix de référence réalistes** (`REF_PRICES`, ~230 articles) calés sur un ticket Grand Frais réel : prix au kilo imprimés, paquets de 140 g / 180 g, yaourts, wraps… Coût médian par portion ≈ 2,75 € (avant : valeurs par rayon trop approximatives, jusqu'à 9 € la portion pour certains plats).
 - **Lecture du ticket PDF** (e-ticket) directement, sans OCR, et du vrai format Grand Frais : « 49 TOTAL » puis montant, offres négatives, tare, prix au kilo, rayons de caisse et **sous-totaux par rayon** (dépenses par rayon exactes), libellés tronqués rapprochés des articles (règles d'abréviations).
