@@ -2,6 +2,12 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 26/11/2026 — v67 : cartes de recettes
+- Carte du catalogue : deux pastilles sur une seule ligne sous le titre (« 25 min » et « 4,40 €/portion », verte si « Pas cher ») et étiquette « Pas cher » sur la photo.
+
+## 26/11/2026 — v66 : fiche recette
+- Fiche recette : « ≈ 2,40 € / portion · ≈ 9,60 € » (sans « pour 4 ») pour tenir sur une ligne.
+
 ## 26/11/2026 — v65 : accueil plus sobre
 - Bandeau « À finir bientôt » supprimé. Un repas gardé (acheté) n'affiche plus son prix ni dans le total du menu. Le prix par portion est toujours visible dans la fiche d'une recette et dans les résultats de recherche.
 

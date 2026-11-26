@@ -2379,21 +2379,21 @@ function recipeCardHTML(recipe, idx = 99) {
   const isCustom = recipe.id.startsWith('custom-');
   return `
     <div class="ios-card p-3.5 flex gap-3 hover:border-brand-300 transition-all cursor-pointer btn-open-detail" data-id="${esc(recipe.id)}" role="button" tabindex="0">
-      <img src="${esc(thumbImg(recipe.image))}" alt="" ${idx < 3 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" class="img-soft w-24 h-24 rounded-2xl object-cover shadow-sm flex-shrink-0">
+      <div class="relative flex-shrink-0">
+        <img src="${esc(thumbImg(recipe.image))}" alt="" ${idx < 3 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async" class="img-soft w-24 h-24 rounded-2xl object-cover shadow-sm">
+        ${recipe.isBudget ? `<span class="card-cheap-badge">Pas cher</span>` : ''}
+      </div>
       <div class="flex-1 min-w-0 flex flex-col justify-between">
         <div>
-          <div class="flex items-center justify-between gap-1 flex-wrap mb-0.5">
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600">${esc(recipe.tag)}</span>
-              ${isCustom ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md">Maison</span>` : ''}
-            </div>
-            <div class="flex items-center gap-1.5">
-              ${recipe.isBudget ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
-              <span class="text-[11px] text-slate-500 font-medium">≈ ${money(recipePP(recipe))} €/portion</span>
-              <span class="text-[11px] text-slate-500 font-medium">⏱️ ${esc(recipe.timeMinutes)} min</span>
-            </div>
+          <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600">${esc(recipe.tag)}</span>
+            ${isCustom ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md">Maison</span>` : ''}
           </div>
           <h3 class="font-bold text-sm text-slate-900 mt-0.5 leading-snug">${esc(recipe.title)}</h3>
+          <div class="card-chips">
+            <span class="card-chip">${esc(recipe.timeMinutes)} min</span>
+            <span class="card-chip ${recipe.isBudget ? 'is-cheap' : ''}">${money(recipePP(recipe))} €/portion</span>
+          </div>
         </div>
 
         <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-slate-100">
@@ -2622,7 +2622,7 @@ function openRecipeDetail(recipeId) {
   renderNutritionCard(recipe);
   
   const costEl = document.getElementById('detail-recipe-cost');
-  if (costEl) costEl.textContent = `≈ ${money(recipePP(recipe))} € / portion · ≈ ${euro(recipeMealCost(recipe))} pour ${state.portions}`;
+  if (costEl) costEl.textContent = `≈ ${money(recipePP(recipe))} € / portion · ≈ ${euro(recipeMealCost(recipe))}`;
   const budgetBadge = document.getElementById('detail-recipe-budget');
   if (recipe.isBudget) {
     budgetBadge.classList.remove('hidden');
