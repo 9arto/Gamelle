@@ -188,12 +188,48 @@ function sanitizeStapleHistory(map) {
   }
   return out;
 }
+function sanitizeExpiry(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 400).forEach(k => { const t = map[k]; if (Number.isFinite(t) && t > 946684800000 && t < 4102444800000) out[cleanStr(k, 120)] = t; });
+  }
+  return out;
+}
+function sanitizePack(list) {
+  if (!Array.isArray(list)) return [];
+  return list.slice(0, 40).map(p => {
+    if (typeof p === 'string') p = { name: p };
+    if (!p || typeof p !== 'object') return null;
+    const name = cleanStr(p.name, 60);
+    return name ? { name, qty: Math.round(cleanNum(p.qty, 1, 99, 1)) } : null;
+  }).filter(Boolean);
+}
+function sanitizePriceBook(map) {
+  const out = {};
+  if (map && typeof map === 'object' && !Array.isArray(map)) {
+    Object.keys(map).slice(0, 400).forEach(k => {
+      const v = map[k];
+      if (!v || typeof v !== 'object') return;
+      const e = { n: Math.round(cleanNum(v.n, 0, 9999, 1)), t: Number.isFinite(v.t) ? v.t : 0 };
+      const kg = cleanNum(v.kg, 0, 2000, NaN), u = cleanNum(v.u, 0, 2000, NaN);
+      if (Number.isFinite(kg) && kg > 0) e.kg = kg;
+      if (Number.isFinite(u) && u > 0) e.u = u;
+      if (e.kg || e.u) out[cleanStr(k, 120)] = e;
+    });
+  }
+  return out;
+}
 function sanitizeTrips(list) {
   if (!Array.isArray(list)) return [];
   return list.slice(-30).map(t => {
     if (!t || typeof t !== 'object') return null;
     const total = cleanNum(t.total, 0, 5000, NaN), est = cleanNum(t.est, 0, 5000, 0);
-    return Number.isFinite(total) && Number.isFinite(t.t) ? { t: t.t, total, est, items: Math.round(cleanNum(t.items, 0, 500, 0)) } : null;
+    const r = {};
+    if (t.r && typeof t.r === 'object' && !Array.isArray(t.r)) Object.keys(t.r).slice(0, 12).forEach(k => { const v = cleanNum(t.r[k], 0, 5000, NaN); if (Number.isFinite(v)) r[cleanStr(k, 30)] = v; });
+    const cal = cleanNum(t.cal, 0, 5000, NaN);
+    const out = { t: t.t, total, est, items: Math.round(cleanNum(t.items, 0, 500, 0)), r };
+    if (Number.isFinite(cal) && cal > 0) out.cal = cal;
+    return Number.isFinite(total) && Number.isFinite(t.t) ? out : null;
   }).filter(Boolean);
 }
 function sanitizeGenFilters(f) {
@@ -201,6 +237,8 @@ function sanitizeGenFilters(f) {
   if (!f || typeof f !== 'object') return out;
   ['seasons', 'types', 'styles'].forEach(k => { if (Array.isArray(f[k])) out[k] = sanitizeStringList(f[k], 12, 30); });
   ['budget', 'express', 'onePan', 'favoritesOnly', 'noPork', 'noLactose'].forEach(k => { if (f[k] === true) out[k] = true; });
+  const bm = cleanNum(f.budgetMax, 10, 2000, NaN);
+  if (Number.isFinite(bm)) out.budgetMax = Math.round(bm);
   if (typeof f.fridge === 'string') out.fridge = cleanStr(f.fridge, 120);
   return out;
 }
@@ -395,7 +433,7 @@ function promptDialog(opts) {
 }
 
 // --- Blocage du défilement derrière les fenêtres ouvertes ---
-const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal', 'scan-modal', 'leftovers-modal'];
+const MODAL_IDS = ['recipe-detail-modal', 'cooking-modal', 'select-meal-modal', 'custom-recipe-modal', 'saved-menus-modal', 'generate-modal', 'scan-modal', 'leftovers-modal', 'ticket-modal', 'pack-modal', 'onboarding-modal'];
 function updateScrollLock() {
   const anyOpen = MODAL_IDS.some(id => {
     const el = document.getElementById(id);
@@ -412,6 +450,8 @@ function initModalBehaviour() {
     'recipe-detail-modal': 'btn-close-detail',
     'generate-modal': 'btn-close-generate',
     'scan-modal': 'btn-close-scan',
+    'ticket-modal': 'btn-close-ticket',
+    'pack-modal': 'btn-close-pack',
     'leftovers-modal': 'btn-close-leftovers'
   };
   // Les fenêtres où un appui involontaire sur le fond ne fait rien perdre se ferment en touchant le fond
@@ -470,6 +510,7 @@ const DEFAULT_RECIPES = window.DEFAULT_RECIPES || [];
 const RECIPE_ALIASES = window.RECIPE_ALIASES || {};
 const GL = window.GamelleLogic;
 const GN = window.GamelleNutrition;
+const GR = window.GamelleReceipt;
 // Recettes fusionnées (doublons) : un ancien identifiant pointe vers la recette conservée
 function resolveAlias(id) { return (typeof id === 'string' && RECIPE_ALIASES[id]) || id; }
 function resolveAliasList(ids) {
@@ -521,7 +562,11 @@ let state = {
   weatherMood: null,   // météo de la semaine (jamais affichée : elle oriente seulement le tirage des repas)
   pantryStock: {},     // quantités en stock au placard { articleId: { qty, unit } } (facultatif)
   stapleHistory: {},   // produits courants ajoutés { nom: { n, last } } → « vos habituels »
-  trips: [],           // dernières courses { t, total, est, items } → budget réaliste
+  trips: [],           // dernières courses { t, total, est, items, r } → budget réaliste et stats par rayon
+  priceBook: {},       // prix réels appris sur les tickets { article: { kg, u, n, t } }
+  pantryExpiry: {},    // dates limites des articles du placard { article: timestamp }
+  weeklyPack: [],      // « pack de la semaine » : produits achetés chaque semaine [{ name, qty }]
+  feedback: true,      // petit son / vibration quand un rayon est terminé
   sync: { lastOk: 0, pending: false, fail: false }
 };
 
@@ -553,7 +598,7 @@ function renderThemeControl() {
 }
 
 function init() {
-  
+  const firstLaunch = safeGetItem('gamelle_plan') === null && !safeGetItem('gamelle_household_code'); // tout premier lancement
   // Persister deviceId pour distinguer nos propres messages de ceux du conjoint
   if (!safeGetItem('gamelle_device_id')) {
     safeSetItem('gamelle_device_id', state.deviceId);
@@ -562,6 +607,11 @@ function init() {
   loadFromLocalStorage();
   checkUrlParamsForSharing();
   setupEventListeners();
+  setupPackModal();
+  setupOnboarding();
+  const fb = document.getElementById('chk-feedback');
+  if (fb) { fb.checked = state.feedback !== false; fb.addEventListener('change', () => { state.feedback = fb.checked; safeSetItem('gamelle_feedback', fb.checked ? '1' : '0'); if (fb.checked) tickFeedback(); }); }
+  purgeOldPantry();
   renderAll();
   renderThemeControl();
   initModalBehaviour();
@@ -582,6 +632,8 @@ function init() {
   });
 
   applyPendingShare();
+  scheduleRecipeCosts();
+  maybeShowOnboarding(firstLaunch);
 }
 
 // Dernier onglet ouvert : on y revient à la réouverture de l'app
@@ -627,6 +679,10 @@ function loadFromLocalStorage() {
   state.pantryStock = sanitizeStock(readJSON('gamelle_pantry_stock', {}));
   state.stapleHistory = sanitizeStapleHistory(readJSON('gamelle_staple_history', {}));
   state.trips = sanitizeTrips(readJSON('gamelle_trips', []));
+  state.priceBook = sanitizePriceBook(readJSON('gamelle_price_book', {}));
+  state.pantryExpiry = sanitizeExpiry(readJSON('gamelle_pantry_expiry', {}));
+  state.weeklyPack = sanitizePack(readJSON('gamelle_weekly_pack', []));
+  state.feedback = safeGetItem('gamelle_feedback') !== '0';
   state.sync.lastOk = parseInt(safeGetItem('gamelle_sync_ok') || '0', 10) || 0;
   state.notify = safeGetItem('gamelle_notify') !== '0';
   state.memberName = cleanStr(safeGetItem('gamelle_member_name') || '', 30);
@@ -660,6 +716,9 @@ function persistLocal() {
   safeSetItem('gamelle_pantry_stock', JSON.stringify(state.pantryStock || {}));
   safeSetItem('gamelle_staple_history', JSON.stringify(state.stapleHistory || {}));
   safeSetItem('gamelle_trips', JSON.stringify(state.trips || []));
+  safeSetItem('gamelle_price_book', JSON.stringify(state.priceBook || {}));
+  safeSetItem('gamelle_pantry_expiry', JSON.stringify(state.pantryExpiry || {}));
+  safeSetItem('gamelle_weekly_pack', JSON.stringify(state.weeklyPack || []));
   safeSetItem('gamelle_spices', JSON.stringify(state.spices || []));
   safeSetItem('gamelle_leftovers', JSON.stringify(state.leftovers || []));
   safeSetItem('gamelle_stock_basics', state.stockBasics ? '1' : '0');
@@ -773,10 +832,19 @@ function generateBalancedWeek(forceAll = false, filtersArg) {
 
   // Tirage proportionnel à la place de chaque type de plat dans le catalogue (filtré), sans doublon
   const need = newPlan.filter(x => x === null).length;
-  const res = GL.pickMenu({
+  const pickOpts = {
     recipes: state.recipes, count: need, filters, excludeIds: [...lockedRecipeIds],
     favorites: state.favorites, notes: state.notes, mood: state.weatherMood
-  });
+  };
+  const budgetMax = Number(filters.budgetMax) || 0;
+  if (budgetMax > 0) { // « 7 repas à moins de X € » : on remplace les plats les plus chers
+    pickOpts.budget = budgetMax; pickOpts.costOf = recipeMealCost;
+    pickOpts.fixedCost = [...lockedRecipeIds].reduce((sum, id) => { const r = state.recipes.find(x => x.id === id); return sum + (r ? recipeMealCost(r) : 0); }, 0);
+  }
+  const res = GL.pickMenu(pickOpts);
+  state._budgetMsg = budgetMax > 0 && res.cost != null
+    ? (res.withinBudget ? `Menu à ≈ ${euro(res.cost + (pickOpts.fixedCost || 0))} (budget ${euro(budgetMax)})` : `Impossible sous ${euro(budgetMax)} avec ces filtres : ≈ ${euro(res.cost + (pickOpts.fixedCost || 0))} (les moins chers choisis)`)
+    : null;
   if (res.ids.length === 0 && need > 0) {
     showToast('Aucun plat ne correspond à ces filtres');
     return;
@@ -1010,10 +1078,24 @@ function renderAtHomeSection(container, atHome) {
   det.querySelectorAll('.btn-need').forEach(btn => btn.addEventListener('click', (e) => {
     const id = e.currentTarget.dataset.id;
     state.pantry = state.pantry.filter(x => x !== id);
+    delete state.pantryExpiry[id];
     if (!state.pantryNeeded.includes(id)) state.pantryNeeded.push(id);
     saveToLocalStorage();
     renderGroceries();
   }));
+}
+
+// Saisie manuelle du total d'un ticket (sans photo)
+async function recordTicketManually() {
+    const v = await promptDialog({ title: 'Ticket de caisse', message: 'Total payé (en €) : il sert à ajuster le budget estimé à vos vrais prix.', placeholder: 'ex. 63,40', confirmLabel: 'Enregistrer' });
+    if (v === null || v === false) return;
+    const total = parseFloat(String(v).replace(',', '.').replace(/[^\d.]/g, ''));
+    if (!Number.isFinite(total) || total <= 0 || total > 5000) { showToast('Montant non reconnu'); return; }
+    const split = currentSplit();
+    state.trips.push({ t: Date.now(), total: Math.round(total * 100) / 100, est: GL.estimateCost(split.toBuy), items: split.toBuy.length, r: {} });
+    state.trips = state.trips.slice(-30);
+    saveToLocalStorage(); renderGroceries();
+    showToast(`Ticket de ${total.toFixed(2).replace('.', ',')} € enregistré`);
 }
 
 // Budget : courbe des derniers tickets, moyenne par ticket et par semaine
@@ -1030,7 +1112,31 @@ function renderBudgetCard() {
       ${pts.length > 1 ? `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
       ${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3.2" fill="currentColor"/>`).join('')}
     </svg>
-    <p class="text-xs text-slate-600 mt-1.5">Ticket moyen <b>${Math.round(st.avgTicket)} €</b>${st.perWeek ? ` · environ <b>${Math.round(st.perWeek)} € par semaine</b>` : ''} · dernier ticket ${Math.round(vals[vals.length - 1])} €</p>`;
+    <p class="text-xs text-slate-600 mt-1.5">Ticket moyen <b>${Math.round(st.avgTicket)} €</b>${st.perWeek ? ` · environ <b>${Math.round(st.perWeek)} € par semaine</b>` : ''} · dernier ticket ${Math.round(vals[vals.length - 1])} €</p>
+    ${budgetDetailsHTML(st)}`;
+}
+// Statistiques issues des tickets lus : dépenses par rayon et achats fréquents (prix réels appris)
+function budgetDetailsHTML(st) {
+  const money = (v) => (Math.round(v * 100) / 100).toFixed(2).replace('.', ',');
+  const byRayon = {};
+  st.last.forEach(t => Object.entries(t.r || {}).forEach(([k, v]) => { byRayon[k] = (byRayon[k] || 0) + v; }));
+  const names = Object.fromEntries(GRAND_FRAIS_RAYONS.map(r => [r.id, r.name]));
+  const rows = Object.entries(byRayon).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]);
+  let html = '';
+  if (rows.length) {
+    const max = rows[0][1], sum = rows.reduce((s, r) => s + r[1], 0);
+    html += `<p class="text-[12px] font-bold uppercase tracking-wider text-slate-400 mt-3 mb-1">Dépenses par rayon (tickets lus)</p>` + rows.map(([k, v]) => `
+      <div class="flex items-center gap-2 text-xs py-0.5"><span class="w-28 truncate text-slate-600">${esc(names[k] || 'Autres')}</span>
+        <span class="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden"><span class="block h-full rounded-full bg-brand-600" style="width:${Math.max(4, Math.round(v / max * 100))}%"></span></span>
+        <span class="w-20 text-right font-semibold text-slate-700">${money(v)} € <span class="text-slate-400 font-normal">${Math.round(v / sum * 100)} %</span></span></div>`).join('');
+  }
+  const book = Object.entries(state.priceBook || {}).sort((a, b) => b[1].n - a[1].n || b[1].t - a[1].t).slice(0, 5);
+  if (book.length) {
+    html += `<p class="text-[12px] font-bold uppercase tracking-wider text-slate-400 mt-3 mb-1">Vos achats fréquents (prix réels)</p>` + book.map(([id, b]) => `
+      <div class="flex items-center justify-between text-xs py-0.5"><span class="text-slate-700 truncate">${esc(id.charAt(0).toUpperCase() + id.slice(1))}</span>
+        <span class="text-slate-500 whitespace-nowrap">${b.kg ? money(b.kg) + ' €/kg' : money(b.u) + ' €/pièce'} · ${b.n} ticket${b.n > 1 ? 's' : ''}</span></div>`).join('');
+  }
+  return html;
 }
 
 function renderPantryCard() {
@@ -1051,7 +1157,7 @@ function renderPantryCard() {
     <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-stock-basics" class="w-4 h-4 rounded" ${state.stockBasics ? 'checked' : ''}>
       <span class="text-slate-700 font-semibold">Huile, farine, sucre, vinaigres, moutarde à la maison</span></label>
     ${state.pantry.length ? `<div class="space-y-1.5"><p class="${h}">Mon placard</p>
-      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => { const st = state.pantryStock[id]; const q = st ? ' · ' + formatQuantityAndUnit(st.qty, st.unit) : ''; return `<span class="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800"><button type="button" class="pantry-qty pl-2.5 pr-1 py-1" data-id="${esc(id)}" aria-label="Quantité en stock : ${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))}${esc(q)} ✎</button><button type="button" class="pantry-remove pr-2.5 pl-1 py-1" data-id="${esc(id)}" aria-label="Retirer ${esc(id)} du placard">✕</button></span>`; }).join('')}</div></div>` : ''}
+      <div class="flex gap-1.5 flex-wrap">${state.pantry.map(id => { const st = state.pantryStock[id]; const q = st ? ' · ' + formatQuantityAndUnit(st.qty, st.unit) : ''; const ex = state.pantryExpiry[id]; const late = ex && ex <= Date.now() + 2 * 86400000; return `<span class="inline-flex items-center rounded-full border ${late ? 'bg-amber-50 border-amber-300 text-amber-900' : 'bg-emerald-50 border-emerald-200 text-emerald-800'}"><button type="button" class="pantry-qty pl-2.5 pr-1 py-1" data-id="${esc(id)}" aria-label="Quantité en stock : ${esc(id)}">${esc(id.charAt(0).toUpperCase() + id.slice(1))}${esc(q)} ✎</button>${ex ? `<button type="button" class="pantry-date px-1 py-1 text-[12px] font-semibold" data-id="${esc(id)}" aria-label="Date limite de ${esc(id)}">avant ${esc(dayLabel(ex))}</button>` : ''}<button type="button" class="pantry-remove pr-2.5 pl-1 py-1" data-id="${esc(id)}" aria-label="Retirer ${esc(id)} du placard">✕</button></span>`; }).join('')}</div></div>` : ''}
     <div class="flex gap-1.5 flex-wrap pt-1">
       <button type="button" class="off-load px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Nutri-Score de ma liste</button>
       <button type="button" class="off-scan px-2.5 py-1.5 rounded-full font-semibold border border-slate-200 bg-white text-slate-600">Scanner un produit</button>
@@ -1069,6 +1175,7 @@ function setupPantryCard() {
   body.addEventListener('click', (e) => {
     const t = e.target.closest('button');
     if (!t) return;
+    if (t.classList.contains('pantry-date')) { editExpiry(t.dataset.id); return; }
     if (t.classList.contains('pantry-qty')) {
       const id = t.dataset.id;
       promptDialog({ title: 'Quantité en stock', message: `Combien de « ${id} » avez-vous ? (ex. 800 g, 1,5 L, 6). Elle diminue quand vous cuisinez une recette. Vide = ne pas suivre.`, value: state.pantryStock[id] ? formatQuantityAndUnit(state.pantryStock[id].qty, state.pantryStock[id].unit) : '' }).then(v => {
@@ -1078,6 +1185,7 @@ function setupPantryCard() {
         else if (parsed) state.pantryStock[id] = parsed;
         else { showToast('Quantité non reconnue'); return; }
         saveToLocalStorage(); renderGroceries();
+        if (!state.pantryExpiry[id]) editExpiry(id);
       });
       return;
     }
@@ -1097,6 +1205,7 @@ function setupPantryCard() {
       [ids[i], ids[j]] = [ids[j], ids[i]];
       state.aisleOrder = ids;
     } else if (t.classList.contains('pantry-remove')) {
+      delete state.pantryExpiry[t.dataset.id];
       state.pantry = state.pantry.filter(x => x !== t.dataset.id);
     } else return;
     saveToLocalStorage();
@@ -1154,6 +1263,7 @@ function consumeStockForRecipe(recipe) {
   state.pantryStock = r.stock;
   r.depleted.forEach(id => {
     state.pantry = state.pantry.filter(x => x !== id);
+    delete state.pantryExpiry[id];
     if (!state.pantryNeeded.includes(id)) state.pantryNeeded.push(id);
   });
   saveToLocalStorage(); renderGroceries();
@@ -1198,6 +1308,8 @@ function renderGenerateModal() {
       <div class="flex gap-1.5 flex-wrap">${genFlagHTML('budget', 'Pas cher')}${genFlagHTML('express', 'Moins de 20 min')}${genFlagHTML('onePan', '1 seule poêle')}${genFlagHTML('favoritesOnly', 'Mes favoris')}</div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">Régime</p>
       <div class="flex gap-1.5 flex-wrap">${genFlagHTML('noPork', 'Sans porc')}${genFlagHTML('noLactose', 'Sans lactose')}</div></div>
+    <div class="space-y-1.5"><p class="font-bold text-slate-700">Budget des repas <span class="font-normal text-slate-400">(facultatif)</span></p>
+      <div class="flex items-center gap-2"><input type="text" inputmode="numeric" id="gen-budget" class="w-24 border border-slate-200 rounded-xl px-3 py-2 text-xs" placeholder="ex. 60" value="${d.budgetMax ? esc(String(d.budgetMax)) : ''}" aria-label="Budget maximum en euros"><span class="text-slate-500">€ au maximum pour l'ensemble (pour ${state.portions} portion${state.portions > 1 ? 's' : ''})</span></div></div>
     <div class="space-y-1.5"><p class="font-bold text-slate-700">J'ai dans le frigo <span class="font-normal text-slate-400">(à utiliser en priorité)</span></p>
       <input type="text" id="gen-fridge" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs" placeholder="Ex : poulet, courgettes, champignons" value="${esc(d.fridge || '')}"></div>`;
   updateGenMatch();
@@ -1236,6 +1348,7 @@ function setupGenerateModal() {
   });
   document.getElementById('gen-body').addEventListener('input', (e) => {
     if (e.target.id === 'gen-fridge') genDraft.fridge = e.target.value;
+    if (e.target.id === 'gen-budget') { const v = parseInt(e.target.value.replace(/\D/g, ''), 10); if (Number.isFinite(v) && v > 0) genDraft.budgetMax = v; else delete genDraft.budgetMax; }
   });
   document.getElementById('btn-gen-reset').addEventListener('click', () => { genDraft = {}; renderGenerateModal(); });
   document.getElementById('btn-gen-go').addEventListener('click', async () => {
@@ -1246,7 +1359,7 @@ function setupGenerateModal() {
     const hadMeals = state.plan.some(Boolean);
     generateBalancedWeek(false, state.genFilters);
     if (hadMeals && takeSnapshot() !== snapshot) {
-      showToast('Nouveau menu généré', { action: 'Annuler', onAction: () => restoreSnapshot(snapshot) });
+      showToast(state._budgetMsg || 'Nouveau menu généré', { action: 'Annuler', duration: state._budgetMsg ? 8000 : undefined, onAction: () => restoreSnapshot(snapshot) });
     }
   });
 }
@@ -1320,87 +1433,146 @@ async function loadOffInfoForList() {
   showToast(ok ? `Infos trouvées pour ${ok} produit${ok > 1 ? 's' : ''}` : 'Aucune info trouvée (réseau ?)');
 }
 
-// --- Scanner de code-barres ---
-let scanStream = null, scanTimer = null;
+// --- Scanner de code-barres (caméra en direct : BarcodeDetector si présent, sinon ZXing embarqué ; repli : photo ou saisie) ---
+let scanStream = null, scanTimer = null, scanBusy = false;
 function stopScan() {
-  clearInterval(scanTimer); scanTimer = null;
+  clearInterval(scanTimer); scanTimer = null; scanBusy = false;
   if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
   const v = document.getElementById('scan-video');
   if (v) { v.srcObject = null; v.classList.add('hidden'); }
+}
+function onScanned(code) {
+  stopScan();
+  document.getElementById('scan-code').value = code;
+  if (navigator.vibrate) navigator.vibrate(60);
+  lookupScannedProduct(code);
+}
+async function startScanning() {
+  const note = document.getElementById('scan-camera-note');
+  stopScan();
+  note.textContent = '';
+  if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
+    note.textContent = 'Caméra indisponible ici : prenez le code en photo ou saisissez son numéro.'; return;
+  }
+  try {
+    scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 } }, audio: false });
+    const v = document.getElementById('scan-video');
+    v.setAttribute('playsinline', ''); v.muted = true;
+    v.srcObject = scanStream; v.classList.remove('hidden'); await v.play();
+    let detect;
+    if ('BarcodeDetector' in window) {
+      const detector = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e'] });
+      detect = async () => { const c = await detector.detect(v); return c.length ? c[0].rawValue : null; };
+    } else {
+      note.textContent = 'Préparation du lecteur…';
+      await getZxingReader();
+      const canvas = document.createElement('canvas');
+      detect = async () => {
+        const k = Math.min(1, 900 / (v.videoWidth || 900));
+        canvas.width = Math.round((v.videoWidth || 640) * k); canvas.height = Math.round((v.videoHeight || 480) * k);
+        canvas.getContext('2d', { willReadFrequently: true }).drawImage(v, 0, 0, canvas.width, canvas.height);
+        return decodeBarcodeCanvas(canvas);
+      };
+    }
+    note.textContent = 'Visez le code-barres (bien à plat, bien éclairé), ou prenez-le en photo ci-dessous.';
+    scanTimer = setInterval(async () => {
+      if (scanBusy || !scanStream) return;
+      scanBusy = true;
+      try { const code = await detect(); if (code && scanStream) onScanned(code); } catch (e) { /* image pas prête */ }
+      scanBusy = false;
+    }, 280);
+  } catch (e) {
+    stopScan();
+    note.textContent = /denied|permission|NotAllowed/i.test(String(e && (e.name || e.message))) ? 'Accès à la caméra refusé : autorisez-le dans les réglages du téléphone, ou prenez le code en photo.' : 'Caméra indisponible : prenez le code en photo ou saisissez son numéro.';
+  }
 }
 async function openScanModal() {
   const modal = document.getElementById('scan-modal');
   modal.classList.remove('hidden');
   document.getElementById('scan-result').innerHTML = '';
-  const note = document.getElementById('scan-camera-note');
-  note.textContent = '';
-  if ('BarcodeDetector' in window && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    try {
-      const detector = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e'] });
-      scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-      const v = document.getElementById('scan-video');
-      v.srcObject = scanStream; v.classList.remove('hidden'); await v.play();
-      scanTimer = setInterval(async () => {
-        try {
-          const codes = await detector.detect(v);
-          if (codes.length) { stopScan(); document.getElementById('scan-code').value = codes[0].rawValue; lookupScannedProduct(codes[0].rawValue); }
-        } catch (e) { /* image pas prête */ }
-      }, 400);
-      note.textContent = 'Visez le code-barres, ou saisissez-le ci-dessous.';
-      return;
-    } catch (e) { stopScan(); }
-  }
-  note.textContent = 'Scan par caméra indisponible sur cet appareil : saisissez le numéro sous le code-barres.';
+  document.getElementById('scan-code').value = '';
+  startScanning();
 }
 function closeScanModal() { stopScan(); document.getElementById('scan-modal').classList.add('hidden'); }
 
 function matchGroceryForProduct(name) {
-  const stop = new Set(['frais', 'fraiche', 'bio', 'nature', 'extra', 'fin', 'fins', 'pour', 'avec', 'sans', 'doux', 'tradition']);
-  const tok = (t) => GN.norm(t).replace(/[^a-z ]/g, ' ').split(/\s+/).filter(w => w.length > 3 && !stop.has(w)).map(w => w.replace(/s$/, ''));
-  const words = new Set(tok(name));
-  let best = null, bestScore = 0;
-  computeGroceries().forEach(g => {
-    const score = tok(g.name).filter(w => words.has(w)).length;
-    if (score > bestScore) { best = g; bestScore = score; }
-  });
-  return best;
+  const idx = getArticleIndex();
+  const hit = GR.matchArticle(String(name || ''), Object.keys(idx), (i) => normalizeIngredient(i));
+  return hit ? { id: articleId(hit), name: hit } : null;
 }
+// Quantité Open Food Facts (« 1 l », « 6 x 125 g », « 400 g ») → { qty, unit } ou null
+function parseOffQuantity(text) {
+  const t = String(text || '').toLowerCase().replace(',', '.').replace(/\s+/g, ' ');
+  const m = t.match(/^(?:(\d+)\s?[x×]\s?)?(\d+(?:\.\d+)?)\s?(kg|g|l|cl|ml)\b/);
+  if (!m) return null;
+  const r = GL.parseStockInput(`${m[2]} ${m[3]}`);
+  return r ? { qty: r.qty * (m[1] ? parseInt(m[1], 10) : 1), unit: r.unit } : null;
+}
+async function addScannedToPantry(p, suggestion) {
+  const v = await promptDialog({ title: 'Ajouter au placard', message: 'Nom de l\'ingrédient dans votre placard (il disparaît des courses quand une recette l\'utilise) :', value: suggestion, confirmLabel: 'Ajouter' });
+  if (v === null || v === false) return false;
+  const name = cleanStr(v, 80);
+  if (!name) return false;
+  const id = articleId(name);
+  if (!state.pantry.includes(id)) state.pantry.push(id);
+  state.pantryNeeded = state.pantryNeeded.filter(x => x !== id);
+  const q = p && parseOffQuantity(p.quantity);
+  if (q) state.pantryStock[id] = q;
+  saveToLocalStorage(); renderGroceries();
+  showToast(`« ${name} » ajouté au placard${q ? ' (' + formatQuantityAndUnit(q.qty, q.unit) + ')' : ''}`);
+  return true;
+}
+function cleanProductName(n) { return cleanStr(String(n || '').replace(/\s+/g, ' ').trim(), 60); }
 async function lookupScannedProduct(code) {
   const out = document.getElementById('scan-result');
   out.innerHTML = '<p class="text-slate-400">Recherche…</p>';
-  let p = null;
-  try { p = await GN.offProduct(code, (u) => fetch(u)); }
-  catch (e) { out.innerHTML = '<p class="text-rose-600">Impossible de joindre Open Food Facts (réseau ?).</p>'; return; }
-  if (!p) { out.innerHTML = '<p class="text-slate-500">Produit introuvable dans Open Food Facts.</p>'; return; }
+  let p = null, failed = false;
+  try { p = await GN.offProduct(code, (u) => fetch(u)); } catch (e) { failed = true; }
+  const againBtn = '<button type="button" id="btn-scan-again" class="px-2.5 py-1.5 rounded-xl font-bold bg-slate-100 text-slate-700">Scanner un autre produit</button>';
+  const wire = () => { const b = document.getElementById('btn-scan-again'); if (b) b.addEventListener('click', () => { out.innerHTML = ''; document.getElementById('scan-code').value = ''; startScanning(); }); };
+  if (failed || !p) {
+    out.innerHTML = `<div class="ios-card p-3 space-y-2">
+      <p class="${failed ? 'text-rose-600' : 'text-slate-500'}">${failed ? 'Impossible de joindre Open Food Facts (réseau ?).' : 'Produit introuvable dans Open Food Facts.'}</p>
+      <div class="flex gap-2 flex-wrap"><button type="button" id="btn-scan-manual" class="px-2.5 py-1.5 rounded-xl font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">Ajouter au placard (saisir le nom)</button>${againBtn}</div></div>`;
+    document.getElementById('btn-scan-manual').addEventListener('click', async () => { if (await addScannedToPantry(null, '')) { out.innerHTML = ''; startScanning(); } });
+    wire(); return;
+  }
   const match = matchGroceryForProduct(p.name);
+  const suggestion = match ? match.name : cleanProductName(p.name);
   const grade = p.grade ? nutriBadge(p.grade, 26, 'Nutri-Score') : '<span class="text-slate-400">Nutri-Score non disponible</span>';
   out.innerHTML = `
     <div class="ios-card p-3 space-y-2">
-      <div><p class="font-bold text-slate-800 text-sm">${esc(p.name || 'Produit sans nom')}</p><p class="text-slate-400">${esc(p.brand)}</p></div>
+      <div><p class="font-bold text-slate-800 text-sm">${esc(p.name || 'Produit sans nom')}</p><p class="text-slate-400">${esc(p.brand)}${p.quantity ? ' · ' + esc(p.quantity) : ''}</p></div>
       <div class="flex items-center gap-2 flex-wrap">${grade}${p.nova ? `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold">NOVA ${p.nova}</span>` : ''}</div>
       <p class="text-slate-600">${p.kcal != null ? `<b>${p.kcal}</b> kcal` : ''}${p.protein != null ? ` · ${p.protein} g protéines` : ''}${p.carbs != null ? ` · ${p.carbs} g glucides` : ''}${p.fat != null ? ` · ${p.fat} g lipides` : ''} <span class="text-slate-400">pour 100 g</span></p>
       ${p.allergens.length ? `<p class="text-amber-700">Allergènes : ${p.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</p>` : ''}
       <div class="flex gap-2 flex-wrap pt-1">
-        ${match ? `<button type="button" id="btn-scan-pantry" data-id="${esc(match.id)}" class="px-2.5 py-1.5 rounded-xl font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">« ${esc(match.name)} » au placard</button>` : ''}
-        <button type="button" id="btn-scan-staple" data-name="${esc(p.name)}" class="px-2.5 py-1.5 rounded-xl font-bold bg-white text-slate-700 border border-slate-200">Ajouter aux articles courants</button>
+        <button type="button" id="btn-scan-pantry" class="px-3 py-2 rounded-xl font-bold bg-brand-600 text-white active:scale-95">Ajouter au placard</button>
+        <button type="button" id="btn-scan-staple" data-name="${esc(cleanProductName(p.name))}" class="px-2.5 py-2 rounded-xl font-bold bg-white text-slate-700 border border-slate-200">À acheter (articles courants)</button>
+        ${againBtn}
       </div>
     </div>`;
-  const bp = document.getElementById('btn-scan-pantry');
-  if (bp) bp.addEventListener('click', () => {
-    if (!state.pantry.includes(bp.dataset.id)) state.pantry.push(bp.dataset.id);
-    state.pantryNeeded = state.pantryNeeded.filter(x => x !== bp.dataset.id);
-    saveToLocalStorage(); renderGroceries(); showToast('Ajouté au placard');
-  });
-  document.getElementById('btn-scan-staple').addEventListener('click', (e) => {
-    state.staples.push({ id: 'staple_' + Date.now(), name: cleanStr(e.currentTarget.dataset.name, 80), checked: false });
-    saveToLocalStorage(); renderGroceries(); showToast('Ajouté aux articles courants'); queueNotification({ staple: state.staples[state.staples.length - 1].name });
-  });
+  document.getElementById('btn-scan-pantry').addEventListener('click', async () => { if (await addScannedToPantry(p, suggestion)) { out.innerHTML = ''; startScanning(); } });
+  document.getElementById('btn-scan-staple').addEventListener('click', (e) => { addStaple(e.currentTarget.dataset.name); showToast('Ajouté aux articles courants'); });
+  wire();
 }
 function setupScanModal() {
   const modal = document.getElementById('scan-modal');
   if (!modal) return;
   document.getElementById('btn-close-scan').addEventListener('click', closeScanModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeScanModal(); });
+  const photo = document.getElementById('scan-file');
+  document.getElementById('btn-scan-photo').addEventListener('click', () => photo.click());
+  photo.addEventListener('change', async () => {
+    const f = photo.files && photo.files[0]; photo.value = '';
+    if (!f) return;
+    stopScan();
+    document.getElementById('scan-result').innerHTML = '<p class="text-slate-400">Lecture de la photo…</p>';
+    let code = null;
+    try { code = await decodeBarcodeFile(f); } catch (e) { /* lecteur indisponible */ }
+    if (code) { document.getElementById('scan-code').value = code; lookupScannedProduct(code); }
+    else document.getElementById('scan-result').innerHTML = '<p class="text-rose-600">Code-barres non lu : rapprochez-vous, évitez les reflets, ou saisissez le numéro.</p>';
+  });
   document.getElementById('scan-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const v = document.getElementById('scan-code').value;
@@ -1694,8 +1866,19 @@ function renderAll() {
 }
 
 // 1. Rendu du Planning (liste de plats sans limitation de nombre ni de jours fixes)
+// « · ≈ 54 € » : coût estimé des repas encore à acheter (un repas « gardé » est déjà acheté : son prix disparaît)
+function planCostLabel() {
+  let total = 0, n = 0;
+  state.plan.forEach((id, i) => {
+    if (state.lockedSlots.includes(i)) return;
+    const r = state.recipes.find(x => x.id === id);
+    if (r) { total += recipeMealCost(r); n++; }
+  });
+  return n ? ` · ≈ ${euro(total)}` : '';
+}
 function renderPlanning() {
   updatePlanningTitle();
+  renderWeekBalance();
   const container = document.getElementById('weekly-days-list');
   if (!container) return;
   container.innerHTML = '';
@@ -1715,7 +1898,7 @@ function renderPlanning() {
   headerDiv.className = 'flex items-center justify-between px-1 pb-1 flex-wrap gap-2';
   headerDiv.innerHTML = `
     <div class="flex items-center gap-2 flex-wrap">
-      <span class="text-xs font-bold text-slate-700">${state.plan.length} repas sélectionné${state.plan.length > 1 ? 's' : ''}</span>
+      <span class="text-xs font-bold text-slate-700">${state.plan.length} repas sélectionné${state.plan.length > 1 ? 's' : ''}${planCostLabel()}</span>
     </div>
     <button id="btn-add-meal-slot" class="text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-xl flex items-center gap-1 active:scale-95 transition-all">
       <span>+</span> Ajouter un plat
@@ -1789,6 +1972,7 @@ function renderPlanning() {
             <h3 class="font-bold text-sm text-slate-900 leading-snug">${esc(recipe.title)}</h3>
             <div class="flex items-center gap-2 mt-2 text-[11px] text-slate-600 font-medium flex-wrap">
               <span>⏱️ ${recipe.timeMinutes} min</span>
+              ${isLocked ? '' : `<span>•</span><span>≈ ${euro(recipeMealCost(recipe))}</span>`}
               <span>•</span>
               <span class="text-emerald-700 font-semibold">${esc(recipe.tag)}</span>
               ${recipe.isBudget ? `<span class="text-amber-700 font-semibold bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
@@ -1920,18 +2104,19 @@ function setupGrocerySwipe() {
 }
 
 // Ajout d'un produit courant : s'il existe déjà, la quantité augmente (« Lait ×3 »)
-function addStaple(name) {
+function addStaple(name, qty = 1, silent = false) {
   const val = cleanStr(name, 80);
   if (!val) return;
   const same = state.staples.find(x => x.name.toLowerCase() === val.toLowerCase());
-  if (same) { same.qty = Math.min(99, (same.qty || 1) + 1); same.checked = false; }
-  else state.staples.push({ id: 'staple_' + Date.now() + '_' + Math.floor(Math.random() * 1000), name: val, checked: false, qty: 1 });
+  if (same) { same.qty = Math.min(99, (same.qty || 1) + qty); same.checked = false; }
+  else state.staples.push({ id: 'staple_' + Date.now() + '_' + Math.floor(Math.random() * 1000), name: val, checked: false, qty: Math.max(1, qty) });
   const h = state.stapleHistory[val] || { n: 0, last: 0 };
   state.stapleHistory[val] = { n: h.n + 1, last: Date.now() };
+  queueNotification({ staple: val });
+  if (silent) return;
   saveToLocalStorage();
   renderGroceries();
   renderHabituals();
-  queueNotification({ staple: val });
 }
 // « Vos habituels » : les produits les plus ajoutés (sinon une base), sans ceux déjà dans la liste
 function renderHabituals() {
@@ -1966,10 +2151,12 @@ function renderGroceries() {
   const percentage = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
   document.getElementById('courses-progress-bar').style.width = `${percentage}%`;
   const factor = GL.priceFactor(state.trips);
-  const cost = Math.round(GL.estimateCost(groceries) * factor);
+  const budget = GL.estimateBudget(groceries, factor, (i) => GR.learnedPrice(i, state.priceBook));
+  const stp = staplesCost();   // produits courants déjà vus sur un ticket : leur vrai prix s'ajoute au panier
+  const cost = Math.round(budget.total + stp.total);
   const lastTrip = (state.trips || [])[state.trips.length - 1];
   document.getElementById('courses-stats-label').textContent = `${checkedCount} / ${totalItems} article${totalItems > 1 ? 's' : ''} trouvé${checkedCount > 1 ? 's' : ''}`;
-  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €${factor !== 1 ? ' (selon vos tickets)' : ''}${lastTrip ? ` · dernier ticket ${Math.round(lastTrip.total)} €` : ''}` : (lastTrip ? `Dernier ticket ${Math.round(lastTrip.total)} €` : '');
+  document.getElementById('courses-budget-label').textContent = cost > 0 ? `Budget ≈ ${cost} €${budget.real + stp.n ? ` (${budget.real + stp.n} article${budget.real + stp.n > 1 ? 's' : ''} à vos prix réels${stp.n ? `, dont ${euro(stp.total)} de produits courants` : ''})` : (factor !== 1 ? ' (selon vos tickets)' : '')}${lastTrip ? ` · dernier ticket ${Math.round(lastTrip.total)} €` : ''}` : (lastTrip ? `Dernier ticket ${Math.round(lastTrip.total)} €` : '');
   
   // Badge sur l'onglet inférieur
   const navBadge = document.getElementById('nav-badge-groceries');
@@ -2030,6 +2217,7 @@ function renderGroceries() {
     // En-tête du rayon (toucher pour replier / déplier)
     const rayonDone = leftInRayon === 0;
     const justDone = rayonDone && !celebratedRayons.has(rayon.id);
+    if (justDone && settleId !== null) setTimeout(tickFeedback, 0); // seulement quand c'est vous qui venez de cocher
     if (rayonDone) celebratedRayons.add(rayon.id); else celebratedRayons.delete(rayon.id);
     section.innerHTML = `
       <div class="bg-slate-50 border-b border-slate-100 flex items-center">
@@ -2075,6 +2263,7 @@ function renderGroceries() {
               ${qtyStr ? `<span class="font-bold text-xs text-brand-700">${qtyStr}</span>` : ''}
               <span class="text-xs text-slate-800 font-medium">${esc(item.name)}</span>
               ${isStapleRayon && (item.qty || 1) > 1 ? `<span class="font-bold text-xs text-brand-700">×${item.qty}</span>` : ''}
+              ${isStapleRayon && GR.staplePrice(item, state.priceBook) != null ? `<span class="text-[12px] text-slate-400">≈ ${euro(GR.staplePrice(item, state.priceBook))}</span>` : ''}
               ${isStapleRayon ? '' : offBadgeHTML(item.name)}
             </div>
             ${item.recipes && item.recipes.length > 0 ? `
@@ -2200,6 +2389,7 @@ function recipeCardHTML(recipe, idx = 99) {
             </div>
             <div class="flex items-center gap-1.5">
               ${recipe.isBudget ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
+              <span class="text-[11px] text-slate-500 font-medium">≈ ${money(recipePP(recipe))} €/portion</span>
               <span class="text-[11px] text-slate-500 font-medium">⏱️ ${esc(recipe.timeMinutes)} min</span>
             </div>
           </div>
@@ -2292,7 +2482,7 @@ function renderCatalog(resetLimit = false) {
 
   // Tri
   if (state.sortOption === 'budget') {
-    filtered.sort((a, b) => (b.isBudget ? 1 : 0) - (a.isBudget ? 1 : 0));
+    filtered.sort((a, b) => recipePP(a) - recipePP(b));
   } else if (state.sortOption === 'fastest') {
     filtered.sort((a, b) => a.timeMinutes - b.timeMinutes);
   } else if (state.sortOption === 'random') {
@@ -2431,6 +2621,8 @@ function openRecipeDetail(recipeId) {
   renderNotesRow();
   renderNutritionCard(recipe);
   
+  const costEl = document.getElementById('detail-recipe-cost');
+  if (costEl) costEl.textContent = `≈ ${money(recipePP(recipe))} € / portion · ≈ ${euro(recipeMealCost(recipe))} pour ${state.portions}`;
   const budgetBadge = document.getElementById('detail-recipe-budget');
   if (recipe.isBudget) {
     budgetBadge.classList.remove('hidden');
@@ -3040,6 +3232,7 @@ function setupEventListeners() {
   setupMoreFilters();
   setupLeftoversModal();
   setupNotifySettings();
+  setupTicketModal();
   setupBackupUI();
   initSyncMonitoring();
   document.getElementById('btn-clear-menu').addEventListener('click', clearMenu);
@@ -3068,17 +3261,8 @@ function setupEventListeners() {
     document.querySelectorAll('.more-menu').forEach(m => m.classList.add('hidden'));
     document.querySelectorAll('.more-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
   });
-  document.getElementById('btn-record-ticket').addEventListener('click', async () => {
-    const v = await promptDialog({ title: 'Ticket de caisse', message: 'Total payé (en €) : il sert à ajuster le budget estimé à vos vrais prix.', placeholder: 'ex. 63,40', confirmLabel: 'Enregistrer' });
-    if (v === null || v === false) return;
-    const total = parseFloat(String(v).replace(',', '.').replace(/[^\d.]/g, ''));
-    if (!Number.isFinite(total) || total <= 0 || total > 5000) { showToast('Montant non reconnu'); return; }
-    const split = currentSplit();
-    state.trips.push({ t: Date.now(), total: Math.round(total * 100) / 100, est: GL.estimateCost(split.toBuy), items: split.toBuy.length });
-    state.trips = state.trips.slice(-30);
-    saveToLocalStorage(); renderGroceries();
-    showToast(`Ticket de ${total.toFixed(2).replace('.', ',')} € enregistré`);
-  });
+  document.getElementById('btn-record-ticket').addEventListener('click', openTicketModal);
+  document.getElementById('btn-menu-scan').addEventListener('click', openScanModal);
   document.getElementById('btn-open-pantry').addEventListener('click', () => {
     const d = document.getElementById('pantry-card'); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });

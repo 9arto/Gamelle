@@ -557,3 +557,14 @@ html:where(.dark) .rayon-done { background:#064e3b; color:#6ee7b7; }
 
 /* Pastilles : de la place en haut/à gauche pour les badges (le défilement horizontal coupe ce qui dépasse) */
 .meal-strip { padding: 8px 6px 4px; }
+.duration-200 { transition-duration: 200ms; } .max-h-40 { max-height: 10rem; } .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; } .whitespace-pre-wrap { white-space: pre-wrap; }
+.mt-3 { margin-top: .75rem; } .text-right { text-align: right; } .w-28 { width: 7rem; }
+
+/* Transition douce entre les onglets */
+@keyframes tabIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+.tab-content.active { animation: tabIn .24s ease-out; }
+/* Cartes de recettes : la photo apparaît en fondu quand elle est chargée (squelette animé avant) */
+@keyframes imgIn { from { opacity: 0; } to { opacity: 1; } }
+img.img-loaded { animation: imgIn .35s ease-out; }
+@media (prefers-reduced-motion: reduce) { .tab-content.active, img.img-loaded { animation: none; } }
+.z-\[60\] { z-index: 60; } .min-h-\[1rem\] { min-height: 1rem; } .w-8 { width: 2rem; } .w-14 { width: 3.5rem; }

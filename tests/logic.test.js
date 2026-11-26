@@ -304,3 +304,69 @@ test('budget : moyenne par ticket et par semaine', () => {
   assert.equal(Math.round(s.perWeek), 60); assert.equal(s.avgTicket, 60);
   assert.equal(L.budgetStats(Array.from({ length: 20 }, (_, i) => ({ t: i * D * 7, total: 10 + i }))).last.length, 12);
 });
+
+test('budget du panier : prix appris sur les tickets, estimation × coefficient pour le reste', () => {
+  const items = [{ id: 'a', quantity: 1000, baseUnit: 'g', rayon: 'boucherie' }, { id: 'b', quantity: 1000, baseUnit: 'g', rayon: 'boucherie' }];
+  const learned = (i) => (i.id === 'a' ? 10 : null);
+  const r = L.estimateBudget(items, 1.5, learned);
+  assert.equal(r.real, 1); assert.equal(r.count, 2);
+  assert.equal(r.cost, Math.round(10 + 13 * 1.5), 'a : 10 € appris ; b : 13 €/kg (repli boucherie) × 1,5');
+  assert.equal(L.estimateBudget(items, 1).real, 0);
+});
+
+test('prix de référence : tous les articles courants ont un prix réaliste, aucune faute de frappe, coût par portion plausible', () => {
+  const recipes = loadRecipes();
+  const g = load(recipes);
+  const names = {};
+  const costs = [];
+  recipes.forEach((r) => {
+    g.state.plan = [r.id]; g.state.portions = 4;
+    const items = g.api.computeGroceries();
+    items.forEach((i) => { names[i.name] = (names[i.name] || 0) + 1; });
+    costs.push(L.estimateCost(items) / 4);
+  });
+  const unknown = Object.keys(L.REF_PRICES).filter((k) => !names[k]);
+  assert.deepEqual(unknown, [], 'noms absents du catalogue (faute de frappe ?)');
+  const missing = Object.keys(names).filter((k) => !L.REF_PRICES[k]);
+  assert.ok(missing.length <= 15, `${missing.length} articles sans prix de référence : ${missing.join(', ')}`);
+  costs.sort((a, b) => a - b);
+  const med = costs[Math.floor(costs.length / 2)];
+  assert.ok(med >= 2 && med <= 3.5, `coût médian par portion ${med} €`);
+  assert.ok(costs[costs.length - 1] <= 7, `coût max par portion ${costs[costs.length - 1]} €`);
+  // prix du ticket réel
+  assert.equal(L.refPrice({ name: 'Poivrons (rouges ou tricolores)', baseUnit: 'piece', quantity: 2 }), 2.1);
+  assert.equal(L.refPrice({ name: 'Pommes de terre fraîches', baseUnit: 'g', quantity: 1000 }), 1.75, '3,50 € les 2 kg');
+  assert.equal(L.refPrice({ name: 'Cheddar râpé', baseUnit: 'g', quantity: 140 }), 2.39);
+  assert.equal(L.refPrice({ name: 'Pâte ou poudre de curry doux', baseUnit: 'c. à café', quantity: 3 }), 0.25, 'une cuillère à soupe = 3 cuillères à café');
+  assert.equal(L.refPrice({ name: 'Filets de poulet frais', baseUnit: 'piece', quantity: 2 }), null, 'unité incompatible : pas de devinette');
+  assert.equal(L.refPrice({ name: 'Inconnu', baseUnit: 'g', quantity: 100 }), null);
+});
+
+test('menu selon un budget : remplace les plats chers, reste varié et respecte le plafond quand c\'est possible', () => {
+  const recipes = Array.from({ length: 60 }, (_, i) => ({ id: 'r' + i, title: 't' + i, type: ['vege', 'viande', 'volaille', 'poisson'][i % 4], ingredients: [], cost: 6 + (i % 12) * 2 })); // 6 à 28 €
+  const costOf = (r) => r.cost;
+  let seed = 7; const rng = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  for (let k = 0; k < 20; k++) {
+    const r = L.pickMenu({ recipes, count: 7, rng, budget: 60, costOf });
+    assert.equal(r.ids.length, 7); assert.equal(new Set(r.ids).size, 7, 'sans doublon');
+    assert.ok(r.cost <= 60 && r.withinBudget === true, `coût ${r.cost}`);
+  }
+  const impossible = L.pickMenu({ recipes, count: 7, rng, budget: 20, costOf });
+  assert.equal(impossible.withinBudget, false, '7 repas à 20 € : impossible, on le dit');
+  assert.ok(impossible.cost <= 7 * 12, 'mais on a pris les moins chers');
+  const withLocked = L.pickMenu({ recipes, count: 5, rng, budget: 60, costOf, fixedCost: 20 });
+  assert.ok(withLocked.cost <= 40, 'les repas gardés comptent dans le budget');
+  assert.equal(L.pickMenu({ recipes, count: 7, rng }).cost, null, 'sans budget : pas de calcul');
+});
+
+test('équilibre de la semaine et dates limites', () => {
+  const s = L.weekSummary([{ kcal: 600, protein: 35, veg: 250, type: 'volaille' }, { kcal: 500, protein: 12, veg: 60, type: 'vegetarien' }, { kcal: 700, protein: 30, veg: 150, type: 'vege' }]);
+  assert.equal(s.count, 3); assert.equal(s.kcal, 600); assert.equal(s.protein, 26); assert.equal(s.veg, 153);
+  assert.equal(s.lowVeg, 1); assert.equal(s.lowProtein, 1); assert.equal(s.types.vege, 2, 'végétarien = vege');
+  assert.equal(L.weekSummary([]).count, 0);
+  assert.equal(L.shelfDays('Filets de poulet frais', 'boucherie'), 3);
+  assert.equal(L.shelfDays('Yaourts (nature ou aux fruits)', 'cremerie'), 15);
+  assert.equal(L.shelfDays('Pommes de terre fraîches', 'fruits-legumes'), 21);
+  assert.equal(L.shelfDays('Riz blanc', 'epicerie'), 120);
+  assert.equal(L.shelfDays('Pavés de saumon frais', 'poissonnerie'), 2);
+});

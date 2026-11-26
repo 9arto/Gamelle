@@ -88,6 +88,8 @@
         <!-- Rempli dynamiquement en JS -->
       </div>
 
+      <div id="week-balance" class="hidden"></div>
+
       <!-- Bouton réinitialiser -->
       <div class="text-center pt-2">
         <button id="btn-clear-menu" class="text-xs text-slate-400 hover:text-red-500 font-medium transition-colors">
@@ -112,7 +114,8 @@
             <div id="groceries-more-menu" role="menu" class="more-menu hidden absolute right-0 top-full mt-2 w-60 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-30 divide-y divide-slate-100">
               <button id="btn-copy-groceries" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Copier la liste (WhatsApp, Notes)</button>
               <button id="btn-clear-checked" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Décocher tous les articles</button>
-              <button id="btn-record-ticket" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Noter le ticket de caisse</button>
+              <button id="btn-menu-scan" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Scanner un produit (placard)</button>
+              <button id="btn-record-ticket" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Ticket de caisse (photo ou total)</button>
               <button id="btn-open-pantry" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Placard &amp; réglages</button>
             </div>
           </div>
@@ -138,6 +141,10 @@
           <button type="submit" aria-label="Ajouter à la liste" class="bg-brand-600 text-white font-bold px-3 py-2 rounded-xl text-xs active:scale-95 hover:bg-brand-700">+</button>
         </form>
         <div id="staple-habituals" class="flex gap-1.5 overflow-x-auto scrollbar-none" aria-label="Vos habituels"></div>
+        <div class="flex gap-2">
+          <button type="button" id="btn-add-pack" class="flex-1 text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 rounded-xl py-2.5 active:scale-95"></button>
+          <button type="button" id="btn-edit-pack" class="px-3 text-xs font-bold text-slate-600 bg-slate-100 rounded-xl active:scale-95" aria-label="Modifier mon pack de la semaine">Modifier</button>
+        </div>
       </div>
 
       <!-- PLACARD & RÉGLAGES DES COURSES -->
@@ -260,6 +267,7 @@
             Système
           </button>
         </div>
+        <label class="flex items-center justify-between gap-3 pt-1 cursor-pointer"><span class="text-xs font-semibold text-slate-700">Sons et vibrations <span class="font-normal text-slate-400">(rayon terminé)</span></span><input type="checkbox" id="chk-feedback" class="w-5 h-5 rounded" checked></label>
       </div>
 
       <!-- Mise à jour de l'application -->
@@ -483,6 +491,7 @@
         <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 flex items-center justify-between">
           <div class="text-xs font-semibold text-slate-700">
             <span>⏱️ Préparation : <strong id="detail-recipe-time" class="text-slate-900">25 min</strong></span>
+            <span id="detail-recipe-cost" class="block text-slate-500 mt-0.5"></span>
           </div>
           <div class="flex items-center gap-1.5">
             <span class="text-xs text-slate-500 font-medium">Pour</span>
@@ -728,6 +737,8 @@
       <div class="flex-1 overflow-y-auto p-4 space-y-3 text-xs">
         <video id="scan-video" class="hidden w-full rounded-2xl bg-slate-900" playsinline muted></video>
         <p id="scan-camera-note" class="text-[11px] text-slate-400"></p>
+        <button type="button" id="btn-scan-photo" class="w-full bg-slate-100 text-slate-700 font-bold py-2.5 rounded-xl active:scale-95">Prendre le code-barres en photo</button>
+        <input type="file" id="scan-file" accept="image/*" capture="environment" class="hidden">
         <form id="scan-form" class="flex gap-2">
           <input type="text" id="scan-code" inputmode="numeric" autocomplete="off" placeholder="Code-barres (ex : 3017620422003)" class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-xs" aria-label="Code-barres">
           <button type="submit" class="px-3 py-2 rounded-xl text-xs font-bold bg-brand-600 text-white active:scale-95">Chercher</button>
@@ -735,6 +746,45 @@
         <div id="scan-result"></div>
       </div>
     </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : TICKET DE CAISSE (photo, lecture sur le téléphone)   -->
+  <!-- ============================================================ -->
+  <div id="ticket-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md max-h-[90vh] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-slate-800 text-sm">Ticket de caisse</h3>
+          <p class="text-xs text-slate-400">Prix réels et statistiques de courses</p>
+        </div>
+        <button id="btn-close-ticket" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" aria-label="Fermer">✕</button>
+      </div>
+      <div id="ticket-body" class="flex-1 overflow-y-auto p-4 space-y-3 text-xs"></div>
+      <input type="file" id="ticket-file-cam" accept="image/*" capture="environment" class="hidden">
+      <input type="file" id="ticket-file-lib" accept="image/*,application/pdf" class="hidden">
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : PACK DE LA SEMAINE                                   -->
+  <!-- ============================================================ -->
+  <div id="pack-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md max-h-[90vh] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div><h3 class="font-bold text-slate-800 text-sm">Mon pack de la semaine</h3><p class="text-xs text-slate-400">Ce que vous achetez chaque semaine, en un geste</p></div>
+        <button id="btn-close-pack" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" aria-label="Fermer">✕</button>
+      </div>
+      <div id="pack-body" class="flex-1 overflow-y-auto p-4 space-y-2 text-xs"></div>
+      <div class="p-4 border-t border-slate-100"><button type="button" id="btn-pack-save" class="w-full bg-brand-600 text-white font-bold py-3 rounded-2xl text-sm active:scale-95">Enregistrer le pack</button></div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : ACCUEIL EN 3 ÉTAPES (premier lancement)              -->
+  <!-- ============================================================ -->
+  <div id="onboarding-modal" class="fixed inset-0 z-[60] bg-slate-900/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4" role="dialog" aria-modal="true" aria-label="Bienvenue">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl p-6"><div id="onboarding-body"></div></div>
   </div>
 
   <!-- ============================================================ -->
@@ -890,10 +940,13 @@
 
   <!-- Scripts de l'application -->
   <script src="recipes.js"></script>
+  <script src="receipt.js"></script>
   <script src="logic.js"></script>
   <script src="nutrition.js"></script>
   <script src="groceries.js"></script>
   <script src="sync.js"></script>
+  <script src="ticket.js"></script>
+  <script src="extras.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

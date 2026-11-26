@@ -130,7 +130,7 @@ const imageId = (r) => (String(r.image).split('/').pop() || '').replace(/\.[a-z]
 
 // ---------------------------------------------------------------------------
 test('fichiers : app.js, recipes.js et sw.js se chargent sans erreur de syntaxe', () => {
-  for (const f of ['app.js', 'groceries.js', 'sync.js', 'theme.js', 'recipes.js', 'sw.js']) {
+  for (const f of ['app.js', 'groceries.js', 'sync.js', 'ticket.js', 'receipt.js', 'theme.js', 'recipes.js', 'sw.js']) {
     assert.doesNotThrow(() => new vm.Script(fs.readFileSync(path.join(ROOT, f), 'utf8'), { filename: f }), f);
   }
 });

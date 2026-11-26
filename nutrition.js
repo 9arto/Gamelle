@@ -173,7 +173,7 @@
   // ---------------------------------------------------------------- Open Food Facts (aucune clé nécessaire)
   const OFF_SEARCH = 'https://search.openfoodfacts.org/search';
   const OFF_PRODUCT = 'https://world.openfoodfacts.org/api/v2/product/';
-  const OFF_FIELDS = 'code,product_name,brands,nutriscore_grade,nova_group,allergens_tags,nutriments';
+  const OFF_FIELDS = 'code,product_name,brands,quantity,nutriscore_grade,nova_group,allergens_tags,nutriments';
 
   function mapAllergens(tags) {
     return [...new Set((tags || []).map((t) => OFF_ALLERGEN_MAP[t]).filter(Boolean))];
@@ -182,7 +182,7 @@
     const n = p.nutriments || {};
     const grade = /^[a-e]$/.test(p.nutriscore_grade || '') ? p.nutriscore_grade : null;
     return {
-      code: p.code || null, name: p.product_name || '', brand: String(Array.isArray(p.brands) ? p.brands[0] || '' : p.brands || '').split(',')[0].trim(), grade,
+      code: p.code || null, name: p.product_name || '', quantity: String(p.quantity || '').trim(), brand: String(Array.isArray(p.brands) ? p.brands[0] || '' : p.brands || '').split(',')[0].trim(), grade,
       nova: [1, 2, 3, 4].includes(Number(p.nova_group)) ? Number(p.nova_group) : null,
       allergens: mapAllergens(p.allergens_tags),
       kcal: Number.isFinite(n['energy-kcal_100g']) ? Math.round(n['energy-kcal_100g']) : null,
