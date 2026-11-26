@@ -112,7 +112,8 @@
             <div id="groceries-more-menu" role="menu" class="more-menu hidden absolute right-0 top-full mt-2 w-60 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-30 divide-y divide-slate-100">
               <button id="btn-copy-groceries" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Copier la liste (WhatsApp, Notes)</button>
               <button id="btn-clear-checked" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Décocher tous les articles</button>
-              <button id="btn-record-ticket" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Noter le ticket de caisse</button>
+              <button id="btn-menu-scan" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Scanner un produit (placard)</button>
+              <button id="btn-record-ticket" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Ticket de caisse (photo ou total)</button>
               <button id="btn-open-pantry" role="menuitem" class="more-item w-full text-left px-4 py-3 text-sm font-medium text-slate-800 active:bg-slate-100">Placard &amp; réglages</button>
             </div>
           </div>
@@ -728,12 +729,32 @@
       <div class="flex-1 overflow-y-auto p-4 space-y-3 text-xs">
         <video id="scan-video" class="hidden w-full rounded-2xl bg-slate-900" playsinline muted></video>
         <p id="scan-camera-note" class="text-[11px] text-slate-400"></p>
+        <button type="button" id="btn-scan-photo" class="w-full bg-slate-100 text-slate-700 font-bold py-2.5 rounded-xl active:scale-95">Prendre le code-barres en photo</button>
+        <input type="file" id="scan-file" accept="image/*" capture="environment" class="hidden">
         <form id="scan-form" class="flex gap-2">
           <input type="text" id="scan-code" inputmode="numeric" autocomplete="off" placeholder="Code-barres (ex : 3017620422003)" class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-xs" aria-label="Code-barres">
           <button type="submit" class="px-3 py-2 rounded-xl text-xs font-bold bg-brand-600 text-white active:scale-95">Chercher</button>
         </form>
         <div id="scan-result"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL : TICKET DE CAISSE (photo, lecture sur le téléphone)   -->
+  <!-- ============================================================ -->
+  <div id="ticket-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-md max-h-[90vh] rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-slate-800 text-sm">Ticket de caisse</h3>
+          <p class="text-xs text-slate-400">Prix réels et statistiques de courses</p>
+        </div>
+        <button id="btn-close-ticket" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-xs" aria-label="Fermer">✕</button>
+      </div>
+      <div id="ticket-body" class="flex-1 overflow-y-auto p-4 space-y-3 text-xs"></div>
+      <input type="file" id="ticket-file-cam" accept="image/*" capture="environment" class="hidden">
+      <input type="file" id="ticket-file-lib" accept="image/*" class="hidden">
     </div>
   </div>
 
@@ -890,10 +911,12 @@
 
   <!-- Scripts de l'application -->
   <script src="recipes.js"></script>
+  <script src="receipt.js"></script>
   <script src="logic.js"></script>
   <script src="nutrition.js"></script>
   <script src="groceries.js"></script>
   <script src="sync.js"></script>
+  <script src="ticket.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

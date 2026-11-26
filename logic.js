@@ -358,9 +358,19 @@
     if (u === 'ml') return { qty: q, unit: 'ml' };
     return { qty: q, unit: 'piece' };
   }
+  // Budget du panier : prix réels appris sur vos tickets quand on les connaît, estimation × coefficient sinon
+  function estimateBudget(items, factor, learned) {
+    let total = 0, real = 0;
+    (items || []).forEach((i) => {
+      const lp = learned ? learned(i) : null;
+      if (lp != null) { total += lp; real++; } else total += estimateItemPrice(i) * (factor || 1);
+    });
+    return { cost: Math.round(total), real, count: (items || []).length };
+  }
   // Coefficient « vos vrais prix » : médiane (ticket réel / estimation) des derniers tickets, borné pour rester prudent
   function priceFactor(trips) {
-    const r = (trips || []).filter((t) => t && t.est > 0 && t.total > 0).slice(-5).map((t) => t.total / t.est).sort((a, b) => a - b);
+    // t.cal : prix réel des seules lignes reconnues d'un ticket lu (comparé à l'estimation de ces lignes)
+    const r = (trips || []).filter((t) => t && t.est > 0 && (t.cal || t.total) > 0).slice(-5).map((t) => (t.cal || t.total) / t.est).sort((a, b) => a - b);
     if (r.length < 2) return 1; // pas assez d'historique : estimation brute
     const mid = r.length % 2 ? r[(r.length - 1) / 2] : (r[r.length / 2 - 1] + r[r.length / 2]) / 2;
     return Math.max(0.5, Math.min(2, mid));
@@ -404,7 +414,7 @@
     recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, priceFactor, budgetStats, consumeStock, parseStockInput,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, estimateBudget, priceFactor, budgetStats, consumeStock, parseStockInput,
     encryptPayload, decryptPayload, cryptoAvailable,
     weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
   };

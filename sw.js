@@ -1,10 +1,11 @@
 // Service worker Gamelle & Panier : fonctionne hors-ligne (magasin, sous-sol…)
-const VERSION = 'v61';
+const VERSION = 'v62';
 const APP_CACHE = `gamelle-app-${VERSION}`;
 const IMG_CACHE = 'gamelle-images-v1';
 const IMG_MAX = 250;
+const VENDOR_CACHE = 'gamelle-vendor-v1'; // lecteurs de codes-barres / tickets : gros fichiers, conservés d'une version à l'autre
 const ASSETS = [
-  './', './index.html', './styles.css', './tailwind.css', './app.js', './recipes.js', './logic.js', './nutrition.js', './theme.js', './groceries.js', './sync.js',
+  './', './index.html', './styles.css', './tailwind.css', './app.js', './recipes.js', './logic.js', './nutrition.js', './theme.js', './groceries.js', './sync.js', './receipt.js', './ticket.js',
   './manifest.json', './logo.svg', './icon-192.png', './icon-512.png', './apple-touch-icon.png'
 ];
 
@@ -20,7 +21,7 @@ self.addEventListener('message', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== APP_CACHE && k !== IMG_CACHE).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => k !== APP_CACHE && k !== IMG_CACHE && k !== VENDOR_CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -55,6 +56,20 @@ self.addEventListener('fetch', (e) => {
   }
 
   if (url.origin !== location.origin) return; // synchro ntfy, QR : réseau uniquement
+
+  // Bibliothèques embarquées (vendor/) : cache d'abord, téléchargées une seule fois
+  if (url.pathname.includes('/vendor/')) {
+    e.respondWith(
+      caches.open(VENDOR_CACHE).then(async (cache) => {
+        const hit = await cache.match(req);
+        if (hit) return hit;
+        const res = await fetch(req);
+        if (res && res.ok) cache.put(req, res.clone());
+        return res;
+      })
+    );
+    return;
+  }
 
   // Pages : réseau d'abord (toujours à jour), cache en secours hors-ligne
   if (req.mode === 'navigate') {

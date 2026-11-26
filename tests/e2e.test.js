@@ -304,3 +304,99 @@ test('navigateur : planning vide accueillant, pastilles, rayon « tout cocher »
     assert.deepEqual(errors, []);
   } finally { await browser.close(); srv.close(); }
 });
+
+// ------------------------------------------------------------------------------------------------
+// Scanner de codes-barres (ZXing embarqué) et lecture OCR d'un ticket, dans un vrai navigateur.
+// (La caméra en direct ne peut pas être testée ici ; on teste le décodage d'une image de code-barres.)
+// ------------------------------------------------------------------------------------------------
+const EAN_JS = `(code) => {
+  const L = ['0001101','0011001','0010011','0111101','0100011','0110001','0101111','0111011','0110111','0001011'];
+  const G = ['0100111','0110011','0011011','0100001','0011101','0111001','0000101','0010001','0001001','0010111'];
+  const R = ['1110010','1100110','1101100','1000010','1011100','1001110','1010000','1000100','1001000','1110100'];
+  const P = ['LLLLLL','LLGLGG','LLGGLG','LLGGGL','LGLLGG','LGGLLG','LGGGLL','LGLGLG','LGLGGL','LGGLGL'];
+  const d = code.split('').map(Number); const par = P[d[0]];
+  let bits = '101';
+  for (let i = 1; i <= 6; i++) bits += (par[i - 1] === 'L' ? L : G)[d[i]];
+  bits += '01010';
+  for (let i = 7; i <= 12; i++) bits += R[d[i]];
+  bits += '101';
+  const m = 3, quiet = 12, h = 160;
+  const c = document.createElement('canvas'); c.width = (bits.length + quiet * 2) * m; c.height = h;
+  const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, h); x.fillStyle = '#000';
+  for (let i = 0; i < bits.length; i++) if (bits[i] === '1') x.fillRect((quiet + i) * m, 10, m, h - 20);
+  return c;
+}`;
+
+test('navigateur : lecture d\'un code-barres EAN-13 (ZXing embarqué) et rejet d\'un faux code', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::/.test(m.text())) errors.push(m.text()); });
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+    const read = await page.evaluate(async (ean) => { const mk = eval(ean); return [await decodeBarcodeCanvas(mk('3017620422003')), await decodeBarcodeCanvas(mk('3560070048786'))]; }, EAN_JS);
+    assert.deepEqual(read, ['3017620422003', '3560070048786']);
+    assert.equal(await page.evaluate(() => [validBarcode('3017620422003'), validBarcode('3017620422004'), validBarcode('123')]).then((r) => r.join()), 'true,false,false');
+    // quantité Open Food Facts → stock du placard
+    assert.deepEqual(await page.evaluate(() => [parseOffQuantity('1 l'), parseOffQuantity('6 x 125 g'), parseOffQuantity('400 g'), parseOffQuantity('n/a')]), [{ qty: 1000, unit: 'ml' }, { qty: 750, unit: 'g' }, { qty: 400, unit: 'g' }, null]);
+
+    // Produit scanné → placard (Open Food Facts simulé), avec quantité
+    await page.route('**/world.openfoodfacts.org/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ status: 1, product: { product_name: 'Lait demi-écrémé UHT', brands: 'Marque', quantity: '1 l', nutriscore_grade: 'b', nova_group: 1, allergens_tags: ['en:milk'], nutriments: {} } }) }));
+    await page.evaluate(() => { switchTab('tab-courses'); openScanModal(); });
+    await page.fill('#scan-code', '3017620422003');
+    await page.click('#scan-form button[type="submit"]');
+    await page.click('#btn-scan-pantry');
+    await page.waitForSelector('.dlg-input');
+    assert.match(await page.inputValue('.dlg-input'), /Lait/i, 'nom proposé à partir du produit');
+    await page.click('.dlg-backdrop button.dlg-ok, .dlg-backdrop button:has-text("Ajouter")');
+    await page.waitForFunction(() => state.pantry.length >= 1);
+    const added = await page.evaluate(() => ({ pantry: state.pantry, stock: state.pantryStock }));
+    assert.ok(added.pantry.some((p) => /lait/.test(p)), 'dans le placard');
+    assert.deepEqual(Object.values(added.stock)[0], { qty: 1000, unit: 'ml' });
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});
+
+test('navigateur : photo d\'un ticket → lecture OCR → relecture → prix réels et statistiques', { skip: !chromium && 'Playwright non installé', timeout: 240000 }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::/.test(m.text())) errors.push(m.text()); });
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+    // Ticket « photographié » : texte monospace noir sur fond blanc (rendu par le navigateur)
+    const png = await page.evaluate(() => {
+      const lines = ['GRAND FRAIS', 'RUE DES LILAS PARIS', '22/11/2026 18:42', '', 'POULET FERMIER                12,40', '1,240 kg x 9,99 EUR/kg', 'COURGETTES                     2,10', 'TOMATES GRAPPE                 3,45',
+        'CREME FRAICHE EPAISSE          1,89', 'LAIT DEMI ECREME               2,30', '', 'TOTAL A PAYER                 22,14', 'CB SANS CONTACT               22,14'];
+      const c = document.createElement('canvas'); c.width = 900; c.height = 60 + lines.length * 46;
+      const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.fillStyle = '#111'; x.font = 'bold 30px "DejaVu Sans Mono", monospace';
+      lines.forEach((l, i) => x.fillText(l, 30, 55 + i * 46));
+      return c.toDataURL('image/png').split(',')[1];
+    });
+    await page.evaluate(() => { switchTab('tab-courses'); openTicketModal(); });
+    await page.setInputFiles('#ticket-file-lib', { name: 'ticket.png', mimeType: 'image/png', buffer: Buffer.from(png, 'base64') });
+    await page.waitForSelector('#ticket-total', { timeout: 200000 });
+    assert.equal(await page.inputValue('#ticket-total'), '22,14', 'total lu');
+    const names = await page.$$eval('.ticket-line', (els) => els.length);
+    assert.ok(names >= 4, `lignes lues : ${names}`);
+    await page.click('#btn-ticket-save');
+    const saved = await page.evaluate(() => ({ trips: state.trips, book: state.priceBook }));
+    assert.equal(saved.trips.length, 1);
+    assert.equal(saved.trips[0].total, 22.14);
+    assert.ok(Object.keys(saved.book).length >= 3, 'prix retenus : ' + Object.keys(saved.book).join(', '));
+    assert.ok(!(await page.isVisible('#ticket-modal')), 'fenêtre fermée');
+    await page.evaluate(() => { const D = 86400000; state.trips.unshift({ t: Date.now() - 8 * D, total: 50, est: 40, items: 10, r: {} }); saveToLocalStorage(); renderGroceries(); });
+    const card = await page.innerText('#budget-card-body');
+    assert.match(card, /Dépenses par rayon/);
+    assert.match(card, /achats fréquents/i);
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});

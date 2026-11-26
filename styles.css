@@ -557,3 +557,5 @@ html:where(.dark) .rayon-done { background:#064e3b; color:#6ee7b7; }
 
 /* Pastilles : de la place en haut/à gauche pour les badges (le défilement horizontal coupe ce qui dépasse) */
 .meal-strip { padding: 8px 6px 4px; }
+.duration-200 { transition-duration: 200ms; } .max-h-40 { max-height: 10rem; } .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; } .whitespace-pre-wrap { white-space: pre-wrap; }
+.mt-3 { margin-top: .75rem; } .text-right { text-align: right; } .w-28 { width: 7rem; }

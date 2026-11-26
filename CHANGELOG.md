@@ -2,6 +2,12 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 26/11/2026 — v62 : scanner qui marche sur iPhone et ticket de caisse en photo
+- **Scanner de codes-barres** : lecteur ZXing embarqué (l'iPhone n'a pas `BarcodeDetector`), photo du code en repli, contrôle de la clé EAN. **Ajout au placard** en deux touches (nom proposé, quantité Open Food Facts retenue comme stock), puis produit suivant.
+- **Ticket de caisse en photo** : lecture sur le téléphone (Tesseract embarqué, rien n'est envoyé), relecture (total, lignes), prix réels appris (`gamelle_price_book`) qui affinent le budget du panier, étalonnage sur les lignes reconnues, **statistiques de courses** (dépenses par rayon, achats fréquents).
+- Bibliothèques dans `vendor/` (Apache-2.0), téléchargées à la première utilisation puis en cache (`gamelle-vendor-v1`).
+- 94 tests dont lecture réelle d'un code-barres et OCR réel d'un ticket de synthèse.
+
 ## 25/11/2026 — v61 : fond du logo
 - Le fond du logo reprend le dégradé vert des bandeaux Planning et Liste de courses (émeraude → teal).
 

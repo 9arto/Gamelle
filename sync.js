@@ -179,7 +179,8 @@ function buildSyncPayload() {
     aisleOrder: state.aisleOrder || [],
     notes: state.notes || {},
     stapleHistory: state.stapleHistory || {},
-    trips: state.trips || []
+    trips: state.trips || [],
+    priceBook: state.priceBook || {}
   };
 }
 
@@ -202,6 +203,7 @@ function applyPayload(payload) {
   if (Array.isArray(payload.aisleOrder)) state.aisleOrder = sanitizeStringList(payload.aisleOrder, 10, 30);
   if (payload.stapleHistory) state.stapleHistory = sanitizeStapleHistory(payload.stapleHistory);
   if (Array.isArray(payload.trips)) state.trips = sanitizeTrips(payload.trips);
+  if (payload.priceBook && typeof payload.priceBook === 'object') state.priceBook = sanitizePriceBook(payload.priceBook);
   // Avis / historique : fusion recette par recette (le plus récent gagne), rien n'est écrasé en bloc
   if (payload.notes && typeof payload.notes === 'object') {
     const incoming = sanitizeNotes(payload.notes);

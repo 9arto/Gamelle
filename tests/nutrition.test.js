@@ -78,10 +78,10 @@ const resp = (body, ok = true) => ({ ok, json: async () => body });
 
 test('Open Food Facts : fiche produit par code-barres', async () => {
   let asked = '';
-  const fetchFn = async (u) => { asked = u; return resp({ status: 1, product: { product_name: 'Pâte à tartiner', brands: 'Marque A, B', nutriscore_grade: 'e', nova_group: 4, allergens_tags: ['en:milk', 'en:nuts', 'en:soybeans', 'en:inconnu'], nutriments: { 'energy-kcal_100g': 539, proteins_100g: 6.3, carbohydrates_100g: 57.5, fat_100g: 30.9 } } }); };
+  const fetchFn = async (u) => { asked = u; return resp({ status: 1, product: { product_name: 'Pâte à tartiner', brands: 'Marque A, B', quantity: '400 g', nutriscore_grade: 'e', nova_group: 4, allergens_tags: ['en:milk', 'en:nuts', 'en:soybeans', 'en:inconnu'], nutriments: { 'energy-kcal_100g': 539, proteins_100g: 6.3, carbohydrates_100g: 57.5, fat_100g: 30.9 } } }); };
   const p = await N.offProduct('3017 620422003', fetchFn);
   assert.ok(asked.startsWith('https://world.openfoodfacts.org/api/v2/product/3017620422003.json'));
-  assert.deepEqual(plain(p), { code: '3017620422003', name: 'Pâte à tartiner', brand: 'Marque A', grade: 'e', nova: 4, allergens: ['lait', 'fruits a coque', 'soja'], kcal: 539, protein: 6.3, carbs: 57.5, fat: 30.9 });
+  assert.deepEqual(plain(p), { code: '3017620422003', name: 'Pâte à tartiner', quantity: '400 g', brand: 'Marque A', grade: 'e', nova: 4, allergens: ['lait', 'fruits a coque', 'soja'], kcal: 539, protein: 6.3, carbs: 57.5, fat: 30.9 });
   assert.equal(await N.offProduct('123', fetchFn), null, 'code trop court : aucun appel réseau');
   assert.equal(await N.offProduct('3017620422003', async () => resp({ status: 0 })), null);
   assert.equal(await N.offProduct('3017620422003', async () => resp({}, false)), null);

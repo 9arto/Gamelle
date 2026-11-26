@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v61**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v62**.
 
 ---
 
@@ -30,12 +30,12 @@ Principes de conception (à ne pas casser) :
 | Élément | Détail |
 |---|---|
 | Hébergement | GitHub Pages (dépôt `9arto/Gamelle`, branche `main`, racine). `.nojekyll` présent. |
-| Fichiers | `index.html` (structure + fenêtres), `app.js` (interface et état), `groceries.js` (moteur de la liste de courses : unités, normalisation, agrégation, formats d'achat), `sync.js` (synchro foyer, chiffrement, messages de contrôle), `theme.js` (thème clair/sombre, chargé en tête pour respecter la CSP), `logic.js` (logique pure testée : saisons, styles, génération du menu, placard, budget, chiffrement), `nutrition.js` (calories/macros/allergènes + client Open Food Facts), `recipes.js` (catalogue + rayons + anciens identifiants), `CATALOGUE.md` (liste complète générée), `CHANGELOG.md` (historique), `tools/gen-catalogue.js`, `styles.css` + `tailwind.css` (CSS pré-compilé, pas de CDN), `sw.js` (service worker), `manifest.json`, icônes. |
+| Fichiers | `index.html` (structure + fenêtres), `app.js` (interface et état), `groceries.js` (moteur de la liste de courses : unités, normalisation, agrégation, formats d'achat), `sync.js` (synchro foyer, chiffrement, messages de contrôle), `theme.js` (thème clair/sombre, chargé en tête pour respecter la CSP), `receipt.js` (lecture du texte d'un ticket : total, lignes, rapprochement, carnet de prix — logique pure testée), `ticket.js` (fenêtre « Ticket de caisse », OCR, lecture des codes-barres), `vendor/` (bibliothèques embarquées, voir `vendor/README.md`), `logic.js` (logique pure testée : saisons, styles, génération du menu, placard, budget, chiffrement), `nutrition.js` (calories/macros/allergènes + client Open Food Facts), `recipes.js` (catalogue + rayons + anciens identifiants), `CATALOGUE.md` (liste complète générée), `CHANGELOG.md` (historique), `tools/gen-catalogue.js`, `styles.css` + `tailwind.css` (CSS pré-compilé, pas de CDN), `sw.js` (service worker), `manifest.json`, icônes. |
 | Données recettes | `window.DEFAULT_RECIPES` (392 recettes) et `window.RECIPE_ALIASES` (anciens identifiants → recette conservée) et `window.GRAND_FRAIS_RAYONS` (6 rayons) dans `recipes.js`. |
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v61`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v62`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -64,7 +64,8 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Liste **simplifiée** calculée à partir des repas non « gardés » (§7) : un produit = une ligne, quantités additionnées, classés en **6 rayons** : 🥬 Fruits & Légumes, 🥩 Boucherie, 🐟 Poissonnerie, 🧀 Fromagerie & Crèmerie, 🥫 Épicerie, 🛒 Articles courants (hors recettes).
 - Chaque ligne : case à cocher, quantité, nom, et entre parenthèses la ou les recettes concernées. Les articles cochés descendent en bas de leur rayon.
 - Barre de progression « N / M articles trouvés », pastille de comptage sur l'onglet.
-- **Budget estimé** affiché sous le compteur (« ≈ 61 € ») : ordre de grandeur par rayon, **ajusté à vos vrais prix** dès 2 tickets enregistrés (menu « … » → « Noter le ticket de caisse » : coefficient = médiane ticket réel ÷ estimation, borné 0,5–2). Le dernier ticket est affiché. Pas de lecture automatique du ticket (OCR) : seul le total se saisit.
+- **Budget estimé** affiché sous le compteur (« ≈ 61 € ») — les articles dont on connaît le **prix réel** (appris sur vos tickets) utilisent ce prix ; les autres, l'estimation × coefficient : ordre de grandeur par rayon, **ajusté à vos vrais prix** dès 2 tickets enregistrés (menu « … » → « Ticket de caisse » : coefficient = médiane ticket réel ÷ estimation, borné 0,5–2). Le dernier ticket est affiché.
+- **Ticket de caisse (photo)** : « Photographier le ticket » / « Choisir une photo » (ou saisie du seul total). La photo est lue **sur le téléphone** (OCR Tesseract embarqué, aucun envoi sur Internet) : l'app propose le **total** et les **lignes d'articles** (poids, quantité × prix), rapproche chaque ligne d'un article de la liste de courses, puis demande de **relire** (total modifiable, lignes décochables). À l'enregistrement : le ticket entre dans les statistiques (ticket moyen, dépense par semaine, **dépenses par rayon**), les prix des lignes retenues alimentent le **carnet de prix réels** (`gamelle_price_book`, €/kg ou €/pièce, lissé 40/60) qui affine le budget du panier, et le coefficient d'étalonnage s'appuie sur ces lignes (≥ 3 reconnues). Premier usage : ≈ 5 Mo de composants téléchargés (cache `gamelle-vendor-v1`, ensuite hors-ligne). Qualité : dépend de la photo (ticket à plat, éclairé, droit) ; les lignes mal lues se décochent à la relecture.
 - **🏠 Placard** : le bouton 🏠 d'un article = « j'en ai déjà » (mémorisé d'une semaine à l'autre, annulable). Les articles masqués restent consultables dans **« Déjà à la maison »** avec un bouton **« Il m'en faut »**.
 - Carte **« Placard & réglages »** : **mes épices** (une puce par épice : « ✓ » = j'en ai, elle n'est plus listée ; liens « tout / aucune »), **produits de base à la maison** (huile, farine, sucre, vinaigres, moutarde, chapelure), **ordre des rayons** dans mon magasin (▲▼), liste du placard.
 - **Articles courants** : saisie avec **suggestions pendant la frappe** (produits usuels, articles du catalogue, produits de la maison comme papier toilette ou lessive ; accents ignorés ; ceux déjà dans la liste ne sont pas proposés) ; champ libre + pastilles 1 tap (Banane, Lait, Fruits, Kéfir, Yaourt, Pain de mie, Flocons d'avoine) ; supprimables un par un.
@@ -91,7 +92,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - **Allergènes** : affichés **uniquement sur les fiches recettes** (jamais dans la liste de courses). Seule la pastille Nutri-Score apparaît sur les articles.
 - **Fiche recette** : bloc « Nutrition estimée par portion » (kcal, protéines, glucides, lipides) et **allergènes** (gluten, lait, œufs, poisson, crustacés, soja, sésame, fruits à coque…). Calcul : poids de chaque ingrédient (mêmes conversions que les courses) × valeur moyenne par article (table `RULES` de `nutrition.js`, valeurs de type Ciqual arrondies). Affiché seulement si ≥ 70 % des ingrédients sont couverts ; l'huile de cuisson n'est comptée que partiellement (15 g/portion max). **Estimation indicative.**
 - **Courses → carte « Placard & réglages » → « Nutri-Score & allergènes de ma liste »** : interroge **Open Food Facts** (API publique, **aucune clé nécessaire**) pour les articles d'épicerie et de crèmerie (40 max) et affiche une pastille Nutri-Score A–E (note la plus fréquente parmi 10 produits du même type) ; mémorisé 30 jours sur le téléphone.
-- **« 📷 Scanner un produit »** : lecture du code-barres par la caméra (là où le navigateur gère `BarcodeDetector`) ou saisie du numéro ; affiche nom, marque, Nutri-Score, NOVA, kcal/macros pour 100 g, allergènes ; boutons « mettre l'article correspondant au placard » ou « ajouter aux articles courants ». Sur iPhone, la caméra n'est pas toujours disponible : la saisie manuelle fonctionne partout.
+- **« Scanner un produit »** (menu « … » des Courses ou carte « Placard & réglages ») : lecture du code-barres **en direct par la caméra** (`BarcodeDetector` s'il existe, sinon **ZXing embarqué** : fonctionne sur iPhone), ou **photo du code-barres**, ou saisie du numéro ; codes EAN-8/13, UPC contrôlés par clé de contrôle. **« Ajouter au placard »** : nom proposé (article de la liste reconnu, sinon nom du produit, modifiable) et **quantité Open Food Facts** (« 1 l », « 6 x 125 g ») retenue comme stock ; le scanner reste prêt pour le produit suivant. Produit inconnu : ajout au placard en saisissant le nom. Affiche aussi affiche nom, marque, Nutri-Score, NOVA, kcal/macros pour 100 g, allergènes ; boutons « mettre l'article correspondant au placard » ou « ajouter aux articles courants ». Sur iPhone, la caméra n'est pas toujours disponible : la saisie manuelle fonctionne partout.
 - Réseau : pas de réseau = fonction simplement indisponible (le reste de l'app n'est pas affecté). Aucune donnée personnelle n'est envoyée (seulement le nom du type de produit ou le code-barres).
 
 ### 3.4 Studio de recette maison
@@ -301,9 +302,11 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | `tests/nutrition.test.js` | chaque article a une valeur ; cohérence kcal/macros ; calories par portion plausibles pour les 302 recettes ; exemple vérifié à la main ; allergènes ; client Open Food Facts (réseau simulé : fiche produit, valeur typique, erreurs). |
 | `tests/e2e.test.js` | **navigateur réel** (Playwright, ignoré s'il n'est pas installé : `npm i -D playwright`) : données d'un utilisateur existant conservées (plan, favoris, case cochée, article courant, portions, ancien identifiant redirigé), « Composer mes 7 repas » avec filtres, placard, niveau d'épices, budget, filtre de style, avis, aucune erreur console. |
 
+| `tests/receipt.test.js` | lecture de tickets (total, date, lignes, poids, quantité × prix, confusions OCR, lignes parasites), rapprochement avec les articles, carnet de prix, prix appris, totaux par rayon. |
+| `tests/e2e.test.js` (suite) | **lecture d'un vrai code-barres EAN-13** (image générée, ZXing), clé de contrôle, quantité Open Food Facts → stock, ajout au placard ; **OCR réel d'une photo de ticket** (Tesseract) → relecture → enregistrement → prix réels et statistiques. La caméra en direct n'est pas testable sans appareil. |
 | `tests/css-classes.test.js` | **toute classe utilitaire** (type Tailwind) utilisée dans `index.html`, `app.js`, `groceries.js`, `sync.js` existe dans `tailwind.css` ou `styles.css` (le CSS est pré-compilé : une classe absente casse la mise en page sans erreur). |
 
-État au 25/11/2026 : **86 tests passent, 0 échec**.
+État au 25/11/2026 : **94 tests passent, 0 échec**.
 
 ---
 
@@ -312,7 +315,8 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 1. **Tajines** : `tajine-poulet-…` et `tajine-agneau-…` partagent encore la même photo (plats différents, exception validée dans les tests).
 2. **Jambon cru** : des recettes intitulées « jambon cru » utilisent l'ingrédient « Jambon blanc supérieur » (à corriger recette par recette si besoin).
 3. **Gingembre** : « 1 c. à soupe » est converti en 3 cm (≈ 5 g/cm) ; approximation.
-4. **Budget estimé** : ordre de grandeur par rayon, ajusté par vos tickets (total saisi à la main ; pas de lecture automatique du ticket).
+4. **Lecture du ticket (OCR)** : testée sur des tickets de synthèse ; sur de vrais tickets thermiques photographiés la qualité varie (papier froissé, reflets) : toujours relire le total et les lignes. Le rapprochement ligne → article est approximatif (abréviations de caisse) : les lignes non reconnues ne comptent que dans le total.
+4 bis. **Budget estimé** : ordre de grandeur par rayon, ajusté par vos tickets (total saisi à la main ; pas de lecture automatique du ticket).
 5. **Classement saisons/styles** : automatique (mots-clés) ; quelques plats peuvent être mal rangés — corriger `seasons` / `styles` à la main dans `recipes.js` (les tests restent valables).
 6. **Synchro** : « le dernier écrit gagne » (sauf avis) ; deux appareils non mis à jour ne comprennent pas les messages chiffrés.
 7. **Open Food Facts** : base collaborative, parfois incomplète ; elle décrit des produits, pas des plats (les infos d'un plat sont donc calculées). Pas de clé API : si un service payant (Edamam, Spoonacular…) était ajouté un jour, la clé serait saisie dans les Réglages et stockée sur le téléphone, jamais dans le dépôt.
@@ -344,6 +348,8 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 - [ ] Avis : 👍/👎/✅ sur une fiche ; synchro des avis entre les deux téléphones.
 - [ ] Fiche recette : bloc nutrition et allergènes cohérents ; Courses : « Nutri-Score & allergènes » (réseau) ; scan d'un produit (saisie du code si pas de caméra).
 - [ ] Foyer après mise à jour des **deux** téléphones (messages chiffrés).
+- [ ] **Scanner** (iPhone) : autoriser la caméra ; viser un code-barres (EAN) → fiche produit → « Ajouter au placard » ; « Prendre le code-barres en photo » ; refus de la caméra → message clair.
+- [ ] **Ticket de caisse** (iPhone) : photographier un vrai ticket (à plat, éclairé) → le total est le bon ? les lignes reconnues sont plausibles ? Enregistrer → budget et statistiques mis à jour ; mode avion après un premier usage : la lecture fonctionne toujours.
 
 **Check-list spécifique iPhone (à faire à la main, l'app installée sur l'écran d'accueil)**
 - [ ] Taille du texte iOS (Réglages › Accessibilité › Affichage et taille du texte) à « plus grand » : rien n'est coupé ; aucun texte < 12 px.

@@ -304,3 +304,12 @@ test('budget : moyenne par ticket et par semaine', () => {
   assert.equal(Math.round(s.perWeek), 60); assert.equal(s.avgTicket, 60);
   assert.equal(L.budgetStats(Array.from({ length: 20 }, (_, i) => ({ t: i * D * 7, total: 10 + i }))).last.length, 12);
 });
+
+test('budget du panier : prix appris sur les tickets, estimation × coefficient pour le reste', () => {
+  const items = [{ id: 'a', quantity: 1000, baseUnit: 'g', rayon: 'boucherie' }, { id: 'b', quantity: 1000, baseUnit: 'g', rayon: 'boucherie' }];
+  const learned = (i) => (i.id === 'a' ? 10 : null);
+  const r = L.estimateBudget(items, 1.5, learned);
+  assert.equal(r.real, 1); assert.equal(r.count, 2);
+  assert.equal(r.cost, Math.round(10 + 12 * 1.5), 'a : 10 € appris ; b : 12 €/kg estimé × 1,5');
+  assert.equal(L.estimateBudget(items, 1).real, 0);
+});
