@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 26/11/2026 — v65 : accueil plus sobre
+- Bandeau « À finir bientôt » supprimé. Un repas gardé (acheté) n'affiche plus son prix ni dans le total du menu. Le prix par portion est toujours visible dans la fiche d'une recette et dans les résultats de recherche.
+
 ## 26/11/2026 — v64 : budget, restes, équilibre, accueil
 - **Prix par repas** et « Pas cher » réel (≤ 2,20 € la portion) ; **menu sous budget** (« 7 repas à moins de 60 € ») dans « Composer mes 7 repas ».
 - **Reste à consommer** : un ticket enregistré remplit le placard (quantités + dates limites) ; bandeau « À finir bientôt » avec accès aux recettes pour finir ; date modifiable.

@@ -478,6 +478,20 @@ test('navigateur : prix par repas, « pas cher » réel, menu sous budget, équi
     await page.evaluate(() => switchTab('tab-planning'));
     assert.match(await page.innerText('#weekly-days-list'), /sélectionnés? · ≈ \d+/);
 
+    // Un repas « gardé » (déjà acheté) n'affiche plus son prix, et le total du menu l'exclut
+    const lockInfo = await page.evaluate(() => { state.lockedSlots = []; renderPlanning(); const before = document.getElementById('weekly-days-list').innerText; state.lockedSlots = [0, 1]; renderPlanning(); return { before, after: document.getElementById('weekly-days-list').innerText }; });
+    assert.equal((lockInfo.before.match(/≈ \d/g) || []).length, 8, 'total + 7 repas');
+    assert.equal((lockInfo.after.match(/≈ \d/g) || []).length, 6, 'total + 5 repas : les 2 gardés sans prix');
+    await page.evaluate(() => { state.lockedSlots = state.plan.map((_, i) => i); renderPlanning(); });
+    assert.ok(!/≈ \d/.test(await page.innerText('#weekly-days-list')), 'tout est acheté : accueil propre');
+    await page.evaluate(() => { state.lockedSlots = []; renderPlanning(); });
+    // prix par portion toujours dans la fiche et dans les résultats de recherche
+    await page.evaluate(() => { state.lockedSlots = [0]; saveToLocalStorage(); openRecipeDetail(state.plan[0]); });
+    assert.match(await page.innerText('#detail-recipe-cost'), /€ \/ portion/);
+    await page.evaluate(() => { document.getElementById('recipe-detail-modal').classList.add('hidden'); state.lockedSlots = []; state.searchQuery = 'poulet'; switchTab('tab-recettes'); renderCatalog(true); });
+    assert.ok((await page.innerText('#recipes-catalog-grid')).match(/€\/portion/g).length >= 5, 'prix par portion dans la recherche');
+    await page.evaluate(() => { state.searchQuery = ''; });
+
     // « 7 repas à moins de 45 € » (4 portions)
     const cost = await page.evaluate(() => {
       state.portions = 4; state.lockedSlots = [];
@@ -497,6 +511,7 @@ test('navigateur : prix par repas, « pas cher » réel, menu sous budget, équi
     assert.match(box, /Protéines/); assert.match(box, /Légumes et fruits/);
 
     // budget dans la fenêtre « Composer mes 7 repas »
+    await page.evaluate(() => switchTab('tab-planning'));
     await page.click('#btn-generate-menu');
     await page.fill('#gen-budget', '55');
     assert.equal(await page.evaluate(() => genDraft.budgetMax), 55);
@@ -537,9 +552,9 @@ test('navigateur : pack de la semaine, prix des produits courants (bananes…) e
     assert.ok(st.book.includes('banane'), 'la banane (hors recettes) a un prix : ' + st.book.join(','));
     assert.ok(!st.pantry.includes('sac exclusif app'), 'le sac offert n\'entre pas au placard');
 
-    // 2. À finir bientôt (la date du ticket est ancienne : tout est « dépassé ») → bandeau + recettes
+    // 2. Plus de bandeau « À finir bientôt » sur l'accueil
     await page.evaluate(() => switchTab('tab-planning'));
-    assert.match(await page.innerText('#expiry-banner'), /À finir bientôt/);
+    assert.ok(!(await page.evaluate(() => !!document.getElementById('expiry-banner'))));
 
     // 3. Les bananes ont un prix réel : elles montent le panier
     await page.evaluate(() => { switchTab('tab-courses'); state.staples = []; saveToLocalStorage(); renderGroceries(); });

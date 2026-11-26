@@ -167,28 +167,6 @@ function purgeOldPantry() {
   gone.forEach(id => { delete state.pantryExpiry[id]; delete state.pantryStock[id]; state.pantry = state.pantry.filter(x => x !== id); });
   persistLocal();
 }
-// Articles à finir bientôt (dépassés ou dans les 3 jours), du plus pressé au moins pressé
-function expiringSoon(days = 3) {
-  const limit = Date.now() + days * DAY_MS;
-  return Object.entries(state.pantryExpiry || {})
-    .filter(([id, ts]) => state.pantry.includes(id) && ts <= limit)
-    .sort((a, b) => a[1] - b[1]).map(([id, ts]) => ({ id, ts, name: prettyName(id) }));
-}
-function renderExpiryBanner() {
-  const box = document.getElementById('expiry-banner');
-  if (!box) return;
-  const list = expiringSoon();
-  box.classList.toggle('hidden', !list.length);
-  if (!list.length) { box.innerHTML = ''; return; }
-  box.innerHTML = `<div class="ios-card p-3 border border-amber-200 bg-amber-50/70 space-y-2">
-    <p class="text-xs font-bold text-amber-900">À finir bientôt</p>
-    <p class="text-xs text-amber-900">${list.slice(0, 5).map(x => `<b>${esc(x.name)}</b> (${esc(dayLabel(x.ts))})`).join(' · ')}${list.length > 5 ? ` · +${list.length - 5}` : ''}</p>
-    <button type="button" id="btn-expiry-recipes" class="text-xs font-bold text-amber-900 bg-white border border-amber-300 px-3 py-1.5 rounded-xl active:scale-95">Voir des recettes pour les finir</button></div>`;
-  document.getElementById('btn-expiry-recipes').addEventListener('click', () => {
-    list.slice(0, 6).forEach(x => addLeftover(x.name.replace(/\s*\(.*?\)/g, '')));
-    openLeftoversModal();
-  });
-}
 // Date limite d'un article du placard : saisie « jj/mm » (vide = aucune)
 async function editExpiry(id) {
   const cur = state.pantryExpiry[id];
@@ -201,7 +179,7 @@ async function editExpiry(id) {
     if (t.getTime() < now.getTime() - 30 * DAY_MS) t = new Date(now.getFullYear() + 1, Number(m[2]) - 1, Number(m[1]), 12);
     state.pantryExpiry[id] = t.getTime();
   } else { showToast('Date non reconnue (ex. 28/11)'); return; }
-  saveToLocalStorage(); renderGroceries(); renderExpiryBanner();
+  saveToLocalStorage(); renderGroceries();
 }
 
 // ---------------------------------------------------------------------------

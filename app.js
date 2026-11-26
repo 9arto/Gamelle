@@ -1866,15 +1866,18 @@ function renderAll() {
 }
 
 // 1. Rendu du Planning (liste de plats sans limitation de nombre ni de jours fixes)
-// « · ≈ 54 € » : coût estimé des repas du menu (quand les prix sont calculés)
+// « · ≈ 54 € » : coût estimé des repas encore à acheter (un repas « gardé » est déjà acheté : son prix disparaît)
 function planCostLabel() {
   let total = 0, n = 0;
-  state.plan.forEach(id => { const r = state.recipes.find(x => x.id === id); if (r && costCache[r.id] != null) { total += recipeMealCost(r); n++; } });
-  return n && n === state.plan.filter(Boolean).length ? ` · ≈ ${euro(total)}` : '';
+  state.plan.forEach((id, i) => {
+    if (state.lockedSlots.includes(i)) return;
+    const r = state.recipes.find(x => x.id === id);
+    if (r) { total += recipeMealCost(r); n++; }
+  });
+  return n ? ` · ≈ ${euro(total)}` : '';
 }
 function renderPlanning() {
   updatePlanningTitle();
-  renderExpiryBanner();
   renderWeekBalance();
   const container = document.getElementById('weekly-days-list');
   if (!container) return;
@@ -1969,7 +1972,7 @@ function renderPlanning() {
             <h3 class="font-bold text-sm text-slate-900 leading-snug">${esc(recipe.title)}</h3>
             <div class="flex items-center gap-2 mt-2 text-[11px] text-slate-600 font-medium flex-wrap">
               <span>⏱️ ${recipe.timeMinutes} min</span>
-              ${costCache[recipe.id] != null ? `<span>•</span><span>≈ ${euro(recipeMealCost(recipe))}</span>` : ''}
+              ${isLocked ? '' : `<span>•</span><span>≈ ${euro(recipeMealCost(recipe))}</span>`}
               <span>•</span>
               <span class="text-emerald-700 font-semibold">${esc(recipe.tag)}</span>
               ${recipe.isBudget ? `<span class="text-amber-700 font-semibold bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
@@ -2386,7 +2389,7 @@ function recipeCardHTML(recipe, idx = 99) {
             </div>
             <div class="flex items-center gap-1.5">
               ${recipe.isBudget ? `<span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded-md">💰 Pas cher</span>` : ''}
-              ${costCache[recipe.id] != null ? `<span class="text-[11px] text-slate-500 font-medium">≈ ${money(recipePP(recipe))} €/portion</span>` : ''}
+              <span class="text-[11px] text-slate-500 font-medium">≈ ${money(recipePP(recipe))} €/portion</span>
               <span class="text-[11px] text-slate-500 font-medium">⏱️ ${esc(recipe.timeMinutes)} min</span>
             </div>
           </div>
@@ -2479,7 +2482,7 @@ function renderCatalog(resetLimit = false) {
 
   // Tri
   if (state.sortOption === 'budget') {
-    filtered.sort((a, b) => (costCache[a.id] != null && costCache[b.id] != null) ? (recipePP(a) - recipePP(b)) : (b.isBudget ? 1 : 0) - (a.isBudget ? 1 : 0));
+    filtered.sort((a, b) => recipePP(a) - recipePP(b));
   } else if (state.sortOption === 'fastest') {
     filtered.sort((a, b) => a.timeMinutes - b.timeMinutes);
   } else if (state.sortOption === 'random') {
@@ -2619,7 +2622,7 @@ function openRecipeDetail(recipeId) {
   renderNutritionCard(recipe);
   
   const costEl = document.getElementById('detail-recipe-cost');
-  if (costEl) costEl.textContent = costCache[recipe.id] != null ? `≈ ${euro(recipeMealCost(recipe))} (${money(recipePP(recipe))} € / portion)` : '';
+  if (costEl) costEl.textContent = `≈ ${money(recipePP(recipe))} € / portion · ≈ ${euro(recipeMealCost(recipe))} pour ${state.portions}`;
   const budgetBadge = document.getElementById('detail-recipe-budget');
   if (recipe.isBudget) {
     budgetBadge.classList.remove('hidden');
