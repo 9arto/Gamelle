@@ -568,3 +568,11 @@ html:where(.dark) .rayon-done { background:#064e3b; color:#6ee7b7; }
 img.img-loaded { animation: imgIn .35s ease-out; }
 @media (prefers-reduced-motion: reduce) { .tab-content.active, img.img-loaded { animation: none; } }
 .z-\[60\] { z-index: 60; } .min-h-\[1rem\] { min-height: 1rem; } .w-8 { width: 2rem; } .w-14 { width: 3.5rem; }
+
+/* Carte de recette : deux pastilles (temps, prix par portion) sur une seule ligne + étiquette « Pas cher » sur la photo */
+.card-chips { display:flex; align-items:center; gap:6px; margin-top:6px; flex-wrap:nowrap; white-space:nowrap; }
+.card-chip { font-size:12px; font-weight:600; padding:2px 8px; border-radius:999px; background:#f1f5f9; color:#475569; }
+.card-chip.is-cheap { background:#d1fae5; color:#065f46; }
+.card-cheap-badge { position:absolute; left:6px; top:6px; font-size:12px; font-weight:700; color:#fff; background:#059669; padding:1px 7px; border-radius:7px; box-shadow:0 1px 3px rgba(0,0,0,.25); }
+html:where(.dark) .card-chip { background:#2c2c2e; color:#d1d1d6; }
+html:where(.dark) .card-chip.is-cheap { background:#064e3b; color:#6ee7b7; }

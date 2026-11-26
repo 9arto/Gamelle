@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v66**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v67**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v66`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v67`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -53,6 +53,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
   - Les repas **gardés** sont conservés, seuls les autres sont renouvelés. Remet à zéro les cases cochées de la liste de courses.
 - **Planning vide** : écran d'accueil « Qu'est-ce qu'on mange ? » avec un grand bouton « Composer mes 7 repas » (et « Ou choisir dans les recettes »). Un menu volontairement vidé reste vide ; seul le tout premier lancement génère un menu d'exemple.
 - **Aperçu des repas** : une ligne de pastilles (photo + numéro) sous le compteur ; toucher une pastille fait défiler jusqu'au repas. Ambre = repas gardé, ✓ = cuisiné ces 3 derniers jours. Volontairement **sans jours ni semaines** (les courses peuvent couvrir plusieurs semaines).
+- **Carte du catalogue** : étiquette verte « Pas cher » sur la photo, puis sous le titre deux pastilles sur une ligne (temps, prix par portion — verte si « Pas cher »).
 - **Prix par repas** : chaque carte du catalogue (y compris dans les résultats de recherche) et la fiche de chaque recette affichent le prix par portion (« ≈ 2,40 €/portion », « ≈ 9,60 € »), **toujours**. Dans le menu, un repas « **gardé** » (= déjà acheté) n'affiche plus son prix et n'entre plus dans le total (« 7 repas sélectionnés · ≈ 54 € ») : une fois les courses faites, l'accueil est propre. Le coût d'une recette = tous ses ingrédients au prix de **vos tickets** quand ils sont connus, sinon au prix de référence (§7 quinquies), calculé en tâche de fond au démarrage.
 - **« Pas cher » réel** : un plat est « Pas cher » s'il coûte **2,20 € ou moins par portion** (environ un tiers du catalogue) ; le tag, le filtre et le tri « Moins cher d'abord » suivent ce calcul (les recettes maison gardent votre choix).
 - **Menu sous budget** : dans « Composer mes 7 repas », champ **« Budget des repas »** (ex. 60 €, pour vos portions) : les plats les plus chers sont remplacés par des alternatives moins chères (au hasard parmi les moins chères, donc varié) ; les repas gardés comptent dans le budget. Message : « Menu à ≈ 54 € (budget 60 €) » ou « Impossible sous 10 € avec ces filtres : ≈ 38 € (les moins chers choisis) ».
