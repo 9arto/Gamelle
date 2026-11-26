@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 26/11/2026 — v66 : fiche recette
+- Fiche recette : « ≈ 2,40 € / portion · ≈ 9,60 € » (sans « pour 4 ») pour tenir sur une ligne.
+
 ## 26/11/2026 — v65 : accueil plus sobre
 - Bandeau « À finir bientôt » supprimé. Un repas gardé (acheté) n'affiche plus son prix ni dans le total du menu. Le prix par portion est toujours visible dans la fiche d'une recette et dans les résultats de recherche.
 

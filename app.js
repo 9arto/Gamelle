@@ -2622,7 +2622,7 @@ function openRecipeDetail(recipeId) {
   renderNutritionCard(recipe);
   
   const costEl = document.getElementById('detail-recipe-cost');
-  if (costEl) costEl.textContent = `≈ ${money(recipePP(recipe))} € / portion · ≈ ${euro(recipeMealCost(recipe))} pour ${state.portions}`;
+  if (costEl) costEl.textContent = `≈ ${money(recipePP(recipe))} € / portion · ≈ ${euro(recipeMealCost(recipe))}`;
   const budgetBadge = document.getElementById('detail-recipe-budget');
   if (recipe.isBudget) {
     budgetBadge.classList.remove('hidden');
