@@ -2,6 +2,11 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 26/11/2026 — v63 : prix réalistes d'après un vrai ticket
+- **Prix de référence réalistes** (`REF_PRICES`, ~230 articles) calés sur un ticket Grand Frais réel : prix au kilo imprimés, paquets de 140 g / 180 g, yaourts, wraps… Coût médian par portion ≈ 2,75 € (avant : valeurs par rayon trop approximatives, jusqu'à 9 € la portion pour certains plats).
+- **Lecture du ticket PDF** (e-ticket) directement, sans OCR, et du vrai format Grand Frais : « 49 TOTAL » puis montant, offres négatives, tare, prix au kilo, rayons de caisse et **sous-totaux par rayon** (dépenses par rayon exactes), libellés tronqués rapprochés des articles (règles d'abréviations).
+- Les prix au kilo imprimés et les poids de paquet (« 140G ») alimentent le carnet de prix réels.
+
 ## 26/11/2026 — v62 : scanner qui marche sur iPhone et ticket de caisse en photo
 - **Scanner de codes-barres** : lecteur ZXing embarqué (l'iPhone n'a pas `BarcodeDetector`), photo du code en repli, contrôle de la clé EAN. **Ajout au placard** en deux touches (nom proposé, quantité Open Food Facts retenue comme stock), puis produit suivant.
 - **Ticket de caisse en photo** : lecture sur le téléphone (Tesseract embarqué, rien n'est envoyé), relecture (total, lignes), prix réels appris (`gamelle_price_book`) qui affinent le budget du panier, étalonnage sur les lignes reconnues, **statistiques de courses** (dépenses par rayon, achats fréquents).

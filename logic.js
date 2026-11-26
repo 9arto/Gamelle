@@ -307,17 +307,97 @@
     return `il y a ${Math.round(s / 86400)} j`;
   }
 
-  // ---------------------------------------------------------------- Budget estimé (ordre de grandeur)
-  const PRICE_KG = { 'fruits-legumes': 3.2, boucherie: 12, poissonnerie: 20, cremerie: 9, epicerie: 4 };
-  const PRICE_PIECE = { 'fruits-legumes': 0.7, boucherie: 2.2, poissonnerie: 3.5, cremerie: 1.2, epicerie: 1.2 };
+  // ---------------------------------------------------------------- Budget estimé
+  // Prix de référence (novembre 2026, magasin type Grand Frais) : €/kg (ou €/L pour les liquides) ou €/unité.
+  // Sources : prix au kilo imprimés sur un vrai ticket (poivron jaune 4,99, rouge 5,99, tomate olivette 2,99, pomme Gala 1,99,
+  // banane 0,99, courgette 2,50, clémentine 4,99, pommes de terre 3,50 les 2 kg, cheddar râpé 140 g à 2,39 = 17,1 €/kg, fromage grec
+  // 180 g à 2,29 = 12,7 €/kg, yaourt 8 × 125 g à 1,59, wraps 2,99 les 6, pains burger 1,99 les 4, coriandre 0,50 la botte…),
+  // complétés par des prix courants. `u` = prix d'une unité de l'article ; pour les épices/condiments : prix d'une cuillère à soupe
+  // (une cuillère à café = 1/3, une pincée = 1/12). Les prix lus sur VOS tickets (carnet de prix) passent avant ceux-ci.
+  const REF_PRICES = {
+    // fruits & légumes
+    "Gousses d'ail": { u: 0.06 }, 'Oignons jaunes': { u: 0.3 }, 'Oignons rouges': { u: 0.4 }, 'Échalotes': { u: 0.35 }, 'Blancs de poireaux': { u: 0.9 },
+    'Carottes fraîches': { u: 0.18 }, 'Courgettes fraîches': { u: 0.6 }, 'Tomates fraîches': { u: 0.45 }, 'Poivrons (rouges ou tricolores)': { u: 1.05 },
+    'Citrons jaunes': { u: 0.5 }, 'Citrons verts': { u: 0.45 }, 'Avocats mûrs': { u: 1.2 }, 'Aubergines fraîches': { u: 1.0 }, 'Patates douces': { u: 0.85 },
+    'Concombre frais': { u: 0.9 }, 'Brocoli frais': { u: 1.6 }, 'Chou-fleur frais': { u: 2.2 }, 'Courge Butternut': { u: 2.2 }, 'Potimarron frais': { u: 2.5 },
+    'Oranges': { u: 0.55 }, 'Gingembre frais': { u: 0.05 }, 'Pommes de terre fraîches': { kg: 1.75 }, 'Champignons de Paris frais': { kg: 6.5 },
+    'Salade verte (mâche ou roquette)': { kg: 14, u: 0.6 }, "Pousses d'épinards frais": { kg: 9 }, 'Petits pois frais (ou surgelés)': { kg: 3.8 },
+    'Haricots verts fins frais': { kg: 5.5 }, 'Noisettes ou amandes décortiquées': { kg: 16 }, 'Cerneaux de noix': { kg: 30 }, 'Pousses de soja': { kg: 5 },
+    'Coriandre fraîche': { u: 0.5 }, 'Persil plat frais': { u: 0.8 }, 'Basilic frais': { u: 1.3 }, 'Ciboulette fraîche': { u: 0.9 }, 'Thym frais': { u: 0.9 },
+    'Menthe fraîche': { u: 0.9 }, 'Romarin frais': { u: 0.9 }, 'Oignons nouveaux (cébettes)': { u: 1.3 }, 'Bouquet garni': { u: 0.7 },
+    // boucherie
+    'Filets de poulet frais': { kg: 14 }, 'Lardons fumés pur porc': { kg: 12.5 }, 'Bœuf haché frais (pur bœuf)': { kg: 12 }, 'Bavette ou rumsteck de bœuf': { kg: 24 },
+    'Escalopes de dinde fraîches': { kg: 13 }, 'Jambon blanc supérieur': { u: 0.55 }, 'Chorizo en tranches': { kg: 24 }, 'Saucisses de Toulouse ou fumées': { u: 1.1 },
+    'Cuisses de poulet fraîches': { u: 1.5 }, 'Filet de porc français': { kg: 11 }, 'Cuisses de canard confites': { u: 3.5 }, 'Magrets de canard': { kg: 28 },
+    'Poulet entier': { u: 9 }, 'Poulet pané': { u: 0.9 }, 'Veau français (sauté ou blanquette)': { kg: 20 }, 'Bœuf à mijoter (paleron ou gîte)': { kg: 15 },
+    'Chair à saucisse': { kg: 10 }, 'Lard (tranches)': { u: 0.5 }, 'Jambon cru (prosciutto)': { u: 0.9 },
+    // poissonnerie
+    'Crevettes cuites décortiquées': { kg: 22 }, 'Pavés de saumon frais': { u: 2.6 }, 'Dos de cabillaud / Poisson blanc frais': { kg: 24, u: 3.2 },
+    'Saumon fumé de qualité': { kg: 45 }, 'Noix de Saint-Jacques fraîches': { kg: 55 },
+    // crèmerie
+    'Crème fraîche (épaisse ou liquide)': { kg: 10 }, 'Parmesan AOP râpé': { kg: 26 }, 'Beurre (doux ou demi-sel)': { kg: 11 }, 'Œufs frais': { u: 0.32 },
+    'Lait (demi-écrémé ou entier)': { kg: 1.1 }, 'Feta AOP': { kg: 12.7 }, 'Ricotta fraîche': { kg: 8 }, 'Bûche de chèvre frais': { kg: 16 }, 'Emmental râpé': { kg: 10 },
+    'Comté AOP râpé': { kg: 22 }, 'Fromage râpé': { kg: 10 }, 'Mozzarella (boule ou râpée)': { kg: 9, u: 1.0 }, 'Cheddar râpé': { kg: 17.1 }, 'Fromage bleu crémeux': { kg: 16 },
+    'Reblochon de Savoie AOP': { kg: 15 }, 'Burrata': { kg: 18, u: 2.5 }, 'Camembert': { u: 2.5 }, 'Petits chèvres Cabécous': { u: 1.2 }, 'Yaourts (nature ou aux fruits)': { u: 0.2 },
+    'Fromage frais à tartiner': { kg: 8 }, 'Pâte à tarte (feuilletée ou brisée)': { u: 1.5 }, 'Tranches de cheddar affiné': { kg: 18 }, 'Laitue iceberg': { u: 1.3 },
+    // épicerie
+    'Riz blanc (basmati ou jasmin)': { kg: 3 }, 'Pâtes de blé (penne, fusilli ou coquillettes)': { kg: 1.8 }, 'Tomates concassées / Coulis': { kg: 2 },
+    'Bouillon (volaille ou légumes)': { kg: 0.8 }, 'Lait de coco': { kg: 4.5 }, 'Farine de blé ou fécule': { kg: 1.3 }, 'Vin blanc sec de cuisine': { kg: 3 }, 'Vin rouge de cuisine': { kg: 3 },
+    'Gnocchis à poêler': { kg: 6.6 }, 'Quinoa ou semoule complète': { kg: 6 }, 'Tortillas de blé': { u: 0.5 }, 'Lentilles corail': { kg: 4 }, 'Nouilles asiatiques (blé ou soba)': { kg: 6 },
+    'Olives (noires ou vertes)': { kg: 10 }, 'Pain de campagne (ou pain de mie)': { u: 0.2 }, 'Riz à risotto (Arborio ou Carnaroli)': { kg: 4 }, 'Haricots rouges (bocal)': { kg: 3.5 },
+    'Plaques de lasagne aux œufs': { kg: 4 }, 'Cacahuètes grillées': { kg: 9 }, 'Noix de cajou non salées': { kg: 20 }, 'Pois chiches (bocal)': { kg: 3.5 }, 'Nouilles de riz': { kg: 6 },
+    'Maïs doux en boîte': { kg: 3.5 }, 'Thon au naturel (boîte)': { kg: 18 }, 'Épinards surgelés': { kg: 3.2 }, 'Pains burger briochés': { u: 0.5 }, 'Pics à brochette': { u: 0.05 },
+    'Haricots noirs (bocal)': { kg: 3.5 }, 'Vermicelles de riz': { kg: 7 }, 'Kit pour fajitas (galettes & épices)': { u: 0.9 }, 'Mélange céréales': { kg: 4 }, 'Polenta': { kg: 2.5 },
+    'Marrons cuits': { kg: 12 }, 'Blé (à cuire)': { kg: 2.5 }, 'Huile': { kg: 3 }, 'Nouilles instantanées': { u: 0.6 }, 'Chapelure fine (ou panko)': { kg: 6 },
+    // condiments & épices (prix d'une cuillère à soupe)
+    'Pâte ou poudre de curry doux': { u: 0.25 }, 'Sauce soja salée': { u: 0.08 }, 'Sauce soja sucrée': { u: 0.08 }, "Huile d'olive vierge extra": { u: 0.12 }, 'Huile de sésame': { u: 0.3 },
+    'Herbes de Provence sèches': { u: 0.12 }, 'Miel toutes fleurs': { u: 0.2 }, 'Moutarde à l\'ancienne ou Dijon': { u: 0.08 }, 'Graines de sésame': { u: 0.15 }, 'Paprika doux (ou fumé)': { u: 0.2 },
+    'Cumin en poudre': { u: 0.2 }, 'Curcuma en poudre': { u: 0.2 }, 'Concentré de tomate': { u: 0.1 }, 'Pesto alla genovese (pot)': { u: 0.4 }, 'Beurre de cacahuète (pot)': { u: 0.15 },
+    'Vinaigre de cidre (ou vin)': { u: 0.05 }, "Mélange d'épices (Fajitas / Chili)": { u: 0.3 }, 'Noix de muscade râpée': { u: 0.6 }, "Piment d'Espelette": { u: 1.0 },
+    'Gingembre moulu': { u: 0.25 }, 'Graines de courge': { u: 0.3 }, 'Sauce teriyaki': { u: 0.12 }, 'Câpres': { u: 0.2 }, 'Tabasco': { u: 0.3 }, 'Sauce piment (Sriracha)': { u: 0.15 },
+    'Épices mexicaines': { u: 0.25 }, 'Vinaigre balsamique': { u: 0.15 },
+    // compléments (articles plus rares)
+    'Feuilles de brick': { u: 0.15 }, 'Falafels prêts à dorer': { u: 0.45 }, 'Quenelle nature': { u: 0.9 }, 'Merguez': { u: 1.0 }, 'Côtes de porc': { u: 2.2 },
+    'Cordons bleus de volaille': { u: 1.25 }, 'Nems (surgelés)': { u: 0.5 }, 'Pains burger aux graines': { u: 0.5 }, 'Pains bagels': { u: 0.6 }, 'Galettes de sarrasin (blé noir)': { u: 0.4 },
+    'Fromage triangle': { u: 0.2 }, 'Kit burrito': { u: 1.0 }, "Filets d'anchois à l'huile": { u: 0.2 }, 'Fromage à trous (tranches)': { u: 0.3 }, 'Ananas au sirop': { u: 0.2 },
+    'Clémentine': { u: 0.4 }, 'Fenouil': { u: 1.2 }, 'Grenade': { u: 1.3 }, 'Pâte à pizza': { u: 1.8 }, 'Ananas frais ou au jus': { u: 1.4 }, 'Citrons confits': { u: 0.6 }, 'Aneth frais': { u: 1.0 },
+    'Pilons de poulet': { kg: 7.5 }, "Sauté d'agneau en morceaux": { kg: 20 }, 'Échine de porc': { kg: 9 }, 'Endives': { kg: 3.5 }, 'Chou frisé': { kg: 4 }, 'Choux de Bruxelles': { kg: 4 },
+    'Ravioli frais ricotta-épinards': { kg: 10 }, 'Ravioli frais aux champignons': { kg: 10 }, 'Ravioles du Dauphiné': { kg: 10 }, 'Pois gourmands': { kg: 8 },
+    'Haricots verts en conserve': { kg: 3 }, 'Haricots verts surgelés': { kg: 3.5 }, 'Haricots blancs nature (cuits)': { kg: 3.5 }, 'Lentilles cuites (bocal)': { kg: 3.5 }, 'Lentilles vertes françaises': { kg: 3.5 },
+    'Boisson coco': { kg: 2.5 }, "Jus d'orange": { kg: 2.5 }, 'Cidre brut': { kg: 2.5 }, 'Roquefort': { kg: 25 }, 'Gorgonzola AOP': { kg: 15 }, 'Brie fondant': { kg: 12 }, 'Morbier': { kg: 14 },
+    "Fourme d'Ambert": { kg: 16 }, "Beaufort d'alpage AOP râpé": { kg: 28 }, 'Fromage à raclette': { kg: 15 }, 'Fromage frais': { kg: 8 }, 'Dés de fromage frais': { kg: 14 },
+    'Fromage frais ail & fines herbes': { kg: 14 }, 'Béchamel (brique)': { kg: 4 }, 'Ratatouille cuisinée': { kg: 4 }, 'Tomates séchées': { kg: 18 }, 'Houmous classique': { kg: 8 },
+    'Sauce Arrabbiata': { kg: 4.5 }, 'Sauce tikka masala': { kg: 4.5 }, 'Crozets de Savoie': { kg: 4 }, 'Émincé végétal': { kg: 14 }, 'Graines de tournesol': { kg: 7 }, 'Corn flakes': { kg: 4 },
+    'Abricots secs moelleux': { kg: 12 }, 'Chipolatas': { u: 0.9 }, 'Boisson amande': { kg: 2 }, 'Boulettes végétales': { kg: 12 }, 'Potatoes surgelées': { kg: 3 },
+    'Sucre (en poudre)': { u: 0.1 }, 'Pignons de pin': { u: 1.2 }, 'Purée de sésame (Tahini)': { u: 0.4 }, 'Sauce César': { u: 0.2 }, 'Jus de citron': { u: 0.1 }, "Confit d'oignons": { u: 0.3 },
+    'Piment (doux)': { u: 0.2 }, 'Sauce barbecue': { u: 0.15 }, 'Harissa (pâte)': { u: 0.3 }, 'Garam masala': { u: 0.3 }, 'Fond de veau': { u: 0.3 }, "Sauce d'huitre": { u: 0.3 },
+    'Mayonnaise': { u: 0.12 }, 'Wasabi': { u: 0.6 }, 'Sauce deluxe': { u: 0.2 }, 'Cannelle en poudre': { u: 0.2 }, 'Ketchup': { u: 0.08 }, 'Vodka': { u: 0.5 },
+    'Épices à couscous (ras el hanout)': { u: 0.3 }
+  };
+  const SPOON = { 'c. à soupe': 1, 'c. à café': 1 / 3, pincee: 1 / 12 };
+  // Prix de référence d'une ligne de la liste (null si l'article n'est pas dans la table)
+  function refPrice(item) {
+    const e = REF_PRICES[item.name];
+    if (!e) return null;
+    const u = item.baseUnit || item.unit;
+    const q = Number(item.quantity) || 0;
+    const r2 = (v) => Math.round(v * 100) / 100;
+    if (u === 'g' || u === 'ml') return e.kg ? r2((q / 1000) * e.kg) : null;
+    if (!e.u) return null;
+    return r2(q * e.u * (SPOON[u] != null ? SPOON[u] : 1));
+  }
+  // Repli par rayon quand l'article n'est pas dans la table (€/kg et €/pièce)
+  const PRICE_KG = { 'fruits-legumes': 3.5, boucherie: 13, poissonnerie: 24, cremerie: 13, epicerie: 4.5 };
+  const PRICE_PIECE = { 'fruits-legumes': 0.8, boucherie: 2.5, poissonnerie: 3.5, cremerie: 1.5, epicerie: 1.0 };
   function estimateItemPrice(item) {
+    const ref = refPrice(item);
+    if (ref != null) return Math.max(0.05, ref);
     const q = Number(item.quantity) || 0;
     const u = item.baseUnit || item.unit;
-    if (item.name === 'Œufs frais') return q * 0.4;
-    if (u === 'g' || u === 'ml') return Math.max(0.3, (q / 1000) * (PRICE_KG[item.rayon] || 5));
-    if (u === 'c. à soupe' || u === 'c. à café' || u === 'pincee') return 0.25;
-    if (u === 'oeuf') return q * 0.4;
-    return Math.max(0.3, q * (PRICE_PIECE[item.rayon] || 1));
+    if (u === 'g' || u === 'ml') return Math.max(0.2, (q / 1000) * (PRICE_KG[item.rayon] || 5));
+    if (u === 'c. à soupe' || u === 'c. à café' || u === 'pincee') return 0.15;
+    if (u === 'oeuf') return q * 0.32;
+    return Math.max(0.2, q * (PRICE_PIECE[item.rayon] || 1));
   }
   function estimateCost(items) { return Math.round(items.reduce((s, i) => s + estimateItemPrice(i), 0)); }
   // Dépenses : moyenne par ticket et par semaine (la période couvre un intervalle de plus que le premier-dernier ticket)
@@ -414,7 +494,7 @@
     recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, estimateCost, estimateBudget, priceFactor, budgetStats, consumeStock, parseStockInput,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, refPrice, REF_PRICES, estimateCost, estimateBudget, priceFactor, budgetStats, consumeStock, parseStockInput,
     encryptPayload, decryptPayload, cryptoAvailable,
     weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
   };

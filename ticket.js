@@ -107,6 +107,36 @@ async function ocrReceipt(canvas, onProgress) {
 }
 
 // ---------------------------------------------------------------------------
+// Ticket au format PDF (e-ticket de l'application du magasin) : le texte est lu directement, sans OCR
+// ---------------------------------------------------------------------------
+async function openPdf(file) {
+  await loadScriptOnce('vendor/pdf.min.js');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('vendor/pdf.worker.min.js', location.href).href;
+  return pdfjsLib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
+}
+// Texte d'un PDF : lignes reconstituées d'après la position verticale des morceaux de texte
+async function pdfToText(file) {
+  const doc = await openPdf(file);
+  const out = [];
+  for (let p = 1; p <= Math.min(doc.numPages, 6); p++) {
+    const tc = await (await doc.getPage(p)).getTextContent();
+    const rows = {};
+    tc.items.forEach(it => { if (!it.str || !it.str.trim()) return; const k = Math.round(it.transform[5] / 3); (rows[k] = rows[k] || []).push(it); });
+    Object.keys(rows).map(Number).sort((a, b) => b - a).forEach(k => out.push(rows[k].sort((a, b) => a.transform[4] - b.transform[4]).map(i => i.str.trim()).join(' ').replace(/\s+/g, ' ')));
+  }
+  return out.join('\n');
+}
+// PDF sans texte (scan) : première page dessinée sur un canvas, lue par l'OCR
+async function pdfToCanvas(file) {
+  const doc = await openPdf(file);
+  const page = await doc.getPage(1);
+  const vp = page.getViewport({ scale: 2 });
+  const c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+  await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+  return c;
+}
+
+// ---------------------------------------------------------------------------
 // Noms d'articles connus (toutes les recettes) pour rapprocher les lignes du ticket
 // ---------------------------------------------------------------------------
 let articleIndex = null; // nom → rayon
@@ -132,9 +162,9 @@ function closeTicketModal() { document.getElementById('ticket-modal').classList.
 
 function showTicketChoose() {
   ticketBody().innerHTML = `
-    <p class="text-slate-600 leading-relaxed">Photographiez votre ticket de caisse : l'application lit le <b>total</b> et les <b>prix des articles</b> pour affiner le budget de votre panier et vos statistiques de courses. La lecture se fait <b>sur votre téléphone</b> : la photo n'est envoyée nulle part.</p>
+    <p class="text-slate-600 leading-relaxed">Photographiez votre ticket de caisse (ou ouvrez son <b>PDF</b>, par exemple l'e-ticket de l'application du magasin) : l'application lit le <b>total</b> et les <b>prix des articles</b> pour affiner le budget de votre panier et vos statistiques de courses. La lecture se fait <b>sur votre téléphone</b> : la photo n'est envoyée nulle part.</p>
     <button type="button" id="btn-ticket-camera" class="w-full bg-brand-600 text-white font-bold py-3 rounded-2xl text-sm active:scale-95">Photographier le ticket</button>
-    <button type="button" id="btn-ticket-library" class="w-full bg-slate-100 text-slate-700 font-bold py-3 rounded-2xl text-sm active:scale-95">Choisir une photo existante</button>
+    <button type="button" id="btn-ticket-library" class="w-full bg-slate-100 text-slate-700 font-bold py-3 rounded-2xl text-sm active:scale-95">Choisir une photo ou un PDF</button>
     <button type="button" id="btn-ticket-manual" class="w-full text-xs font-bold text-slate-500 py-2">Saisir seulement le total à la main</button>
     <p class="text-[12px] text-slate-400 leading-relaxed">Conseils : ticket à plat, bien éclairé, en entier et bien droit. Au premier usage, ≈ 5 Mo de composants sont téléchargés (une seule fois, puis disponibles hors-ligne).</p>`;
   const cam = document.getElementById('ticket-file-cam'), lib = document.getElementById('ticket-file-lib');
@@ -158,10 +188,15 @@ function setTicketProgress(label, pct) {
 
 async function handleTicketFile(file) {
   if (!file) return;
-  showTicketProgress('Préparation de la photo…', 5);
+  const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name || '');
+  showTicketProgress(isPdf ? 'Lecture du PDF…' : 'Préparation de la photo…', 5);
   let text = '';
   try {
-    const canvas = await prepareReceiptCanvas(file);
+    if (isPdf) {
+      text = await pdfToText(file);
+      if (text.replace(/\s/g, '').length >= 40) { reviewTicketText(text); return; } // texte exact : pas d'OCR
+    }
+    const canvas = isPdf ? await pdfToCanvas(file) : await prepareReceiptCanvas(file);
     setTicketProgress('Chargement du lecteur…', 10);
     text = await ocrReceipt(canvas, (m) => {
       if (m.status === 'recognizing text') setTicketProgress('Lecture du ticket…', 30 + m.progress * 70);
@@ -186,7 +221,7 @@ function reviewTicketText(text) {
   const names = Object.keys(idx);
   const lines = parsed.lines.map((l) => {
     const article = GR.matchArticle(l.label, names, (i) => normalizeIngredient(i));
-    return { ...l, article, rayon: article ? idx[article] : null, use: !!article };
+    return { ...l, article, rayon: (article ? idx[article] : null) || l.section || null, use: !!article };
   });
   ticketDraft = { text, parsed, lines, total: parsed.total };
   renderTicketReview();
@@ -210,7 +245,7 @@ function renderTicketReview() {
         ${d.lines.map((l, i) => `<label class="flex items-center gap-2.5 p-2.5 ${l.article ? '' : 'opacity-60'}">
           <input type="checkbox" class="ticket-line w-5 h-5 rounded flex-shrink-0" data-i="${i}" ${l.use ? 'checked' : ''} ${l.article ? '' : 'disabled'}>
           <span class="flex-1 min-w-0"><span class="block truncate font-semibold text-slate-800">${esc(l.label)}</span>
-            <span class="block text-[12px] text-slate-500">${l.article ? '→ ' + esc(l.article) : 'non reconnu (compté dans le total seulement)'}${l.kg ? ' · ' + String(l.kg).replace('.', ',') + ' kg' : ''}${l.qty > 1 ? ' · ×' + l.qty : ''}</span></span>
+            <span class="block text-[12px] text-slate-500">${l.article ? '→ ' + esc(l.article) : 'non reconnu (compté dans le total seulement)'}${l.perKg ? ' · ' + money(l.perKg) + ' €/kg' : (l.kg ? ' · ' + String(l.kg).replace('.', ',') + ' kg' : '')}${l.qty > 1 ? ' · ×' + l.qty : ''}</span></span>
           <span class="font-bold text-slate-800 whitespace-nowrap">${money(l.price)} €</span></label>`).join('')}
       </div></div>` : '<p class="text-slate-500">Aucune ligne d\'article reconnue : seul le total sera enregistré.</p>'}
     <details><summary class="text-[12px] text-slate-400 cursor-pointer">Texte lu sur la photo</summary><pre class="whitespace-pre-wrap text-[12px] text-slate-500 mt-1 max-h-40 overflow-y-auto">${esc(d.text)}</pre></details>
@@ -233,15 +268,16 @@ function saveTicket() {
   // Étalonnage : estimation de CES lignes (et non de la liste du moment) comparée à leur prix réel
   let est = 0, cal = 0;
   used.forEach(l => {
-    est += GL.estimateItemPrice({ name: l.article, rayon: l.rayon, quantity: l.kg ? l.kg * 1000 : l.qty, baseUnit: l.kg ? 'g' : 'piece' });
+    const grams = l.kg ? l.kg * 1000 : (l.pack ? l.pack * l.qty : 0);
+    est += GL.estimateItemPrice({ name: l.article, rayon: l.rayon, quantity: grams || l.qty, baseUnit: grams ? 'g' : 'piece' });
     cal += l.price;
   });
-  const trip = { t: now, total: Math.round(total * 100) / 100, est: Math.round(est * 100) / 100, items: d.lines.length, r: GR.rayonTotals(d.lines.map(l => ({ rayon: l.rayon, price: l.price }))) };
+  const trip = { t: now, total: Math.round(total * 100) / 100, est: Math.round(est * 100) / 100, items: d.lines.length, r: Object.keys(d.parsed.sections || {}).length ? d.parsed.sections : GR.rayonTotals(d.lines.map(l => ({ rayon: l.rayon, price: l.price }))) };
   if (used.length >= 3 && est > 0) trip.cal = Math.round(cal * 100) / 100; // assez de lignes : le coefficient s'appuie sur elles
   else trip.est = GL.estimateCost(currentSplit().toBuy);
   state.trips.push(trip);
   state.trips = state.trips.slice(-30);
-  state.priceBook = GR.updatePriceBook(state.priceBook, used.map(l => ({ id: articleId(l.article), price: l.price, kg: l.kg, qty: l.qty })), now);
+  state.priceBook = GR.updatePriceBook(state.priceBook, used.map(l => ({ id: articleId(l.article), price: l.price, kg: l.kg, perKg: l.perKg, pack: l.pack, qty: l.qty })), now);
   saveToLocalStorage();
   renderGroceries();
   closeTicketModal();

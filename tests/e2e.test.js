@@ -400,3 +400,39 @@ test('navigateur : photo d\'un ticket → lecture OCR → relecture → prix ré
     assert.deepEqual(errors, []);
   } finally { await browser.close(); srv.close(); }
 });
+
+test('navigateur : ticket PDF (texte lu directement) → vrai ticket Grand Frais : total, remises, rayons et prix au kilo', { skip: !chromium && 'Playwright non installé', timeout: 120000 }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+    const page = await ctx.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::/.test(m.text())) errors.push(m.text()); });
+    // PDF fabriqué à partir du texte du vrai ticket (un navigateur sait imprimer un PDF avec du texte sélectionnable)
+    const text = fs.readFileSync(path.join(ROOT, 'tests', 'fixtures', 'ticket-grand-frais.txt'), 'utf8');
+    const pdfPage = await ctx.newPage();
+    await pdfPage.setContent(`<pre style="font:12px monospace;margin:20px">${text.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</pre>`);
+    const pdf = await pdfPage.pdf({ width: '9cm', height: '40cm', printBackground: true });
+    await pdfPage.close();
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+    await page.evaluate(() => { switchTab('tab-courses'); openTicketModal(); });
+    await page.setInputFiles('#ticket-file-lib', { name: 'ticket.pdf', mimeType: 'application/pdf', buffer: pdf });
+    await page.waitForSelector('#ticket-total', { timeout: 60000 });
+    assert.equal(await page.inputValue('#ticket-total'), '110,25');
+    assert.ok((await page.$$eval('.ticket-line', (e) => e.length)) >= 40, 'lignes lues');
+    assert.ok((await page.innerText('#ticket-body')).includes('17,99 €/kg'), 'prix au kilo affiché');
+    await page.click('#btn-ticket-save');
+    const saved = await page.evaluate(() => ({ trip: state.trips[0], book: state.priceBook }));
+    assert.equal(saved.trip.total, 110.25);
+    assert.deepEqual(saved.trip.r, { cremerie: 41.87, 'fruits-legumes': 19.78, boucherie: 33.96, epicerie: 14.64 }, 'dépenses par rayon = sous-totaux du ticket');
+    assert.equal(saved.book['tomates fraîches'].kg, 2.99);
+    assert.equal(saved.book['cheddar râpé'].kg, 17.07);
+    assert.ok(Object.keys(saved.book).length >= 15, 'prix appris : ' + Object.keys(saved.book).length);
+    assert.match(await page.innerText('#budget-card-body'), /Dépenses par rayon/);
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});

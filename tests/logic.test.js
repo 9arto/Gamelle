@@ -310,6 +310,34 @@ test('budget du panier : prix appris sur les tickets, estimation × coefficient 
   const learned = (i) => (i.id === 'a' ? 10 : null);
   const r = L.estimateBudget(items, 1.5, learned);
   assert.equal(r.real, 1); assert.equal(r.count, 2);
-  assert.equal(r.cost, Math.round(10 + 12 * 1.5), 'a : 10 € appris ; b : 12 €/kg estimé × 1,5');
+  assert.equal(r.cost, Math.round(10 + 13 * 1.5), 'a : 10 € appris ; b : 13 €/kg (repli boucherie) × 1,5');
   assert.equal(L.estimateBudget(items, 1).real, 0);
+});
+
+test('prix de référence : tous les articles courants ont un prix réaliste, aucune faute de frappe, coût par portion plausible', () => {
+  const recipes = loadRecipes();
+  const g = load(recipes);
+  const names = {};
+  const costs = [];
+  recipes.forEach((r) => {
+    g.state.plan = [r.id]; g.state.portions = 4;
+    const items = g.api.computeGroceries();
+    items.forEach((i) => { names[i.name] = (names[i.name] || 0) + 1; });
+    costs.push(L.estimateCost(items) / 4);
+  });
+  const unknown = Object.keys(L.REF_PRICES).filter((k) => !names[k]);
+  assert.deepEqual(unknown, [], 'noms absents du catalogue (faute de frappe ?)');
+  const missing = Object.keys(names).filter((k) => !L.REF_PRICES[k]);
+  assert.ok(missing.length <= 15, `${missing.length} articles sans prix de référence : ${missing.join(', ')}`);
+  costs.sort((a, b) => a - b);
+  const med = costs[Math.floor(costs.length / 2)];
+  assert.ok(med >= 2 && med <= 3.5, `coût médian par portion ${med} €`);
+  assert.ok(costs[costs.length - 1] <= 7, `coût max par portion ${costs[costs.length - 1]} €`);
+  // prix du ticket réel
+  assert.equal(L.refPrice({ name: 'Poivrons (rouges ou tricolores)', baseUnit: 'piece', quantity: 2 }), 2.1);
+  assert.equal(L.refPrice({ name: 'Pommes de terre fraîches', baseUnit: 'g', quantity: 1000 }), 1.75, '3,50 € les 2 kg');
+  assert.equal(L.refPrice({ name: 'Cheddar râpé', baseUnit: 'g', quantity: 140 }), 2.39);
+  assert.equal(L.refPrice({ name: 'Pâte ou poudre de curry doux', baseUnit: 'c. à café', quantity: 3 }), 0.25, 'une cuillère à soupe = 3 cuillères à café');
+  assert.equal(L.refPrice({ name: 'Filets de poulet frais', baseUnit: 'piece', quantity: 2 }), null, 'unité incompatible : pas de devinette');
+  assert.equal(L.refPrice({ name: 'Inconnu', baseUnit: 'g', quantity: 100 }), null);
 });

@@ -80,3 +80,59 @@ test('prix réels : carnet de prix, prix appris et totaux par rayon', () => {
   assert.equal(R.learnedPrice({ id: 'courgettes', baseUnit: 'g', quantity: 100 }, book), null, 'prix à la pièce, quantité en g : on ne devine pas');
   assert.deepEqual(plain(R.rayonTotals([{ rayon: 'boucherie', price: 12.4 }, { rayon: 'boucherie', price: 3 }, { price: 2 }])), { boucherie: 15.4, autres: 2 });
 });
+
+// ---------------------------------------------------------------- vrai ticket Grand Frais (texte extrait du PDF ; numéros personnels remplacés)
+const REAL = fs.readFileSync(path.join(__dirname, 'fixtures', 'ticket-grand-frais.txt'), 'utf8');
+
+test('vrai ticket Grand Frais : total, date, remises, tare, rayons de caisse', () => {
+  const r = R.parseReceipt(REAL);
+  assert.equal(r.total, 110.25, '« 49 TOTAL » puis le montant sur la ligne suivante');
+  assert.equal(r.date, '25/11/26');
+  assert.deepEqual(plain(r.sections), { cremerie: 41.87, 'fruits-legumes': 19.78, boucherie: 33.96, epicerie: 14.64 }, 'sous-totaux imprimés par rayon');
+  assert.equal(r.itemsSum, 110.25, 'la somme des lignes (remises et tare déduites, sac offert à 0 €) = le total');
+  assert.equal(r.lines.length, 43);
+  const by = (re) => r.lines.filter((l) => re.test(l.label));
+  assert.deepEqual(plain(by(/^GNOCCHI/).map((l) => l.price)), [2.19, 2.19], '3,29 € − offre APP 1,10 €');
+  const myrtille = by(/MYRTILLE/)[0];
+  assert.deepEqual(plain([myrtille.price, myrtille.kg, myrtille.perKg]), [3.33, 0.19, 17.99], 'tare déduite, prix au kilo imprimé conservé');
+  assert.equal(by(/^TOMATE/)[0].perKg, 2.99);
+  assert.equal(by(/^YAOURT/)[0].qty, 1, '« 8X12 » n\'est pas une quantité');
+  assert.ok(!r.lines.some((l) => /SAC EXCLUSIF|TARE|OFFRE/i.test(l.label)), 'sac offert, tare et offres ne sont pas des articles');
+  assert.ok(r.lines.every((l) => l.section), 'chaque ligne connaît son rayon de caisse');
+});
+
+test('vrai ticket Grand Frais : rapprochement des libellés tronqués avec les articles', () => {
+  const { normalizeIngredient } = load(loadRecipes()).api;
+  const idx = {};
+  loadRecipes().forEach((rc) => rc.ingredients.forEach((i) => { const n = normalizeIngredient(i); idx[n.name] = n.rayon; }));
+  const m = (l) => R.matchArticle(l, Object.keys(idx), (i) => normalizeIngredient(i));
+  assert.equal(m('PDT BINTJE FILET 2'), 'Pommes de terre fraîches', 'et non « filets de poulet »');
+  assert.equal(m('POULET : FILET X2'), 'Filets de poulet frais');
+  assert.equal(m('POULET: PAVE (FILE'), 'Filets de poulet frais');
+  assert.equal(m('LARDON FUME COUPE'), 'Lardons fumés pur porc');
+  assert.equal(m('CREME FRAICHE EPAI'), 'Crème fraîche (épaisse ou liquide)');
+  assert.equal(m('OEUFS PLEIN AIR X1'), 'Œufs frais');
+  assert.equal(m('TOMATE OLIVETTE IM'), 'Tomates fraîches');
+  assert.equal(m('POIVRON ROUGE IMPO'), 'Poivrons (rouges ou tricolores)');
+  assert.equal(m('COURGETTE ESPAGNE'), 'Courgettes fraîches');
+  assert.equal(m('BATAVIA VERTE'), 'Salade verte (mâche ou roquette)');
+  assert.equal(m('PAIN BURGER BUNS B'), 'Pains burger briochés');
+  assert.equal(m('WRAP BLE COMPLET 6'), 'Tortillas de blé');
+  assert.equal(m('FROMAGE GREC 180G'), 'Feta AOP');
+  assert.equal(m('GNOCCHI POMME DE T'), 'Gnocchis à poêler', 'les gnocchis ne sont pas des pommes');
+  assert.equal(m('PUR JUS ORANGE BIO'), null, 'un jus n\'est pas une orange');
+  assert.equal(m('POMME GALA'), null);
+  assert.equal(m('BANANE'), null);
+});
+
+test('prix réels : le prix au kilo imprimé ou le poids du paquet alimente le carnet', () => {
+  const r = R.parseReceipt(REAL);
+  const idx = { 'Tomates fraîches': 1, 'Cheddar râpé': 1, 'Feta AOP': 1, 'Poivrons (rouges ou tricolores)': 1 };
+  const items = r.lines.map((l) => ({ ...l, article: R.matchArticle(l.label, Object.keys(idx), () => null) })).filter((l) => l.article);
+  const book = R.updatePriceBook({}, items.map((l) => ({ id: l.article.toLowerCase(), price: l.price, kg: l.kg, perKg: l.perKg, pack: l.pack, qty: l.qty })), 1);
+  assert.equal(book['tomates fraîches'].kg, 2.99, 'prix au kilo imprimé');
+  assert.equal(book['cheddar râpé'].kg, 17.07, '2,39 € pour 140 g');
+  assert.equal(book['feta aop'].kg, 12.72, '2,29 € pour 180 g');
+  assert.equal(book['poivrons (rouges ou tricolores)'].kg, 5.59, 'jaune 4,99 puis rouge 5,99 (lissage 40/60)');
+  assert.equal(R.packSize('POMME SSA 4X100G'), 400);
+});
