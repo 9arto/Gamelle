@@ -2391,7 +2391,7 @@ function recipeCardHTML(recipe, idx = 99) {
           </div>
           <h3 class="font-bold text-sm text-slate-900 mt-0.5 leading-snug">${esc(recipe.title)}</h3>
           <div class="card-chips">
-            <span class="card-chip">${esc(recipe.timeMinutes)} min</span>
+            <span class="card-chip ${recipe.timeMinutes <= 20 ? 'is-cheap' : ''}">${esc(recipe.timeMinutes)} min</span>
             <span class="card-chip ${recipe.isBudget ? 'is-cheap' : ''}">${money(recipePP(recipe))} €/portion</span>
           </div>
         </div>

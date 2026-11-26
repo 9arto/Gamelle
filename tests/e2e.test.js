@@ -475,6 +475,9 @@ test('navigateur : prix par repas, « pas cher » réel, menu sous budget, équi
     // prix affiché sur les cartes et dans le planning
     await page.evaluate(() => switchTab('tab-recettes'));
     assert.match(await page.innerText('#recipes-catalog-grid'), /€\/portion/);
+    // pastille de temps verte pour les recettes rapides (20 min ou moins)
+    const chips = await page.$$eval('#recipes-catalog-grid .card-chips', (els) => els.map((e) => { const [time] = e.querySelectorAll('.card-chip'); return [parseInt(time.textContent, 10), time.classList.contains('is-cheap')]; }));
+    assert.ok(chips.length > 5 && chips.every(([m, green]) => green === (m <= 20)), 'vert si ≤ 20 min');
     await page.evaluate(() => switchTab('tab-planning'));
     assert.match(await page.innerText('#weekly-days-list'), /sélectionnés? · ≈ \d+/);
 

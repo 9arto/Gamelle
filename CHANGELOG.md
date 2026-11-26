@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 26/11/2026 — v68 : pastille de temps
+- Pastille de temps verte sur les recettes rapides (20 min ou moins).
+
 ## 26/11/2026 — v67 : cartes de recettes
 - Carte du catalogue : deux pastilles sur une seule ligne sous le titre (« 25 min » et « 4,40 €/portion », verte si « Pas cher ») et étiquette « Pas cher » sur la photo.
 
