@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v69**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v70**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v69`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v70`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -99,7 +99,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 
 ### 3.3 bis Nutrition & Open Food Facts
 - **Allergènes** : affichés **uniquement sur les fiches recettes** (jamais dans la liste de courses). Seule la pastille Nutri-Score apparaît sur les articles.
-- **Fiche recette** : bloc « Nutrition estimée par portion » (kcal, protéines, glucides, lipides) et **allergènes** (gluten, lait, œufs, poisson, crustacés, soja, sésame, fruits à coque…). Calcul : poids de chaque ingrédient (mêmes conversions que les courses) × valeur moyenne par article (table `RULES` de `nutrition.js`, valeurs de type Ciqual arrondies). Affiché seulement si ≥ 70 % des ingrédients sont couverts ; l'huile de cuisson n'est comptée que partiellement (15 g/portion max). **Estimation indicative.**
+- **Fiche recette** : bloc « Nutrition estimée par portion » (**calories en tête, à droite du titre**, puis protéines · glucides · lipides en 3 colonnes) et **allergènes** (gluten, lait, œufs, poisson, crustacés, soja, sésame, fruits à coque…). Calcul : poids de chaque ingrédient (mêmes conversions que les courses) × valeur moyenne par article (table `RULES` de `nutrition.js`, valeurs de type Ciqual arrondies). Affiché seulement si ≥ 70 % des ingrédients sont couverts ; l'huile de cuisson n'est comptée que partiellement (15 g/portion max). **Estimation indicative.**
 - **Courses → carte « Placard & réglages » → « Nutri-Score & allergènes de ma liste »** : interroge **Open Food Facts** (API publique, **aucune clé nécessaire**) pour les articles d'épicerie et de crèmerie (40 max) et affiche une pastille Nutri-Score A–E (note la plus fréquente parmi 10 produits du même type) ; mémorisé 30 jours sur le téléphone.
 - **« Scanner un produit »** (menu « … » des Courses ou carte « Placard & réglages ») : lecture du code-barres **en direct par la caméra** (`BarcodeDetector` s'il existe, sinon **ZXing embarqué** : fonctionne sur iPhone), ou **photo du code-barres**, ou saisie du numéro ; codes EAN-8/13, UPC contrôlés par clé de contrôle. **« Ajouter au placard »** : nom proposé (article de la liste reconnu, sinon nom du produit, modifiable) et **quantité Open Food Facts** (« 1 l », « 6 x 125 g ») retenue comme stock ; le scanner reste prêt pour le produit suivant. Produit inconnu : ajout au placard en saisissant le nom. Affiche aussi affiche nom, marque, Nutri-Score, NOVA, kcal/macros pour 100 g, allergènes ; boutons « mettre l'article correspondant au placard » ou « ajouter aux articles courants ». Sur iPhone, la caméra n'est pas toujours disponible : la saisie manuelle fonctionne partout.
 - Réseau : pas de réseau = fonction simplement indisponible (le reste de l'app n'est pas affecté). Aucune donnée personnelle n'est envoyée (seulement le nom du type de produit ou le code-barres).
@@ -107,6 +107,11 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 ### 3.4 Studio de recette maison
 - Titre, durée, type (Volaille / Poisson / Végétarien / Bœuf-Porc), saison, « pas cher », photo (URL ou pastilles prédéfinies), ingrédients (une ligne = `quantité unité nom`), étapes (une par ligne, minuteurs détectés dans le texte).
 - Le rayon de chaque ingrédient est détecté automatiquement. Modifiable / supprimable. Synchronisée avec le foyer. Identifiant `custom-…`.
+
+### 3.4 bis Activité de l'autre téléphone
+- **Mon prénom** (Réglages → foyer, facultatif). Il accompagne vos synchronisations.
+- Quand l'autre téléphone **ajoute un produit courant ou un repas**, un bandeau vert s'affiche à l'ouverture de l'app (ou en direct si elle est ouverte) : « Julie a ajouté Lait, Avoine à la liste de courses et « Poulet mafé » au menu ». Il se ferme d'un toucher ou seul après 20 s. Sans prénom : « L'autre téléphone a ajouté… ».
+- 100 % dans l'app : **aucune installation, aucun compte, aucune notification externe** (les notifications ntfy ont été retirées). Le premier échange après avoir rejoint un foyer n'annonce rien (tout serait « nouveau »).
 
 ### 3.5 Réglages
 - **Apparence** : Clair / Sombre / Système .

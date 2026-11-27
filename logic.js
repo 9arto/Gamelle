@@ -320,6 +320,17 @@
     return 4;
   }
 
+  // ---------------------------------------------------------------- Activité de l'autre téléphone (affichée dans l'app, sans notification externe)
+  const listText = (arr, max) => arr.length > max ? `${arr.slice(0, max).join(', ')} +${arr.length - max}` : arr.join(', ');
+  // « Julie a ajouté Lait, Avoine à la liste de courses et « Poulet mafé » au menu »
+  function activityText({ name, staples = [], meals = [] }) {
+    const who = (name || '').trim() || "L'autre téléphone";
+    const parts = [];
+    if (staples.length) parts.push(`a ajouté ${listText(staples, 5)} à la liste de courses`);
+    if (meals.length) parts.push(`${parts.length ? 'et ' : 'a ajouté '}${meals.length === 1 ? `« ${meals[0]} »` : `${meals.length} repas (${listText(meals, 3)})`} au menu`);
+    return parts.length ? `${who} ${parts.join(' ')}` : null;
+  }
+
   // « il y a 2 h » (état de la synchro)
   function syncAgeText(ts, now) {
     if (!ts) return 'jamais';
@@ -552,6 +563,6 @@
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
     SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, refPrice, REF_PRICES, estimateCost, estimateBudget, priceFactor, budgetStats, weekSummary, shelfDays, ingredientGroup, consumeStock, parseStockInput,
     encryptPayload, decryptPayload, cryptoAvailable,
-    weatherMood, weatherFit, fetchWeather, syncAgeText
+    weatherMood, weatherFit, fetchWeather, activityText, syncAgeText
   };
 })(typeof window !== 'undefined' ? window : globalThis);

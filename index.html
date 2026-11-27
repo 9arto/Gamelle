@@ -52,6 +52,7 @@
   <!-- CONTENEUR PRINCIPAL DES VUES -->
   <div id="app-banners" role="status" aria-live="polite">
     <div id="banner-update" class="app-banner update hidden"><span>Nouvelle version disponible</span><span class="flex gap-2"><button id="btn-banner-update" type="button">Mettre à jour</button><button id="btn-banner-later" type="button" aria-label="Plus tard">✕</button></span></div>
+    <div id="banner-activity" class="app-banner activity hidden" role="status"><span id="banner-activity-text"></span><button id="btn-banner-activity" type="button" aria-label="Fermer">✕</button></div>
     <div id="banner-status" class="app-banner offline hidden"><span id="banner-status-text"></span></div>
   </div>
 
@@ -311,6 +312,11 @@
               </span>
             </div>
 
+            <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs">
+                <label for="member-name" class="font-semibold text-slate-700 block">Mon prénom <span class="font-normal text-slate-400">(facultatif)</span></label>
+                <input type="text" id="member-name" maxlength="30" autocomplete="off" placeholder="ex. Julie" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs">
+                <p class="text-slate-500 leading-relaxed">Quand vous ajoutez un produit ou un repas, l'autre téléphone le voit à l'ouverture de l'app : « Julie a ajouté Lait à la liste de courses ».</p>
+              </div>
             <!-- Si Foyer Non Connecté -->
             <div id="sync-setup-box" class="space-y-2.5 pt-1">
               <p class="text-xs text-slate-600 leading-relaxed">

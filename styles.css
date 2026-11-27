@@ -576,3 +576,8 @@ img.img-loaded { animation: imgIn .35s ease-out; }
 .card-cheap-badge { position:absolute; left:6px; top:6px; font-size:12px; font-weight:700; color:#fff; background:#059669; padding:1px 7px; border-radius:7px; box-shadow:0 1px 3px rgba(0,0,0,.25); }
 html:where(.dark) .card-chip { background:#2c2c2e; color:#d1d1d6; }
 html:where(.dark) .card-chip.is-cheap { background:#064e3b; color:#6ee7b7; }
+
+.app-banner.activity { background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }
+html:where(.dark) .app-banner.activity { background:#064e3b; color:#a7f3d0; border-color:#065f46; }
+.app-banner.activity button { background:transparent; border:0; font-weight:700; padding:0 6px; color:inherit; }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }

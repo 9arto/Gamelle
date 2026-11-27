@@ -561,6 +561,7 @@ let state = {
   pantryStock: {},     // quantités en stock au placard { articleId: { qty, unit } } (facultatif)
   stapleHistory: {},   // produits courants ajoutés { nom: { n, last } } → « vos habituels »
   trips: [],           // dernières courses { t, total, est, items, r } → budget réaliste et stats par rayon
+  memberName: '',      // prénom (facultatif) affiché sur l'autre téléphone
   priceBook: {},       // prix réels appris sur les tickets { article: { kg, u, n, t } }
   pantryExpiry: {},    // dates limites des articles du placard { article: timestamp }
   weeklyPack: [],      // « pack de la semaine » : produits achetés chaque semaine [{ name, qty }]
@@ -606,6 +607,10 @@ function init() {
   setupEventListeners();
   setupPackModal();
   setupOnboarding();
+  const nameInput = document.getElementById('member-name');
+  if (nameInput) { nameInput.value = state.memberName; nameInput.addEventListener('change', () => { state.memberName = cleanStr(nameInput.value, 30); safeSetItem('gamelle_member_name', state.memberName); }); }
+  const actClose = document.getElementById('btn-banner-activity');
+  if (actClose) actClose.addEventListener('click', () => document.getElementById('banner-activity').classList.add('hidden'));
   purgeOldPantry();
   renderAll();
   renderThemeControl();
@@ -675,6 +680,7 @@ function loadFromLocalStorage() {
   state.stapleHistory = sanitizeStapleHistory(readJSON('gamelle_staple_history', {}));
   state.trips = sanitizeTrips(readJSON('gamelle_trips', []));
   state.priceBook = sanitizePriceBook(readJSON('gamelle_price_book', {}));
+  state.memberName = cleanStr(safeGetItem('gamelle_member_name') || '', 30);
   state.pantryExpiry = sanitizeExpiry(readJSON('gamelle_pantry_expiry', {}));
   state.weeklyPack = sanitizePack(readJSON('gamelle_weekly_pack', []));
   state.sync.lastOk = parseInt(safeGetItem('gamelle_sync_ok') || '0', 10) || 0;
@@ -1372,13 +1378,13 @@ function renderNutritionCard(recipe) {
   const n = nutritionOf(recipe);
   if (n.coverage < 0.7) { box.innerHTML = ''; return; }
   const p = n.perPortion;
-  const chip = (label, v, unit) => `<span class="px-2 py-1 rounded-lg bg-slate-50 border border-slate-100 text-slate-600"><b class="text-slate-800">${v}</b> ${unit} ${label}</span>`;
+  const cell = (label, v) => `<div class="rounded-xl bg-slate-50 border border-slate-100 py-2 text-center"><div class="text-sm font-bold text-slate-800">${v} g</div><div class="text-[12px] text-slate-500">${label}</div></div>`;
   box.innerHTML = `
-    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5"><span>Nutrition estimée</span> <span class="font-normal normal-case text-slate-400">par portion</span></h3>
-    <div class="flex flex-wrap gap-1.5 text-[11px]">
-      <span class="px-2 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900"><b>${p.kcal}</b> kcal</span>
-      ${chip('protéines', p.protein, 'g')}${chip('glucides', p.carbs, 'g')}${chip('lipides', p.fat, 'g')}
+    <div class="flex items-center justify-between gap-2">
+      <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5 flex-wrap"><span>Nutrition estimée</span> <span class="font-normal normal-case text-slate-400">par portion</span></h3>
+      <span class="px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs whitespace-nowrap"><b>${p.kcal}</b> kcal</span>
     </div>
+    <div class="grid grid-cols-3 gap-1.5">${cell('protéines', p.protein)}${cell('glucides', p.carbs)}${cell('lipides', p.fat)}</div>
     ${n.allergens.length ? `<p class="text-[11px] text-slate-600">Allergènes : ${n.allergens.map(a => esc(GN.allergenLabel(a))).join(', ')}</p>` : '<p class="text-[11px] text-slate-400">Aucun allergène majeur repéré.</p>'}
     <p class="text-[10px] text-slate-400">Estimation à partir de valeurs moyennes par ingrédient (type Ciqual / Open Food Facts) : à titre indicatif.</p>`;
 }

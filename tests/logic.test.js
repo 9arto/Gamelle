@@ -392,3 +392,12 @@ test('ingrédients d\'une recette : l\'essentiel en haut (féculents, viande, l�
   const heads = recipes.filter((r) => { const n = api.normalizeIngredient(r.ingredients[0]); return g(n.name, n.rayon) >= 5; }).length;
   assert.ok(heads / recipes.length < 0.15, `${heads} recettes commencent par un condiment`);
 });
+
+test('activité de l\'autre téléphone : texte affiché dans l\'app', () => {
+  assert.equal(L.activityText({ name: 'Julie', staples: ['Lait', 'Avoine'] }), 'Julie a ajouté Lait, Avoine à la liste de courses');
+  assert.equal(L.activityText({ staples: ['Lait'] }), "L'autre téléphone a ajouté Lait à la liste de courses");
+  assert.equal(L.activityText({ name: 'Paul', meals: ['Poulet mafé'] }), 'Paul a ajouté « Poulet mafé » au menu');
+  assert.equal(L.activityText({ name: 'Paul', staples: ['Lait'], meals: ['A', 'B'] }), 'Paul a ajouté Lait à la liste de courses et 2 repas (A, B) au menu');
+  assert.match(L.activityText({ staples: ['a', 'b', 'c', 'd', 'e', 'f', 'g'] }), /a, b, c, d, e \+2/);
+  assert.equal(L.activityText({ name: 'X' }), null);
+});
