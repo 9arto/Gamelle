@@ -587,3 +587,4 @@ html:where(.dark) .app-banner.activity { background:#064e3b; color:#a7f3d0; bord
 .sheet-foot { padding: .875rem max(1.5rem, env(safe-area-inset-left)) max(1.75rem, calc(env(safe-area-inset-bottom) + .75rem)) max(1.5rem, env(safe-area-inset-right)) !important; }
 [id$="-modal"] > .rounded-t-3xl { padding-bottom: calc(env(safe-area-inset-bottom) * .5); }
 @supports (height: 1dvh) { #recipe-detail-modal > div { height: 92dvh; } }
+.pt-4 { padding-top: 1rem; }

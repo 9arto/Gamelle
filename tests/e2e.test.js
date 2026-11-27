@@ -716,3 +716,20 @@ test('mise en page : les boutons du bas des fenêtres gardent une marge pour les
     assert.ok(r[0] >= 24 && r[1] >= 28, `bouton à ${r[0]} px du bord gauche, ${r[1]} px du bas`);
   } finally { await browser.close(); srv.close(); }
 });
+
+test('équilibre de la semaine : la barre se remplit et passe au vert quand le repère est atteint', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+    await page.evaluate(() => { state.plan = state.recipes.filter((r) => nutritionOf(r).perPortion.protein >= 34).slice(0, 4).map((r) => r.id); renderPlanning(); });
+    const bars = await page.$$eval('#week-balance .h-2 > div', (els) => els.map((e) => ({ w: e.getBoundingClientRect().width, full: e.parentElement.getBoundingClientRect().width, bg: getComputedStyle(e).backgroundColor })));
+    assert.equal(bars.length, 2);
+    assert.ok(bars[0].w > 0 && Math.abs(bars[0].w - bars[0].full) < 1, 'protéines au repère : barre pleine');
+    assert.equal(bars[0].bg, 'rgb(16, 185, 129)', 'verte');
+    assert.ok(bars.every((b) => b.w > 0), 'aucune barre vide');
+  } finally { await browser.close(); srv.close(); }
+});

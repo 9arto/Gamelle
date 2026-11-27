@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v71**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v72**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v71`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v72`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -317,7 +317,7 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 
 | `tests/receipt.test.js` | **vrai ticket Grand Frais** (`tests/fixtures/ticket-grand-frais.txt`, numéros personnels remplacés : 43 lignes, total 110,25 €, remises, tare, sous-totaux par rayon, prix au kilo, libellés tronqués) ; lecture de tickets (total, date, lignes, poids, quantité × prix, confusions OCR, lignes parasites), rapprochement avec les articles, carnet de prix, prix appris, totaux par rayon. |
 | `tests/e2e.test.js` (suite) | **lecture d'un vrai code-barres EAN-13** (image générée, ZXing), clé de contrôle, quantité Open Food Facts → stock, ajout au placard ; **OCR réel d'une photo de ticket** (Tesseract) → relecture → enregistrement → prix réels et statistiques. La caméra en direct n'est pas testable sans appareil. |
-| `tests/css-classes.test.js` | **toute classe utilitaire** (type Tailwind) utilisée dans `index.html`, `app.js`, `groceries.js`, `sync.js` existe dans `tailwind.css` ou `styles.css` (le CSS est pré-compilé : une classe absente casse la mise en page sans erreur). |
+| `tests/css-classes.test.js` | **toute classe utilitaire** (type Tailwind) utilisée dans `index.html`, `app.js`, `groceries.js`, `sync.js`, `ticket.js`, `extras.js` existe dans `tailwind.css` ou `styles.css` (le CSS est pré-compilé : une classe absente casse la mise en page sans erreur). |
 
 État au 25/11/2026 : **106 tests passent, 0 échec**.
 

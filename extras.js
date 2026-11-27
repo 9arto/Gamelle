@@ -204,14 +204,15 @@ function renderWeekBalance() {
   if (recipes.length < 2) { box.classList.add('hidden'); box.innerHTML = ''; return; }
   const meals = recipes.map(r => ({ kcal: nutritionOf(r).perPortion.kcal, protein: nutritionOf(r).perPortion.protein, veg: Math.round(vegGramsPerPortion(r)), type: r.type }));
   const s = GL.weekSummary(meals);
-  const bar = (v, target, cls) => `<div class="h-2 rounded-full bg-slate-100 overflow-hidden"><div class="h-full rounded-full ${cls}" style="width:${Math.min(100, Math.round(v / target * 100))}%"></div></div>`;
+  // Barre verte quand le repère est atteint, ambrée sinon (couleurs en ligne : indépendantes du CSS compilé)
+  const bar = (v, target) => `<div class="h-2 rounded-full bg-slate-100 overflow-hidden"><div class="h-full rounded-full" style="width:${Math.min(100, Math.round(v / target * 100))}%;background:${v >= target ? '#10b981' : '#f59e0b'}"></div></div>`;
   const TL = { volaille: 'volaille', viande: 'viande', poisson: 'poisson', vege: 'végétarien' };
   box.classList.remove('hidden');
   box.innerHTML = `<div class="ios-card p-4 space-y-3">
     <div class="flex items-center gap-3"><div class="tile-icon tile-green"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div>
       <div><h3 class="text-sm font-bold text-slate-800">Équilibre de vos ${s.count} repas</h3><p class="text-xs text-slate-500">Moyenne par repas et par personne</p></div></div>
-    <div class="space-y-1"><div class="flex justify-between text-xs"><span class="text-slate-600">Protéines</span><b class="text-slate-800">${s.protein} g <span class="font-normal text-slate-400">/ ${s.target.protein} g</span></b></div>${bar(s.protein, s.target.protein, 'bg-rose-400')}</div>
-    <div class="space-y-1"><div class="flex justify-between text-xs"><span class="text-slate-600">Légumes et fruits</span><b class="text-slate-800">${s.veg} g <span class="font-normal text-slate-400">/ ${s.target.veg} g</span></b></div>${bar(s.veg, s.target.veg, 'bg-emerald-500')}</div>
+    <div class="space-y-1"><div class="flex justify-between text-xs"><span class="text-slate-600">Protéines</span><b class="text-slate-800">${s.protein} g <span class="font-normal text-slate-400">/ ${s.target.protein} g</span></b></div>${bar(s.protein, s.target.protein)}</div>
+    <div class="space-y-1"><div class="flex justify-between text-xs"><span class="text-slate-600">Légumes et fruits</span><b class="text-slate-800">${s.veg} g <span class="font-normal text-slate-400">/ ${s.target.veg} g</span></b></div>${bar(s.veg, s.target.veg)}</div>
     <p class="text-xs text-slate-600"><b>${s.kcal} kcal</b> en moyenne · ${Object.entries(s.types).map(([t, n]) => `${n} ${TL[t] || t}`).join(' · ')}</p>
     ${s.lowVeg ? `<p class="text-xs text-amber-700">${s.lowVeg} repas ${s.lowVeg > 1 ? 'sont' : 'est'} pauvre${s.lowVeg > 1 ? 's' : ''} en légumes : pensez à un accompagnement.</p>` : ''}
     ${s.lowProtein ? `<p class="text-xs text-amber-700">${s.lowProtein} repas ${s.lowProtein > 1 ? 'apportent' : 'apporte'} peu de protéines (moins de 15 g).</p>` : ''}

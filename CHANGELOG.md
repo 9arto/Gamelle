@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 27/11/2026 — v72 : barre de protéines
+- Équilibre de la semaine : la barre de protéines s'affichait vide (une classe de couleur manquait dans le CSS compilé). Elle est maintenant pleine et **verte** quand le repère est atteint, ambrée sinon ; le test de classes CSS couvre désormais aussi `extras.js`.
+
 ## 27/11/2026 — v71 : photos homogènes, boutons du bas
 - **Toutes les photos du catalogue sont maintenant des photos Jow** (les 36 dernières photos de banque d'images sont remplacées par celles de recettes Jow équivalentes, vérifiées une à une) ; un test l'impose.
 - **Boutons du bas des fenêtres** (fiche recette, mode cuisine…) : marges latérales et basses élargies pour ne plus être rognés par les coins arrondis de l'iPhone (le CSS compilé écrasait la marge de sécurité).
