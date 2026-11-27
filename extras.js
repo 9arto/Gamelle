@@ -219,26 +219,6 @@ function renderWeekBalance() {
 }
 
 // ---------------------------------------------------------------------------
-// Petit retour sonore / vibration (rayon terminé)
-// ---------------------------------------------------------------------------
-function tickFeedback() {
-  if (state.feedback === false) return;
-  try { if (navigator.vibrate) navigator.vibrate(25); } catch (e) { /* non supporté (iPhone) */ }
-  try {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return;
-    const ctx = new AC();
-    [[880, 0], [1318, 0.09]].forEach(([f, t]) => {
-      const o = ctx.createOscillator(), g = ctx.createGain();
-      o.type = 'sine'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, ctx.currentTime + t);
-      g.gain.exponentialRampToValueAtTime(0.07, ctx.currentTime + t + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t + 0.16);
-      o.connect(g); g.connect(ctx.destination); o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + 0.18);
-    });
-    setTimeout(() => ctx.close && ctx.close(), 600);
-  } catch (e) { /* pas de son */ }
-}
-
-// ---------------------------------------------------------------------------
 // Accueil en 3 étapes (première ouverture seulement)
 // ---------------------------------------------------------------------------
 let onboardStep = 0, onboardDraft = {};

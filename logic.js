@@ -300,21 +300,35 @@
     return { tempMax: maxes.reduce((a, b) => a + b, 0) / maxes.length, wet: wetNow || (rain.length > 0 && rain.reduce((a, b) => a + b, 0) / rain.length >= 3) };
   }
 
-  // ---------------------------------------------------------------- Notifications du foyer (ntfy.sh : sujet secret dérivé du code, aucune clé)
-  async function notifTopic(code) {
-    const bytes = new TextEncoder().encode('gamelle-alerte:' + String(code || '').trim().toUpperCase());
-    const hash = await crypto.subtle.digest('SHA-256', bytes);
-    return 'gamelle-alerte-' + Array.from(new Uint8Array(hash)).slice(0, 10).map((b) => b.toString(16).padStart(2, '0')).join('');
+  // ---------------------------------------------------------------- Ordre des ingrédients d'une recette (l'essentiel d'abord)
+  // 0 féculents · 1 viandes, poissons, œufs · 2 légumes et fruits · 3 produits laitiers · 4 autres · 5 aromates · 6 épices, huiles, condiments
+  const G_SPICE = /huile|vinaigre|farine|sucre|(?<![a-z-])sel\b|poivre\b|paprika|cumin|curcuma|muscade|cannelle|curry|herbes de provence|piment|epice|garam|harissa|tabasco|moutarde|concentre|bouillon|fond de|sauce (soja|piment|teriyaki|d.huitre|barbecue|cesar|deluxe)|miel|chapelure|levure|vanille|origan|wasabi|ketchup|mayonnaise|vodka|cidre|vin (blanc|rouge)|confit d.oignon|tahini|puree de sesame|graines|pignons de pin|sesame/;
+  const G_AROMA = /\bail\b|gousses?|echalote|gingembre|coriandre|persil|basilic|ciboulette|menthe|thym|romarin|aneth|citron|bouquet garni|cebette|oignons nouveaux/;
+  const G_STARCH = /\briz\b|pates|spaghetti|penne|tagliatelle|coquillette|fusilli|nouille|vermicelle|semoule|quinoa|\bble\b|boulgour|polenta|gnocchi|pommes? de terre|patates?|\bpain|tortilla|wrap|galette|brioche|bagel|lasagne|ravioli|ravioles|crozets|lentille|pois chiche|haricots (rouges|blancs|noirs)|flageolet|couscous|mais doux|marrons|cereales/;
+  const G_PROTEIN = /poulet|boeuf|veau|porc|dinde|canard|agneau|saumon|thon|cabillaud|crevette|poisson|saint.?jacques|steak|jambon|lardon|chorizo|bacon|lard\b|saucisse|merguez|chipolata|cordon|nems?|quenelle|falafel|oeufs?|tofu|emince vegetal|boulettes|anchois|escalope|filet|pilon|cuisse|magret|bavette|chair a saucisse|cotes? de porc|echine/;
+  // Cas où un mot d'épice/condiment apparaît dans un vrai ingrédient (« demi-sel », « aux graines », « à l'huile »)
+  const G_OVERRIDE = [[/anchois/, 1], [/^pains?\b|raviol/, 0], [/fromage|^beurre(?! de cacahuete)/, 3], [/champignon/, 2]];
+  function ingredientGroup(name, rayon) {
+    const n = norm(name);
+    for (const [re, g] of G_OVERRIDE) if (re.test(n)) return g;
+    if (G_SPICE.test(n)) return 6;
+    if (G_AROMA.test(n)) return 5;
+    if (G_STARCH.test(n)) return 0;
+    if (rayon === 'boucherie' || rayon === 'poissonnerie' || G_PROTEIN.test(n)) return 1;
+    if (rayon === 'fruits-legumes' || /tomates? (concass|pelee)|coulis|ratatouille|haricots verts|petits pois|epinard|champignon|legume|salade|avocat|compote/.test(n)) return 2;
+    if (rayon === 'cremerie') return /pate (a|feuilletee|brisee)|pate a tarte|feuilles? de brick|galette/.test(n) ? 4 : 3;
+    return 4;
   }
+
+  // ---------------------------------------------------------------- Activité de l'autre téléphone (affichée dans l'app, sans notification externe)
   const listText = (arr, max) => arr.length > max ? `${arr.slice(0, max).join(', ')} +${arr.length - max}` : arr.join(', ');
-  // « Julie a ajouté Lait, Avoine dans la liste de courses »
-  function buildNotification({ name, staples = [], meals = [] }) {
-    const who = (name || '').trim();
-    const verb = who ? `${who} a ajouté` : 'A ajouté';
+  // « Julie a ajouté Lait, Avoine à la liste de courses et « Poulet mafé » au menu »
+  function activityText({ name, staples = [], meals = [] }) {
+    const who = (name || '').trim() || "L'autre téléphone";
     const parts = [];
-    if (staples.length) parts.push(`${verb} ${listText(staples, 5)} dans la liste de courses`);
-    if (meals.length) parts.push(`${parts.length ? 'et' : verb} ${meals.length === 1 ? `« ${meals[0]} »` : `${meals.length} repas (${listText(meals, 3)})`} au menu`);
-    return parts.length ? parts.join(' ') : null;
+    if (staples.length) parts.push(`a ajouté ${listText(staples, 5)} à la liste de courses`);
+    if (meals.length) parts.push(`${parts.length ? 'et ' : 'a ajouté '}${meals.length === 1 ? `« ${meals[0]} »` : `${meals.length} repas (${listText(meals, 3)})`} au menu`);
+    return parts.length ? `${who} ${parts.join(' ')}` : null;
   }
 
   // « il y a 2 h » (état de la synchro)
@@ -547,8 +561,8 @@
     recipeSeasons, recipeStyles, currentSeason,
     containsPork, containsLactose, isOnePan, matchesFridge, parseFridge,
     recipeMatchesFilters, pickMenu, RECENT_DAYS,
-    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, refPrice, REF_PRICES, estimateCost, estimateBudget, priceFactor, budgetStats, weekSummary, shelfDays, consumeStock, parseStockInput,
+    SPICES, SPICES_BASIC, SPICES_FULL, BASICS, splitGroceries, suggestStaples, STAPLE_SUGGESTIONS, rankByLeftovers, estimateItemPrice, refPrice, REF_PRICES, estimateCost, estimateBudget, priceFactor, budgetStats, weekSummary, shelfDays, ingredientGroup, consumeStock, parseStockInput,
     encryptPayload, decryptPayload, cryptoAvailable,
-    weatherMood, weatherFit, fetchWeather, notifTopic, buildNotification, syncAgeText
+    weatherMood, weatherFit, fetchWeather, activityText, syncAgeText
   };
 })(typeof window !== 'undefined' ? window : globalThis);

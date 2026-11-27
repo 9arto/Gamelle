@@ -66,7 +66,6 @@ function updateSyncStatusUI() {
     if (setupBox) setupBox.classList.add('hidden');
     if (activeBox) activeBox.classList.remove('hidden');
     if (codeLabel) codeLabel.textContent = state.householdCode;
-    refreshNotifTopic();
     if (headerPill) {
       headerPill.classList.remove('hidden');
       headerPill.classList.add('flex');
@@ -162,6 +161,7 @@ function buildSyncPayload() {
     version: 3,
     timestamp: Date.now(),
     senderId: state.deviceId,
+    by: state.memberName || '',   // prénom affiché sur l'autre téléphone (« Julie a ajouté… »)
     portions: state.portions,
     plan: state.plan,
     lockedSlots: state.lockedSlots || [],
@@ -247,12 +247,18 @@ function handleIncomingSync(payload) {
   // Ignorer si ce message est plus ancien que notre dernière synchro
   if (payload.timestamp <= (state.lastSyncTimestamp || 0)) return false;
 
+  const firstSync = !state.lastSyncTimestamp || !state.joinReceived; // premier échange après avoir rejoint : tout serait « nouveau »
+  const before = { staples: new Set(state.staples.map(x => x.name.toLowerCase())), plan: new Set(state.plan) };
   state.lastSyncTimestamp = payload.timestamp;
   safeSetItem('gamelle_last_sync', payload.timestamp);
   applyPayload(payload);
   state.joinReceived = true;
   markSyncOk();
-  showToast('Synchronisé avec votre foyer');
+  // Ce que l'autre téléphone a ajouté (produits courants, repas) : annoncé dans l'app, sans rien installer
+  const addedStaples = state.staples.filter(x => !before.staples.has(x.name.toLowerCase())).map(x => x.name);
+  const addedMeals = state.plan.filter(id => !before.plan.has(id)).map(id => { const r = state.recipes.find(x => x.id === id); return r ? r.title : null; }).filter(Boolean);
+  const text = firstSync || addedStaples.length + addedMeals.length > 20 ? null : GL.activityText({ name: cleanStr(payload.by || '', 30), staples: addedStaples, meals: addedMeals });
+  if (text) showActivityBanner(text); else showToast('Synchronisé avec votre foyer');
   return true;
 }
 
@@ -310,4 +316,15 @@ function broadcastSync(immediate = false) {
     updateSyncStatusLine();
   };
   if (immediate) run(); else state.syncDebounceTimer = setTimeout(run, 400);
+}
+
+// Bandeau « Julie a ajouté Lait à la liste de courses » (s'efface seul au bout de 20 s ou d'un toucher)
+let activityTimer = null;
+function showActivityBanner(text) {
+  const el = document.getElementById('banner-activity');
+  if (!el) { showToast(text, { duration: 6000 }); return; }
+  document.getElementById('banner-activity-text').textContent = text;
+  el.classList.remove('hidden');
+  clearTimeout(activityTimer);
+  activityTimer = setTimeout(() => el.classList.add('hidden'), 20000);
 }

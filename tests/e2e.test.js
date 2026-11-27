@@ -182,7 +182,7 @@ test('navigateur : nutrition sur la fiche recette, infos Open Food Facts et scan
   } finally { await browser.close(); srv.close(); }
 });
 
-test('navigateur : météo invisible (localisation simulée) et notification du foyer', { skip: !chromium && 'Playwright non installé' }, async () => {
+test('navigateur : météo invisible (localisation simulée)', { skip: !chromium && 'Playwright non installé' }, async () => {
   const srv = await serve();
   const url = `http://localhost:${srv.address().port}/index.html`;
   const browser = await chromium.launch();
@@ -205,19 +205,6 @@ test('navigateur : météo invisible (localisation simulée) et notification du 
     assert.ok(!/météo|meteo|°C|température/i.test(await page.evaluate(() => document.body.innerText)), 'rien de météo à l\'écran');
     assert.ok(await page.evaluate(() => JSON.parse(localStorage.getItem('gamelle_geo')).lat === 48.9), 'position arrondie');
 
-    // Notification : « Julie a ajouté Lait, Avoine dans la liste de courses »
-    await page.evaluate(() => switchTab('tab-courses'));
-    for (const v of ['Lait', 'Avoine']) { await page.fill('#staple-input', v); await page.press('#staple-input', 'Escape'); await page.click('#form-add-staple button[type="submit"]'); }
-    assert.equal(posts.length, 0, 'regroupé : rien n\'est envoyé tout de suite');
-    await page.evaluate(() => flushNotifications());
-    await page.waitForFunction(() => true);
-    await new Promise((r) => setTimeout(r, 300));
-    assert.equal(posts.length, 1);
-    assert.equal(posts[0].body, 'Julie a ajouté Lait, Avoine dans la liste de courses');
-    assert.match(posts[0].url, /ntfy\.sh\/gamelle-alerte-[0-9a-f]{20}$/);
-    // désactivable
-    await page.evaluate(() => { state.notify = false; queueNotification({ staple: 'Beurre' }); return flushNotifications(); });
-    assert.equal(posts.length, 1);
     assert.deepEqual(errors, []);
   } finally { await browser.close(); srv.close(); }
 });
@@ -490,7 +477,7 @@ test('navigateur : prix par repas, « pas cher » réel, menu sous budget, équi
     await page.evaluate(() => { state.lockedSlots = []; renderPlanning(); });
     // prix par portion toujours dans la fiche et dans les résultats de recherche
     await page.evaluate(() => { state.lockedSlots = [0]; saveToLocalStorage(); openRecipeDetail(state.plan[0]); });
-    assert.match(await page.innerText('#detail-recipe-cost'), /€ \/ portion/);
+    assert.match(await page.innerText('#detail-recipe-cost'), /€\/portion/);
     await page.evaluate(() => { document.getElementById('recipe-detail-modal').classList.add('hidden'); state.lockedSlots = []; state.searchQuery = 'poulet'; switchTab('tab-recettes'); renderCatalog(true); });
     assert.ok((await page.innerText('#recipes-catalog-grid')).match(/€\/portion/g).length >= 5, 'prix par portion dans la recherche');
     await page.evaluate(() => { state.searchQuery = ''; });
@@ -631,5 +618,83 @@ test('navigateur : un utilisateur existant ne voit jamais l\'accueil et ses donn
     assert.ok(!(await page.isVisible('#onboarding-modal')));
     assert.deepEqual(await page.evaluate(() => [state.plan, state.spices]), [['poulet-mafe-riz'], ['Cumin en poudre']]);
     assert.equal(await page.evaluate(() => localStorage.getItem('gamelle_onboarded')), '1');
+  } finally { await browser.close(); srv.close(); }
+});
+
+test('navigateur : bandeau seulement dans Planning, fiche recette (pastilles, liste unique triée), plus de sons ni de notifications', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::/.test(m.text())) errors.push(m.text()); });
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+    // bandeau « Gamelle & Panier · parts » : Planning seulement
+    assert.ok(await page.isVisible('header'));
+    for (const tab of ['tab-courses', 'tab-recettes', 'tab-partager']) {
+      await page.evaluate((t) => switchTab(t), tab);
+      assert.ok(!(await page.isVisible('header')), `bandeau masqué dans ${tab}`);
+    }
+    await page.evaluate(() => switchTab('tab-planning'));
+    assert.ok(await page.isVisible('header'));
+    // Réglages : ni « sons et vibrations » ni notifications
+    await page.evaluate(() => switchTab('tab-partager'));
+    const settings = await page.innerText('#tab-partager');
+    assert.ok(!/Sons et vibrations/i.test(settings) && !/Recevoir ces notifications|app ntfy|Prévenir l'autre téléphone/i.test(settings), 'réglages épurés');
+    // Fiche recette : pastilles temps + prix par portion sur une ligne, liste d'ingrédients unique et triée
+    await page.evaluate(() => { switchTab('tab-planning'); openRecipeDetail('poulet-mafe-riz'); });
+    const chips = await page.$$eval('#detail-recipe-time, #detail-recipe-cost', (els) => els.map((e) => [e.textContent.trim(), Math.round(e.getBoundingClientRect().top)]));
+    assert.match(chips[0][0], /^\d+ min$/); assert.match(chips[1][0], /^\d+,\d\d €\/portion$/);
+    assert.equal(chips[0][1], chips[1][1], 'sur la même ligne');
+    assert.ok(!/pour \d/.test(await page.innerText('#detail-recipe-cost')), 'plus de « pour N »');
+    const names = await page.$$eval('#detail-ingredients-list .font-medium', (els) => els.map((e) => e.textContent.trim()));
+    assert.equal(await page.$$eval('#detail-ingredients-list > div', (e) => e.length), 1, 'une seule liste, sans titres de rayons');
+    const order = await page.evaluate(() => [...document.querySelectorAll('#detail-ingredients-list .font-medium')].map((e) => e.textContent.trim()));
+    const idx = (re) => order.findIndex((n) => re.test(n));
+    assert.ok(idx(/riz/i) < idx(/huile|bouillon|curry|paprika|épice/i) || idx(/huile|bouillon|curry|paprika|épice/i) === -1, 'féculent avant épices : ' + order.join(' | '));
+    assert.ok(idx(/poulet/i) < order.length - 1 && idx(/poulet/i) <= 1, 'la viande est tout en haut : ' + order.join(' | '));
+    assert.ok(names.length >= 5);
+    assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});
+
+test('navigateur : « Julie a ajouté Lait… » à la réception d\'une synchro, prénom dans les réglages, nutrition en 3 colonnes', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource|net::/.test(m.text())) errors.push(m.text()); });
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+    // prénom (réglages) : mémorisé et envoyé avec la synchro
+    await page.evaluate(() => switchTab('tab-partager'));
+    await page.fill('#member-name', 'Julie'); await page.dispatchEvent('#member-name', 'change');
+    assert.equal(await page.evaluate(() => [localStorage.getItem('gamelle_member_name'), buildSyncPayload().by]).then((r) => r.join()), 'Julie,Julie');
+    // synchro reçue de l'autre téléphone : 1er échange = silencieux, ensuite = annonce
+    const other = (extra) => page.evaluate((x) => {
+      state.householdCode = 'FOYER-TEST-AAAA-BBBB';
+      const p = { ...buildSyncPayload(), senderId: 'autre', by: 'Paul', timestamp: Date.now() + (window.__t = (window.__t || 1000) + 1000), ...x };
+      return handleIncomingSync(p);
+    }, extra);
+    await page.evaluate(() => { state.joinReceived = false; state.lastSyncTimestamp = 0; });
+    await other({ staples: [{ id: 's1', name: 'Pain', checked: false, qty: 1 }] });
+    assert.ok(await page.evaluate(() => document.getElementById('banner-activity').classList.contains('hidden')), 'premier échange : pas d\'annonce');
+    const withMore = await page.evaluate(() => state.staples.concat([{ id: 's2', name: 'Lait', checked: false, qty: 1 }, { id: 's3', name: 'Avoine', checked: false, qty: 1 }]));
+    await other({ staples: withMore });
+    assert.equal(await page.innerText('#banner-activity-text'), 'Paul a ajouté Lait, Avoine à la liste de courses');
+    await page.click('#btn-banner-activity');
+    assert.ok(await page.evaluate(() => document.getElementById('banner-activity').classList.contains('hidden')));
+    // nutrition : calories en tête, 3 valeurs sur une ligne
+    await page.evaluate(() => { switchTab('tab-planning'); openRecipeDetail('poulet-mafe-riz'); });
+    const tops = await page.$$eval('#detail-nutrition .grid > div', (els) => els.map((e) => Math.round(e.getBoundingClientRect().top)));
+    assert.equal(tops.length, 3); assert.ok(tops.every((t) => t === tops[0]), 'protéines, glucides, lipides sur une ligne');
+    assert.match(await page.innerText('#detail-nutrition'), /kcal/);
+    assert.deepEqual(errors, []);
   } finally { await browser.close(); srv.close(); }
 });
