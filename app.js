@@ -557,8 +557,6 @@ let state = {
   genFilters: {},      // derniers filtres de « Composer mes 7 repas »
   off: {},             // cache Open Food Facts { article: { t, d } }
   leftovers: [],       // produits qu'on a à la maison (« Finir mes restes »)
-  notify: true,        // prévenir le foyer quand on ajoute un produit / un repas
-  memberName: '',      // prénom (facultatif) affiché dans les notifications
   weatherMood: null,   // météo de la semaine (jamais affichée : elle oriente seulement le tirage des repas)
   pantryStock: {},     // quantités en stock au placard { articleId: { qty, unit } } (facultatif)
   stapleHistory: {},   // produits courants ajoutés { nom: { n, last } } → « vos habituels »
@@ -566,7 +564,6 @@ let state = {
   priceBook: {},       // prix réels appris sur les tickets { article: { kg, u, n, t } }
   pantryExpiry: {},    // dates limites des articles du placard { article: timestamp }
   weeklyPack: [],      // « pack de la semaine » : produits achetés chaque semaine [{ name, qty }]
-  feedback: true,      // petit son / vibration quand un rayon est terminé
   sync: { lastOk: 0, pending: false, fail: false }
 };
 
@@ -609,8 +606,6 @@ function init() {
   setupEventListeners();
   setupPackModal();
   setupOnboarding();
-  const fb = document.getElementById('chk-feedback');
-  if (fb) { fb.checked = state.feedback !== false; fb.addEventListener('change', () => { state.feedback = fb.checked; safeSetItem('gamelle_feedback', fb.checked ? '1' : '0'); if (fb.checked) tickFeedback(); }); }
   purgeOldPantry();
   renderAll();
   renderThemeControl();
@@ -682,10 +677,7 @@ function loadFromLocalStorage() {
   state.priceBook = sanitizePriceBook(readJSON('gamelle_price_book', {}));
   state.pantryExpiry = sanitizeExpiry(readJSON('gamelle_pantry_expiry', {}));
   state.weeklyPack = sanitizePack(readJSON('gamelle_weekly_pack', []));
-  state.feedback = safeGetItem('gamelle_feedback') !== '0';
   state.sync.lastOk = parseInt(safeGetItem('gamelle_sync_ok') || '0', 10) || 0;
-  state.notify = safeGetItem('gamelle_notify') !== '0';
-  state.memberName = cleanStr(safeGetItem('gamelle_member_name') || '', 30);
   { const w = readJSON('gamelle_weather', null); if (w && Number.isFinite(w.t) && w.w) state.weatherMood = GL.weatherMood(w.w); }
 
   // Planning (support migration objet {Lundi: ...} -> tableau [])
@@ -1776,44 +1768,6 @@ async function ensureWeather() {
 }
 
 // ==========================================
-// NOTIFICATIONS DU FOYER (ntfy.sh, sujet secret dérivé du code foyer, aucune clé)
-// ==========================================
-let notifQueue = { staples: [], meals: [] }, notifTimer = null;
-function queueNotification({ staple, meal }) {
-  if (!state.notify || !state.householdCode) return;
-  if (staple && !notifQueue.staples.includes(staple)) notifQueue.staples.push(staple);
-  if (meal) notifQueue.meals.push(meal);
-  clearTimeout(notifTimer);
-  notifTimer = setTimeout(flushNotifications, 12000); // regroupe les ajouts rapprochés en un seul message
-}
-async function flushNotifications() {
-  const q = notifQueue;
-  notifQueue = { staples: [], meals: [] };
-  const text = GL.buildNotification({ name: state.memberName, staples: q.staples, meals: q.meals });
-  if (!text || !state.notify || !state.householdCode || !GL.cryptoAvailable()) return;
-  try {
-    const topic = await GL.notifTopic(state.householdCode);
-    await fetch(`https://ntfy.sh/${topic}`, { method: 'POST', headers: { Title: 'Gamelle & Panier', Tags: 'shopping_cart' }, body: text });
-  } catch (e) { /* hors ligne : tant pis, la synchro reste la référence */ }
-}
-function setupNotifySettings() {
-  const chk = document.getElementById('chk-notify');
-  const name = document.getElementById('member-name');
-  const copy = document.getElementById('btn-copy-notif-topic');
-  if (!chk) return;
-  chk.checked = state.notify;
-  name.value = state.memberName;
-  chk.addEventListener('change', () => { state.notify = chk.checked; safeSetItem('gamelle_notify', state.notify ? '1' : '0'); });
-  name.addEventListener('change', () => { state.memberName = cleanStr(name.value, 30); safeSetItem('gamelle_member_name', state.memberName); });
-  if (copy) copy.addEventListener('click', () => copyToClipboard(document.getElementById('notif-topic').textContent, 'Sujet copié'));
-}
-async function refreshNotifTopic() {
-  const el = document.getElementById('notif-topic');
-  if (!el) return;
-  el.textContent = state.householdCode && GL.cryptoAvailable() ? await GL.notifTopic(state.householdCode) : '';
-}
-
-// ==========================================
 // Titre évolutif : « Mes 3 repas »
 function updatePlanningTitle() {
   const n = state.plan.filter(Boolean).length;
@@ -2045,7 +1999,6 @@ function renderPlanning() {
 
 function addRecipeToPlan(recipeId) {
   state.plan.push(recipeId);
-  { const r = state.recipes.find(x => x.id === recipeId); if (r) queueNotification({ meal: r.title }); }
   saveToLocalStorage();
   renderPlanning();
   renderGroceries();
@@ -2112,7 +2065,6 @@ function addStaple(name, qty = 1, silent = false) {
   else state.staples.push({ id: 'staple_' + Date.now() + '_' + Math.floor(Math.random() * 1000), name: val, checked: false, qty: Math.max(1, qty) });
   const h = state.stapleHistory[val] || { n: 0, last: 0 };
   state.stapleHistory[val] = { n: h.n + 1, last: Date.now() };
-  queueNotification({ staple: val });
   if (silent) return;
   saveToLocalStorage();
   renderGroceries();
@@ -2217,7 +2169,6 @@ function renderGroceries() {
     // En-tête du rayon (toucher pour replier / déplier)
     const rayonDone = leftInRayon === 0;
     const justDone = rayonDone && !celebratedRayons.has(rayon.id);
-    if (justDone && settleId !== null) setTimeout(tickFeedback, 0); // seulement quand c'est vous qui venez de cocher
     if (rayonDone) celebratedRayons.add(rayon.id); else celebratedRayons.delete(rayon.id);
     section.innerHTML = `
       <div class="bg-slate-50 border-b border-slate-100 flex items-center">
@@ -2613,6 +2564,7 @@ function openRecipeDetail(recipeId) {
   document.getElementById('detail-recipe-title').textContent = recipe.title;
   document.getElementById('detail-recipe-tag').textContent = recipe.tag;
   document.getElementById('detail-recipe-time').textContent = `${recipe.timeMinutes} min`;
+  document.getElementById('detail-recipe-time').classList.toggle('is-cheap', recipe.timeMinutes <= 20);
   {
     const seasons = GL.recipeSeasons(recipe);
     document.getElementById('detail-recipe-season').textContent = seasons.length >= 4 ? 'Toute saison'
@@ -2622,7 +2574,8 @@ function openRecipeDetail(recipeId) {
   renderNutritionCard(recipe);
   
   const costEl = document.getElementById('detail-recipe-cost');
-  if (costEl) costEl.textContent = `≈ ${money(recipePP(recipe))} € / portion · ≈ ${euro(recipeMealCost(recipe))}`;
+  if (costEl) costEl.textContent = `${money(recipePP(recipe))} €/portion`;
+  if (costEl) costEl.classList.toggle('is-cheap', !!recipe.isBudget);
   const budgetBadge = document.getElementById('detail-recipe-budget');
   if (recipe.isBudget) {
     budgetBadge.classList.remove('hidden');
@@ -2638,32 +2591,21 @@ function openRecipeDetail(recipeId) {
   ingsList.innerHTML = '';
   document.getElementById('detail-ingredients-count').textContent = `${recipe.ingredients.length} articles`;
 
-  GRAND_FRAIS_RAYONS.forEach(rayon => {
-    const itemsInRayon = recipe.ingredients.filter(i => i.rayon === rayon.id);
-    if (itemsInRayon.length === 0) return;
-
-    const groupDiv = document.createElement('div');
-    groupDiv.className = 'bg-slate-50 rounded-2xl p-3 border border-slate-100';
-
-    groupDiv.innerHTML = `
-      <div class="text-xs font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-        ${rayonIcon(rayon)} <span>${rayon.name}</span>
-      </div>
-      <div class="space-y-1.5 divide-y divide-slate-100">
-        ${itemsInRayon.map(ing => {
-          const qty = (ing.quantity || 1) * ratio;
-          const formatted = formatQuantityAndUnit(qty, ing.unit, ing.name);
-          return `
-            <div class="flex items-center justify-between text-xs pt-1.5">
-              <span class="text-slate-800 font-medium">${esc(ing.name)}</span>
-              <span class="font-bold text-emerald-700 bg-white px-2 py-0.5 rounded-lg border border-slate-200">${formatted}</span>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    `;
-    ingsList.appendChild(groupDiv);
-  });
+  // Une seule liste : l'essentiel d'abord (féculents, viandes/poissons, légumes), puis laitiers, le reste, aromates et enfin épices/huiles
+  const ordered = recipe.ingredients.map((ing, idx) => { const n = normalizeIngredient(ing); return { ing, idx, g: GL.ingredientGroup(n.name, n.rayon) }; })
+    .sort((a, b) => a.g - b.g || a.idx - b.idx);
+  const groupDiv = document.createElement('div');
+  groupDiv.className = 'bg-slate-50 rounded-2xl p-3 border border-slate-100';
+  groupDiv.innerHTML = `<div class="space-y-1.5 divide-y divide-slate-100">${ordered.map(({ ing }) => {
+    const qty = (ing.quantity || 1) * ratio;
+    const formatted = formatQuantityAndUnit(qty, ing.unit, ing.name);
+    return `
+      <div class="flex items-center justify-between gap-2 text-xs pt-1.5 first:pt-0">
+        <span class="text-slate-800 font-medium">${esc(ing.name)}</span>
+        <span class="font-bold text-emerald-700 bg-white px-2 py-0.5 rounded-lg border border-slate-200 whitespace-nowrap">${formatted}</span>
+      </div>`;
+  }).join('')}</div>`;
+  ingsList.appendChild(groupDiv);
 
   // Rendu des étapes résumées
   const stepsList = document.getElementById('detail-steps-list');
@@ -3162,6 +3104,11 @@ function switchTab(tabId) {
     btn.classList.add('active', 'text-brand-600', 'font-bold');
     btn.classList.remove('text-slate-400');
   }
+  // Le bandeau « Gamelle & Panier · parts » n'apparaît que dans Planning ; ailleurs, on garde la marge de l'encoche
+  const header = document.querySelector('header');
+  if (header) header.classList.toggle('hidden', tabId !== 'tab-planning');
+  const main = document.querySelector('main');
+  if (main) main.classList.toggle('safe-top', tabId !== 'tab-planning');
   window.scrollTo(0, 0);
   safeSetItem('gamelle_tab', tabId);
 }
@@ -3231,7 +3178,6 @@ function setupEventListeners() {
   setupStapleAutocomplete();
   setupMoreFilters();
   setupLeftoversModal();
-  setupNotifySettings();
   setupTicketModal();
   setupBackupUI();
   initSyncMonitoring();

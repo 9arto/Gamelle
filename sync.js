@@ -66,7 +66,6 @@ function updateSyncStatusUI() {
     if (setupBox) setupBox.classList.add('hidden');
     if (activeBox) activeBox.classList.remove('hidden');
     if (codeLabel) codeLabel.textContent = state.householdCode;
-    refreshNotifTopic();
     if (headerPill) {
       headerPill.classList.remove('hidden');
       headerPill.classList.add('flex');

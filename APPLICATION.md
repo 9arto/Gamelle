@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v68**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v69**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v68`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v69`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -54,6 +54,8 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - **Planning vide** : écran d'accueil « Qu'est-ce qu'on mange ? » avec un grand bouton « Composer mes 7 repas » (et « Ou choisir dans les recettes »). Un menu volontairement vidé reste vide ; seul le tout premier lancement génère un menu d'exemple.
 - **Aperçu des repas** : une ligne de pastilles (photo + numéro) sous le compteur ; toucher une pastille fait défiler jusqu'au repas. Ambre = repas gardé, ✓ = cuisiné ces 3 derniers jours. Volontairement **sans jours ni semaines** (les courses peuvent couvrir plusieurs semaines).
 - **Carte du catalogue** : étiquette verte « Pas cher » sur la photo, puis sous le titre deux pastilles sur une ligne (temps — verte si 20 min ou moins —, prix par portion — verte si « Pas cher »).
+- **Bandeau du haut** (« Gamelle & Panier » + parts) : visible **seulement dans Planning**.
+- **Fiche recette** : sous la photo, deux pastilles sur une ligne (temps — verte si 20 min ou moins — et prix par portion — verte si « Pas cher ») ; **liste d'ingrédients unique**, sans titres de rayons, l'essentiel en haut : féculents → viandes/poissons/œufs → légumes et fruits → laitiers → autres → aromates (ail, herbes, citron) → épices, huiles, condiments en bas (`ingredientGroup`, testé sur tout le catalogue).
 - **Prix par repas** : chaque carte du catalogue (y compris dans les résultats de recherche) et la fiche de chaque recette affichent le prix par portion (« ≈ 2,40 €/portion », « ≈ 9,60 € »), **toujours**. Dans le menu, un repas « **gardé** » (= déjà acheté) n'affiche plus son prix et n'entre plus dans le total (« 7 repas sélectionnés · ≈ 54 € ») : une fois les courses faites, l'accueil est propre. Le coût d'une recette = tous ses ingrédients au prix de **vos tickets** quand ils sont connus, sinon au prix de référence (§7 quinquies), calculé en tâche de fond au démarrage.
 - **« Pas cher » réel** : un plat est « Pas cher » s'il coûte **2,20 € ou moins par portion** (environ un tiers du catalogue) ; le tag, le filtre et le tri « Moins cher d'abord » suivent ce calcul (les recettes maison gardent votre choix).
 - **Menu sous budget** : dans « Composer mes 7 repas », champ **« Budget des repas »** (ex. 60 €, pour vos portions) : les plats les plus chers sont remplacés par des alternatives moins chères (au hasard parmi les moins chères, donc varié) ; les repas gardés comptent dans le budget. Message : « Menu à ≈ 54 € (budget 60 €) » ou « Impossible sous 10 € avec ces filtres : ≈ 38 € (les moins chers choisis) ».
@@ -106,14 +108,8 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 - Titre, durée, type (Volaille / Poisson / Végétarien / Bœuf-Porc), saison, « pas cher », photo (URL ou pastilles prédéfinies), ingrédients (une ligne = `quantité unité nom`), étapes (une par ligne, minuteurs détectés dans le texte).
 - Le rayon de chaque ingrédient est détecté automatiquement. Modifiable / supprimable. Synchronisée avec le foyer. Identifiant `custom-…`.
 
-### 3.4 bis Notifications du foyer
-- Quand vous **ajoutez un produit courant** ou un **repas au menu**, l'autre téléphone peut être prévenu : « *Julie a ajouté Lait, Avoine dans la liste de courses* ». Les ajouts rapprochés (12 s) sont regroupés en un seul message.
-- Technique : service **ntfy.sh** (gratuit, **sans clé API**). Le sujet est **secret et dérivé du code foyer** (`gamelle-alerte-` + empreinte SHA-256, le code n'apparaît pas dedans). Sur iPhone, installer l'app gratuite **ntfy** et s'abonner à ce sujet (affiché dans Réglages → foyer, bouton Copier) ; une PWA seule ne reçoit pas de notification push de ce type.
-- Réglages → foyer : case « Prévenir l'autre téléphone… » (activée par défaut) et prénom facultatif. Les messages ne contiennent que des noms de produits ou de plats.
-- Rien n'est envoyé hors foyer connecté, ni pour les modifications reçues de l'autre téléphone.
-
 ### 3.5 Réglages
-- **Apparence** : Clair / Sombre / Système ; **Sons et vibrations** (petit « ding » et vibration quand un rayon est terminé ; l'iPhone ne vibre pas, le son reste).
+- **Apparence** : Clair / Sombre / Système .
 - **Accueil en 3 étapes** (tout premier lancement seulement, jamais pour un utilisateur existant) : foyer (créer un code fort ou rejoindre), épices (aucune / basiques / tout), régimes (sans porc, sans lactose, végétarien) ; les choix sont appliqués au menu d'exemple et modifiables ensuite.
 - Transition douce entre les onglets et fondu des photos (désactivés si le téléphone réduit les animations). Icônes des rubriques en pastilles colorées (comme les rayons).
 - **Budget courses** : courbe de vos derniers tickets, ticket moyen et dépense **par semaine** (période = du premier au dernier ticket, plus un intervalle ; affichée dès 2 tickets espacés d'au moins 5 jours).
@@ -239,7 +235,7 @@ Pour les **lots récents** (1 à 3) : en plus, chaque ingrédient est **cité da
 ## 6. Données, synchronisation, partage
 
 ### 6.1 Clés `localStorage` (ne jamais renommer sans migration)
-`gamelle_plan`, `gamelle_portions`, `gamelle_locked_slots`, `gamelle_checked`, `gamelle_staples`, `gamelle_favorites`, `gamelle_saved_menus`, `gamelle_custom_recipes`, `gamelle_notes`, `gamelle_gen_filters`, `gamelle_pantry`, `gamelle_pantry_needed`, `gamelle_spices`, `gamelle_stock_basics`, `gamelle_aisle_order`, `gamelle_off_cache`, `gamelle_notify`, `gamelle_member_name`, `gamelle_weather`, `gamelle_geo`, `gamelle_weather_off`, `gamelle_household_code`, `gamelle_last_sync`, `gamelle_device_id`, `gamelle_tab`, `gamelle_price_book`, `gamelle_pantry_expiry`, `gamelle_weekly_pack`, `gamelle_feedback`, `gamelle_onboarded`, `gamelle_recent_searches`, plus le thème.
+`gamelle_plan`, `gamelle_portions`, `gamelle_locked_slots`, `gamelle_checked`, `gamelle_staples`, `gamelle_favorites`, `gamelle_saved_menus`, `gamelle_custom_recipes`, `gamelle_notes`, `gamelle_gen_filters`, `gamelle_pantry`, `gamelle_pantry_needed`, `gamelle_spices`, `gamelle_stock_basics`, `gamelle_aisle_order`, `gamelle_off_cache`, `gamelle_notify`, `gamelle_member_name`, `gamelle_weather`, `gamelle_geo`, `gamelle_weather_off`, `gamelle_household_code`, `gamelle_last_sync`, `gamelle_device_id`, `gamelle_tab`, `gamelle_price_book`, `gamelle_pantry_expiry`, `gamelle_weekly_pack`, `gamelle_onboarded`, `gamelle_recent_searches`, plus le thème.
 
 ### 6.2 Synchronisation « foyer »
 - Chaque appareil publie son état complet (portions, plan, repas gardés, articles courants, cases cochées, recettes maison, menus enregistrés, favoris, placard, niveau d'épices, ordre des rayons, avis) sur `https://ntfy.sh/gamelle_foyer_<CODE>`, **400 ms après** chaque modification, et écoute le flux en direct (SSE) + une lecture au démarrage.
@@ -292,7 +288,7 @@ Après le calcul, chaque article est classé « à acheter » ou « déjà à la
 `index.html` contient une **Content-Security-Policy** : scripts uniquement du site (`script-src 'self'`, pas de script en ligne : le thème est dans `theme.js`), connexions limitées à `ntfy.sh`, `world.openfoodfacts.org`, `api.open-meteo.com`, images limitées au site, à `static.jow.fr` et aux anciennes sources de photos. Toute nouvelle source externe doit être ajoutée à la CSP (sinon elle est bloquée) ; le test navigateur échoue en cas d'erreur de console.
 
 ## 7 ter. Clés API : aucune
-L'application n'utilise **aucune clé API** : Open Food Facts (nutrition), Open-Meteo (météo) et ntfy.sh (synchro, notifications) sont ouverts. Aucun secret n'est donc stocké dans le dépôt ni affiché dans l'app. Si un service à clé était ajouté un jour, elle serait saisie sur le téléphone (jamais dans le code).
+L'application n'utilise **aucune clé API** : Open Food Facts (nutrition), Open-Meteo (météo) et ntfy.sh (synchro du foyer) sont ouverts. Aucun secret n'est donc stocké dans le dépôt ni affiché dans l'app. Si un service à clé était ajouté un jour, elle serait saisie sur le téléphone (jamais dans le code).
 
 ## 8. Hors-ligne et mises à jour
 - Premier chargement en ligne obligatoire ; ensuite l'app fonctionne sans réseau (sauf photos non encore vues, synchro foyer, QR code).
@@ -372,7 +368,6 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 - [ ] Nouvelle version : le bandeau « Mettre à jour » apparaît (et reste) jusqu'à l'action.
 - [ ] Sauvegarde : « Exporter » propose bien le fichier (Partager › Enregistrer dans Fichiers), « Restaurer » le relit.
 - [ ] Changer de code foyer sur un téléphone : l'autre bascule seul, rien n'est perdu.
-- [ ] Notifications ntfy reçues sur l'autre téléphone (app ntfy abonnée au sujet affiché dans Réglages).
 
 ---
 

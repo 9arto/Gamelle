@@ -2,6 +2,11 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 27/11/2026 — v69 : épuration
+- Bandeau du haut (« Gamelle & Panier · parts ») visible seulement dans Planning.
+- **Supprimés** : « Sons et vibrations » et les notifications du foyer (elles demandaient d'installer l'app ntfy). La synchro en direct entre les deux téléphones reste intégrée à l'app, sans installation ni compte.
+- Fiche recette : pastilles « temps » et « prix par portion » sur une ligne ; **liste d'ingrédients unique triée** (féculents, viandes, légumes… épices et huiles en bas).
+
 ## 26/11/2026 — v68 : pastille de temps
 - Pastille de temps verte sur les recettes rapides (20 min ou moins).
 

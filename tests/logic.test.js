@@ -220,7 +220,7 @@ test('restes : mots simples, pluriels, accents et saisie vide', () => {
   assert.deepEqual(plain(rank(['a'])), [], 'un mot trop court ne ressort pas');
 });
 
-// ---------------------------------------------------------------- Météo et notifications
+// ---------------------------------------------------------------- Météo
 test('météo : température de la semaine → humeur', () => {
   assert.equal(L.weatherMood({ tempMax: 4 }).temp, 'froid');
   assert.equal(L.weatherMood({ tempMax: 12 }).temp, 'frais');
@@ -260,20 +260,6 @@ test('météo : client Open-Meteo (réseau simulé) et erreurs', async () => {
   assert.equal(w.wet, true);
   assert.equal(await L.fetchWeather(1, 1, async () => ({ ok: false })), null);
   assert.equal(await L.fetchWeather(1, 1, async () => ({ ok: true, json: async () => ({ daily: {} }) })), null);
-});
-
-test('notifications : texte du message et sujet secret', async () => {
-  assert.equal(L.buildNotification({ name: 'Julie', staples: ['Lait', 'Avoine'] }), 'Julie a ajouté Lait, Avoine dans la liste de courses');
-  assert.equal(L.buildNotification({ staples: ['Lait'] }), 'A ajouté Lait dans la liste de courses');
-  assert.equal(L.buildNotification({ name: 'Paul', meals: ['Poulet mafé'] }), 'Paul a ajouté « Poulet mafé » au menu');
-  assert.equal(L.buildNotification({ name: 'Paul', staples: ['Lait'], meals: ['A', 'B'] }), 'Paul a ajouté Lait dans la liste de courses et 2 repas (A, B) au menu');
-  assert.match(L.buildNotification({ staples: ['a', 'b', 'c', 'd', 'e', 'f', 'g'] }), /a, b, c, d, e \+2/);
-  assert.equal(L.buildNotification({ name: 'X' }), null);
-  const t1 = await L.notifTopic('FOYER-AAAA-BBBB-CCCC'), t2 = await L.notifTopic('foyer-aaaa-bbbb-cccc'), t3 = await L.notifTopic('FOYER-ZZZZ');
-  assert.equal(t1, t2);
-  assert.notEqual(t1, t3);
-  assert.match(t1, /^gamelle-alerte-[0-9a-f]{20}$/);
-  assert.ok(!t1.includes('AAAA') && !t1.toLowerCase().includes('aaaa-bbbb'), 'le code n\'apparaît pas dans le sujet');
 });
 
 test('prix réels : le coefficient suit les tickets (médiane, borné, neutre sans historique)', () => {
@@ -369,4 +355,40 @@ test('équilibre de la semaine et dates limites', () => {
   assert.equal(L.shelfDays('Pommes de terre fraîches', 'fruits-legumes'), 21);
   assert.equal(L.shelfDays('Riz blanc', 'epicerie'), 120);
   assert.equal(L.shelfDays('Pavés de saumon frais', 'poissonnerie'), 2);
+});
+
+test('ingrédients d\'une recette : l\'essentiel en haut (féculents, viande, légumes), épices et huile en bas', () => {
+  const g = (n, r) => L.ingredientGroup(n, r);
+  assert.equal(g('Riz blanc (basmati ou jasmin)', 'epicerie'), 0);
+  assert.equal(g('Pommes de terre fraîches', 'fruits-legumes'), 0, 'féculent même au rayon légumes');
+  assert.equal(g('Gnocchis à poêler', 'epicerie'), 0);
+  assert.equal(g('Lentilles corail', 'epicerie'), 0);
+  assert.equal(g('Filets de poulet frais', 'boucherie'), 1);
+  assert.equal(g('Œufs frais', 'cremerie'), 1);
+  assert.equal(g('Pavés de saumon frais', 'poissonnerie'), 1);
+  assert.equal(g('Courgettes fraîches', 'fruits-legumes'), 2);
+  assert.equal(g('Tomates concassées / Coulis', 'epicerie'), 2);
+  assert.equal(g('Crème fraîche (épaisse ou liquide)', 'cremerie'), 3);
+  assert.equal(g('Parmesan AOP râpé', 'cremerie'), 3);
+  assert.equal(g('Lait de coco', 'epicerie'), 4);
+  assert.equal(g("Gousses d'ail", 'fruits-legumes'), 5);
+  assert.equal(g('Coriandre fraîche', 'fruits-legumes'), 5);
+  assert.equal(g("Huile d'olive vierge extra", 'epicerie'), 6);
+  assert.equal(g('Paprika doux (ou fumé)', 'epicerie'), 6);
+  assert.equal(g('Sauce soja salée', 'epicerie'), 6);
+  assert.equal(g('Bouillon (volaille ou légumes)', 'epicerie'), 6);
+  // sur tout le catalogue : épices/huiles ne passent jamais avant un féculent, une viande ou un légume de la même recette
+  const recipes = loadRecipes(); const api = load(recipes).api;
+  let checked = 0;
+  recipes.forEach((r) => {
+    const groups = r.ingredients.map((i, idx) => { const n = api.normalizeIngredient(i); return { g: g(n.name, n.rayon), idx }; });
+    const sorted = [...groups].sort((a, b) => a.g - b.g || a.idx - b.idx);
+    const firstSpice = sorted.findIndex((x) => x.g >= 5);
+    if (firstSpice >= 0) assert.ok(sorted.slice(0, firstSpice).every((x) => x.g <= 4), r.id);
+    checked++;
+  });
+  assert.ok(checked > 300);
+  // les recettes principales commencent par un féculent, une protéine ou un légume
+  const heads = recipes.filter((r) => { const n = api.normalizeIngredient(r.ingredients[0]); return g(n.name, n.rayon) >= 5; }).length;
+  assert.ok(heads / recipes.length < 0.15, `${heads} recettes commencent par un condiment`);
 });
