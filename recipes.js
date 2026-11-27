@@ -9,7 +9,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/674574/pexels-photo-674574.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/6vgNJwuEpkujkw.png",
     "ingredients": [
       {
         "name": "Courge Butternut",
@@ -124,7 +124,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/xxyupu1468262513.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/n2JkHAzIVotTGg.png",
     "ingredients": [
       {
         "name": "Pavés de saumon frais",
@@ -337,7 +337,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/k29viq1585565980.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/0fkroCbH25xu0w.png",
     "ingredients": [
       {
         "name": "Filets de poulet frais",
@@ -810,7 +810,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/g373701551450225.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/Abvt2tVJhsqPcg.png",
     "ingredients": [
       {
         "name": "Œufs frais",
@@ -934,7 +934,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/xJKLvXwXujfQ0w.png",
     "ingredients": [
       {
         "name": "Patates douces",
@@ -1060,7 +1060,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/1683545/pexels-photo-1683545.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/jLW5E5jcWrsNYQ.png",
     "ingredients": [
       {
         "name": "Dos de cabillaud",
@@ -1517,7 +1517,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/b5ft861583188991.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/djsvjsviyf3WxQ.png",
     "ingredients": [
       {
         "name": "Escalopes de dinde fraîches",
@@ -1627,7 +1627,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/sstssx1487349585.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/E0DfeN8s2pH17w.png",
     "ingredients": [
       {
         "name": "Filets de poulet frais",
@@ -1740,7 +1740,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/l50vz41763422681.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/3BPL0ebnWi2dGQ.png",
     "ingredients": [
       {
         "name": "Crevettes cuites décortiquées",
@@ -1870,7 +1870,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/quuxsx1511476154.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/2gjBbsq6Dk0NQA.png",
     "ingredients": [
       {
         "name": "Œufs frais",
@@ -1966,7 +1966,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/dHL5QLInw08wXA.png",
     "ingredients": [
       {
         "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
@@ -2062,7 +2062,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/6287519/pexels-photo-6287519.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/cboYNH6HSQbGKA.png",
     "ingredients": [
       {
         "name": "Œufs frais",
@@ -2165,7 +2165,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/tqd7s21763780609.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/NFTA40508hTyKw.png",
     "ingredients": [
       {
         "name": "Dos de cabillaud / Poisson blanc",
@@ -2253,7 +2253,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/h031jy1782853081.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/7S1p17ZCeIeyqQ.png",
     "ingredients": [
       {
         "name": "Bœuf haché frais (pur bœuf)",
@@ -2349,7 +2349,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/2092906/pexels-photo-2092906.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/2M9UR00rF4njDA.png",
     "ingredients": [
       {
         "name": "Œufs frais",
@@ -2459,7 +2459,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/hgH4y6Peixct9g.png",
     "ingredients": [
       {
         "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
@@ -2560,7 +2560,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/5RvGruoVoQFhsA.png",
     "ingredients": [
       {
         "name": "Escalopes de dinde fraîches",
@@ -2649,7 +2649,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/u5e9qq1763795441.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/hwd0M1GM0fkgjA.png",
     "ingredients": [
       {
         "name": "Falafels prêts à dorer",
@@ -2841,7 +2841,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/uwxqwy1483389553.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/HvnUf07GJ289mA.png",
     "ingredients": [
       {
         "name": "Potimarron",
@@ -2943,7 +2943,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/1543774956.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/v0zqTSVuaB1FTg.png",
     "ingredients": [
       {
         "name": "Escalopes de dinde fraîches",
@@ -3158,7 +3158,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/1548772327.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/tPOGWvl65k.png",
     "ingredients": [
       {
         "name": "Pavés de saumon frais",
@@ -3257,7 +3257,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/0NpvOLWRE1JMyA.png",
     "ingredients": [
       {
         "name": "Chou-fleur frais",
@@ -3467,7 +3467,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/2456435/pexels-photo-2456435.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/90EHnNted3HK1A.png",
     "ingredients": [
       {
         "name": "Escalopes de dinde fraîches",
@@ -3680,7 +3680,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/diuub11782687570.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/b3jI4bNqu0SGkw.png",
     "ingredients": [
       {
         "name": "Dos de cabillaud / Poisson blanc",
@@ -3781,7 +3781,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/4htbtm1783803558.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/F9JX0kBFynW0ZA.png",
     "ingredients": [
       {
         "name": "Pâtes de blé (penne, fusilli ou coquillettes)",
@@ -3877,7 +3877,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/4mzt101763761546.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/u3Bo0Bb4Fp45Kw.png",
     "ingredients": [
       {
         "name": "Filet de porc",
@@ -3978,7 +3978,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/5638527/pexels-photo-5638527.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/R5KPUdQPrD.png",
     "ingredients": [
       {
         "name": "Riz à risotto (Arborio ou Carnaroli)",
@@ -4287,7 +4287,7 @@ window.DEFAULT_RECIPES = [
     "type": "vege",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/1brbso1763585098.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/1BUqK8Ft80VKPQ.png",
     "ingredients": [
       {
         "name": "Courge Butternut",
@@ -4701,7 +4701,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/929137/pexels-photo-929137.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/iYt5LapQNrCuxQ.png",
     "ingredients": [
       {
         "name": "Pommes de terre fraîches",
@@ -5022,7 +5022,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/2098085/pexels-photo-2098085.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/VkhjRdW0jKfadg.png",
     "ingredients": [
       {
         "name": "Filet de porc",
@@ -5235,7 +5235,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/262959/pexels-photo-262959.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/3ZXBekXRhiSqqg.png",
     "ingredients": [
       {
         "name": "Filets de poulet frais",
@@ -6007,7 +6007,7 @@ window.DEFAULT_RECIPES = [
     "type": "volaille",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/3Z770u7ia0E0SQ.png",
     "ingredients": [
       {
         "name": "Cuisses de poulet fraîches",
@@ -6243,7 +6243,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/xwutvy1511555540.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/G0EL0c5mBtd2hA.png",
     "ingredients": [
       {
         "name": "Bœuf haché frais (pur bœuf)",
@@ -6454,7 +6454,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": true,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/691114/pexels-photo-691114.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/cfIigQhKhiGAgQ.png",
     "ingredients": [
       {
         "name": "Potimarron",
@@ -6859,7 +6859,7 @@ window.DEFAULT_RECIPES = [
     "type": "poisson",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://images.pexels.com/photos/3763847/pexels-photo-3763847.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "image": "https://static.jow.fr/550x550/recipes/PEgzru06lWRNWw.png",
     "ingredients": [
       {
         "name": "Pavés de saumon frais",
@@ -7110,7 +7110,7 @@ window.DEFAULT_RECIPES = [
     "type": "viande",
     "isBudget": false,
     "basePortions": 4,
-    "image": "https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg",
+    "image": "https://static.jow.fr/550x550/recipes/gzlkvZdg3XGkEw.png",
     "ingredients": [
       {
         "name": "Sauté d'agneau en morceaux",

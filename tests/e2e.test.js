@@ -194,7 +194,7 @@ test('navigateur : météo invisible (localisation simulée)', { skip: !chromium
     const posts = [];
     await page.route('**/api.open-meteo.com/**', (r) => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ current: { weather_code: 3 }, daily: { temperature_2m_max: [4, 5, 3], precipitation_sum: [0, 0, 0] } }) }));
     await page.route('**/ntfy.sh/**', (r) => { if (r.request().method() === 'POST' && /gamelle-alerte-/.test(r.request().url())) posts.push({ url: r.request().url(), body: r.request().postData(), title: r.request().headers().title }); r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{}' }); });
-    await page.addInitScript(() => { if (!localStorage.getItem('s')) { localStorage.setItem('s', '1'); localStorage.setItem('gamelle_household_code', 'FOYER-TEST-AAAA-BBBB'); localStorage.setItem('gamelle_member_name', 'Julie'); } });
+    await page.addInitScript(() => { if (!localStorage.getItem('s')) { localStorage.setItem('s', '1'); localStorage.setItem('gamelle_household_code', 'FOYER-TEST-AAAA-BBBB'); localStorage.setItem('gamelle_member_name', 'Chloé'); } });
     await page.goto(url);
     await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
 
@@ -661,7 +661,7 @@ test('navigateur : bandeau seulement dans Planning, fiche recette (pastilles, li
   } finally { await browser.close(); srv.close(); }
 });
 
-test('navigateur : « Julie a ajouté Lait… » à la réception d\'une synchro, prénom dans les réglages, nutrition en 3 colonnes', { skip: !chromium && 'Playwright non installé' }, async () => {
+test('navigateur : « Chloé a ajouté Lait… » à la réception d\'une synchro, prénom dans les réglages, nutrition en 3 colonnes', { skip: !chromium && 'Playwright non installé' }, async () => {
   const srv = await serve();
   const url = `http://localhost:${srv.address().port}/index.html`;
   const browser = await chromium.launch();
@@ -674,8 +674,8 @@ test('navigateur : « Julie a ajouté Lait… » à la réception d\'une synchro
     await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
     // prénom (réglages) : mémorisé et envoyé avec la synchro
     await page.evaluate(() => switchTab('tab-partager'));
-    await page.fill('#member-name', 'Julie'); await page.dispatchEvent('#member-name', 'change');
-    assert.equal(await page.evaluate(() => [localStorage.getItem('gamelle_member_name'), buildSyncPayload().by]).then((r) => r.join()), 'Julie,Julie');
+    await page.fill('#member-name', 'Chloé'); await page.dispatchEvent('#member-name', 'change');
+    assert.equal(await page.evaluate(() => [localStorage.getItem('gamelle_member_name'), buildSyncPayload().by]).then((r) => r.join()), 'Chloé,Chloé');
     // synchro reçue de l'autre téléphone : 1er échange = silencieux, ensuite = annonce
     const other = (extra) => page.evaluate((x) => {
       state.householdCode = 'FOYER-TEST-AAAA-BBBB';
@@ -696,5 +696,40 @@ test('navigateur : « Julie a ajouté Lait… » à la réception d\'une synchro
     assert.equal(tops.length, 3); assert.ok(tops.every((t) => t === tops[0]), 'protéines, glucides, lipides sur une ligne');
     assert.match(await page.innerText('#detail-nutrition'), /kcal/);
     assert.deepEqual(errors, []);
+  } finally { await browser.close(); srv.close(); }
+});
+
+test('mise en page : les boutons du bas des fenêtres gardent une marge pour les coins arrondis de l\'iPhone', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+    await page.evaluate(() => openRecipeDetail('poulet-mafe-riz'));
+    await page.waitForTimeout(700); // fin de l'animation d'ouverture
+    const pad = await page.$eval('#btn-detail-add-to-plan', (b) => { const s = getComputedStyle(b.parentElement); return [parseFloat(s.paddingLeft), parseFloat(s.paddingBottom)]; });
+    assert.ok(pad[0] >= 24, `marge latérale ${pad[0]}`);
+    assert.ok(pad[1] >= 28, `marge basse ${pad[1]}`);
+    const r = await page.$eval('#btn-detail-add-to-plan', (b) => { const x = b.getBoundingClientRect(); return [Math.round(x.left), Math.round(innerHeight - x.bottom)]; });
+    assert.ok(r[0] >= 24 && r[1] >= 28, `bouton à ${r[0]} px du bord gauche, ${r[1]} px du bas`);
+  } finally { await browser.close(); srv.close(); }
+});
+
+test('équilibre de la semaine : la barre se remplit et passe au vert quand le repère est atteint', { skip: !chromium && 'Playwright non installé' }, async () => {
+  const srv = await serve();
+  const url = `http://localhost:${srv.address().port}/index.html`;
+  const browser = await chromium.launch();
+  try {
+    const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' })).newPage();
+    await page.goto(url);
+    await page.waitForFunction(() => typeof state !== 'undefined' && state.recipes.length > 300);
+    await page.evaluate(() => { state.plan = state.recipes.filter((r) => nutritionOf(r).perPortion.protein >= 34).slice(0, 4).map((r) => r.id); renderPlanning(); });
+    const bars = await page.$$eval('#week-balance .h-2 > div', (els) => els.map((e) => ({ w: e.getBoundingClientRect().width, full: e.parentElement.getBoundingClientRect().width, bg: getComputedStyle(e).backgroundColor })));
+    assert.equal(bars.length, 2);
+    assert.ok(bars[0].w > 0 && Math.abs(bars[0].w - bars[0].full) < 1, 'protéines au repère : barre pleine');
+    assert.equal(bars[0].bg, 'rgb(16, 185, 129)', 'verte');
+    assert.ok(bars.every((b) => b.w > 0), 'aucune barre vide');
   } finally { await browser.close(); srv.close(); }
 });

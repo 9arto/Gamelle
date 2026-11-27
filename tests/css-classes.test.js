@@ -21,7 +21,7 @@ function usedClasses() {
   const add = (cls, where) => cls.split(/\s+/).forEach((c) => { if (c && !/[${}()]/.test(c)) used.set(c, where); });
   const html = read('index.html');
   for (const m of html.matchAll(/class="([^"]*)"/g)) add(m[1], 'index.html');
-  for (const f of ['app.js', 'groceries.js', 'sync.js', 'ticket.js']) {
+  for (const f of ['app.js', 'groceries.js', 'sync.js', 'ticket.js', 'extras.js']) {
     for (const m of read(f).matchAll(/class(?:Name)?(?:=|\s*=\s*)["'`]([^"'`]*)["'`]/g)) add(m[1].replace(/\$\{[^}]*\}/g, ' '), f);
   }
   return used;
