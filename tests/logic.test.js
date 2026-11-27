@@ -394,7 +394,7 @@ test('ingrédients d\'une recette : l\'essentiel en haut (féculents, viande, l�
 });
 
 test('activité de l\'autre téléphone : texte affiché dans l\'app', () => {
-  assert.equal(L.activityText({ name: 'Julie', staples: ['Lait', 'Avoine'] }), 'Julie a ajouté Lait, Avoine à la liste de courses');
+  assert.equal(L.activityText({ name: 'Chloé', staples: ['Lait', 'Avoine'] }), 'Chloé a ajouté Lait, Avoine à la liste de courses');
   assert.equal(L.activityText({ staples: ['Lait'] }), "L'autre téléphone a ajouté Lait à la liste de courses");
   assert.equal(L.activityText({ name: 'Paul', meals: ['Poulet mafé'] }), 'Paul a ajouté « Poulet mafé » au menu');
   assert.equal(L.activityText({ name: 'Paul', staples: ['Lait'], meals: ['A', 'B'] }), 'Paul a ajouté Lait à la liste de courses et 2 repas (A, B) au menu');

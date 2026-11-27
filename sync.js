@@ -161,7 +161,7 @@ function buildSyncPayload() {
     version: 3,
     timestamp: Date.now(),
     senderId: state.deviceId,
-    by: state.memberName || '',   // prénom affiché sur l'autre téléphone (« Julie a ajouté… »)
+    by: state.memberName || '',   // prénom affiché sur l'autre téléphone (« Chloé a ajouté… »)
     portions: state.portions,
     plan: state.plan,
     lockedSlots: state.lockedSlots || [],
@@ -318,7 +318,7 @@ function broadcastSync(immediate = false) {
   if (immediate) run(); else state.syncDebounceTimer = setTimeout(run, 400);
 }
 
-// Bandeau « Julie a ajouté Lait à la liste de courses » (s'efface seul au bout de 20 s ou d'un toucher)
+// Bandeau « Chloé a ajouté Lait à la liste de courses » (s'efface seul au bout de 20 s ou d'un toucher)
 let activityTimer = null;
 function showActivityBanner(text) {
   const el = document.getElementById('banner-activity');

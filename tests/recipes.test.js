@@ -400,3 +400,9 @@ test('lots 2 et 3 : aucun poisson ni fruit de mer (pas de « terre et mer »)', 
     assert.ok(!sea.test(r.title + ' ' + r.ingredients.map((i) => i.name).join(' ')), `${id} contient du poisson / fruits de mer`);
   }
 });
+
+test('photos : toutes les recettes du catalogue utilisent une photo Jow (aucune photo de banque d\'images), toutes distinctes', () => {
+  const bad = RECIPES.filter((r) => !/^https:\/\/static\.jow\.fr\/550x550\/recipes\/[A-Za-z0-9_-]+\.png$/.test(r.image));
+  assert.equal(JSON.stringify(bad.map((r) => r.id)), '[]');
+  assert.equal(new Set(RECIPES.map((r) => r.image)).size, RECIPES.length);
+});

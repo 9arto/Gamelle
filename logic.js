@@ -322,7 +322,7 @@
 
   // ---------------------------------------------------------------- Activité de l'autre téléphone (affichée dans l'app, sans notification externe)
   const listText = (arr, max) => arr.length > max ? `${arr.slice(0, max).join(', ')} +${arr.length - max}` : arr.join(', ');
-  // « Julie a ajouté Lait, Avoine à la liste de courses et « Poulet mafé » au menu »
+  // « Chloé a ajouté Lait, Avoine à la liste de courses et « Poulet mafé » au menu »
   function activityText({ name, staples = [], meals = [] }) {
     const who = (name || '').trim() || "L'autre téléphone";
     const parts = [];

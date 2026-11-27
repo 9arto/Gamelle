@@ -1,7 +1,7 @@
 # Gamelle & Panier — référence de l'application
 
 > Document de base : **ce que fait l'application, comment elle le fait, et ce qu'il faut vérifier** avant chaque mise en ligne.
-> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v70**.
+> À tenir à jour à chaque évolution (voir §12 « Règles de travail »). Dernière mise à jour : 25/11/2026 — service worker **v71**.
 
 ---
 
@@ -35,7 +35,7 @@ Principes de conception (à ne pas casser) :
 | Stockage | `localStorage` (voir §6). Tout est validé/nettoyé à la lecture (`sanitize*`). |
 | Synchro foyer | Service public **ntfy.sh** (un « topic » par code foyer). Voir §6. |
 | Hors-ligne | `sw.js` : fichiers de l'app en cache (mise à jour discrète), pages réseau d'abord, photos mémorisées (250 max). |
-| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v70`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
+| Mise à jour | Changer `VERSION` dans `sw.js` (actuellement `v71`) à **chaque** modification de `app.js`, `recipes.js`, `index.html` ou des CSS, sinon les téléphones gardent l'ancienne version. Une carte « Mise à jour » (Réglages) permet de vérifier/installer. |
 | Tests | `npm test` (ou `node --test tests/`). Node ≥ 20, aucune dépendance. Voir §9. |
 
 Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Réglages** (id interne `tab-partager`). Le dernier onglet ouvert est mémorisé.
@@ -110,7 +110,7 @@ Navigation : 4 onglets en bas — **Planning**, **Courses**, **Recettes**, **Ré
 
 ### 3.4 bis Activité de l'autre téléphone
 - **Mon prénom** (Réglages → foyer, facultatif). Il accompagne vos synchronisations.
-- Quand l'autre téléphone **ajoute un produit courant ou un repas**, un bandeau vert s'affiche à l'ouverture de l'app (ou en direct si elle est ouverte) : « Julie a ajouté Lait, Avoine à la liste de courses et « Poulet mafé » au menu ». Il se ferme d'un toucher ou seul après 20 s. Sans prénom : « L'autre téléphone a ajouté… ».
+- Quand l'autre téléphone **ajoute un produit courant ou un repas**, un bandeau vert s'affiche à l'ouverture de l'app (ou en direct si elle est ouverte) : « Chloé a ajouté Lait, Avoine à la liste de courses et « Poulet mafé » au menu ». Il se ferme d'un toucher ou seul après 20 s. Sans prénom : « L'autre téléphone a ajouté… ».
 - 100 % dans l'app : **aucune installation, aucun compte, aucune notification externe** (les notifications ntfy ont été retirées). Le premier échange après avoir rejoint un foyer n'annonce rien (tout serait « nouveau »).
 
 ### 3.5 Réglages
@@ -409,5 +409,5 @@ Lancer : `npm test`. Les tests chargent le vrai code de `app.js` et `recipes.js`
 | 25/11/2026 (6) | Titre évolutif **« Mes N repas »** ; onglet Recettes **au hasard** + bouton Mélanger ; **vignettes Jow légères** (3× moins lourdes). SW v42. |
 | 25/11/2026 (7) | **+50 recettes Top Jow sans poisson** (392) ; **audit de cohérence** de tout le catalogue (21 titres alignés sur les ingrédients, 10 ingrédients erronés corrigés) ; tests de cohérence ; `CATALOGUE.md` et `CHANGELOG.md`. SW v43. |
 | 25/11/2026 (9) | **Fiabilité** : sauvegarde/restauration, état de synchro, codes forts + changement de code, CSP, bandeau de mise à jour. **Magasin** : mode courses, gestes, quantités et habituels, menus « … ». **Contenu** : classement « gamelle » supprimé, 39 saisons corrigées, formats d'achat, 18 photos Jow. **Fonctions** : ticket de caisse → budget réaliste, stock dégressif. **Technique** : `groceries.js` / `sync.js` séparés, test des classes CSS, icônes filaires. 94 tests. SW v52. |
-| 25/11/2026 (8) | **Météo invisible** pour orienter les « 7 repas » (Open-Meteo, sans clé) ; **notifications du foyer** (« Julie a ajouté Lait, Avoine… ») via ntfy, sans clé. 79 tests. SW v44. |
+| 25/11/2026 (8) | **Météo invisible** pour orienter les « 7 repas » (Open-Meteo, sans clé) ; **notifications du foyer** (« Chloé a ajouté Lait, Avoine… ») via ntfy, sans clé. 79 tests. SW v44. |
 | (avant) | Anti-scintillement des fenêtres de recette, carte « Mise à jour », pastille foyer, correctifs de fusion de produits (SW v31–v36). |

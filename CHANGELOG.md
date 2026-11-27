@@ -2,8 +2,13 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 27/11/2026 — v71 : photos homogènes, boutons du bas
+- **Toutes les photos du catalogue sont maintenant des photos Jow** (les 36 dernières photos de banque d'images sont remplacées par celles de recettes Jow équivalentes, vérifiées une à une) ; un test l'impose.
+- **Boutons du bas des fenêtres** (fiche recette, mode cuisine…) : marges latérales et basses élargies pour ne plus être rognés par les coins arrondis de l'iPhone (le CSS compilé écrasait la marge de sécurité).
+- Exemple de prénom : « Chloé ».
+
 ## 27/11/2026 — v70 : activité de l'autre téléphone, nutrition
-- **« Julie a ajouté Lait à la liste de courses »** affiché dans l'app (bandeau) quand l'autre téléphone ajoute un produit ou un repas ; champ **Mon prénom** dans Réglages. Rien à installer, aucun compte.
+- **« Chloé a ajouté Lait à la liste de courses »** affiché dans l'app (bandeau) quand l'autre téléphone ajoute un produit ou un repas ; champ **Mon prénom** dans Réglages. Rien à installer, aucun compte.
 - Nutrition d'une recette : calories à côté du titre, protéines · glucides · lipides en 3 colonnes sur une ligne.
 
 ## 27/11/2026 — v69 : épuration
@@ -86,7 +91,7 @@ Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails 
 
 ## 25/11/2026 — v44 : météo et notifications
 - **Météo invisible** : Open-Meteo (gratuit, sans clé) oriente le tirage des « 7 repas » (froid/pluie → plats réconfortants ; chaud → plats frais). Aucun affichage, position arrondie gardée sur le téléphone, jamais redemandée si refusée.
-- **Notifications du foyer** via ntfy.sh (sujet secret dérivé du code, sans clé) : « Julie a ajouté Lait, Avoine dans la liste de courses », regroupées, désactivables, prénom facultatif.
+- **Notifications du foyer** via ntfy.sh (sujet secret dérivé du code, sans clé) : « Chloé a ajouté Lait, Avoine dans la liste de courses », regroupées, désactivables, prénom facultatif.
 
 ## 25/11/2026 — v43 : +50 recettes et audit de cohérence
 - **+50 recettes Top Jow** (392 au total), sans poisson ni fruit de mer, sans redondance avec le catalogue (photo, titre, ingrédients principaux comparés). Poulet/dinde (9), bœuf (9), porc/saucisse (11), végétariennes (21).
