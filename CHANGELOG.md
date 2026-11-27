@@ -2,6 +2,9 @@
 
 Gamelle & Panier — ce qui a changé, du plus récent au plus ancien. Détails de fonctionnement : `APPLICATION.md`.
 
+## 27/11/2026 — v73 : Réglages plus sobres
+- Textes explicatifs retirés du bloc foyer (le voyant « En direct » et la dernière synchro suffisent).
+
 ## 27/11/2026 — v72 : barre de protéines
 - Équilibre de la semaine : la barre de protéines s'affichait vide (une classe de couleur manquait dans le CSS compilé). Elle est maintenant pleine et **verte** quand le repère est atteint, ambrée sinon ; le test de classes CSS couvre désormais aussi `extras.js`.
 
